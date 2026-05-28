@@ -13,4 +13,15 @@
 #   Libs\Ace3\Ace3.xml
 
 # Compiled Lua (Fennel sources live in src/, compiled to build/ by `task build`).
+# UI scaffold load order: leaves first (no require resolution in addon scope --
+# each module registers itself into _G.Routina, downstream modules read from
+# there). See docs/UI.md §2 for the dual-mode pattern.
+build\ui\theme.lua
+build\ui\format.lua
+build\ui\frames.lua
+build\ui\dom.lua
+build\ui\tabs\weekly.lua
+build\ui\tabs\lockouts.lua
+build\ui\tabs\bis.lua
+build\ui\root.lua
 build\core\main.lua

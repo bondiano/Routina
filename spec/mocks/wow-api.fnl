@@ -9,7 +9,7 @@
 ;;   - Always return realistic shapes (matches what real WoW returns).
 ;;   - Provide :set! helpers so tests can configure return values per-test.
 ;;   - Reset state in beforeEach to avoid bleed across tests.
-;;   - NEVER mock domain modules — only WoW globals.
+;;   - NEVER mock domain modules -- only WoW globals.
 
 (local M {})
 
@@ -59,10 +59,68 @@
 (fn stub-UnitName [unit]
   (if (= unit :player) state.player-name nil))
 
+(fn stub-UnitClass [unit]
+  (if (= unit :player) (values :Priest :PRIEST 5) nil))
+
 (fn stub-GetRealmName [] state.player-realm)
 
 (fn stub-C_QuestLog-IsQuestFlaggedCompleted [quest-id]
   (= true (. state.quest-completed quest-id)))
+
+;; --- Frame stubs (CreateFrame and the surface src/ui/* touches) ---
+;;
+;; Every method is a chainable no-op returning the frame, except for the
+;; few we need real semantics on (Show/Hide/IsShown, CreateTexture,
+;; CreateFontString, SetScript/GetScript). Pixel-correctness stays
+;; wowUnit territory; busted only asserts that requiring a UI module
+;; doesn't raise. See docs/TESTING.md "UI widgets".
+
+(local frame-noop (fn [self ...] self))
+
+(fn make-frame-stub []
+  (let [f {:shown? true :script-handlers {}}]
+    (setmetatable f {:__index (fn [_t k]
+                                (if (or (= k :Show) (= k :Hide))
+                                    (fn [self]
+                                      (set self.shown? (= k :Show))
+                                      self)
+                                    (= k :IsShown)
+                                    (fn [self] self.shown?)
+                                    (= k :SetScript)
+                                    (fn [self name h]
+                                      (tset self.script-handlers name h)
+                                      self)
+                                    (= k :GetScript)
+                                    (fn [self name]
+                                      (. self.script-handlers name))
+                                    (or (= k :CreateTexture)
+                                        (= k :CreateFontString))
+                                    (fn [_self ...] (make-frame-stub))
+                                    ;; Real WoW asserts these args are numbers
+                                    ;; -- mirror that so the in-game class of
+                                    ;; bug (passing a keyword to SetSize)
+                                    ;; surfaces in busted, not in /reload.
+                                    (= k :SetSize)
+                                    (fn [self w h]
+                                      (assert (= :number (type w))
+                                              (.. "SetSize w must be number, got "
+                                                  (type w)))
+                                      (assert (= :number (type h))
+                                              (.. "SetSize h must be number, got "
+                                                  (type h)))
+                                      self)
+                                    (or (= k :SetWidth) (= k :SetHeight))
+                                    (fn [self n]
+                                      (assert (= :number (type n))
+                                              (.. (tostring k)
+                                                  " arg must be number, got "
+                                                  (type n)))
+                                      self)
+                                    frame-noop))})
+    f))
+
+(fn stub-CreateFrame [...]
+  (make-frame-stub))
 
 ;; --- Bit library (Lua 5.1 doesn't have native bitwise) ---
 ;; WoW provides bit lib globally; we replicate it for tests.
@@ -91,10 +149,18 @@
   (set _G.GetServerTime stub-GetServerTime)
   (set _G.time stub-time)
   (set _G.UnitName stub-UnitName)
+  (set _G.UnitClass stub-UnitClass)
   (set _G.GetRealmName stub-GetRealmName)
   (set _G.C_QuestLog
        {:IsQuestFlaggedCompleted stub-C_QuestLog-IsQuestFlaggedCompleted})
   (set _G.bit bit)
+  ;; UI globals (see docs/UI.md for what each is used for):
+  (set _G.CreateFrame stub-CreateFrame)
+  (set _G.UIParent (make-frame-stub))
+  (set _G.UISpecialFrames [])
+  (set _G.GameTooltip (make-frame-stub))
+  (set _G.DEFAULT_CHAT_FRAME (make-frame-stub))
+  (when (not _G.SlashCmdList) (set _G.SlashCmdList {}))
   (set _G.print (fn [...] nil)) ; silence WoW print in tests
   nil)
 

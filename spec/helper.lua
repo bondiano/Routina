@@ -23,8 +23,7 @@ package.loaded.fennel = fennel
 -- Fennel searcher for the non-shipped .fnl modules (specs, mocks, helpers).
 -- Module names like `spec.mocks.wow-api` resolve to ./spec/mocks/wow-api.fnl.
 fennel.path = "./?.fnl;./?/init.fnl;" .. fennel.path
-local searchers = package.searchers or package.loaders
-table.insert(searchers, fennel.searcher)
+table.insert(package.loaders, fennel.searcher)
 
 -- Lua searcher for `src.*` modules: load the compiled Lua from build/ so luacov
 -- attributes hits to real, shippable Lua lines (the .fnl/compiled-Lua line
@@ -41,7 +40,7 @@ local function build_lua_searcher(modname)
   f:close()
   return assert(loadfile(path))
 end
-table.insert(searchers, 1, build_lua_searcher)
+table.insert(package.loaders, 1, build_lua_searcher)
 
 -- Stub WoW globals up front. install! is a Fennel name -> "install!" key in Lua.
 require("spec.mocks.wow-api")["install!"]()
