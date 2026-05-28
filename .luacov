@@ -1,0 +1,23 @@
+-- luacov configuration. `task coverage` runs busted --coverage then luacov.
+-- We measure the COMPILED Lua under build/ (real, shippable code), not the
+-- Fennel sources -- per-line coverage of a transpiled language is unreliable.
+-- spec/helper.lua resolves `(require :src.domain.x)` to build/domain/x.lua so
+-- specs naturally exercise the compiled output.
+return {
+  include = {
+    "build/",
+  },
+  exclude = {
+    "vendor/",
+    "spec/",
+    "scripts/",
+    "src/",
+    ".rocks/",
+    "%.luarocks",
+    "busted",
+    "luassert",
+    "mediator",
+    "pl%.",
+    "say",
+  },
+}

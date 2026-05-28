@@ -1,0 +1,16 @@
+## Interface: 20505
+## Title: Routina
+## Notes: Weekly route planner with a BiS-aware probability engine (TBC Classic Anniversary)
+## Author: bondiano
+## Version: 0.1.0
+## SavedVariables: RoutinaDB
+## IconTexture: Interface\Icons\INV_Misc_Map_01
+## X-Fennel-Version: 1.6.1
+
+# Ace3 / embeds go here once the AceAddon entry lands (see
+# .claude/examples/04-ace-addon-module.fnl):
+#   Libs\LibStub\LibStub.lua
+#   Libs\Ace3\Ace3.xml
+
+# Compiled Lua (Fennel sources live in src/, compiled to build/ by `task build`).
+build\core\main.lua

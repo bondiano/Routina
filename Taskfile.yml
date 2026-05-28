@@ -1,0 +1,124 @@
+version: '3'
+
+# Routina build tasks (go-task). Fennel sources in src/ are compiled
+# ahead-of-time to Lua under build/ (gitignored); the Fennel runtime is never
+# shipped. Tests run under busted via the Fennel searcher (see spec/helper.lua).
+#
+# One-time setup:  task deps   (installs busted + luacov into ~/.luarocks)
+
+vars:
+  FENNEL_VERSION: '1.6.1'
+  ADDONS: '/Applications/World of Warcraft/_anniversary_/Interface/AddOns'
+  FNL_FILES:
+    sh: find src spec scripts -name '*.fnl'
+
+tasks:
+  default:
+    desc: Compile all Fennel sources to build/
+    deps: [build]
+
+  build:
+    desc: Compile all Fennel sources to build/
+    deps: [compile]
+
+  compile:
+    desc: Compile each src/**/*.fnl to the matching build/**/*.lua
+    sources:
+      - src/**/*.fnl
+    generates:
+      - build/**/*.lua
+    cmds:
+      - rm -rf build
+      - |
+        find src -name '*.fnl' | while IFS= read -r f; do
+          out="build/${f#src/}"; out="${out%.fnl}.lua"
+          mkdir -p "$(dirname "$out")"
+          fennel --compile "$f" > "$out"
+        done
+      - 'echo "compiled $(find build -name ''*.lua'' | wc -l | tr -d '' '') file(s) to build/"'
+
+  dev:
+    desc: Watch src/ and recompile on change (recompiles then exits on Ctrl-C)
+    cmds:
+      - task --watch compile
+
+  test:
+    desc: Run busted specs under luajit (Lua 5.1 API, like WoW)
+    deps: [build]
+    cmds:
+      - ./.rocks/bin/busted
+
+  coverage:
+    desc: Run specs with coverage; luacov measures the compiled build/*.lua
+    deps: [build]
+    cmds:
+      - ./.rocks/bin/busted --coverage
+      - ./.rocks/bin/luacov
+      - 'echo "--- luacov.report.out (summary tail) ---"'
+      - tail -n 25 luacov.report.out
+
+  lint:
+    desc: Check formatting (fnlfmt) and that every source compiles
+    cmds:
+      # fnlfmt --check exits 0 even when files differ, so fail on its output.
+      - |
+        unformatted=$(find src spec scripts -name '*.fnl' -print0 | xargs -0 fnlfmt --check 2>&1)
+        if [ -n "$unformatted" ]; then
+          echo "$unformatted"
+          echo "fnlfmt: not formatted -- run 'task fmt'"
+          exit 1
+        fi
+      - |
+        find src spec scripts -name '*.fnl' | while IFS= read -r f; do
+          fennel --globals "*" --compile "$f" >/dev/null || exit 1
+        done
+      - 'echo "lint ok"'
+
+  fmt:
+    desc: Format all Fennel sources in place with fnlfmt
+    cmds:
+      - find src spec scripts -name '*.fnl' -print0 | xargs -0 fnlfmt --fix
+
+  docs:
+    desc: Regenerate docs/api.md from src/domain/* docstrings
+    cmds:
+      - fennel scripts/docgen.fnl
+
+  package:
+    desc: BigWigs packager dry run (verifies the addon ships correctly)
+    deps: [build]
+    cmds:
+      - |
+        if [ -f release.sh ]; then
+          sh release.sh -d
+        else
+          curl -s https://raw.githubusercontent.com/BigWigsMods/packager/master/release.sh | sh -s -- -d
+        fi
+
+  install:
+    desc: Symlink this repo into the WoW AddOns folder as "Routina"
+    deps: [build]
+    cmds:
+      - ln -sfn "{{.ROOT_DIR}}" "{{.ADDONS}}/Routina"
+      - echo "linked {{.ROOT_DIR}} -> {{.ADDONS}}/Routina"
+
+  deps:
+    desc: Install busted + luacov into a luajit rocks tree (.rocks) for testing
+    vars:
+      JP:
+        sh: brew --prefix luajit
+    cmds:
+      - luarocks --lua-version=5.1 --lua-dir="{{.JP}}" --tree=.rocks install busted LUA_INCDIR="{{.JP}}/include/luajit-2.1"
+      - luarocks --lua-version=5.1 --lua-dir="{{.JP}}" --tree=.rocks install luacov LUA_INCDIR="{{.JP}}/include/luajit-2.1"
+
+  vendor:
+    desc: Re-download the pinned build-time Fennel compiler into vendor/
+    cmds:
+      - curl -fsSL "https://fennel-lang.org/downloads/fennel-{{.FENNEL_VERSION}}.lua" -o vendor/fennel.lua
+      - echo "vendored Fennel {{.FENNEL_VERSION}}"
+
+  clean:
+    desc: Remove generated Lua artifacts and coverage output
+    cmds:
+      - rm -rf build
+      - rm -f luacov.stats.out luacov.report.out

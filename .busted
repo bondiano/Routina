@@ -1,0 +1,17 @@
+-- busted configuration. Run via `task test` / `task coverage`.
+-- Specs are written in Fennel (*_spec.fnl); busted only discovers the single
+-- Lua entry (spec/all_spec.lua), which compiles and runs the .fnl specs.
+-- See spec/helper.lua for the Fennel searcher + WoW API mock setup.
+return {
+  default = {
+    ROOT = { "spec" },
+    pattern = "_spec%.lua$",
+    helper = "spec/helper.lua",
+  },
+  coverage = {
+    ROOT = { "spec" },
+    pattern = "_spec%.lua$",
+    helper = "spec/helper.lua",
+    coverage = true,
+  },
+}

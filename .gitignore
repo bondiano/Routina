@@ -1,0 +1,15 @@
+# go-task checksum cache
+.task/
+
+# Compiled Lua output (regenerate with `task build`)
+build/
+
+# project-local luajit rocks tree (busted/luacov); recreate with `task deps`
+.rocks/
+
+# busted/luacov coverage artifacts
+luacov.stats.out
+luacov.report.out
+
+# BigWigs packager output
+.release/

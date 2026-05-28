@@ -1,0 +1,26 @@
+# BigWigs packager manifest. `task package` runs release.sh -d (dry run).
+# Externals are fetched into Libs/ at package time, so the framework is never
+# committed. Compiled Lua in build/ IS shipped; Fennel sources are not.
+package-as: Routina
+
+externals:
+  Libs/LibStub: https://repos.curseforge.com/wow/libstub/trunk
+  Libs/CallbackHandler-1.0: https://repos.wowace.com/wow/callbackhandler/trunk/CallbackHandler-1.0
+  Libs/Ace3:
+    url: https://repos.wowace.com/wow/ace3/trunk
+    tag: latest
+
+# Source, tests and tooling never ship in the addon zip.
+ignore:
+  - .claude
+  - docs
+  - spec
+  - src
+  - scripts
+  - vendor
+  - Taskfile.yml
+  - .busted
+  - .luarc.json
+  - flsproject.fnl
+  - README.md
+  - CLAUDE.md
