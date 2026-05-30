@@ -11,100 +11,55 @@
 (local M {})
 
 (lambda M.apply-parchment-backdrop! [frame ?border?]
-  "Paint a frame's backdrop with uniform aged-parchment tone and an
-   optional gold edge.
+  "Paint a frame's backdrop with a hand-painted parchment, sampled
+   through the texture's painted interior.
 
-   The earlier `UI-Achievement-Parchment` texture was too noisy for body
-   text and made nested panels look ruptured. A solid warm tan gives the
-   Dialogue-UI \"aged page\" feel without competing with the typography.
+   The bundled `Art/Parchment.tga` was cropped from DUI's Parchment
+   atlas. The texture has painted torn-edges curling inward, plus a
+   soft alpha ramp around the painted area. Using it as a SetBackdrop
+   `bgFile` (which stretches the whole texture to fit) puts content
+   anchored at the frame edge ON the alpha-ramp region -- content
+   visibly falls off the painted parchment.
 
-   A previous revision added an overlay-Texture gradient via
-   `SetGradientAlpha` for a vignette. On the TBC Classic Anniversary
-   client that overlay rendered as a solid quad on top of child frames,
-   hiding the text. Removed; if a vignette is wanted later, do it via two
-   stacked half-frame textures with slightly different alphas (no
-   gradient API).
+   Fix: render the bg via a Texture child of the frame with
+   `SetTexCoord` zoomed into the inner ~88% of the texture. This
+   drops the painted torn-edges, but the painted parchment now fills
+   100% of the frame and content positioned at the inset stays well
+   inside the painted area. The slim gold tooltip-border (`?border?`,
+   default true) gives the panel a clean defined edge.
+
+   Iteration history (kept as a footnote for the next person):
+   - `UI-Achievement-Parchment` -- too noisy, fights body text.
+   - Solid palette colour -- read as 'tan rectangle', not paper.
+   - `SetGradientAlpha` vignette overlay -- hid child text on
+     Anniversary.
+   - L-corner / band ornaments on parent BORDER -- same problem.
+   - Stationery_norm1 / UI-Achievement-Parchment-Horizontal -- either
+     wouldn't render or didn't read as parchment.
+   - Bundling the full DUI atlas without slicing -- stretched, with
+     ornament-icons squashed into the bottom of the panel.
+   - Cropped DUI body via bgFile (stretched) -- painted area sat
+     INSIDE the frame, content overflowed onto the alpha ramp.
+
+   Now: Texture child + SetTexCoord zoom + slim gold border.
 
    Domain:  frame    : WoW Frame supporting :SetBackdrop
             ?border? : boolean, default true; draws the gold tooltip-border.
    Returns: frame, for threading."
-  (let [show-border? (not= ?border? false)]
-    (frame:SetBackdrop {:bgFile theme.textures.solid
-                        :edgeFile (when show-border? theme.textures.gold-border)
-                        :edgeSize 14
-                        :tile false
-                        :insets {:left 4 :right 4 :top 4 :bottom 4}})
-    (frame:SetBackdropColor (theme.rgba theme.palette.parchment 1))
-    (when show-border?
-      (frame:SetBackdropBorderColor (theme.rgba theme.palette.gold 1))))
-  frame)
-
-(fn make-stripe! [frame layer color-token alpha]
-  ;; Helper: 1-channel solid-color texture for ornaments. Stays on the
-  ;; given layer; caller anchors it. No gradient API -- the previous
-  ;; vignette attempt rendered as a solid quad on TBC Classic
-  ;; Anniversary and hid the text in child frames.
-  (let [t (frame:CreateTexture nil layer)]
-    (t:SetColorTexture (theme.rgba (. theme.palette color-token) alpha))
-    t))
-
-(fn corner-stripes! [frame anchor dx dy len thick]
-  ;; L-shaped gold corner: horizontal stripe + vertical stripe both
-  ;; anchored at the corner. SetPoint with a single anchor + SetSize
-  ;; makes the texture extend AWAY from the anchor into the frame, so
-  ;; the same code works for all four corners by only swapping the
-  ;; anchor.
-  (let [h (make-stripe! frame :BORDER :gold 0.85)
-        v (make-stripe! frame :BORDER :gold 0.85)]
-    (h:SetPoint anchor frame anchor dx dy)
-    (h:SetSize len thick)
-    (v:SetPoint anchor frame anchor dx dy)
-    (v:SetSize thick len)))
-
-(lambda M.apply-page-ornaments! [frame ?separator-y]
-  "Add aged-page ornaments: thin darker edge bands at the top and
-   bottom, a 1-px ink separator under the header, and L-shaped gold
-   corner accents. None of the placements overlap header/content text
-   regions, so the ornaments are safe regardless of how Anniversary
-   resolves layer ordering against child frames.
-
-   Domain:  frame        : WoW Frame with parchment backdrop already applied.
-            ?separator-y : optional y-offset from the top for the header
-                           separator (negative number; default -66, the
-                           gap between header bottom and pill row top).
-   Returns: frame."
-  ;; Top edge band: 6 px tall, alpha 0.10. Sits at y=-6..-12 from top,
-  ;; well above header text which starts at y=-16 (inset).
-  (let [top (make-stripe! frame :BORDER :shadow 0.1)]
-    (top:SetPoint :TOPLEFT frame :TOPLEFT 6 -6)
-    (top:SetPoint :TOPRIGHT frame :TOPRIGHT -6 -6)
-    (top:SetHeight 6))
-  ;; Bottom edge band: 6 px tall, alpha 0.15 (slightly darker, "page
-  ;; weight"). Sits at the bottom edge, outside the content area's
-  ;; populated region.
-  (let [bot (make-stripe! frame :BORDER :shadow 0.15)]
-    (bot:SetPoint :BOTTOMLEFT frame :BOTTOMLEFT 6 6)
-    (bot:SetPoint :BOTTOMRIGHT frame :BOTTOMRIGHT -6 6)
-    (bot:SetHeight 6))
-  ;; Header separator: 1-px ink line in the gap between the header
-  ;; (ends ~y=-64) and the pill row (starts at y=-72). Default y=-66
-  ;; lands cleanly between them.
-  (let [sep (make-stripe! frame :BORDER :ink 0.3)
-        inset theme.spacing.inset
-        y (or ?separator-y -66)]
-    (sep:SetPoint :TOPLEFT frame :TOPLEFT inset y)
-    (sep:SetPoint :TOPRIGHT frame :TOPRIGHT (- inset) y)
-    (sep:SetHeight 1))
-  ;; Four L-shaped gold corners (vintage frame feel). Stripe length 14,
-  ;; thickness 1, inset 8 from each edge -- well clear of every text
-  ;; region.
-  (let [in 8
-        len 14
-        thick 1]
-    (corner-stripes! frame :TOPLEFT in (- in) len thick)
-    (corner-stripes! frame :TOPRIGHT (- in) (- in) len thick)
-    (corner-stripes! frame :BOTTOMLEFT in in len thick)
-    (corner-stripes! frame :BOTTOMRIGHT (- in) in len thick))
+  (let [_unused ?border?
+        bg (frame:CreateTexture nil :BACKGROUND)
+        overhang 20]
+    ;; No SetBackdrop, no border. The texture has the scroll's torn-
+    ;; edges painted in with transparent margins around them, so what
+    ;; shows on screen is just the parchment scroll shape -- transparent
+    ;; areas reveal whatever is behind the frame (game world, other UI).
+    ;; The texture extends `overhang` px beyond the frame on every side
+    ;; so the painted parchment reads as larger than the click area --
+    ;; content positioned via the frame insets sits comfortably away
+    ;; from the painted torn-edges.
+    (bg:SetTexture theme.textures.parchment)
+    (bg:SetPoint :TOPLEFT frame :TOPLEFT (- overhang) overhang)
+    (bg:SetPoint :BOTTOMRIGHT frame :BOTTOMRIGHT overhang (- overhang)))
   frame)
 
 (lambda M.apply-inset-backdrop! [frame token]

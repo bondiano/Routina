@@ -20,6 +20,10 @@ build\ui\theme.lua
 build\ui\format.lua
 build\ui\frames.lua
 build\ui\dom.lua
+# Pure domain (no WoW API). Loaded before the tabs that consume them so
+# _G.Routina.{drop-chance,plan} are populated when the Plan tab builds.
+build\domain\drop-chance.lua
+build\domain\plan.lua
 build\ui\tabs\weekly.lua
 build\ui\tabs\lockouts.lua
 build\ui\tabs\bis.lua

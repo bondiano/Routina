@@ -151,4 +151,29 @@
                         (it ":size [w h] on Frame still calls SetSize"
                             (fn []
                               (let [parent (_G.CreateFrame :Frame)]
-                                (dom.render! parent [:Frame {:size [560 480]}]))))))))
+                                (dom.render! parent [:Frame {:size [560 480]}]))))
+                        (it ":fill-color on Texture resolves a palette token"
+                            (fn []
+                              (let [parent (_G.CreateFrame :Frame)]
+                                (dom.render! parent
+                                             [:Frame
+                                              {:id :wrap}
+                                              [:Texture
+                                               {:id :sep
+                                                :layer :ARTWORK
+                                                :fill-color :ink
+                                                :alpha 0.3
+                                                :height 1}]]))))
+                        (it ":fill-color throws on unknown palette token"
+                            (fn []
+                              (let [parent (_G.CreateFrame :Frame)]
+                                (assert.has_error (fn []
+                                                    (dom.render! parent
+                                                                 [:Texture
+                                                                  {:fill-color :nope}]))))))
+                        (it ":height on a Texture calls SetHeight"
+                            (fn []
+                              (let [parent (_G.CreateFrame :Frame)]
+                                (dom.render! parent
+                                             [:Texture
+                                              {:fill-color :gold :height 1}]))))))))

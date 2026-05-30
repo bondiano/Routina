@@ -94,12 +94,29 @@
                                                  (not= attrs.border? false))
     token (frames.apply-inset-backdrop! frame token)))
 
+(fn apply-highlight! [frame attrs]
+  ;; Buttons only: the standard Blizzard mouse-over highlight, drawn ADD so
+  ;; it matches the gold glow on chat item links. WoW shows/hides it on
+  ;; hover automatically once the texture is set.
+  (when attrs.highlight
+    (let [path (. theme.textures attrs.highlight)]
+      (assert path (.. "dom: unknown :highlight texture token :"
+                       (tostring attrs.highlight)))
+      (frame:SetHighlightTexture path :ADD))))
+
 (fn apply-text! [frame attrs]
   (when attrs.text (frame:SetText attrs.text)))
 
 (fn apply-texture! [frame attrs parent]
   (when attrs.texture-token
     (frame:SetTexture (. theme.textures attrs.texture-token)))
+  (when attrs.fill-color
+    ;; Solid-coloured Texture (no image). Used for dividers, separators,
+    ;; future tinted overlays. :alpha defaults to 1.
+    (let [hex (. theme.palette attrs.fill-color)]
+      (assert hex (.. "dom: unknown :fill-color palette token :"
+                      (tostring attrs.fill-color)))
+      (frame:SetColorTexture (theme.rgba hex (or attrs.alpha 1)))))
   (when attrs.fill-parent? (frame:SetAllPoints parent)))
 
 (fn apply-frame-traits! [frame attrs]
@@ -130,6 +147,7 @@
   (apply-text! frame attrs)
   (apply-texture! frame attrs parent)
   (apply-frame-traits! frame attrs)
+  (apply-highlight! frame attrs)
   (apply-layout! frame attrs parent refs)
   (apply-handlers! frame attrs))
 

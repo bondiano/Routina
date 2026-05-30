@@ -2,7 +2,10 @@
 ;;
 ;; CANONICAL EXAMPLE of a pure domain module:
 ;;   - No WoW API imports.
-;;   - No mutation, no I/O, no globals (besides math).
+;;   - No mutation, no I/O. Functions touch no globals besides math; the
+;;     module-load footer registers M into the Routina namespace (the
+;;     established dual-mode pattern, same as format.fnl) so in-game
+;;     consumers can reach it without `require`.
 ;;   - Every public fn has a docstring.
 ;;   - Module exports a single table M.
 ;;   - All exported fns are individually testable.
@@ -109,5 +112,15 @@
       {:p10 (. results p10-idx)
        :p50 (. results p50-idx)
        :p90 (. results p90-idx)})))
+
+;; --- Register into the addon namespace -------------------------------------
+;;
+;; Dual-mode: in-game, the .toc load order populates `_G.Routina.drop-chance`
+;; before src/domain/plan.fnl runs. In tests, consumers fall through to
+;; `(require :src.domain.drop-chance)` which returns the same M.
+
+(local Routina (or _G.Routina {}))
+(set _G.Routina Routina)
+(set Routina.drop-chance M)
 
 M

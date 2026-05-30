@@ -61,12 +61,14 @@
 
 (fn header-spec []
   (let [inset theme.spacing.inset
-        rhythm theme.spacing.rhythm]
+        rhythm theme.spacing.rhythm
+        side-inset (* 2 inset)
+        top-pad (* 2 inset)]
     [:Frame
      {:id :header
       :height 48
-      :anchors [[:TOPLEFT :parent :TOPLEFT inset (- inset)]
-                [:TOPRIGHT :parent :TOPRIGHT (- inset) (- inset)]]}
+      :anchors [[:TOPLEFT :parent :TOPLEFT side-inset (- top-pad)]
+                [:TOPRIGHT :parent :TOPRIGHT (- side-inset) (- top-pad)]]}
      [:FontString
       {:id :char-line
        :font :title
@@ -106,12 +108,13 @@
 
 (fn pill-row-spec []
   (let [inset theme.spacing.inset
-        rhythm theme.spacing.rhythm]
+        rhythm theme.spacing.rhythm
+        side-inset (* 2 inset)]
     [:Frame
      {:id :pill-row
       :height 28
-      :anchors [[:TOPLEFT :parent :TOPLEFT inset -72]
-                [:TOPRIGHT :parent :TOPRIGHT (- inset) -72]]}
+      :anchors [[:TOPLEFT :parent :TOPLEFT side-inset -88]
+                [:TOPRIGHT :parent :TOPRIGHT (- side-inset) -88]]}
      (pill-spec :pill-weekly :pill-weekly-text :Plan :weekly
                 [:LEFT :pill-row :LEFT 0 0])
      (pill-spec :pill-lockouts :pill-lockouts-text :Lockouts :lockouts
@@ -120,11 +123,12 @@
                 [:LEFT :pill-lockouts :RIGHT rhythm 0])]))
 
 (fn root-spec []
-  (let [inset theme.spacing.inset]
+  (let [inset theme.spacing.inset
+        side-inset (* 2 inset)]
     [:Frame
      {:id :root
       :name :RoutinaRoot
-      :size [560 480]
+      :size [460 480]
       :strata :HIGH
       :movable? true
       :mouse? true
@@ -133,17 +137,28 @@
       :border? true
       :anchors [[:CENTER :parent :CENTER 0 80]]}
      (header-spec)
+     ;; Thin ink separator in the gap between header bottom (~y=-64)
+     ;; and pill row top (y=-72). Rendered as an ARTWORK child of root
+     ;; via the dom spec, so layering is predictable -- no parent-
+     ;; BORDER overlay magic.
+     [:Texture
+      {:id :header-sep
+       :layer :ARTWORK
+       :fill-color :ink
+       :alpha 0.3
+       :height 1
+       :anchors [[:TOPLEFT :parent :TOPLEFT side-inset -82]
+                 [:TOPRIGHT :parent :TOPRIGHT (- side-inset) -82]]}]
      (pill-row-spec)
      [:Frame
       {:id :content-area
-       :anchors [[:TOPLEFT :parent :TOPLEFT inset -116]
-                 [:BOTTOMRIGHT :parent :BOTTOMRIGHT (- inset) inset]]}]]))
+       :anchors [[:TOPLEFT :parent :TOPLEFT side-inset -132]
+                 [:BOTTOMRIGHT :parent :BOTTOMRIGHT (- side-inset) inset]]}]]))
 
 ;; --- Construction (imperative singleton, lazy on first toggle!) ------------
 
 (fn build-root! []
   (let [{: root : refs} (dom.render! _G.UIParent (root-spec))]
-    (frames.apply-page-ornaments! root)
     (set pills.weekly {:button (. refs :pill-weekly)
                        :text (. refs :pill-weekly-text)})
     (set pills.lockouts
