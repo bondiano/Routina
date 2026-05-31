@@ -7,10 +7,11 @@
 ## IconTexture: Interface\Icons\INV_Misc_Map_01
 ## X-Fennel-Version: 1.6.1
 
-# Ace3 / embeds go here once the AceAddon entry lands (see
-# .claude/examples/04-ace-addon-module.fnl):
-#   Libs\LibStub\LibStub.lua
-#   Libs\Ace3\Ace3.xml
+# Ace3 framework. NOT committed -- fetched into Libs/ by `task libs` (or the
+# BigWigs packager at release). Ace3.xml embeds CallbackHandler-1.0, so no
+# separate CallbackHandler line is needed. Must load before any build/* module.
+Libs\LibStub\LibStub.lua
+Libs\Ace3\Ace3.xml
 
 # Compiled Lua (Fennel sources live in src/, compiled to build/ by `task build`).
 # UI scaffold load order: leaves first (no require resolution in addon scope --
@@ -27,8 +28,14 @@ build\domain\schemas.lua
 build\domain\validate.lua
 build\domain\drop-chance.lua
 build\domain\plan.lua
+# Core boundary/state. wow + saved-vars only need schemas/validate (loaded
+# above); events is pure dispatch. ace (the AceAddon entry) loads LAST -- it
+# requires root and wires everything via the Ace3 libs loaded at the top.
+build\core\wow.lua
+build\core\saved-vars.lua
+build\core\events.lua
 build\ui\tabs\weekly.lua
 build\ui\tabs\lockouts.lua
 build\ui\tabs\bis.lua
 build\ui\root.lua
-build\core\main.lua
+build\core\ace.lua

@@ -13,3 +13,8 @@ luacov.report.out
 
 # BigWigs packager output
 .release/
+
+# Ace3 framework externals (fetched by `task libs`; never committed -- see
+# .pkgmeta). Keep the directory itself via .gitkeep so .toc lib paths resolve.
+Libs/*
+!Libs/.gitkeep

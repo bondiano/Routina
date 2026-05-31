@@ -102,6 +102,22 @@ tasks:
       - ln -sfn "{{.ROOT_DIR}}" "{{.ADDONS}}/Routina"
       - echo "linked {{.ROOT_DIR}} -> {{.ADDONS}}/Routina"
 
+  libs:
+    desc: Fetch Ace3/LibStub externals into Libs/ for local in-game testing (not committed)
+    cmds:
+      # Mirrors .pkgmeta externals via svn (same source the BigWigs packager
+      # uses). Libs/ is gitignored; the packager re-fetches these at release.
+      - |
+        if ! command -v svn >/dev/null 2>&1; then
+          echo "svn not found -- install Subversion (e.g. 'brew install svn'),"
+          echo "or run 'task package' to let the BigWigs packager fetch libs."
+          exit 1
+        fi
+        svn export --force https://repos.curseforge.com/wow/libstub/trunk Libs/LibStub
+        svn export --force https://repos.wowace.com/wow/callbackhandler/trunk/CallbackHandler-1.0 Libs/CallbackHandler-1.0
+        svn export --force https://repos.wowace.com/wow/ace3/trunk Libs/Ace3
+      - 'echo "fetched LibStub + CallbackHandler-1.0 + Ace3 into Libs/"'
+
   deps:
     desc: Install busted + luacov into a luajit rocks tree (.rocks) for testing
     vars:

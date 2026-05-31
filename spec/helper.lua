@@ -44,3 +44,7 @@ table.insert(package.loaders, 1, build_lua_searcher)
 
 -- Stub WoW globals up front. install! is a Fennel name -> "install!" key in Lua.
 require("spec.mocks.wow-api")["install!"]()
+
+-- Stub LibStub + Ace3 so src/core/ace.fnl can be required (its load-time
+-- NewAddon needs LibStub). Ace3 is a .pkgmeta external, absent under busted.
+require("spec.mocks.ace3")["install!"]()
