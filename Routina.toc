@@ -21,7 +21,10 @@ build\ui\format.lua
 build\ui\frames.lua
 build\ui\dom.lua
 # Pure domain (no WoW API). Loaded before the tabs that consume them so
-# _G.Routina.{drop-chance,plan} are populated when the Plan tab builds.
+# _G.Routina.{schemas,validate,drop-chance,plan} are populated downstream.
+# schemas before validate (validate reads the registry at load).
+build\domain\schemas.lua
+build\domain\validate.lua
 build\domain\drop-chance.lua
 build\domain\plan.lua
 build\ui\tabs\weekly.lua
