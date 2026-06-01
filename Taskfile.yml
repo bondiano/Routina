@@ -133,6 +133,30 @@ tasks:
       - curl -fsSL "https://fennel-lang.org/downloads/fennel-{{.FENNEL_VERSION}}.lua" -o vendor/fennel.lua
       - echo "vendored Fennel {{.FENNEL_VERSION}}"
 
+  vendor-bis-source:
+    desc: Re-download the pinned GPL BiS source + derive item names into vendor/bis-source/
+    vars:
+      WARKDEV_SHA: 4875cc1096e4a276bb2cf55709993d5c5269be08
+      NEXUS_SHA: 8339771805564c6de7850ff9428be8e841f69622
+      WARKDEV: 'https://raw.githubusercontent.com/Warkdev/BestInSlotTBCClassic/{{.WARKDEV_SHA}}'
+      NEXUS: 'https://raw.githubusercontent.com/nexus-devs/wow-classic-items/{{.NEXUS_SHA}}'
+    cmds:
+      - mkdir -p vendor/bis-source
+      - |
+        for f in bis_data items class inventoryslot; do
+          curl -fsSL "{{.WARKDEV}}/data/$f.lua" -o "vendor/bis-source/$f.lua"
+        done
+      - curl -fsSL "{{.WARKDEV}}/LICENSE.txt" -o vendor/bis-source/LICENSE.warkdev.txt
+      - curl -fsSL "{{.NEXUS}}/data/json/data.json" -o /tmp/routina-nexus-data.json
+      - luajit scripts/vendor-bis-names.lua /tmp/routina-nexus-data.json
+      - echo "vendored BiS source @ {{.WARKDEV_SHA}} (run 'task import-bis' next)"
+
+  import-bis:
+    desc: Regenerate src/domain/bis/*.fnl from vendor/bis-source/ (GPL BiS data)
+    cmds:
+      - luajit scripts/import-bis.lua
+      - echo "now run 'task fmt && task build && task test' to finish"
+
   clean:
     desc: Remove generated Lua artifacts and coverage output
     cmds:

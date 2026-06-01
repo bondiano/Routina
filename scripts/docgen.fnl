@@ -14,9 +14,11 @@
     (f:write content)))
 
 (fn list-domain-files []
-  "Sorted list of src/domain/*.fnl paths."
+  "Sorted list of top-level src/domain/*.fnl paths. -maxdepth 1 skips the
+   generated per-spec BiS data modules under src/domain/bis/ (no public API);
+   the aggregator src/domain/bis-catalog.fnl lives at the top level and is kept."
   (let [files []]
-    (with-open [p (assert (io.popen "find src/domain -name '*.fnl' | sort"))]
+    (with-open [p (assert (io.popen "find src/domain -maxdepth 1 -name '*.fnl' | sort"))]
       (each [line (p:lines)]
         (table.insert files line)))
     files))

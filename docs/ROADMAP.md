@@ -38,8 +38,9 @@
 | WoW API wrapper | **Done** -- `src/core/wow.fnl` |
 | UI shell (custom CreateFrame, journal theme) | **Done** -- `root` + `theme` + `dom`/`format`/`frames`, three tab pills |
 | Vertical slice (Plan tab) | **Done** -- `domain/plan.fnl` scores a `sample-catalog` scaffold, rendered by `tabs/weekly.fnl` |
-| BiS catalog | **Not yet** (Phase 2) |
-| Lockout / activity model | `lockouts.fnl` + `activities.fnl` **done** (busted-green); next: `bis-catalog`, `drop-table`, `route` |
+| BiS catalog | `bis-catalog.fnl` + 27 generated `bis/<class>-<spec>.fnl` **done** (imported from GPL source; ~820 entries, all 9 classes) |
+| Lockout / activity model | `lockouts.fnl` + `activities.fnl` **done** (busted-green); next: `drop-table`, `route` |
+| License | **GPL-2.0** (inherited from imported BiS data; see `LICENSE`/`CREDITS.md`) |
 | Routing engine | **Partial** -- `plan.fnl` proto scorer; real `route.plan-week` is Phase 2 |
 | Localization scaffold (`Locales/`) | Empty (`.gitkeep` only) |
 | Release pipeline (BigWigs packager) | Configured, no tag yet |
@@ -127,10 +128,23 @@ ugly.
      activities -- `:rep-hub` is a live type and `ActivityRequirements` carries
      an optional `:rep` gate. The multi-week "score per hour" warp is deferred
      to route scoring (§5 / OQ-6).
-3. **`src/domain/bis-catalog.fnl`** + **`src/domain/bis/<class>/<spec>.fnl`**
-   - Static catalog of BiS sets per class/spec/phase, generated via the
-     `bis-catalog` macro from `.claude/examples/05-bis-catalog-macro.fnl`.
-   - Curator workflow: `bis-curator` agent updates these files.
+3. **`src/domain/bis-catalog.fnl`** + **`src/domain/bis/<class>-<spec>.fnl`** -- DONE
+   - **Decision change:** instead of hand-curating via the `bis-catalog` macro,
+     the catalog is **bulk-imported** by `scripts/import-bis.lua` (`task
+     import-bis`) from the GPL-2.0 [BestInSlotTBCClassic] data vendored in
+     `vendor/bis-source/` (item names from the MIT nexus-devs dataset). This
+     relicenses Routina as **GPL-2.0** (see `LICENSE`, `CREDITS.md`).
+   - 27 generated per-spec data modules (`bis/<class>-<spec>.fnl`, all 9 classes,
+     26 source specs, ~820 entries at Priority 1-2) register into a shared
+     accumulator; `bis-catalog.fnl` flattens + validates against
+     `schemas.BisItem` and exposes `all` / `by-class-spec[-phase]` / `by-slot` /
+     `primary-for-slot` / `specs-for-class`.
+   - Source taxonomy is preserved verbatim (merged Holy/Disc priest, "Any" rogue,
+     druid feral split). `:sources` is `:instance`-only (no boss/drop-rate
+     upstream) until §4. Regenerate: `task vendor-bis-source && task import-bis`.
+   - The `bis-curator` agent / macro remain for future hand-authored overlays.
+
+   [BestInSlotTBCClassic]: https://github.com/Warkdev/BestInSlotTBCClassic
 4. **`src/domain/drop-table.fnl`**
    - Map `{:item-id -> {:source-activity :base-drop-p :ml-pool}}`.
    - Seeded from Wowhead exports; manual review before commit.

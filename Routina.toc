@@ -6,6 +6,7 @@
 ## SavedVariables: RoutinaDB
 ## IconTexture: Interface\Icons\INV_Misc_Map_01
 ## X-Fennel-Version: 1.6.1
+## X-License: GPL-2.0
 
 # Ace3 framework. NOT committed -- fetched into Libs/ by `task libs` (or the
 # BigWigs packager at release). Ace3.xml embeds CallbackHandler-1.0, so no
@@ -28,6 +29,38 @@ build\domain\schemas.lua
 build\domain\validate.lua
 build\domain\lockouts.lua
 build\domain\activities.lua
+# BiS catalog: generated per-spec data modules + manifest register into
+# _G.Routina.bis-by-spec; bis-catalog.lua loads LAST and flattens them. See
+# scripts/import-bis.lua + vendor/bis-source/. Regenerate with `task import-bis`.
+build\domain\bis\warrior-arms.lua
+build\domain\bis\warrior-fury.lua
+build\domain\bis\warrior-protection-mitigation.lua
+build\domain\bis\warrior-protection-threat.lua
+build\domain\bis\paladin-holy.lua
+build\domain\bis\paladin-protection.lua
+build\domain\bis\paladin-retribution.lua
+build\domain\bis\hunter-beast-mastery.lua
+build\domain\bis\hunter-marksmanship.lua
+build\domain\bis\hunter-survival.lua
+build\domain\bis\rogue-any.lua
+build\domain\bis\priest-holy.lua
+build\domain\bis\priest-shadow.lua
+build\domain\bis\shaman-elemental.lua
+build\domain\bis\shaman-enhancement.lua
+build\domain\bis\shaman-restoration.lua
+build\domain\bis\mage-arcane.lua
+build\domain\bis\mage-fire.lua
+build\domain\bis\mage-frost.lua
+build\domain\bis\warlock-affliction.lua
+build\domain\bis\warlock-demonology.lua
+build\domain\bis\warlock-destruction.lua
+build\domain\bis\druid-balance.lua
+build\domain\bis\druid-feral-dps.lua
+build\domain\bis\druid-feral-tank-mitigation.lua
+build\domain\bis\druid-feral-tank-threat.lua
+build\domain\bis\druid-restoration.lua
+build\domain\bis\manifest.lua
+build\domain\bis-catalog.lua
 build\domain\drop-chance.lua
 build\domain\plan.lua
 # Core boundary/state. wow + saved-vars only need schemas/validate (loaded

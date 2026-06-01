@@ -72,3 +72,11 @@ task vendor      # re-download the pinned Fennel compiler into vendor/
 - [Fennel reference](https://fennel-lang.org/reference)
 - [Fennel style](https://fennel-lang.org/style)
 - [busted](https://lunarmodules.github.io/busted/)
+
+## License
+
+Routina is licensed **GPL-2.0** (see [`LICENSE`](LICENSE)). The BiS catalog is
+generated from the GPL-2.0 [BestInSlotTBCClassic](https://github.com/Warkdev/BestInSlotTBCClassic)
+data, so the project inherits its copyleft; item names come from the MIT
+[wow-classic-items](https://github.com/nexus-devs/wow-classic-items) dataset.
+Full attribution in [`CREDITS.md`](CREDITS.md) and [`vendor/bis-source/README.md`](vendor/bis-source/README.md).
