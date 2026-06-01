@@ -61,8 +61,13 @@
                   (each [_ name (ipairs [:Item
                                          :Encounter
                                          :Lockout
+                                         :LockoutView
                                          :TargetItem
                                          :Activity
+                                         :Player
+                                         :ActivityDef
+                                         :ActivityRequirements
+                                         :RepRequirement
                                          :BisItem])]
                     (assert.is_true (not= nil (. schemas name))
                                     (.. "missing schema :" name)))))))

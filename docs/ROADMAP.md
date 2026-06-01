@@ -22,23 +22,26 @@
 5. **Small, sharp surface.** It is better to ship a tight weekly planner with
    trustworthy probabilities than a sprawling assistant that approximates.
 
-## Status snapshot (2026-05-28)
+## Status snapshot (2026-06-01)
 
 | Area | State |
 |---|---|
 | Build pipeline (`task build/test/lint/package`) | Working |
 | Fennel compiler vendored | `vendor/fennel.lua` pinned |
 | Domain module: `drop-chance` | Shipped, used as canonical example |
-| Tests: busted + Fennel searcher | Wired, 1 spec |
-| WoW API mocks | Stub harness in `spec/mocks/wow-api.fnl` |
-| Ace3 wiring | **Not yet** -- `src/core/main.fnl` is a placeholder slash-cmd |
-| Event dispatcher | **Not yet** |
-| SavedVariables / AceDB | **Not yet** (`RoutinaDB` declared in `.toc` only) |
-| UI shell (custom CreateFrame, journal theme) | **Not yet** -- see [UI](UI.md) |
-| BiS catalog | **Not yet** |
-| Lockout / activity model | **Not yet** |
-| Routing engine | **Not yet** |
-| Localization scaffold (`Locales/`) | Empty |
+| Tests: busted + Fennel searcher | Wired, 115 passing across core/domain/ui |
+| WoW API mocks | Stub harness in `spec/mocks/wow-api.fnl` + `spec/mocks/ace3.fnl` |
+| Ace3 wiring | **Done** -- `src/core/ace.fnl` (AceAddon entry, wires root + events) |
+| Event dispatcher | **Done** -- `src/core/events.fnl` (`case` dispatch) |
+| SavedVariables / AceDB | **Done** -- `src/core/saved-vars.fnl` (versioned, migration list) |
+| Schemas + runtime validation | **Done** -- `src/domain/{schemas,validate}.fnl` |
+| WoW API wrapper | **Done** -- `src/core/wow.fnl` |
+| UI shell (custom CreateFrame, journal theme) | **Done** -- `root` + `theme` + `dom`/`format`/`frames`, three tab pills |
+| Vertical slice (Plan tab) | **Done** -- `domain/plan.fnl` scores a `sample-catalog` scaffold, rendered by `tabs/weekly.fnl` |
+| BiS catalog | **Not yet** (Phase 2) |
+| Lockout / activity model | `lockouts.fnl` + `activities.fnl` **done** (busted-green); next: `bis-catalog`, `drop-table`, `route` |
+| Routing engine | **Partial** -- `plan.fnl` proto scorer; real `route.plan-week` is Phase 2 |
+| Localization scaffold (`Locales/`) | Empty (`.gitkeep` only) |
 | Release pipeline (BigWigs packager) | Configured, no tag yet |
 
 ## Phase 0 -- Scaffolding (DONE)
@@ -54,7 +57,11 @@ and load an empty addon in-game.
 - [x] Canonical pure domain example (`drop-chance.fnl` + spec)
 - [x] `.claude/examples/` set of 7 worked patterns
 
-## Phase 1 -- Foundation (NEXT)
+## Phase 1 -- Foundation (CODE-COMPLETE, pending in-game smoke)
+
+> All modules below are merged and green under `task lint && task test`. This
+> phase flips to DONE only after the in-game smoke checks in the exit criteria
+> pass on a live TBC Anniversary client.
 
 Goal: the addon loads under Ace3, owns its DB, dispatches events, and exposes
 a single root frame -- still without any planner logic. After this phase the
@@ -97,22 +104,29 @@ Exit criteria:
 - `task lint && task test` green; coverage >=85% on `src/domain/`.
 - SavedVariables round-trip (write a value, `/reload`, read it back).
 
-## Phase 2 -- Domain MVP
+## Phase 2 -- Domain MVP (NEXT)
 
 Goal: enough pure modules to *describe* a weekly plan, even if the UI is
 ugly.
 
-1. **`src/domain/lockouts.fnl`**
+1. **`src/domain/lockouts.fnl`** -- DONE (pending in-game smoke)
    - Pure model of raid/dungeon lockouts: id, expiry timestamp, bosses
-     killed/remaining, owner key.
+     killed/remaining, owner key. Operates on `schemas.LockoutView` (the
+     planner projection; the raw WoW record stays `schemas.Lockout`).
    - Predicates: `lockout-active?`, `lockout-shareable?`, `time-until-reset`.
    - Fed by `src/core/events.fnl` via `UPDATE_INSTANCE_INFO`,
      `RAID_INSTANCE_WELCOME`, `RAID_BOSS_KILLED`.
-2. **`src/domain/activities.fnl`**
+2. **`src/domain/activities.fnl`** -- DONE (pending in-game smoke)
    - Registry of weekly content: raids, heroic dungeons, dailies, PvP weekly,
-     reputation hubs.
+     reputation hubs. Static `ActivityDef` registry; `available?` consumes
+     `lockouts` for per-period availability; `requirements-met?` checks a
+     `schemas.Player` (level + attunements + reputations).
    - Each activity has `:id`, `:type`, `:reset` (`:weekly | :daily | :none`),
      `:length-estimate`, `:requirements`.
+   - **OQ-4 resolved (2026-06-01):** reputations are modelled as weekly
+     activities -- `:rep-hub` is a live type and `ActivityRequirements` carries
+     an optional `:rep` gate. The multi-week "score per hour" warp is deferred
+     to route scoring (§5 / OQ-6).
 3. **`src/domain/bis-catalog.fnl`** + **`src/domain/bis/<class>/<spec>.fnl`**
    - Static catalog of BiS sets per class/spec/phase, generated via the
      `bis-catalog` macro from `.claude/examples/05-bis-catalog-macro.fnl`.

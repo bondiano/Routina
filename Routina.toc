@@ -26,6 +26,8 @@ build\ui\dom.lua
 # schemas before validate (validate reads the registry at load).
 build\domain\schemas.lua
 build\domain\validate.lua
+build\domain\lockouts.lua
+build\domain\activities.lua
 build\domain\drop-chance.lua
 build\domain\plan.lua
 # Core boundary/state. wow + saved-vars only need schemas/validate (loaded

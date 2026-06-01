@@ -254,11 +254,13 @@ These are unresolved and need an answer before the relevant
   players raiding with mixed groups.
   *Affects:* Phase 4 / competition modelling.
 
-- **OQ-4 -- Reputation grinds in the weekly plan.** Treat reputations
+- ~~**OQ-4 -- Reputation grinds in the weekly plan.** Treat reputations
   (Aldor / Scryer / Cenarion Expedition / ...) as weekly activities, or
-  hide them in a separate tab? They unlock BiS-relevant rewards but
-  span weeks, which warps "score per hour" math.
-  *Affects:* Phase 2 / `activities`.
+  hide them in a separate tab?~~ **RESOLVED (2026-06-01):** reputations are
+  modelled as weekly activities -- `:rep-hub` is a live `ActivityDef` type and
+  `ActivityRequirements` carries an optional `:rep` gate. See
+  [ROADMAP](ROADMAP.md) Phase 2 §2. The "score per hour" warp for multi-week
+  grinds is deferred to route scoring (Phase 2 §5 / OQ-6).
 
 - **OQ-5 -- Cross-character planning.** Defer past v1.0 (single-character
   only), or design AceDB profiles for cross-char from day one? The
