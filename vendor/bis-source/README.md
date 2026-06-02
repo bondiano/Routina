@@ -15,6 +15,7 @@ with `task vendor-bis-source`.
 | `inventoryslot.lua` | same, `data/inventoryslot.lua` | GPL-2.0 | same |
 | `LICENSE.warkdev.txt` | same, `LICENSE.txt` (verbatim) | GPL-2.0 | same |
 | `item-names.lua` | derived (id→name) from [nexus-devs/wow-classic-items](https://github.com/nexus-devs/wow-classic-items) `data/json/data.json` | MIT | `8339771805564c6de7850ff9428be8e841f69622` |
+| `item-sources.lua` | derived (id→{category,boss,zone,dropChance}) from nexus-devs `data/json/data.json` + `zones.json` | MIT | `8339771805564c6de7850ff9428be8e841f69622` |
 
 The spec-id → spec-name mapping used by the importer is hand-transcribed from the
 same Warkdev addon's `modules/manager.lua` (`BIS_dataSpecs` / `BIS_specsFileToSpecs`);

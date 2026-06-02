@@ -40,9 +40,10 @@ Routina's Best-in-Slot catalog (`src/domain/bis/*.fnl`, aggregated by
   derived from it, **Routina is itself licensed GPL-2.0** (see root `LICENSE`).
   Its license text is preserved verbatim at `vendor/bis-source/LICENSE.warkdev.txt`.
   Gratitude to Warkdev and contributors.
-- **Item names** (id → name) are derived from
+- **Item names** (id → name) and **drop rates + sources** (the `drop-table`:
+  per-item drop chance, boss, and source zone) are derived from
   [nexus-devs / wow-classic-items](https://github.com/nexus-devs/wow-classic-items)
-  (`data/json/data.json`), which is **MIT**-licensed.
+  (`data/json/data.json` + `zones.json`), which is **MIT**-licensed.
 
 The source taxonomy is preserved verbatim, including its quirks (a merged
 Holy/Discipline priest set, one "Any" rogue spec, the druid feral tank/dps

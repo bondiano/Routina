@@ -61,6 +61,10 @@ build\domain\bis\druid-feral-tank-threat.lua
 build\domain\bis\druid-restoration.lua
 build\domain\bis\manifest.lua
 build\domain\bis-catalog.lua
+# Drop table: generated drops\data.lua registers _G.Routina.drop-data;
+# drop-table.lua reads + validates it. See scripts/import-drops.lua.
+build\domain\drops\data.lua
+build\domain\drop-table.lua
 build\domain\drop-chance.lua
 build\domain\plan.lua
 # Core boundary/state. wow + saved-vars only need schemas/validate (loaded

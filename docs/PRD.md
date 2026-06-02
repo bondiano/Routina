@@ -235,11 +235,14 @@ Hard product constraints (engineering constraints are in [WOW](WOW.md)):
 These are unresolved and need an answer before the relevant
 [ROADMAP](ROADMAP.md) phase lands. **`Ask` before changing the answer.**
 
-- **OQ-1 -- Drop table source of truth.** Scrape Wowhead at build time or
-  commit a hand-curated JSON? Build-time scraping adds a network
-  dependency to `task build` and risks silent drift if Wowhead changes
-  schema. Curated JSON is auditable but laborious.
-  *Affects:* Phase 2 / `drop-table`.
+- ~~**OQ-1 -- Drop table source of truth.** Scrape Wowhead at build time or
+  commit a hand-curated JSON?~~ **RESOLVED (2026-06-03):** neither -- drop rates,
+  bosses, and source zones are imported by `scripts/import-drops.lua` from the
+  **MIT `nexus-devs/wow-classic-items` dataset** (already vendored for item
+  names), the same structured-import approach used for the BiS catalog. No
+  Wowhead scraping, no `task build` network dependency (the derived
+  `vendor/bis-source/item-sources.lua` is committed). See [ROADMAP](ROADMAP.md)
+  Phase 2 §4.
 
 - **OQ-2 -- BoE drops in v1.** Do we include Bind-on-Equip drops in
   weekly scoring, given they are often replaceable via the auction

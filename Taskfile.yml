@@ -148,13 +148,21 @@ tasks:
         done
       - curl -fsSL "{{.WARKDEV}}/LICENSE.txt" -o vendor/bis-source/LICENSE.warkdev.txt
       - curl -fsSL "{{.NEXUS}}/data/json/data.json" -o /tmp/routina-nexus-data.json
+      - curl -fsSL "{{.NEXUS}}/data/json/zones.json" -o /tmp/routina-nexus-zones.json
       - luajit scripts/vendor-bis-names.lua /tmp/routina-nexus-data.json
-      - echo "vendored BiS source @ {{.WARKDEV_SHA}} (run 'task import-bis' next)"
+      - luajit scripts/vendor-bis-drops.lua /tmp/routina-nexus-data.json /tmp/routina-nexus-zones.json
+      - echo "vendored BiS source @ {{.WARKDEV_SHA}} (run 'task import-bis && task import-drops' next)"
 
   import-bis:
     desc: Regenerate src/domain/bis/*.fnl from vendor/bis-source/ (GPL BiS data)
     cmds:
       - luajit scripts/import-bis.lua
+      - echo "now run 'task fmt && task build && task test' to finish"
+
+  import-drops:
+    desc: Regenerate src/domain/drops/data.fnl from vendor/bis-source/item-sources.lua
+    cmds:
+      - luajit scripts/import-drops.lua
       - echo "now run 'task fmt && task build && task test' to finish"
 
   clean:
