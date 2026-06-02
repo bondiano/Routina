@@ -49,24 +49,29 @@
   (accumulate [total 0 _ item (ipairs activity.items)]
     (+ total (chance.at-least-one item.p item.runs))))
 
-(lambda M.plan-week [catalog]
+(lambda M.plan-week [catalog ?score-fn]
   "Build the ordered weekly-plan view-model from a catalog of activities.
    Pure and deterministic -- same catalog always yields the same plan.
-   Domain:  catalog : sequence of activities, each
-            {:id keyword :name string :type string :detail string
-             :minutes number
-             :items [{:label string :p number :runs number :item-id ?number} ...]}
+   Domain:  catalog   : sequence of activities, each
+             {:id keyword :name string :type string :detail string
+              :minutes number
+              :items [{:label string :p number :runs number :item-id ?number} ...]}
+            ?score-fn : optional (fn [activity] -> number) overriding the default
+             composite scorer (M.score-activity). Lets a caller inject a
+             slot-weighted score (src/domain/route.fnl) while plan retains sole
+             ownership of per-item :chance annotation and deterministic ordering.
    Returns: sequence of rows ordered by score desc (ties: minutes asc, name,
             id), each row = the activity plus :score and per-item :chance:
             {:id :name :type :detail :minutes :score
              :items [{:label :p :runs :item-id :chance} ...]}."
-  (let [rows (icollect [_ activity (ipairs catalog)]
+  (let [score (or ?score-fn M.score-activity)
+        rows (icollect [_ activity (ipairs catalog)]
                {:id activity.id
                 :name activity.name
                 :type activity.type
                 :detail activity.detail
                 :minutes activity.minutes
-                :score (M.score-activity activity)
+                :score (score activity)
                 :items (icollect [_ item (ipairs activity.items)]
                          (item-row item))})]
     (table.sort rows by-score-then-time)

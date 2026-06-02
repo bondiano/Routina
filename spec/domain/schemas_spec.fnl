@@ -69,6 +69,7 @@
                                          :ActivityRequirements
                                          :RepRequirement
                                          :BisItem
-                                         :DropEntry])]
+                                         :DropEntry
+                                         :RouteContext])]
                     (assert.is_true (not= nil (. schemas name))
                                     (.. "missing schema :" name)))))))

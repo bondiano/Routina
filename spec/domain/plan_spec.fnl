@@ -85,6 +85,18 @@
                                     o3 (ids (plan.plan-week [b c a]))]
                                 (assert.are.same o1 o2)
                                 (assert.are.same o2 o3))))
+                        (it "uses an injected ?score-fn for score and ordering"
+                            (fn []
+                              (let [a (activity :a :Alpha 60 [(item :i 0.2 2)])
+                                    b (activity :b :Bravo 60 [(item :j 0.9 2)])
+                                    ;; invert the natural order: rank by minutes,
+                                    ;; ignoring drop chance entirely
+                                    by-minutes #(- $.minutes)
+                                    rows (plan.plan-week [a b] by-minutes)]
+                                (assert.are.equal (- 60) (. rows 1 :score))
+                                ;; chance is still annotated by plan, not the scorer
+                                (assert.are.equal (chance.at-least-one 0.2 2)
+                                                  (. rows 1 :items 1 :chance)))))
                         (it "does not mutate the input catalog"
                             (fn []
                               (let [a (activity :kara :Karazhan 95

@@ -67,6 +67,9 @@ build\domain\drops\data.lua
 build\domain\drop-table.lua
 build\domain\drop-chance.lua
 build\domain\plan.lua
+# route: the orchestrator -- ties activities + bis-catalog + drop-table +
+# drop-chance together and delegates ordering to plan. Loads after all of them.
+build\domain\route.lua
 # Core boundary/state. wow + saved-vars only need schemas/validate (loaded
 # above); events is pure dispatch. ace (the AceAddon entry) loads LAST -- it
 # requires root and wires everything via the Ace3 libs loaded at the top.

@@ -167,6 +167,27 @@
                   :zone [:optional :string]
                   :ml-pool [:optional :integer]})
 
+;; --- Route context (consumed by src/domain/route.fnl) ----------------------
+;;
+;; The pure inputs route.plan-week needs beyond the schemas.Player it scores
+;; against. Assembled by the imperative shell (src/core/events.fnl + wow.fnl):
+;; :class/:spec/:phase identify the BiS list, :now is GetServerTime() seconds,
+;; :owned-items is the set of item-ids already acquired (a gap is "unowned"),
+;; :lockouts maps an ActivityDef :id to its planner-facing LockoutView, and the
+;; optional :weights (slot -> 1..5) / :competitors (activity-id -> >=1) carry the
+;; player's options (defaults: weight 1, competitors 1). Validated once at the
+;; route boundary, never in the scoring loop.
+
+(set M.RouteContext
+     {:class :string
+      :spec :string
+      :phase :integer
+      :now :integer
+      :owned-items [:map :integer :boolean]
+      :lockouts [:map :string [:ref :LockoutView]]
+      :weights [:optional [:map :string :number]]
+      :competitors [:optional [:map :string :number]]})
+
 ;; --- Register into the addon namespace -------------------------------------
 ;;
 ;; Dual-mode: in-game, the .toc load order populates `_G.Routina.schemas`

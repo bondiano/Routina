@@ -17,7 +17,7 @@
 (local theme (or Routina.theme (require :src.ui.theme)))
 (local format (or Routina.format (require :src.ui.format)))
 (local dom (or Routina.dom (require :src.ui.dom)))
-(local plan (or Routina.plan (require :src.domain.plan)))
+(local route (or Routina.route (require :src.domain.route)))
 
 (local M {})
 
@@ -36,41 +36,28 @@
   "Card height that snugly fits a title block, n item rows, and the footer."
   (+ rows-top (* n-items row-step) card-foot))
 
-;; --- Scaffold input (TEMP: replaced by the Phase 2 drop-table, OQ-1) -------
+;; --- Scaffold input (TEMP: real player/ctx is wired by the shell later) ----
 ;;
-;; Item IDs verified on the Wowhead TBC database. Karazhan items drop from
-;; Prince Malchezaar; Mechanar items from Pathaleon the Calculator (heroic).
+;; The catalog is no longer hand-written: route.plan-week builds it from the
+;; live domain (activities + bis-catalog + drop-table + drop-chance), so the
+;; cards below are genuine BiS-aware scoring. Only the *inputs* are a scaffold
+;; -- a fixture player/RouteContext stands in until src/core/ wires real
+;; gear/spec/lockouts from the WoW client (gear scanning is not built yet).
+;;
+;; This fixture (feral druid, phase 1, owning nothing, Karazhan attuned and
+;; unlocked) lights up the only activity whose drops the Phase-1 activities
+;; registry currently links: Karazhan (Edgewalker Longboots, Skulker's
+;; Greaves). The plan grows automatically as src/domain/activities.fnl gains
+;; the rest of the raid tier.
 
-(local sample-catalog [{:id :karazhan
-                        :name :Karazhan
-                        :type :Raid
-                        :detail :10-man
-                        :minutes 95
-                        :items [{:label "Helm of the Fallen Champion"
-                                 :item-id 29760
-                                 :p 0.13
-                                 :runs 1}
-                                {:label "Nathrezim Mindblade"
-                                 :item-id 28770
-                                 :p 0.1
-                                 :runs 1}
-                                {:label "Garona's Signet Ring"
-                                 :item-id 28649
-                                 :p 0.1
-                                 :runs 1}]}
-                       {:id :heroic-mech
-                        :name "Heroic Mechanar"
-                        :type :Heroic
-                        :detail :5-man
-                        :minutes 35
-                        :items [{:label "The Sun Eater"
-                                 :item-id 29362
-                                 :p 0.08
-                                 :runs 4}
-                                {:label "Abacus of Violent Odds"
-                                 :item-id 28288
-                                 :p 0.1
-                                 :runs 4}]}])
+(local sample-player {:level 70 :attunements {:kara-key true} :reputations {}})
+
+(local sample-ctx {:class :druid
+                   :spec :feral-dps
+                   :phase 1
+                   :now 0
+                   :owned-items {}
+                   :lockouts {}})
 
 ;; --- Event handlers (imperative, per UI.md s15) ----------------------------
 
@@ -200,8 +187,8 @@
   "Build the Plan tab content: the scored, ordered weekly plan.
    Domain:  parent : WoW Frame (the content area)
    Returns: the new content frame."
-  (let [rows (plan.plan-week sample-catalog)]
-    (. (dom.render! parent (stack-spec rows)) :root)))
+  (let [plan (route.plan-week sample-player sample-ctx)]
+    (. (dom.render! parent (stack-spec plan.steps)) :root)))
 
 (set _G.Routina Routina)
 (set Routina.tab-weekly M)
