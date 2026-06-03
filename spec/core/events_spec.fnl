@@ -25,11 +25,14 @@
           (fn []
             (describe :event-list
                       (fn []
-                        (it "consumes the expected Phase 1 events"
+                        (it "consumes the expected event set"
                             (fn []
                               (assert.are.same [:PLAYER_ENTERING_WORLD
                                                 :UPDATE_INSTANCE_INFO
                                                 :RAID_INSTANCE_WELCOME
+                                                :PLAYER_EQUIPMENT_CHANGED
+                                                :BAG_UPDATE_DELAYED
+                                                :CHARACTER_POINTS_CHANGED
                                                 :PLAYER_LOGOUT]
                                                events.event-list)))))
             (describe :dispatch
@@ -49,6 +52,18 @@
                                 (events.set-logger! log)
                                 (events.dispatch :SOME_NONSENSE_EVENT)
                                 (assert.are.equal 1 (length log.calls.warn)))))
+                        (it "fires the injected refresh on an input-change event"
+                            (fn []
+                              (let [log (make-log)
+                                    hits {:n 0}]
+                                (events.set-logger! log)
+                                (events.set-refresh! (fn []
+                                                       (set hits.n (+ hits.n 1))))
+                                (events.dispatch :PLAYER_EQUIPMENT_CHANGED)
+                                (events.dispatch :CHARACTER_POINTS_CHANGED)
+                                (assert.are.equal 2 hits.n)
+                                ;; reset so the injected callback can't leak
+                                (events.set-refresh! nil))))
                         (it "tolerates payload args on routed events"
                             (fn []
                               (let [log (make-log)]

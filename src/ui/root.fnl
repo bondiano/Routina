@@ -210,6 +210,14 @@
   (restyle-pills!)
   nil)
 
+(lambda M.refresh! []
+  "Repaint the live tabs (currently the Plan tab's pooled card stack) in place.
+   No-op until the panel has been built. Driven by src/core/events.fnl on gear /
+   talent / lockout / options changes, so the plan reflects current state.
+   Returns: nil."
+  (when (and root tab-contents.weekly) (tab-weekly.refresh!))
+  nil)
+
 ;; --- Register --------------------------------------------------------------
 
 (set _G.Routina Routina)

@@ -1,16 +1,14 @@
-;; tabs/weekly.fnl -- Plan tab content.
+;; tabs/weekly.fnl -- Plan tab content: a pooled, live-refreshing card stack.
 ;;
-;; END-TO-END SLICE: src/core/planner.fnl reads the live client (gear, spec,
-;; phase, lockouts) into a (player, ctx) pair, src/domain/route.fnl scores it
-;; against the real catalog (activities + bis-catalog + drop-table +
-;; drop-chance), and the resulting steps render as a score-ordered stack of
-;; activity cards. No scaffold inputs remain; an empty plan (loading screen or
-;; nothing left to chase) shows a placeholder instead of cards.
+;; END-TO-END SLICE: src/core/planner.fnl reads the live client into a
+;; (player, ctx, advice) triple, src/domain/route.fnl scores it against the real
+;; catalog, and the steps render as a score-ordered stack of activity cards.
 ;;
-;; Card layout is data (dom.render!, docs/UI.md s15). Item rows are
-;; hoverable buttons that show the standard game tooltip via
-;; GameTooltip:SetItemByID (UI.md: no tooltip-text synthesis). The
-;; activity-card widget pool (UI.md s6.1) replaces the inline spec later.
+;; UI.md split: the data->render-spec is a PURE view-model (M.card-view-model,
+;; busted-tested); applying it to frames is imperative. Cards are POOLED -- built
+;; once, reused across refreshes -- so a gear/talent/options change re-renders
+;; with no per-refresh CreateFrame (UI.md: frame pools, never per-refresh frames).
+;; refresh! is driven by src/core/events.fnl via src/ui/root.fnl.
 
 (local Routina (or _G.Routina {}))
 (local theme (or Routina.theme (require :src.ui.theme)))
@@ -21,171 +19,288 @@
 
 (local M {})
 
-;; --- Layout constants (card geometry; theme owns colours/fonts/sizes) ------
+;; --- Layout constants ------------------------------------------------------
 
-(local rows-top 54)
-;; y of the first item row below the card's top edge
+(local max-cards 4)
+;; cards shown before an overflow note (no scroll frame yet)
+(local max-rows 3)
+;; top-N target items per card (PRD §6.1 G2: "top 3 target items")
+(local rows-top 64)
 (local row-step 24)
-;; vertical step between item rows
 (local row-height 20)
-;; height of each item cell (row-step leaves a gap between cell borders)
 (local card-foot 28)
-;; reserved below the last row for the "Why?" button
+(local card-gap 8)
 
-(fn card-height [n-items]
-  "Card height that snugly fits a title block, n item rows, and the footer."
-  (+ rows-top (* n-items row-step) card-foot))
+(fn card-height []
+  (+ rows-top (* max-rows row-step) card-foot))
 
-;; --- Event handlers (imperative, per UI.md s15) ----------------------------
+;; --- Pure view-model (UI.md: data->spec is pure, busted-tested) ------------
 
-(fn item-tooltip-enter [item-id]
-  "Build an OnEnter handler that shows the standard item tooltip.
-   No tooltip text synthesis -- GameTooltip:SetItemByID owns the content.
-   Item-id may be nil (scaffold gap); then the row is simply inert."
-  (fn [self]
-    (when item-id
-      (_G.GameTooltip:SetOwner self :ANCHOR_RIGHT)
-      (_G.GameTooltip:SetItemByID item-id)
-      (_G.GameTooltip:Show))))
+(fn run-word [runs]
+  (if (= runs 1) " run" " runs"))
 
-(fn item-tooltip-leave [_self]
+(fn item-line [item]
+  (.. item.label "   " (format.percent item.chance) " / " item.runs
+      (run-word item.runs)))
+
+(fn by-chance-desc [a b]
+  (> a.chance b.chance))
+
+(fn top-items [items]
+  "The max-rows highest-chance items, as a fresh sorted copy (input untouched)."
+  (let [sorted (icollect [_ it (ipairs items)] it)]
+    (table.sort sorted by-chance-desc)
+    (fcollect [i 1 (math.min max-rows (length sorted))]
+      (. sorted i))))
+
+(lambda M.card-view-model [step rank ?advice]
+  "Pure render spec for one activity card.
+   Domain:  step   : a route.plan-week step {:name :type :detail :minutes :score
+                     :attunement? :items [{:label :chance :runs :item-id} ...]}
+            rank   : integer >= 1 (display rank)
+            ?advice: {attune-slug text} -- soft 'not attuned' notes, or nil
+   Returns: {:title :subtitle :summary :advisory? string
+             :items [{:text string :item-id ?integer} ...<= max-rows]}"
+  {:title (.. "#" rank "  " (tostring step.name))
+   :subtitle (.. (tostring step.type) " · " (tostring step.detail))
+   :summary (.. "~" step.minutes " min · score "
+                (format.score-short step.score))
+   :advisory (let [text (and step.attunement ?advice
+                             (. ?advice step.attunement))]
+               (and text (.. "Requires " text)))
+   :items (icollect [_ it (ipairs (top-items step.items))]
+            {:text (item-line it) :item-id it.item-id})})
+
+;; --- Event handlers (imperative, per UI.md §15) ----------------------------
+
+(fn item-row-enter [self]
+  "Show the standard item tooltip for the id stashed on the row by populate!."
+  (when self.tooltip-item-id
+    (_G.GameTooltip:SetOwner self :ANCHOR_RIGHT)
+    (_G.GameTooltip:SetItemByID self.tooltip-item-id)
+    (_G.GameTooltip:Show)))
+
+(fn item-row-leave [_self]
   (_G.GameTooltip:Hide))
 
 (fn open-why-drawer [_self]
   (_G.DEFAULT_CHAT_FRAME:AddMessage "|cffC9A24A[Routina]|r why-drawer not implemented yet."))
 
-;; --- Layout spec -----------------------------------------------------------
+;; --- Card frame spec (built once per pool slot, then populated) ------------
 
-(fn run-word [runs]
-  (if (= runs 1) " run" " runs"))
-
-(fn item-row-spec [id item card-id y]
-  "One full-width, hoverable item row positioned at depth `y` in the card.
-   Anchored to the card's top edge (not chained) so the hover area spans
-   the card and every row shares a consistent baseline."
+(fn row-spec [rank i]
+  "One hoverable, full-width item row at a fixed depth in card `rank`."
   (let [inset theme.spacing.inset
-        text-pad theme.spacing.rhythm]
+        text-pad theme.spacing.rhythm
+        card-id (.. :card rank)
+        y (+ rows-top (* (- i 1) row-step))]
     [:Button
-     {: id
+     {:id (.. :rowbtn rank "-" i)
       :height row-height
-      ;; Each row is a soft DUI-style cell: the hand-painted hollow border
-      ;; (:row-cell texture below) frames it; :row-highlight adds the
-      ;; standard gold mouse-over glow.
       :highlight :row-highlight
       :anchors [[:TOPLEFT card-id :TOPLEFT inset (- y)]
                 [:TOPRIGHT card-id :TOPRIGHT (- inset) (- y)]]
-      :on-enter (item-tooltip-enter item.item-id)
-      :on-leave item-tooltip-leave}
+      :on-enter item-row-enter
+      :on-leave item-row-leave}
      [:Texture {:layer :BORDER :texture-token :row-cell :fill-parent? true}]
      [:FontString
-      {:font :body
+      {:id (.. :rowfs rank "-" i)
+       :font :body
        :size :body
        :color :ink
-       :text (.. item.label "   " (format.percent item.chance) " / " item.runs
-                 (run-word item.runs))
        :anchors [[:LEFT :parent :LEFT text-pad 0]]}]]))
 
-(fn card-spec [row rank top-anchor]
-  "Spec for one ranked activity card. Ids are rank-suffixed so a stacked
-   set of cards keeps unique :id keys in the shared refs table."
+(fn card-spec [rank anchor]
+  "Fixed card structure (placeholder text); populate-card! fills it per refresh."
   (let [inset theme.spacing.inset
         rhythm theme.spacing.rhythm
         card-id (.. :card rank)
-        title-id (.. :title rank)
-        sub-id (.. :sub rank)
         node [:Frame
               {:id card-id
-               :height (card-height (length row.items))
+               :height (card-height)
                :backdrop :parchment-2
-               :anchors top-anchor}
+               :anchors anchor}
               [:FontString
-               {:id title-id
+               {:id (.. :title rank)
                 :font :title
                 :size :section
                 :color :ink
-                :text (.. "#" rank "  " row.name)
                 :anchors [[:TOPLEFT card-id :TOPLEFT inset (- inset)]]}]
               [:FontString
-               {:id sub-id
+               {:id (.. :sub rank)
                 :font :body
                 :size :caption
                 :color :ink-faint
-                :text (.. row.type " · " row.detail)
-                :anchors [[:TOPLEFT title-id :BOTTOMLEFT 0 (- rhythm)]]}]
+                :anchors [[:TOPLEFT (.. :title rank) :BOTTOMLEFT 0 (- rhythm)]]}]
               [:FontString
-               {:font :body
+               {:id (.. :summary rank)
+                :font :body
                 :size :body
                 :color :ink-faint
-                :text (.. "~" row.minutes " min · score "
-                          (format.score-short row.score))
-                :anchors [[:TOPRIGHT card-id :TOPRIGHT (- inset) (- inset)]]}]]]
-    (each [i item (ipairs row.items)]
-      (let [y (+ rows-top (* (- i 1) row-step))]
-        (table.insert node (item-row-spec (.. :item rank "-" i) item card-id y))))
-    (table.insert node
-                  [:Button
-                   {:size [140 16]
-                    :anchors [[:BOTTOMLEFT card-id :BOTTOMLEFT inset rhythm]]
-                    :on-click open-why-drawer}
-                   [:FontString
-                    {:font :title
-                     :size :caption
-                     :color :gold
-                     :text (.. "[ Why is this #" rank "? ]")
-                     :anchors [[:LEFT :parent :LEFT 0 0]]}]])
+                :anchors [[:TOPRIGHT card-id :TOPRIGHT (- inset) (- inset)]]}]
+              [:FontString
+               {:id (.. :advisory rank)
+                :font :body
+                :size :caption
+                :color :warn
+                :anchors [[:TOPLEFT (.. :sub rank) :BOTTOMLEFT 0 (- rhythm)]]}]
+              [:Button
+               {:id (.. :why rank)
+                :size [140 16]
+                :anchors [[:BOTTOMLEFT card-id :BOTTOMLEFT inset rhythm]]
+                :on-click open-why-drawer}
+               [:FontString
+                {:font :title
+                 :size :caption
+                 :color :gold
+                 :text (.. "[ Why is this #" rank "? ]")
+                 :anchors [[:LEFT :parent :LEFT 0 0]]}]]]]
+    (for [i 1 max-rows]
+      (table.insert node (row-spec rank i)))
     node))
 
-(fn stack-spec [rows]
-  "Wrap the ranked cards in a fill frame: card N anchors below card N-1.
-   Builds the node imperatively (UI shell, not domain) so the result is a
-   single `[:Frame attrs & children]` node dom.render! can walk."
-  (let [rhythm theme.spacing.rhythm
-        node [:Frame {:fill true}]]
-    (each [rank row (ipairs rows)]
-      (let [anchor (if (= rank 1)
-                       [[:TOPLEFT :parent :TOPLEFT 0 0]
-                        [:TOPRIGHT :parent :TOPRIGHT 0 0]]
-                       [[:TOPLEFT
-                         (.. :card (- rank 1))
-                         :BOTTOMLEFT
-                         0
-                         (- rhythm)]
-                        [:TOPRIGHT
-                         (.. :card (- rank 1))
-                         :BOTTOMRIGHT
-                         0
-                         (- rhythm)]])]
-        (table.insert node (card-spec row rank anchor))))
-    node))
+;; --- Pool + refresh (imperative singleton state) ---------------------------
 
-(fn empty-spec [message]
-  "A centered note shown when the plan has no steps (loading, or done for the
-   week) -- a blank card stack would read as broken."
-  [:Frame
-   {:fill true}
-   [:FontString
-    {:font :body
-     :size :body
-     :color :ink-faint
-     :text message
-     :anchors [[:CENTER :parent :CENTER 0 0]]}]])
+(var container nil)
 
-;; --- Construction ----------------------------------------------------------
+(local cards [])
+
+(var empty-fs nil)
+
+(var overflow-fs nil)
+
+(fn card-top [rank]
+  "Y-offset (negative, from the container top) of card `rank`."
+  (- (* (- rank 1) (+ (card-height) card-gap))))
+
+(fn card-anchor [rank]
+  ;; Each card is positioned by index against the container, NOT chained to the
+  ;; previous card: every card is a separate dom.render! with its own refs, so a
+  ;; cross-card ref-key wouldn't resolve.
+  (let [y (card-top rank)]
+    [[:TOPLEFT :parent :TOPLEFT 0 y] [:TOPRIGHT :parent :TOPRIGHT 0 y]]))
+
+(fn build-card! [rank]
+  "Render card `rank` once and capture the frame handles populate-card! sets."
+  (let [{: refs} (dom.render! container (card-spec rank (card-anchor rank)))
+        rows (fcollect [i 1 max-rows]
+               {:button (. refs (.. :rowbtn rank "-" i))
+                :fs (. refs (.. :rowfs rank "-" i))})]
+    {:frame (. refs (.. :card rank))
+     :title (. refs (.. :title rank))
+     :sub (. refs (.. :sub rank))
+     :summary (. refs (.. :summary rank))
+     :advisory (. refs (.. :advisory rank))
+     : rows}))
+
+(fn ensure-card! [rank]
+  "The pooled card for `rank`, built on first use."
+  (or (. cards rank) (let [c (build-card! rank)]
+                       (tset cards rank c)
+                       c)))
+
+(fn populate-card! [c vm]
+  "Apply a pure view-model to a pooled card's frames."
+  (c.title:SetText vm.title)
+  (c.sub:SetText vm.subtitle)
+  (c.summary:SetText vm.summary)
+  (if vm.advisory
+      (do
+        (c.advisory:SetText vm.advisory)
+        (c.advisory:Show))
+      (c.advisory:Hide))
+  (each [i row (ipairs c.rows)]
+    (let [item (. vm.items i)]
+      (if item
+          (do
+            (row.fs:SetText item.text)
+            (set row.button.tooltip-item-id item.item-id)
+            (row.button:Show))
+          (row.button:Hide))))
+  (c.frame:Show))
+
+(fn release-all! []
+  (each [_ c (ipairs cards)]
+    (c.frame:Hide)))
+
+(fn ensure-empty-fs! []
+  (when (not empty-fs)
+    (set empty-fs (. (dom.render! container
+                                  [:FontString
+                                   {:font :body
+                                    :size :body
+                                    :color :ink-faint
+                                    :anchors [[:CENTER :parent :CENTER 0 0]]}])
+                     :root)))
+  empty-fs)
+
+(fn ensure-overflow-fs! []
+  (when (not overflow-fs)
+    ;; just below the last possible card; anchored to the container, since this
+    ;; is its own dom.render! and can't reference a card frame's ref-key.
+    (let [y (- (* max-cards (+ (card-height) card-gap)))]
+      (set overflow-fs (. (dom.render! container
+                                       [:FontString
+                                        {:font :body
+                                         :size :caption
+                                         :color :ink-faint
+                                         :anchors [[:TOPLEFT
+                                                    :parent
+                                                    :TOPLEFT
+                                                    0
+                                                    y]]}])
+                          :root))))
+  overflow-fs)
+
+(fn show-empty! [message]
+  (let [fs (ensure-empty-fs!)]
+    (fs:SetText message)
+    (fs:Show)))
+
+(fn hide-empty! []
+  (when empty-fs (empty-fs:Hide)))
+
+(fn show-overflow! [n]
+  (let [fs (ensure-overflow-fs!)]
+    (fs:SetText (.. "+ " n " more this week"))
+    (fs:Show)))
+
+(fn hide-overflow! []
+  (when overflow-fs (overflow-fs:Hide)))
+
+;; --- Public API ------------------------------------------------------------
+
+(lambda M.refresh! []
+  "Recompute the plan from the live client and repaint the pooled cards.
+   Safe to call before build! (no-op) and repeatedly (pool is reused).
+   Returns: nil."
+  (when container
+    (release-all!)
+    (hide-overflow!)
+    (let [input (planner.route-input)
+          ok? (and input input.ok)
+          steps (if ok? (. (route.plan-week input.player input.ctx) :steps) [])
+          advice (and input input.advice)
+          shown (math.min (length steps) max-cards)]
+      (if (= 0 (length steps))
+          (show-empty! (if ok? "Nothing left to chase this week."
+                           "Log in to a character to see your plan."))
+          (do
+            (hide-empty!)
+            (for [rank 1 shown]
+              (populate-card! (ensure-card! rank)
+                              (M.card-view-model (. steps rank) rank advice)))
+            (when (> (length steps) max-cards)
+              (show-overflow! (- (length steps) max-cards)))))))
+  nil)
 
 (lambda M.build! [parent]
-  "Build the Plan tab content: the live, scored, ordered weekly plan.
-   Reads the current character via src/core/planner.fnl and scores it through
-   src/domain/route.fnl; falls back to a placeholder when no plan is available.
+  "Build the Plan tab container and do the first paint.
    Domain:  parent : WoW Frame (the content area)
-   Returns: the new content frame."
-  (let [input (planner.route-input)
-        steps (if input.ok (. (route.plan-week input.player input.ctx) :steps)
-                  [])
-        spec (if (> (length steps) 0)
-                 (stack-spec steps)
-                 (empty-spec (if input.ok "Nothing left to chase this week."
-                                 "Log in to a character to see your plan.")))]
-    (. (dom.render! parent spec) :root)))
+   Returns: the content frame."
+  (set container (. (dom.render! parent [:Frame {:fill true}]) :root))
+  (M.refresh!)
+  container)
 
 (set _G.Routina Routina)
 (set Routina.tab-weekly M)

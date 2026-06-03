@@ -38,7 +38,24 @@
 ;; --- AceAddon registration (load-time) -------------------------------------
 
 (local AceAddon (LibStub :AceAddon-3.0))
-(local addon (AceAddon:NewAddon addon-name :AceConsole-3.0))
+(local addon (AceAddon:NewAddon addon-name :AceConsole-3.0 :AceTimer-3.0))
+
+;; Debounce: gear swaps and bag updates fire in bursts, so coalesce refresh
+;; requests into one repaint ~0.2s later. Falls back to an immediate refresh if
+;; AceTimer is unavailable (e.g. the test mock embeds no ScheduleTimer).
+(var refresh-scheduled? false)
+
+(fn debounced-refresh [self]
+  (fn []
+    (if self.ScheduleTimer
+        (when (not refresh-scheduled?)
+          (set refresh-scheduled? true)
+          (self:ScheduleTimer (fn []
+                                (set refresh-scheduled? false)
+                                (root.refresh!))
+                              0.2))
+        (root.refresh!))
+    nil))
 
 (fn addon.OnInitialize [self]
   ;; SavedVariables first -- frames and events can't read the DB before this.
@@ -60,7 +77,9 @@
 (fn addon.OnEnable [self]
   (self.log:info :OnEnable)
   (let [AceEvent (LibStub :AceEvent-3.0)]
-    (set self.event-frame (events.init! AceEvent self.log))))
+    (set self.event-frame (events.init! AceEvent self.log)))
+  ;; Plan inputs change at runtime (gear, talents, lockouts) -> repaint live.
+  (events.set-refresh! (debounced-refresh self)))
 
 (fn addon.OnDisable [self]
   (self.log:info :OnDisable)

@@ -16,22 +16,34 @@
 
 (local M {})
 
-;; --- Logger (injected by init!, or directly in tests) ----------------------
+;; --- Logger + refresh (injected by init!/ace, or directly in tests) --------
 
 (var log nil)
+
+(var on-refresh nil)
+
+(fn request-refresh []
+  "Notify the UI that the plan inputs changed (gear, talents, bags, lockouts).
+   No-op until a callback is injected via set-refresh!."
+  (when on-refresh (on-refresh))
+  nil)
 
 ;; --- Events we consume -----------------------------------------------------
 ;;
 ;; Conservative, TBC Classic 2.5.x-valid set. ENCOUNTER_END/BOSS_KILL are
-;; deferred to Phase 2 (no kill-tracking domain consumer yet) and need wiki
-;; confirmation before use (CLAUDE.md: never invent WoW API signatures).
+;; deferred (no kill-tracking domain consumer yet) and need wiki confirmation
+;; before use (CLAUDE.md: never invent WoW API signatures).
 
-(local event-list [;; login / zone-in: kick off a raid-info request (Phase 2)
+(local event-list [;; login / zone-in: kick off a raid-info request
                    :PLAYER_ENTERING_WORLD
-                   ;; saved-instance data became available -> recompute lockouts
+                   ;; saved-instance data became available -> re-plan lockouts
                    :UPDATE_INSTANCE_INFO
                    ;; stepped into a raid we are already saved to
                    :RAID_INSTANCE_WELCOME
+                   ;; route inputs changed -> re-plan: gear, bags, talents
+                   :PLAYER_EQUIPMENT_CHANGED
+                   :BAG_UPDATE_DELAYED
+                   :CHARACTER_POINTS_CHANGED
                    ;; fires before the SavedVariables disk write -> flush state
                    :PLAYER_LOGOUT])
 
@@ -44,12 +56,20 @@
   ;; Kick a saved-instance refresh; the server replies via UPDATE_INSTANCE_INFO,
   ;; after which wow.saved-instances has live data for the route planner.
   (wow.request-raid-info!)
+  (request-refresh)
   nil)
 
 (fn on-update-instance-info []
   (log:debug :UPDATE_INSTANCE_INFO)
-  ;; Lockout data is now available. The Plan tab reads it on demand via
-  ;; src/core/planner.fnl (wow.saved-instances); no cache to keep in sync here.
+  ;; Lockout data is now available; the Plan tab reads it on demand via
+  ;; src/core/planner.fnl (wow.saved-instances). Re-plan to reflect it.
+  (request-refresh)
+  nil)
+
+(fn on-inputs-changed [event]
+  "Gear / bag / talent change -> the plan's gap, owned-items or spec may shift."
+  (log:debug event)
+  (request-refresh)
   nil)
 
 (fn on-raid-instance-welcome [...]
@@ -71,6 +91,14 @@
   (set log logger)
   nil)
 
+(lambda M.set-refresh! [?callback]
+  "Inject (or clear, with nil) the UI-refresh callback fired when plan inputs
+   change.
+   Domain:  ?callback : fn [] | nil -- e.g. a debounced src/ui/root.fnl refresh!
+   Returns: nil."
+  (set on-refresh ?callback)
+  nil)
+
 (lambda M.dispatch [event ...]
   "Route one WoW event to its handler. Pure aside from logging.
    Domain:  event : string -- the WoW event name; ... : the event payload
@@ -79,6 +107,9 @@
     :PLAYER_ENTERING_WORLD (on-player-entering-world)
     :UPDATE_INSTANCE_INFO (on-update-instance-info)
     :RAID_INSTANCE_WELCOME (on-raid-instance-welcome ...)
+    :PLAYER_EQUIPMENT_CHANGED (on-inputs-changed :PLAYER_EQUIPMENT_CHANGED)
+    :BAG_UPDATE_DELAYED (on-inputs-changed :BAG_UPDATE_DELAYED)
+    :CHARACTER_POINTS_CHANGED (on-inputs-changed :CHARACTER_POINTS_CHANGED)
     :PLAYER_LOGOUT (on-player-logout)
     _ (log:warn (.. "Unhandled event: " (tostring event))))
   nil)
