@@ -19,8 +19,8 @@
 
 ;; --- Constants -------------------------------------------------------------
 
-(local drawer-width 230)
-;; ~right half of the 460-wide root
+(local drawer-width 260)
+;; ~right half of the 520-wide root
 (local max-rows 8)
 ;; pre-created breakdown lines (an activity rarely lists more)
 (local rows-top 52)

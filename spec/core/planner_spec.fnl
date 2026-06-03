@@ -18,7 +18,7 @@
                              ;; untalented priest -> tab 1 -> :holy
                              (assert.are.equal :holy r.ctx.spec)
                              ;; options absent -> ctx.fnl default-phase
-                             (assert.are.equal 3 r.ctx.phase)
+                             (assert.are.equal 2 r.ctx.phase)
                              (assert.are.equal 70 r.player.level))))
                      (it "reflects equipped gear in owned-items"
                          (fn []

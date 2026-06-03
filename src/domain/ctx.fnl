@@ -27,8 +27,11 @@
 
 ;; Content phase the catalog is scored against when options carry no override.
 ;; Bump per TBC Anniversary content phase, in step with the .toc Interface
-;; number (CLAUDE.md). Drives route's `phase <= ctx.phase` BiS gate.
-(local default-phase 3)
+;; number (CLAUDE.md). Drives route's `phase <= ctx.phase` BiS gate, so an item
+;; (and the raid that drops it) only appears once its phase is live -- keep this
+;; at the latest OPEN tier, else unreleased raids surface. Currently Phase 2
+;; (T5: SSC + Tempest Keep open; Black Temple / Hyjal are Phase 3).
+(local default-phase 2)
 
 ;; Class -> spec slug per talent tab (TBC tab order 1,2,3). Slugs MUST match the
 ;; :spec field in the BiS catalog (src/domain/bis/*). Ambiguous trees resolve to

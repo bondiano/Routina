@@ -131,7 +131,7 @@
     [:Frame
      {:id :root
       :name :RoutinaRoot
-      :size [460 480]
+      :size [520 640]
       :strata :HIGH
       :movable? true
       :mouse? true

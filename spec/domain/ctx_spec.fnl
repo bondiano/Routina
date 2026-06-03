@@ -156,7 +156,7 @@
                              (it "defaults the phase when options omit it"
                                  (fn []
                                    (let [r (ctx.build (snapshot {}))]
-                                     (assert.are.equal 3 r.ctx.phase))))
+                                     (assert.are.equal 2 r.ctx.phase))))
                              (it "rejects a snapshot that yields an invalid player"
                                  (fn []
                                    (assert.has_error #(ctx.build (snapshot {:level :seventy})))))
