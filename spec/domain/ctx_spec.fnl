@@ -75,13 +75,17 @@
                                      (assert.is_nil (. r.ctx.owned-items 0)))))))
                  (describe :attunements
                            (fn []
-                             (it "assumes every TODO-verify attunement is held (v1)"
+                             (it "assumes held while gating is disabled (removed-in-TBC)"
                                  (fn []
-                                   ;; no quest ids are verified yet, so the predicate
-                                   ;; is never consulted and all gates pass
+                                   ;; every attune-quests entry is :gate? false
+                                   ;; (raid entry reqs were removed in 2.3/2.4),
+                                   ;; so the quest predicate is never consulted --
+                                   ;; even a never-completed one yields attuned
                                    (let [r (ctx.build (snapshot {:quest-completed? #false}))]
                                      (assert.is_true (. r.player.attunements
                                                         :kara-key))
+                                     (assert.is_true (. r.player.attunements
+                                                        :ssc-attune))
                                      (assert.is_true (. r.player.attunements
                                                         :bt-medallion)))))))
                  (describe :reputations

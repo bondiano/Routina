@@ -46,28 +46,29 @@
         :warlock [:affliction :demonology :destruction]
         :druid [:balance :feral-dps :restoration]})
 
-;; Attunement slug (as used by src/domain/activities.fnl :requirements) -> the
-;; quest id whose completion proves attunement. IDs are TODO VERIFY: until a
-;; verified id lands, the slug maps to `false` (NOT nil -- a nil value would drop
-;; the key from this table entirely) and attunement-set assumes attuned, so the
-;; planner never wrongly HIDES a raid. Replace a `false` with the real quest id
-;; from warcraft.wiki.gg / Wowhead Classic and detection turns on, no other
-;; code change.
-(local attune-quests {:kara-key false
-                      ;; TODO verify: Karazhan "The Master's Key" chain
-                      :ssc-attune false
-                      ;; TODO verify: Serpentshrine Cavern attunement
-                      :tk-attune false
-                      ;; TODO verify: Tempest Keep / The Eye attunement
-                      :bt-medallion false
-                      ;; TODO verify: Black Temple "Medallion of Karabor"
-                      :hyjal-vials false
-                      ;; TODO verify: Hyjal "The Vials of Eternity"
-                      :heroic-flamewrought false
-                      ;; TODO verify: Flamewrought Key
-                      :heroic-auchindoun false})
-
-;; TODO verify: Auchindoun heroic key
+;; Attunement slug (as used by src/domain/activities.fnl :requirements) -> its
+;; proof quest and whether to actually GATE on it. :quest-id values are verified
+;; (sources below); :gate? is intentionally false everywhere because TBC removed
+;; these raid entry requirements -- gating on a no-longer-required quest flag
+;; would wrongly HIDE a raid from the planner. Flip a :gate? to true only for a
+;; pre-removal phase where the attunement is genuinely enforced.
+;;   kara-key     9837  Return to Khadgar (Master's Key). 2.4: key opens the
+;;                      gate (one per raid), not required to enter -> don't gate.
+;;   ssc-attune  10901  The Cudgel of Kar'desh. Entry req removed in 2.3.0.
+;;   tk-attune   10888  Trial of the Naaru: Magtheridon. Removed in 2.4.0.
+;;   hyjal-vials 10445  The Vials of Eternity. Removed in 2.4.0.
+;;   bt-medallion 10985 A Distraction for Akama (Medallion of Karabor). Removed
+;;                      in 2.4.0. NOTE: id is low-confidence (forum, not Wowhead)
+;;                      -- reconfirm before ever gating on it.
+;; Heroic keys (Flamewrought / Auchindoun) are reputation-granted items, never
+;; removed, but are not a quest flag -- detection would be item/rep based, TODO.
+(local attune-quests {:kara-key {:quest-id 9837 :gate? false}
+                      :ssc-attune {:quest-id 10901 :gate? false}
+                      :tk-attune {:quest-id 10888 :gate? false}
+                      :hyjal-vials {:quest-id 10445 :gate? false}
+                      :bt-medallion {:quest-id 10985 :gate? false}
+                      :heroic-flamewrought {:gate? false}
+                      :heroic-auchindoun {:gate? false}})
 
 ;; Reputation faction slug (as used by activities :rep gates) -> WoW faction id.
 ;; :ogrila = 1038 (verified: wowhead.com/tbc/faction=1038/ogrila).
@@ -125,12 +126,13 @@
     (when (and id (> id 0)) (values id true))))
 
 (fn attunement-set [quest-completed?]
-  "Set {slug true} of attunements the player holds. A slug with a verified quest
-   id is gated on (quest-completed? id); a TODO-verify slug (nil id) is assumed
-   held, so missing data never hides a raid."
-  (collect [slug qid (pairs attune-quests)]
-    (if qid
-        (when (quest-completed? qid) (values slug true))
+  "Set {slug true} of attunements the player holds. A slug whose entry opts into
+   gating (:gate? true with a :quest-id) is gated on (quest-completed? id); every
+   other slug is assumed held, so a removed-from-the-game attunement never hides
+   a raid (see attune-quests for the per-attunement rationale)."
+  (collect [slug entry (pairs attune-quests)]
+    (if (and entry.gate? entry.quest-id)
+        (when (quest-completed? entry.quest-id) (values slug true))
         (values slug true))))
 
 (fn reputation-map [faction-standing]
