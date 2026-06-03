@@ -9,6 +9,9 @@ externals:
   Libs/Ace3:
     url: https://repos.wowace.com/wow/ace3/trunk
     tag: latest
+  Libs/AceGUI-3.0_SFX-Widgets:
+    url: https://github.com/SFX-WoW/AceGUI-3.0_SFX-Widgets.git
+    tag: latest
 
 # Source, tests and tooling never ship in the addon zip.
 ignore:

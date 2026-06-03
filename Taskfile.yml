@@ -116,7 +116,12 @@ tasks:
         svn export --force https://repos.curseforge.com/wow/libstub/trunk Libs/LibStub
         svn export --force https://repos.wowace.com/wow/callbackhandler/trunk/CallbackHandler-1.0 Libs/CallbackHandler-1.0
         svn export --force https://repos.wowace.com/wow/ace3/trunk Libs/Ace3
-      - 'echo "fetched LibStub + CallbackHandler-1.0 + Ace3 into Libs/"'
+      # SFX-Widgets lives on GitHub (no SVN mirror since GitHub dropped SVN);
+      # fetch via a shallow git clone instead of svn export.
+      - |
+        rm -rf Libs/AceGUI-3.0_SFX-Widgets
+        git clone --depth 1 https://github.com/SFX-WoW/AceGUI-3.0_SFX-Widgets.git Libs/AceGUI-3.0_SFX-Widgets
+      - 'echo "fetched LibStub + CallbackHandler-1.0 + Ace3 + SFX-Widgets into Libs/"'
 
   deps:
     desc: Install busted + luacov into a luajit rocks tree (.rocks) for testing

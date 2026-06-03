@@ -64,4 +64,20 @@
                                 (assert.are.equal 0.25 a))))
                         (it "rejects wrong-length hex"
                             (fn []
-                              (assert.has_error (fn [] (theme.rgba :FFF)))))))))
+                              (assert.has_error (fn [] (theme.rgba :FFF)))))))
+            (describe ":color"
+                      (fn []
+                        (it "resolves a palette token to four floats"
+                            (fn []
+                              (let [(r g b a) (theme.color :ink)]
+                                (assert.are.equal :number (type r))
+                                (assert.are.equal :number (type g))
+                                (assert.are.equal :number (type b))
+                                (assert.are.equal 1 a))))
+                        (it "honours explicit alpha"
+                            (fn []
+                              (let [(_ _ _ a) (theme.color :gold 0.5)]
+                                (assert.are.equal 0.5 a))))
+                        (it "rejects an unknown token"
+                            (fn []
+                              (assert.has_error (fn [] (theme.color :nope)))))))))

@@ -1,5 +1,15 @@
 # UI
 
+> **MIGRATION (current):** the main panel was moved off the bespoke
+> parchment/`CreateFrame` stack onto **AceGUI-3.0 + SFX-Widgets**. The single
+> stretched parchment bitmap could not be themed at arbitrary frame sizes
+> (see the retired `frames.fnl` war-diary), so AceGUI now owns layout and
+> backdrop; we tint it toward parchment with theme tokens. Sections below that
+> describe custom `CreateFrame` widgets, frame pools, `dom.render!`, and the
+> slide-in why-drawer are **historical** — see §2 for the current model. The
+> *aesthetic intent* (warm, journal-like, not TSM-dense) still guides token
+> choices; the *mechanism* changed.
+>
 > The Routina panel is a **weekly journal**, not a control panel. Tone is set
 > by Attune and Dialogue UI: warm parchment, serif headers, soft motion,
 > one decision at a time. Anti-reference: TSM grid density.
@@ -31,26 +41,47 @@ panel skin and from TSM-style dense tables. PRD §9 calls for "native
 theming" -- read this as *feels native to Warcraft*, not *mimics the default
 Blizzard frame backdrop*. Dialogue UI and Attune both clear that bar.
 
-## 2. Frame strategy -- custom `CreateFrame`, not AceGUI
+## 2. Frame strategy -- AceGUI-3.0 (current model)
 
-We build the primary panel with raw `CreateFrame`. AceGUI is kept for the
-**Options** panel only (behind the gear icon, rarely opened, not worth
-re-skinning).
+The primary panel is built with **AceGUI-3.0**, resolved through the
+`src/ui/acegui.fnl` facade. AceGUI also still backs the **Options** panel
+(`src/ui/options.fnl`, via AceConfigDialog).
 
-Why custom:
+Why we moved off custom `CreateFrame`:
 
-- AceGUI's widgets carry Blizzard's hard-edged gray skin. Re-skinning every
-  widget through `BackdropTemplate` + `LibSharedMedia` ends up writing
-  `CreateFrame` anyway, inside a wrapper that fights our spacing tokens.
-- Custom frames let us own the journal identity end-to-end: backdrop,
-  motion, hit-targets, tab-strip behaviour.
-- Cost: ~3x the work of AceGUI for the same feature surface. Accepted.
+- The bespoke parchment backdrop was a single stretched bitmap that could not
+  be made to read well at arbitrary panel sizes — every resize re-broke the
+  painted edges, and the only knobs were pixel `SetTexCoord`/overhang hacks
+  tunable solely by eye in-game. AceGUI owns layout + backdrop, so that whole
+  class of pixel-tuning disappears.
+- AceGUI handles widget pooling, scroll, and tab switching for us.
 
-Constraints carried from AceGUI we *do* keep:
+The trade we accepted: AceGUI carries Blizzard's standard grey skin (SFX-Widgets
+does **not** reskin it). We nudge it toward the journal warmth with theme tokens
+— `acegui.tint-frame!` for the Frame backdrop and `acegui.themed-label!` for
+label colour/font — rather than a bespoke parchment texture.
 
-- Layout via anchors (`SetPoint`), never absolute screen coords.
-- Frame pooling, not per-refresh allocation (see §5).
-- All frames parented to the root panel; show/hide cascades.
+Current structure:
+
+- **Root** = `AceGUI:Create("Frame")` (tinted) with `SetTitle` (char · class)
+  + `SetStatusText` (reset window) + a `TabGroup` of three tabs.
+- **TabGroup** fires `OnGroupSelected`; the handler does
+  `container:ReleaseChildren()` then asks the tab module to repaint.
+- **Tab modules** export a single `render! [container]` (idempotent populate).
+  The Plan tab adds a `ScrollFrame` of `InlineGroup` cards built from the pure
+  `card-view-model`.
+- **why-drawer** is a singleton `AceGUI:Create("Frame")` that pops to the right
+  of the panel and lists the score breakdown as `SFX-Info` rows.
+
+Hard rules:
+
+- **Never invent AceGUI API.** Verify against the vendored source in
+  `Libs/Ace3/AceGUI-3.0/`. Registered layouts are only `List`/`Fill`/`Flow`/`Table`.
+- **Go through the facade.** `src/ui/acegui.fnl` is the one place that resolves
+  AceGUI via LibStub; it degrades every helper to a no-op when the lib is absent
+  (busted), mirroring how `options.fnl` guards AceConfig.
+- **SFX-Widgets is optional.** Always branch on `acegui.registered?` and fall
+  back to a built-in widget (`Label`/`Heading`).
 
 ## 3. Information architecture
 
@@ -108,6 +139,11 @@ globals. It is testable in busted.
 
 ## 5. Frame discipline
 
+> **Historical (pre-AceGUI).** Bespoke frame pools and `acquire!`/`release!`
+> are retired — AceGUI pools its own widgets; repaint is
+> `ReleaseChildren()` + rebuild (§2). The remaining live rule is "no
+> unjustified `OnUpdate`".
+
 Every widget below obeys these rules. Reviewers reject widgets that don't.
 
 - **Pool, don't allocate.** A widget exports `acquire!` and `release!`.
@@ -124,6 +160,13 @@ Every widget below obeys these rules. Reviewers reject widgets that don't.
   triggering event.
 
 ## 6. Widget catalog -- v1.0
+
+> **Historical (pre-AceGUI).** The custom `activity-card` / `item-pill` /
+> `chance-meter` / `bis-slot-row` widgets below were replaced by AceGUI
+> `InlineGroup` cards + `InteractiveLabel` rows + `SFX-Info` (§2). The
+> proportional `chance-meter` bar is the one piece deferred for a future small
+> custom widget; chance currently shows as text + item-quality colour. Kept here
+> for the design intent (what each row should communicate).
 
 Six widgets ship with v1.0. Each has its own module under
 `src/ui/widgets/<name>.fnl` and follows the pattern in
@@ -370,6 +413,10 @@ Reviewers reject:
 Re-open these post-1.0 if there is real user evidence they matter.
 
 ## 15. Declarative renderer
+
+> **Retired.** `src/ui/dom.fnl` (the Hiccup renderer) and `src/ui/frames.fnl`
+> (parchment backdrop) were deleted in the AceGUI migration (§2). AceGUI is the
+> layout engine now; this section is kept only as a record of the prior design.
 
 Static frame trees are expressed as Hiccup-style vectors and fed to
 `dom.render!`. State, event handlers, frame pools, and `OnUpdate`-driven

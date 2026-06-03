@@ -1,29 +1,27 @@
-;; tabs/lockouts.fnl -- Lockouts tab placeholder.
+;; tabs/lockouts.fnl -- Lockouts tab placeholder (AceGUI).
 ;;
 ;; Will hold a stack of lockout-timer rows. For the v0 scaffold, shows a
-;; centered "Coming soon" string in ink-faint serif. Spec form per
-;; docs/UI.md §15.
+;; centered "coming soon" label. render! follows the tab contract in
+;; src/ui/root.fnl: idempotent populate of the AceGUI container.
 
 (local Routina (or _G.Routina {}))
-(local dom (or Routina.dom (require :src.ui.dom)))
+(local acegui (or Routina.acegui (require :src.ui.acegui)))
 
 (local M {})
 
-(fn placeholder-spec []
-  [:Frame
-   {:fill true}
-   [:FontString
-    {:font :title
-     :size :section
-     :color :ink-faint
-     :text "Lockouts · coming soon"
-     :anchors [[:CENTER :parent :CENTER 0 0]]}]])
-
-(lambda M.build! [parent]
-  "Build the Lockouts tab placeholder content frame.
-   Domain:  parent : WoW Frame (the content area)
-   Returns: the new content frame."
-  (. (dom.render! parent (placeholder-spec)) :root))
+(lambda M.render! [container]
+  "Populate the Lockouts tab placeholder into an AceGUI container. No-op
+   headless (no AceGUI).
+   Domain:  container : an AceGUI container widget
+   Returns: nil."
+  (let [label (acegui.create! :Label)]
+    (when (and label container)
+      (container:SetLayout :List)
+      (label:SetText "Lockouts · coming soon")
+      (label:SetFullWidth true)
+      (acegui.themed-label! label :ink-faint :title :section)
+      (container:AddChild label)))
+  nil)
 
 (set _G.Routina Routina)
 (set Routina.tab-lockouts M)

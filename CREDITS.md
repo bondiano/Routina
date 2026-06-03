@@ -1,29 +1,20 @@
 # Credits
 
+## Libraries
+
+- **AceGUI-3.0: SFX Widgets**
+  ([SFX-WoW / AceGUI-3.0_SFX-Widgets](https://github.com/SFX-WoW/AceGUI-3.0_SFX-Widgets),
+  by StormFX) -- extra AceGUI widget types (`SFX-Header`, `SFX-Info`) used by the
+  why-drawer and the options panel. Fetched into `Libs/AceGUI-3.0_SFX-Widgets`
+  by `task libs` / the BigWigs packager (see `.pkgmeta`); not committed.
+
 ## Bundled artwork
 
-- **`Art/Parchment.tga`** -- the parchment-page texture used for the
-  panel backdrop. Sourced from
-  [Peterodox / YUI-Dialogue](https://github.com/Peterodox/YUI-Dialogue),
-  file `Art/Theme_Brown/Parchment.png`, converted to uncompressed TGA
-  for WoW Classic compatibility (`magick Parchment.png -compress none
-  Parchment.tga`). Image content unmodified; only the container
-  format changed. Attribution and gratitude to Peterodox.
-
-- **`Art/OptionBackground-Hollow.tga`** -- the hand-painted hollow
-  parchment cell-border framing each item row in the weekly plan.
-  Sourced from
-  [Peterodox / YUI-Dialogue](https://github.com/Peterodox/YUI-Dialogue),
-  file `Art/Theme_Brown/OptionBackground-Hollow.png`, converted to
-  uncompressed 32-bit TGA for WoW Classic compatibility (`magick
-  OptionBackground-Hollow.png -alpha on -type TrueColorAlpha -depth 8
-  -compress none OptionBackground-Hollow.tga`). Image content
-  unmodified; only the container format changed. Attribution and
-  gratitude to Peterodox.
-
-  If the original author would prefer these assets removed or replaced,
-  open an issue on the Routina repository and we will swap them for a
-  CC0 alternative in the next release.
+- *None.* The previously bundled parchment textures (`Art/Parchment.tga`,
+  `Art/OptionBackground-Hollow.tga`, from
+  [Peterodox / YUI-Dialogue](https://github.com/Peterodox/YUI-Dialogue)) were
+  removed when the panel migrated to AceGUI-3.0, which owns its own backdrop.
+  Routina no longer ships bespoke art.
 
 ## BiS catalog data
 

@@ -35,25 +35,12 @@
 
 ;; --- Textures (WoW client built-ins) ---------------------------------------
 
-;; Parchment is bundled at Art/Parchment.tga (1024x2048, 32-bit RGBA,
-;; top-left origin, UNCOMPRESSED -- WoW Classic refuses RLE-compressed
-;; TGA, hence the explicit conversion from the source PNG via
-;; `magick ... -compress none`). Sourced from Peterodox's YUI-Dialogue
-;; (Art/Theme_Brown/Parchment.png); see CREDITS.md. WoW auto-resolves
-;; the extension; omitting it lets us swap formats later.
-(set M.textures
-     {:parchment "Interface\\AddOns\\Routina\\Art\\Parchment"
-      :gold-border "Interface\\Tooltips\\UI-Tooltip-Border"
-      :gear-icon "Interface\\Buttons\\UI-OptionsButton"
-      :solid "Interface\\Buttons\\WHITE8X8"
-      ;; Standard Blizzard mouse-over highlight (the warm bar used
-      ;; on quest-log titles); drawn ADD so it reads as the same
-      ;; gold glow players see hovering item links in chat.
-      :row-highlight "Interface\\QuestFrame\\UI-QuestTitleHighlight"
-      ;; Hand-painted hollow parchment cell-border from YUI-Dialogue
-      ;; (Theme_Brown/OptionBackground-Hollow), bundled as TGA; see
-      ;; CREDITS.md. Wraps each plan item row in a soft DUI-style frame.
-      :row-cell "Interface\\AddOns\\Routina\\Art\\OptionBackground-Hollow"})
+;; Client built-in textures only. The bespoke parchment art was retired
+;; when the panel moved to AceGUI (which owns its own backdrop); see
+;; docs/UI.md §2. Everything here ships with the WoW client.
+(set M.textures {:gold-border "Interface\\Tooltips\\UI-Tooltip-Border"
+                 :gear-icon "Interface\\Buttons\\UI-OptionsButton"
+                 :solid "Interface\\Buttons\\WHITE8X8"})
 
 ;; --- Helpers ---------------------------------------------------------------
 
@@ -69,6 +56,17 @@
         b (/ (tonumber (hex:sub 5 6) 16) 255)
         a (or ?alpha 1)]
     (values r g b a)))
+
+(lambda M.color [token ?alpha]
+  "Resolve a palette token to four floats for SetColor / SetBackdropColor.
+   The AceGUI bridge for `rgba`: widgets read tokens, never hex.
+   Domain:  token  : palette key (e.g. :ink :gold :parchment)
+            ?alpha : number in [0, 1] (defaults to 1.0)
+   Returns: r, g, b, a as four floats.
+   Errors:  unknown palette token."
+  (let [hex (. M.palette token)]
+    (assert hex (.. "theme.color: unknown palette token " (tostring token)))
+    (M.rgba hex (or ?alpha 1))))
 
 ;; --- Register into the addon namespace -------------------------------------
 ;;

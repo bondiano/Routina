@@ -1,14 +1,19 @@
-;; root.fnl -- Routina main panel: parchment journal frame with header,
-;; three tab pills, and a content area. Singleton (no pool).
+;; root.fnl -- Routina main panel, built on AceGUI-3.0: a tinted Frame with a
+;; three-tab TabGroup (Plan / Lockouts / BiS). Singleton (built once, hidden on
+;; close, never released so toggling is cheap).
 ;;
-;; Layout is data: a single `root-spec` vector is fed to `dom.render!`.
-;; State (active-tab), event handlers, pool-less singleton lifecycle, and
-;; the restyle-on-state-change loop stay imperative -- see docs/UI.md §15.
+;; The panel moved off the bespoke parchment/CreateFrame stack onto AceGUI so
+;; layout and backdrop are the library's problem, not a pixel-tuning exercise.
+;; State (active-tab), the singleton lifecycle, and the per-tab repaint stay
+;; imperative -- see docs/UI.md §2.
+;;
+;; Tab modules expose a single `render! [container]` (idempotent: it
+;; ReleaseChildren's the container and repopulates). TabGroup fires
+;; OnGroupSelected, where we repaint the selected tab; refresh! repaints the
+;; live Plan tab in place.
 
 (local Routina (or _G.Routina {}))
-(local theme (or Routina.theme (require :src.ui.theme)))
-(local frames (or Routina.frames (require :src.ui.frames)))
-(local dom (or Routina.dom (require :src.ui.dom)))
+(local acegui (or Routina.acegui (require :src.ui.acegui)))
 (local tab-weekly (or Routina.tab-weekly (require :src.ui.tabs.weekly)))
 (local tab-lockouts (or Routina.tab-lockouts (require :src.ui.tabs.lockouts)))
 (local tab-bis (or Routina.tab-bis (require :src.ui.tabs.bis)))
@@ -18,217 +23,121 @@
 
 (local M {})
 
-(var root nil)
+;; --- State (imperative singleton) ------------------------------------------
 
-(local pills {})
+(var ui nil)
 
-(local tab-contents {})
+;; {:frame <AceGUI Frame> :tabs <AceGUI TabGroup>} once built
 
 (var active-tab :weekly)
 
-;; --- Event handlers (imperative, per UI.md §15) ----------------------------
+(local tabs-def [{:text :Plan :value :weekly}
+                 {:text :Lockouts :value :lockouts}
+                 {:text :BiS :value :bis}])
 
-(fn gear-on-enter [self]
-  (_G.GameTooltip:SetOwner self :ANCHOR_LEFT)
-  (_G.GameTooltip:SetText :Options 1 1 1)
-  (_G.GameTooltip:Show))
+(local renderers {:weekly tab-weekly.render!
+                  :lockouts tab-lockouts.render!
+                  :bis tab-bis.render!})
 
-(fn gear-on-leave []
-  (_G.GameTooltip:Hide))
-
-(fn gear-on-click []
-  ;; Looked up lazily (not bound at module top) so root doesn't require options,
-  ;; which requires root -- the late lookup breaks that cycle.
-  (when Routina.options (Routina.options.open!)))
-
-(fn click-pill [key]
-  (fn [] (M.show-tab! key)))
-
-(fn restyle-pills! []
-  (each [key pill (pairs pills)]
-    (let [active? (= key active-tab)
-          bg-token (if active? :gold-bright :parchment-2)
-          text-token (if active? :ink :ink-faint)]
-      (frames.apply-inset-backdrop! pill.button bg-token)
-      (pill.text:SetTextColor (theme.rgba (. theme.palette text-token) 1)))))
-
-;; --- Layout spec -----------------------------------------------------------
+;; --- Header text -----------------------------------------------------------
 
 (fn player-display []
-  ;; UnitName / UnitClass return localized values; UnitClass also
-  ;; returns the english uppercase form as a 2nd return we ignore for
-  ;; now. Spec (talent-based) detection arrives with AceEvent.
-  (let [name (or (UnitName :player) :Player)
-        class (or (UnitClass :player) :Adventurer)]
+  ;; UnitName / UnitClass return localized values; spec (talent-based)
+  ;; detection arrives with AceEvent. Guarded for headless.
+  (let [name (or (and UnitName (UnitName :player)) :Player)
+        class (or (and UnitClass (UnitClass :player)) :Adventurer)]
     (.. name " · " class)))
 
-(fn header-spec []
-  (let [inset theme.spacing.inset
-        rhythm theme.spacing.rhythm
-        side-inset (* 2 inset)
-        top-pad (* 2 inset)]
-    [:Frame
-     {:id :header
-      :height 48
-      :anchors [[:TOPLEFT :parent :TOPLEFT side-inset (- top-pad)]
-                [:TOPRIGHT :parent :TOPRIGHT (- side-inset) (- top-pad)]]}
-     [:FontString
-      {:id :char-line
-       :font :title
-       :size :title
-       :color :ink
-       :text (player-display)
-       :anchors [[:TOPLEFT :header :TOPLEFT 0 0]]}]
-     [:FontString
-      {:font :body
-       :size :body
-       :color :ink-faint
-       :text "Week 47 · resets in 2d 4h"
-       :anchors [[:TOPLEFT :char-line :BOTTOMLEFT 0 (- rhythm)]]}]
-     [:Button
-      {:id :gear
-       :size [22 22]
-       :anchors [[:TOPRIGHT :header :TOPRIGHT 0 0]]
-       :on-enter gear-on-enter
-       :on-leave gear-on-leave
-       :on-click gear-on-click}
-      [:Texture {:layer :ARTWORK :fill-parent? true :texture-token :gear-icon}]]]))
+(fn status-text []
+  ;; Placeholder reset window; a live countdown is a separate feature.
+  "Week 47 · resets in 2d 4h")
 
-(fn pill-spec [btn-id text-id label tab-key anchor]
-  [:Button
-   {:id btn-id
-    :size [120 28]
-    :backdrop :parchment-2
-    :anchors [anchor]
-    :on-click (click-pill tab-key)}
-   [:FontString
-    {:id text-id
-     :font :title
-     :size :section
-     :color :ink-faint
-     :text label
-     :anchors [[:CENTER :parent :CENTER 0 0]]}]])
+;; --- Tab repaint -----------------------------------------------------------
 
-(fn pill-row-spec []
-  (let [inset theme.spacing.inset
-        rhythm theme.spacing.rhythm
-        side-inset (* 2 inset)]
-    [:Frame
-     {:id :pill-row
-      :height 28
-      :anchors [[:TOPLEFT :parent :TOPLEFT side-inset -88]
-                [:TOPRIGHT :parent :TOPRIGHT (- side-inset) -88]]}
-     (pill-spec :pill-weekly :pill-weekly-text :Plan :weekly
-                [:LEFT :pill-row :LEFT 0 0])
-     (pill-spec :pill-lockouts :pill-lockouts-text :Lockouts :lockouts
-                [:LEFT :pill-weekly :RIGHT rhythm 0])
-     (pill-spec :pill-bis :pill-bis-text :BiS :bis
-                [:LEFT :pill-lockouts :RIGHT rhythm 0])]))
+(fn render-tab! [container key]
+  "ReleaseChildren the TabGroup and repopulate it with `key`'s content."
+  (when container
+    (container:ReleaseChildren)
+    (let [render (. renderers key)]
+      (when render (render container)))))
 
-(fn root-spec []
-  (let [inset theme.spacing.inset
-        side-inset (* 2 inset)]
-    [:Frame
-     {:id :root
-      :name :RoutinaRoot
-      :size [520 640]
-      :strata :HIGH
-      :movable? true
-      :mouse? true
-      :drag-with :LeftButton
-      :backdrop :parchment
-      :border? true
-      :anchors [[:CENTER :parent :CENTER 0 80]]}
-     (header-spec)
-     ;; Thin ink separator in the gap between header bottom (~y=-64)
-     ;; and pill row top (y=-72). Rendered as an ARTWORK child of root
-     ;; via the dom spec, so layering is predictable -- no parent-
-     ;; BORDER overlay magic.
-     [:Texture
-      {:id :header-sep
-       :layer :ARTWORK
-       :fill-color :ink
-       :alpha 0.3
-       :height 1
-       :anchors [[:TOPLEFT :parent :TOPLEFT side-inset -82]
-                 [:TOPRIGHT :parent :TOPRIGHT (- side-inset) -82]]}]
-     (pill-row-spec)
-     [:Frame
-      {:id :content-area
-       :anchors [[:TOPLEFT :parent :TOPLEFT side-inset -132]
-                 [:BOTTOMRIGHT :parent :BOTTOMRIGHT (- side-inset) inset]]}]]))
+(fn on-tab-selected [container _event key]
+  (set active-tab key)
+  (render-tab! container key))
 
-;; --- Construction (imperative singleton, lazy on first toggle!) ------------
+;; --- Construction (lazy singleton) -----------------------------------------
 
-(fn build-root! []
-  (let [{: root : refs} (dom.render! _G.UIParent (root-spec))]
-    (set pills.weekly {:button (. refs :pill-weekly)
-                       :text (. refs :pill-weekly-text)})
-    (set pills.lockouts
-         {:button (. refs :pill-lockouts) :text (. refs :pill-lockouts-text)})
-    (set pills.bis {:button (. refs :pill-bis) :text (. refs :pill-bis-text)})
-    (let [area (. refs :content-area)]
-      (set tab-contents.weekly (tab-weekly.build! area))
-      (set tab-contents.lockouts (tab-lockouts.build! area))
-      (set tab-contents.bis (tab-bis.build! area)))
-    (when _G.UISpecialFrames
-      (table.insert _G.UISpecialFrames :RoutinaRoot))
-    root))
+(fn build-ui! []
+  "Build the AceGUI Frame + TabGroup once. Returns {:frame :tabs} or nil when
+   AceGUI is unavailable (headless busted)."
+  (when (acegui.gui)
+    (let [frame (acegui.create! :Frame)
+          tabs (acegui.create! :TabGroup)]
+      (frame:SetTitle (player-display))
+      (frame:SetStatusText (status-text))
+      (frame:SetLayout :Fill)
+      (frame:SetWidth 520)
+      (frame:SetHeight 640)
+      ;; Closing (X button) just hides the singleton and dismisses the drawer;
+      ;; we never Release so re-show is instant.
+      (frame:SetCallback :OnClose (fn [] (why-drawer.close!)))
+      (acegui.tint-frame! frame :parchment)
+      (tabs:SetLayout :Flow)
+      (tabs:SetTabs tabs-def)
+      (tabs:SetCallback :OnGroupSelected on-tab-selected)
+      (frame:AddChild tabs)
+      (tabs:SelectTab active-tab)
+      {: frame : tabs})))
 
-(fn ensure-root! []
-  (when (not root)
-    (set root (build-root!))
-    (M.show-tab! active-tab))
-  root)
+(fn ensure-ui! []
+  (when (not ui) (set ui (build-ui!)))
+  ui)
 
-;; --- Public API ------------------------------------------------------------
+;; --- Public API (signatures preserved for core/events + slash commands) ----
 
 (lambda M.show! []
-  "Show the root panel, constructing it on first call.
+  "Show the root panel, constructing it on first call. No-op headless.
    Returns: nil."
-  (let [r (ensure-root!)]
-    (r:Show))
+  (let [u (ensure-ui!)]
+    (when u (u.frame:Show)))
   nil)
 
 (lambda M.hide! []
   "Hide the root panel (and any open why-drawer) if already constructed.
    Returns: nil."
-  (when root (root:Hide))
+  (when ui (ui.frame:Hide))
   (why-drawer.close!)
   nil)
 
 (lambda M.toggle! []
   "Toggle root panel visibility (constructs on first show).
    Returns: nil."
-  (if (and root (root:IsShown)) (M.hide!) (M.show!))
+  (if (and ui (ui.frame:IsShown)) (M.hide!) (M.show!))
   nil)
 
 (lambda M.show-tab! [key]
-  "Show the named tab, hide the others, restyle the pill row.
+  "Select the named tab (TabGroup repaints it via OnGroupSelected).
    Domain:  key : one of :weekly :lockouts :bis
    Returns: nil."
-  (assert (. tab-contents key) (.. "unknown tab key: " (tostring key)))
-  ;; UI.md: swapping a tab closes any open why-drawer.
-  (why-drawer.close!)
-  (each [k content (pairs tab-contents)]
-    (if (= k key) (content:Show) (content:Hide)))
-  (set active-tab key)
-  (restyle-pills!)
+  (assert (. renderers key) (.. "unknown tab key: " (tostring key)))
+  (let [u (ensure-ui!)]
+    (when u (u.tabs:SelectTab key)))
   nil)
 
 (lambda M.show-why! [step ?ctx]
-  "Open the why-drawer for a plan step, sliding in over the root frame.
+  "Open the why-drawer for a plan step, anchored to the right of the panel.
    Domain:  step : a route plan step; ?ctx : the RouteContext (weights/comp)
    Returns: nil."
-  (when root (why-drawer.open! root step ?ctx))
+  (when ui (why-drawer.open! (and ui.frame ui.frame.frame) step ?ctx))
   nil)
 
 (lambda M.refresh! []
-  "Repaint the live tabs (currently the Plan tab's pooled card stack) in place.
-   No-op until the panel has been built. Driven by src/core/events.fnl on gear /
-   talent / lockout / options changes, so the plan reflects current state.
+  "Repaint the live Plan tab in place when it's the active tab. No-op until the
+   panel is built. Driven by src/core/events.fnl on gear / talent / lockout /
+   options changes so the plan reflects current state.
    Returns: nil."
-  (when (and root tab-contents.weekly) (tab-weekly.refresh!))
+  (when (and ui (= active-tab :weekly))
+    (render-tab! ui.tabs :weekly))
   nil)
 
 ;; --- Register --------------------------------------------------------------

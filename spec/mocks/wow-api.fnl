@@ -30,7 +30,20 @@
               ; points per talent tab
               :faction-standings {}
               ; faction-id -> standing-id (1..8)
-              :quest-completed {}})
+              :quest-completed {}
+              :item-qualities {}})
+
+; item-id -> quality (0..7); default epic
+
+;; Standard WoW item-quality colours (r g b), keyed by quality 0..7.
+(local quality-colors {0 [0.62 0.62 0.62]
+                       1 [1 1 1]
+                       2 [0.12 1 0]
+                       3 [0 0.44 0.87]
+                       4 [0.64 0.21 0.93]
+                       5 [1 0.5 0]
+                       6 [0.9 0.8 0.5]
+                       7 [0 0.8 1]})
 
 ;; --- Stub implementations ---
 
@@ -106,6 +119,19 @@
     (when sid (values :Faction :desc sid 0 1000 500))))
 
 (fn stub-RequestRaidInfo [] nil)
+
+(fn stub-GetItemInfo [item]
+  ;; Real WoW returns 17 values; we return the few callers read (name, link,
+  ;; quality, itemLevel). Quality is looked up per-id (default epic 4), so the
+  ;; Plan tab's quality dots resolve deterministically in tests.
+  (let [id (if (= :number (type item)) item (tonumber item))
+        quality (or (and id (. state.item-qualities id)) 4)]
+    (values (.. "Item " (tostring item)) nil quality 70)))
+
+(fn stub-GetItemQualityColor [quality]
+  ;; Real WoW: r, g, b, hex. We mirror the standard quality palette.
+  (let [c (or (. quality-colors quality) (. quality-colors 1))]
+    (values (. c 1) (. c 2) (. c 3) :ffffffff)))
 
 ;; --- Frame stubs (CreateFrame and the surface src/ui/* touches) ---
 ;;
@@ -202,6 +228,8 @@
   (set _G.GetTalentTabInfo stub-GetTalentTabInfo)
   (set _G.GetFactionInfoByID stub-GetFactionInfoByID)
   (set _G.RequestRaidInfo stub-RequestRaidInfo)
+  (set _G.GetItemInfo stub-GetItemInfo)
+  (set _G.GetItemQualityColor stub-GetItemQualityColor)
   (set _G.bit bit)
   ;; UI globals (see docs/UI.md for what each is used for):
   (set _G.CreateFrame stub-CreateFrame)
@@ -227,7 +255,8 @@
   (set state.bags {})
   (set state.talent-points [0 0 0])
   (set state.faction-standings {})
-  (set state.quest-completed {}))
+  (set state.quest-completed {})
+  (set state.item-qualities {}))
 
 (fn M.set-saved-instances! [instances]
   "Set the list of saved instances. Each instance is a table:
@@ -264,6 +293,10 @@
 (fn M.set-faction-standing! [faction-id standing-id]
   "Set a faction's standing id (1=Hated .. 8=Exalted)."
   (tset state.faction-standings faction-id standing-id))
+
+(fn M.set-item-quality! [item-id quality]
+  "Set an item's quality (0=Poor .. 7=Heirloom); GetItemInfo defaults to epic."
+  (tset state.item-qualities item-id quality))
 
 M
 

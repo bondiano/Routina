@@ -27,6 +27,15 @@
                     (assert.are.equal "#1  Karazhan" vm.title)
                     (assert.are.equal "Raid · weekly reset" vm.subtitle)
                     (assert.is_truthy (string.find vm.summary "95 min" 1 true)))))
+            (it "splits each item into a name and a chance column"
+                (fn []
+                  (let [s (step {:items [(item :Thunderfury 0.25 2 7)]})
+                        row (. (weekly.card-view-model s 1) :items 1)]
+                    (assert.are.equal :Thunderfury row.name)
+                    (assert.are.equal 7 row.item-id)
+                    (assert.is_truthy (string.find row.chance-text "25%" 1 true))
+                    (assert.is_truthy (string.find row.chance-text "2 runs" 1
+                                                   true)))))
             (it "keeps only the top 3 items by chance, highest first"
                 (fn []
                   (let [s (step {:items [(item :low 0.1 1 1)

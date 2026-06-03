@@ -13,6 +13,10 @@
 # separate CallbackHandler line is needed. Must load before any build/* module.
 Libs\LibStub\LibStub.lua
 Libs\Ace3\Ace3.xml
+# SFX-Widgets: extra AceGUI widget types (SFX-Header, SFX-Info) used by the
+# why-drawer and options panel. Loads after Ace3 (resolves AceGUI-3.0 via
+# LibStub). Fetched by `task libs` / the packager; not committed.
+Libs\AceGUI-3.0_SFX-Widgets\AceGUI-3.0_SFX-Widgets.xml
 
 # Compiled Lua (Fennel sources live in src/, compiled to build/ by `task build`).
 # UI scaffold load order: leaves first (no require resolution in addon scope --
@@ -20,8 +24,7 @@ Libs\Ace3\Ace3.xml
 # there). See docs/UI.md §2 for the dual-mode pattern.
 build\ui\theme.lua
 build\ui\format.lua
-build\ui\frames.lua
-build\ui\dom.lua
+build\ui\acegui.lua
 # Pure domain (no WoW API). Loaded before the tabs that consume them so
 # _G.Routina.{schemas,validate,drop-chance,plan} are populated downstream.
 # schemas before validate (validate reads the registry at load).
