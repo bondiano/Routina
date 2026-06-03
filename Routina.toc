@@ -86,4 +86,7 @@ build\ui\tabs\weekly.lua
 build\ui\tabs\lockouts.lua
 build\ui\tabs\bis.lua
 build\ui\root.lua
+# options: AceConfig panel (the only AceGUI surface). After root (it refreshes
+# the plan on change), before ace (which registers it on init).
+build\ui\options.lua
 build\core\ace.lua

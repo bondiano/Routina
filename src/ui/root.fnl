@@ -29,14 +29,16 @@
 
 (fn gear-on-enter [self]
   (_G.GameTooltip:SetOwner self :ANCHOR_LEFT)
-  (_G.GameTooltip:SetText "Options coming soon" 1 1 1)
+  (_G.GameTooltip:SetText :Options 1 1 1)
   (_G.GameTooltip:Show))
 
 (fn gear-on-leave []
   (_G.GameTooltip:Hide))
 
 (fn gear-on-click []
-  (_G.DEFAULT_CHAT_FRAME:AddMessage "|cffC9A24A[Routina]|r Options panel not yet implemented."))
+  ;; Looked up lazily (not bound at module top) so root doesn't require options,
+  ;; which requires root -- the late lookup breaks that cycle.
+  (when Routina.options (Routina.options.open!)))
 
 (fn click-pill [key]
   (fn [] (M.show-tab! key)))

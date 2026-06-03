@@ -17,6 +17,7 @@
 (local events (or Routina.events (require :src.core.events)))
 (local saved-vars (or Routina.saved-vars (require :src.core.saved-vars)))
 (local root (or Routina.root (require :src.ui.root)))
+(local options (or Routina.options (require :src.ui.options)))
 
 (local log-levels {:debug 1 :info 2 :warn 3 :error 4})
 
@@ -64,13 +65,13 @@
     (set self.db.global
          (saved-vars.migrate self.db.global saved-vars.migrations))
     (set self.log (make-logger #(or self.db.global.options.log-level :info)))
+    ;; Bind the AceConfig options panel to the DB (no-op without the config libs).
+    (options.register! self)
     (self.log:info "OnInitialize complete")
     ;; Slash commands registered here so /routina works even if enable fails.
-    ;; /routina is canonical; /rt is the short alias. "options" reserved for P2.
+    ;; /routina is canonical; /rt is the short alias; "options" opens the panel.
     (let [handler (fn [input]
-                    (if (= input :options)
-                        (self.log:info "Options panel arrives in Phase 2")
-                        (root.toggle!)))]
+                    (if (= input :options) (options.open!) (root.toggle!)))]
       (self:RegisterChatCommand :routina handler)
       (self:RegisterChatCommand :rt handler))))
 
