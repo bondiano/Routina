@@ -72,9 +72,10 @@
                             (fn []
                               (assert.are.equal 2
                                                 (length (activities.by-type :heroic)))))
-                        (it "finds the single raid"
+                        (it "finds the full T4-T6 raid tier"
                             (fn []
-                              (assert.are.equal 1
+                              ;; Karazhan + SSC + TK + Black Temple + Hyjal
+                              (assert.are.equal 5
                                                 (length (activities.by-type :raid)))))
                         (it "returns an empty sequence for an unknown type"
                             (fn []

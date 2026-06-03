@@ -44,17 +44,24 @@
 ;; -- a fixture player/RouteContext stands in until src/core/ wires real
 ;; gear/spec/lockouts from the WoW client (gear scanning is not built yet).
 ;;
-;; This fixture (feral druid, phase 1, owning nothing, Karazhan attuned and
-;; unlocked) lights up the only activity whose drops the Phase-1 activities
-;; registry currently links: Karazhan (Edgewalker Longboots, Skulker's
-;; Greaves). The plan grows automatically as src/domain/activities.fnl gains
-;; the rest of the raid tier.
+;; This fixture (feral druid, phase 3, fully attuned, owning nothing) spans the
+;; progression path: route surfaces every raid whose drops match an unowned
+;; feral BiS item -- Karazhan, Tempest Keep, Serpentshrine Cavern, and Black
+;; Temple -- score-ordered. (Hyjal carries no feral-DPS BiS in the catalog, so
+;; it self-filters out.) The plan reshapes automatically as the player's owned
+;; gear, phase, and attunements arrive from the shell.
 
-(local sample-player {:level 70 :attunements {:kara-key true} :reputations {}})
+(local sample-player {:level 70
+                      :attunements {:kara-key true
+                                    :ssc-attune true
+                                    :tk-attune true
+                                    :bt-medallion true
+                                    :hyjal-vials true}
+                      :reputations {}})
 
 (local sample-ctx {:class :druid
                    :spec :feral-dps
-                   :phase 1
+                   :phase 3
                    :now 0
                    :owned-items {}
                    :lockouts {}})

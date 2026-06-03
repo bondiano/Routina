@@ -51,14 +51,19 @@
   (assert (> activity.length-estimate 0) "activity.length-estimate must be > 0")
   activity)
 
-;; --- Seed registry (clearly-marked Phase-1 scaffold) -----------------------
+;; --- Seed registry (clearly-marked scaffold) -------------------------------
 ;;
-;; TEMP scaffold: a representative slice of TBC weekly content so the
-;; availability engine has live data to chew on. ids are kept consistent with
-;; the UI sample-catalog in src/ui/tabs/weekly.fnl so a scored row reconciles to
-;; its definition. The full content list (and real attunement/rep gates) is
-;; Phase 2 follow-up work -- refine with verified data later. :ogrila-dailies is
-;; gated on a reputation purely to exercise the :rep path.
+;; A representative slice of TBC weekly content so the availability engine has
+;; live data to chew on. Each :id is kept IDENTICAL to the matching
+;; src/domain/drops/data.fnl :source-activity slug (e.g. :serpentshrine-cavern),
+;; so src/domain/route.fnl can link a BiS drop back to the activity that awards
+;; it -- a mismatched id silently drops the item from the plan.
+;;
+;; The T4-T6 raid tier (Karazhan + SSC/TK/BT/Hyjal) is present so the planner
+;; spans a real progression path; heroics/dailies/rep hubs remain a thin sample.
+;; Attunement keys are PLACEHOLDER slugs (real key items / quest chains are
+;; refined with verified data later); :ogrila-dailies is gated on a reputation
+;; purely to exercise the :rep path. The full content list is follow-up work.
 
 (local registry
        [{:id :karazhan
@@ -67,6 +72,30 @@
          :reset :weekly
          :length-estimate 95
          :requirements {:min-level 70 :attunement :kara-key}}
+        {:id :serpentshrine-cavern
+         :name "Serpentshrine Cavern"
+         :type :raid
+         :reset :weekly
+         :length-estimate 150
+         :requirements {:min-level 70 :attunement :ssc-attune}}
+        {:id :tempest-keep
+         :name "Tempest Keep: The Eye"
+         :type :raid
+         :reset :weekly
+         :length-estimate 135
+         :requirements {:min-level 70 :attunement :tk-attune}}
+        {:id :black-temple
+         :name "Black Temple"
+         :type :raid
+         :reset :weekly
+         :length-estimate 180
+         :requirements {:min-level 70 :attunement :bt-medallion}}
+        {:id :hyjal-summit
+         :name "Hyjal Summit"
+         :type :raid
+         :reset :weekly
+         :length-estimate 130
+         :requirements {:min-level 70 :attunement :hyjal-vials}}
         {:id :heroic-mech
          :name "Heroic Mechanar"
          :type :heroic
