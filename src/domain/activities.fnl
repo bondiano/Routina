@@ -59,68 +59,164 @@
 ;; so src/domain/route.fnl can link a BiS drop back to the activity that awards
 ;; it -- a mismatched id silently drops the item from the plan.
 ;;
-;; The T4-T6 raid tier (Karazhan + SSC/TK/BT/Hyjal) is present so the planner
-;; spans a real progression path; heroics/dailies/rep hubs remain a thin sample.
-;; Attunement keys are PLACEHOLDER slugs (real key items / quest chains are
-;; refined with verified data later); :ogrila-dailies is gated on a reputation
-;; purely to exercise the :rep path. The full content list is follow-up work.
+;; Coverage is the contract spec/domain/route_spec.fnl pins down: EVERY
+;; source-activity slug a tracked BiS item points at must have an entry here, or
+;; the item is silently unplannable. So the registry spans the T4-T6 raid tier
+;; (Karazhan + Gruul/Mag + SSC/TK + BT/Hyjal), the level-60 Atiesh raid, outdoor
+;; world bosses, the heroic 5-mans that drop BiS, two level-60 dungeons with
+;; lingering pre-raid pieces, and the two token sinks -- the Badge of Justice
+;; vendor and quest-reward gear (both :none reset, base-drop-p 1: guaranteed once
+;; you show up). Attunement keys on the original raids are PLACEHOLDER slugs
+;; (real key items / quest chains refined later); :ogrila-dailies is gated on a
+;; reputation purely to exercise the :rep path.
 
-(local registry
-       [{:id :karazhan
-         :name :Karazhan
-         :type :raid
-         :reset :weekly
-         :length-estimate 95
-         :requirements {:min-level 70 :attunement :kara-key}}
-        {:id :serpentshrine-cavern
-         :name "Serpentshrine Cavern"
-         :type :raid
-         :reset :weekly
-         :length-estimate 150
-         :requirements {:min-level 70 :attunement :ssc-attune}}
-        {:id :tempest-keep
-         :name "Tempest Keep: The Eye"
-         :type :raid
-         :reset :weekly
-         :length-estimate 135
-         :requirements {:min-level 70 :attunement :tk-attune}}
-        {:id :black-temple
-         :name "Black Temple"
-         :type :raid
-         :reset :weekly
-         :length-estimate 180
-         :requirements {:min-level 70 :attunement :bt-medallion}}
-        {:id :hyjal-summit
-         :name "Hyjal Summit"
-         :type :raid
-         :reset :weekly
-         :length-estimate 130
-         :requirements {:min-level 70 :attunement :hyjal-vials}}
-        {:id :heroic-mech
-         :name "Heroic Mechanar"
-         :type :heroic
-         :reset :daily
-         :length-estimate 35
-         :requirements {:min-level 70 :attunement :heroic-flamewrought}}
-        {:id :heroic-slabs
-         :name "Heroic Auchenai Crypts"
-         :type :heroic
-         :reset :daily
-         :length-estimate 40
-         :requirements {:min-level 70 :attunement :heroic-auchindoun}}
-        {:id :skettis-daily
-         :name "Skettis Dailies"
-         :type :daily
-         :reset :daily
-         :length-estimate 10
-         :requirements {:min-level 70}}
-        {:id :ogrila-dailies
-         :name "Ogri'la Dailies"
-         :type :rep-hub
-         :reset :daily
-         :length-estimate 20
-         :requirements {:min-level 70
-                        :rep {:faction :ogrila :standing :neutral}}}])
+(local registry [{:id :karazhan
+                  :name :Karazhan
+                  :type :raid
+                  :reset :weekly
+                  :length-estimate 95
+                  :requirements {:min-level 70 :attunement :kara-key}}
+                 {:id :serpentshrine-cavern
+                  :name "Serpentshrine Cavern"
+                  :type :raid
+                  :reset :weekly
+                  :length-estimate 150
+                  :requirements {:min-level 70 :attunement :ssc-attune}}
+                 {:id :tempest-keep
+                  :name "Tempest Keep: The Eye"
+                  :type :raid
+                  :reset :weekly
+                  :length-estimate 135
+                  :requirements {:min-level 70 :attunement :tk-attune}}
+                 {:id :black-temple
+                  :name "Black Temple"
+                  :type :raid
+                  :reset :weekly
+                  :length-estimate 180
+                  :requirements {:min-level 70 :attunement :bt-medallion}}
+                 {:id :hyjal-summit
+                  :name "Hyjal Summit"
+                  :type :raid
+                  :reset :weekly
+                  :length-estimate 130
+                  :requirements {:min-level 70 :attunement :hyjal-vials}}
+                 {:id :heroic-mech
+                  :name "Heroic Mechanar"
+                  :type :heroic
+                  :reset :daily
+                  :length-estimate 35
+                  :requirements {:min-level 70
+                                 :attunement :heroic-flamewrought}}
+                 {:id :heroic-slabs
+                  :name "Heroic Auchenai Crypts"
+                  :type :heroic
+                  :reset :daily
+                  :length-estimate 40
+                  :requirements {:min-level 70 :attunement :heroic-auchindoun}}
+                 {:id :skettis-daily
+                  :name "Skettis Dailies"
+                  :type :daily
+                  :reset :daily
+                  :length-estimate 10
+                  :requirements {:min-level 70}}
+                 {:id :ogrila-dailies
+                  :name "Ogri'la Dailies"
+                  :type :rep-hub
+                  :reset :daily
+                  :length-estimate 20
+                  :requirements {:min-level 70
+                                 :rep {:faction :ogrila :standing :neutral}}}
+                 ;; 25-man raids (T4 / T5) and the level-60 Atiesh raid.
+                 {:id :gruuls-lair
+                  :name "Gruul's Lair"
+                  :type :raid
+                  :reset :weekly
+                  :length-estimate 45
+                  :requirements {:min-level 70}}
+                 {:id :magtheridons-lair
+                  :name "Magtheridon's Lair"
+                  :type :raid
+                  :reset :weekly
+                  :length-estimate 30
+                  :requirements {:min-level 70}}
+                 {:id :naxxramas
+                  :name :Naxxramas
+                  :type :raid
+                  :reset :weekly
+                  :length-estimate 120
+                  :requirements {:min-level 60}}
+                 ;; Outdoor world bosses (weekly-ish respawn; modelled as a weekly clear).
+                 {:id :shadowmoon-valley
+                  :name :Doomwalker
+                  :type :world-boss
+                  :reset :weekly
+                  :length-estimate 5
+                  :requirements {:min-level 70}}
+                 {:id :hellfire-peninsula
+                  :name "Doom Lord Kazzak"
+                  :type :world-boss
+                  :reset :weekly
+                  :length-estimate 5
+                  :requirements {:min-level 70}}
+                 ;; Heroic 5-mans that award tracked BiS drops (daily reset).
+                 {:id :the-slave-pens
+                  :name "Heroic Slave Pens"
+                  :type :heroic
+                  :reset :daily
+                  :length-estimate 30
+                  :requirements {:min-level 70}}
+                 {:id :the-shattered-halls
+                  :name "Heroic Shattered Halls"
+                  :type :heroic
+                  :reset :daily
+                  :length-estimate 45
+                  :requirements {:min-level 70}}
+                 {:id :the-blood-furnace
+                  :name "Heroic Blood Furnace"
+                  :type :heroic
+                  :reset :daily
+                  :length-estimate 30
+                  :requirements {:min-level 70}}
+                 {:id :shadow-labyrinth
+                  :name "Heroic Shadow Labyrinth"
+                  :type :heroic
+                  :reset :daily
+                  :length-estimate 40
+                  :requirements {:min-level 70}}
+                 {:id :mana-tombs
+                  :name "Heroic Mana-Tombs"
+                  :type :heroic
+                  :reset :daily
+                  :length-estimate 30
+                  :requirements {:min-level 70}}
+                 ;; Level-60 dungeons with a lingering pre-raid / quest-chain BiS item.
+                 {:id :dire-maul
+                  :name "Dire Maul"
+                  :type :dungeon
+                  :reset :none
+                  :length-estimate 40
+                  :requirements {:min-level 58}}
+                 {:id :blackrock-depths
+                  :name "Blackrock Depths"
+                  :type :dungeon
+                  :reset :none
+                  :length-estimate 50
+                  :requirements {:min-level 52}}
+                 ;; Token sinks: the Badge of Justice vendor and quest-reward gear. No
+                 ;; lockout -- :none reset -- and their drops carry base-drop-p 1, so the
+                 ;; planner reads them as guaranteed pickups once the player shows up.
+                 {:id :vendor
+                  :name "Badge of Justice Vendor"
+                  :type :vendor
+                  :reset :none
+                  :length-estimate 5
+                  :requirements {:min-level 70}}
+                 {:id :quest
+                  :name "Quest Rewards"
+                  :type :weekly-quest
+                  :reset :none
+                  :length-estimate 10
+                  :requirements {:min-level 1}}])
 
 ;; Load-time self-check: every seed entry through the boundary validator once,
 ;; so a typo'd registry row fails at `require` time, not at first call site.

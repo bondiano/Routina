@@ -68,15 +68,26 @@
                               (assert.is_nil (activities.by-id :nonesuch))))))
             (describe ":by-type"
                       (fn []
-                        (it "finds both heroics"
+                        (it "finds every heroic 5-man"
+                            (fn []
+                              ;; Mechanar + Auchenai Crypts placeholders + the
+                              ;; five heroics that drop tracked BiS.
+                              (assert.are.equal 7
+                                                (length (activities.by-type :heroic)))))
+                        (it "finds the full raid tier"
+                            (fn []
+                              ;; Kara + Gruul + Mag + SSC + TK + BT + Hyjal + Naxx
+                              (assert.are.equal 8
+                                                (length (activities.by-type :raid)))))
+                        (it "finds both outdoor world bosses"
                             (fn []
                               (assert.are.equal 2
-                                                (length (activities.by-type :heroic)))))
-                        (it "finds the full T4-T6 raid tier"
+                                                (length (activities.by-type :world-boss)))))
+                        (it "models the Badge of Justice vendor"
                             (fn []
-                              ;; Karazhan + SSC + TK + Black Temple + Hyjal
-                              (assert.are.equal 5
-                                                (length (activities.by-type :raid)))))
+                              (let [v (activities.by-id :vendor)]
+                                (assert.are.equal :vendor v.type)
+                                (assert.are.equal :none v.reset))))
                         (it "returns an empty sequence for an unknown type"
                             (fn []
                               (assert.are.equal 0

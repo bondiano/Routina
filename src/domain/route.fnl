@@ -48,9 +48,12 @@
 ;; (PRD §6.7); the previous src/ui/tabs/weekly.fnl scaffold inlined the same.
 (local type-label {:raid :Raid
                    :heroic :Heroic
+                   :dungeon :Dungeon
                    :daily :Daily
-                   :weekly-quest :Weekly
-                   :rep-hub :Reputation})
+                   :weekly-quest :Quest
+                   :rep-hub :Reputation
+                   :vendor :Vendor
+                   :world-boss "World Boss"})
 
 (local reset-label {:weekly "weekly reset"
                     :daily "daily reset"

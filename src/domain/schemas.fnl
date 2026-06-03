@@ -102,7 +102,15 @@
 (set M.ActivityDef
      {:id :string
       :name :string
-      :type [:enum :raid :heroic :daily :weekly-quest :rep-hub]
+      :type [:enum
+             :raid
+             :heroic
+             :daily
+             :weekly-quest
+             :rep-hub
+             :vendor
+             :world-boss
+             :dungeon]
       :reset [:enum :weekly :daily :none]
       :length-estimate :integer
       :requirements [:ref :ActivityRequirements]})

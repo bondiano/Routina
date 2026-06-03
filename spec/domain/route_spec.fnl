@@ -7,13 +7,18 @@
 ;; :score / :est-minutes aggregates, purity, and determinism (the property).
 ;;
 ;; The fixture is a feral druid attuned to (and not locked out of) Karazhan,
-;; owning nothing. Karazhan is the one activity the Phase-1 activities registry
-;; links to real drops -- it awards Edgewalker Longboots (28545) and Skulker's
-;; Greaves (28741), both phase-1 feral BiS.
+;; owning nothing. Karazhan awards Edgewalker Longboots (28545) and Skulker's
+;; Greaves (28741), both phase-1 feral BiS; the plan also picks up a Badge of
+;; Justice vendor step (Everbloom Idol, p=1) now that the vendor is in the
+;; registry -- so aggregate assertions sum over steps rather than assuming a
+;; single Karazhan step.
 
 (local route (require :src.domain.route))
 (local chance (require :src.domain.drop-chance))
 (local gen (require :spec.helpers.gen))
+(local bis-catalog (require :src.domain.bis-catalog))
+(local drop-table (require :src.domain.drop-table))
+(local activities (require :src.domain.activities))
 
 (local kara-feet 28545)
 (local kara-legs 28741)
@@ -124,14 +129,18 @@
                         (it "scores the slot-weighted sum of step chances"
                             (fn []
                               (let [plan (route.plan-week (player) (ctx))
-                                    expected (+ (chance.at-least-one kara-feet-p
-                                                                     1)
-                                                (chance.at-least-one kara-legs-p
-                                                                     1))]
-                                ;; one step, default weights -> plan.score == step.score
-                                (assert.are.equal expected plan.score)
-                                (assert.are.equal expected
-                                                  (. plan.steps 1 :score)))))
+                                    kara (kara-step plan)
+                                    kara-expected (+ (chance.at-least-one kara-feet-p
+                                                                          1)
+                                                     (chance.at-least-one kara-legs-p
+                                                                          1))
+                                    summed (accumulate [s 0 _ r (ipairs plan.steps)]
+                                             (+ s r.score))]
+                                ;; the Karazhan step scores its two feral drops
+                                ;; under default weights...
+                                (assert.are.equal kara-expected kara.score)
+                                ;; ...and the plan score sums every planned step.
+                                (assert.are.equal summed plan.score))))
                         (it "scales a slot's contribution by its weight"
                             (fn []
                               (let [base (route.plan-week (player) (ctx))
@@ -167,8 +176,36 @@
                                                    (chance-of solo))))))
                         (it "sums est-minutes over the planned steps"
                             (fn []
-                              (let [plan (route.plan-week (player) (ctx))]
-                                (assert.are.equal kara-minutes plan.est-minutes))))))
+                              (let [plan (route.plan-week (player) (ctx))
+                                    summed (accumulate [m 0 _ r (ipairs plan.steps)]
+                                             (+ m r.minutes))]
+                                (assert.are.equal summed plan.est-minutes)
+                                ;; Karazhan contributes its length estimate
+                                (assert.are.equal kara-minutes
+                                                  (. (kara-step plan) :minutes)))))))
+            (describe "content coverage"
+                      (fn []
+                        ;; Regression guard for the silent-drop bug: route only
+                        ;; surfaces a BiS item when its drop-table source slug
+                        ;; matches an activity :id. Every tracked source (bar the
+                        ;; honest :unknown) must therefore have a registry entry.
+                        (it "every tracked BiS drop source maps to a known activity"
+                            (fn []
+                              (let [known (collect [_ a (ipairs (activities.all))]
+                                            (values a.id true))
+                                    misses {}]
+                                (each [_ e (ipairs (bis-catalog.all))]
+                                  (let [src (drop-table.source-activity (?. e
+                                                                            :item
+                                                                            :id))]
+                                    (when (and src (not= src :unknown)
+                                               (not (. known src)))
+                                      (tset misses src true))))
+                                (let [unmapped (icollect [k _ (pairs misses)] k)]
+                                  (assert.are.equal 0 (length unmapped)
+                                                    (.. "unmapped drop sources: "
+                                                        (table.concat unmapped
+                                                                      ", ")))))))))
             (describe "purity + determinism"
                       (fn []
                         (it "does not mutate player or context"
