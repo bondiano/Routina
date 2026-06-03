@@ -12,6 +12,7 @@
 (local tab-weekly (or Routina.tab-weekly (require :src.ui.tabs.weekly)))
 (local tab-lockouts (or Routina.tab-lockouts (require :src.ui.tabs.lockouts)))
 (local tab-bis (or Routina.tab-bis (require :src.ui.tabs.bis)))
+(local why-drawer (or Routina.why-drawer (require :src.ui.widgets.why-drawer)))
 (local UnitName _G.UnitName)
 (local UnitClass _G.UnitClass)
 
@@ -190,9 +191,10 @@
   nil)
 
 (lambda M.hide! []
-  "Hide the root panel if it was already constructed.
+  "Hide the root panel (and any open why-drawer) if already constructed.
    Returns: nil."
   (when root (root:Hide))
+  (why-drawer.close!)
   nil)
 
 (lambda M.toggle! []
@@ -206,10 +208,19 @@
    Domain:  key : one of :weekly :lockouts :bis
    Returns: nil."
   (assert (. tab-contents key) (.. "unknown tab key: " (tostring key)))
+  ;; UI.md: swapping a tab closes any open why-drawer.
+  (why-drawer.close!)
   (each [k content (pairs tab-contents)]
     (if (= k key) (content:Show) (content:Hide)))
   (set active-tab key)
   (restyle-pills!)
+  nil)
+
+(lambda M.show-why! [step ?ctx]
+  "Open the why-drawer for a plan step, sliding in over the root frame.
+   Domain:  step : a route plan step; ?ctx : the RouteContext (weights/comp)
+   Returns: nil."
+  (when root (why-drawer.open! root step ?ctx))
   nil)
 
 (lambda M.refresh! []

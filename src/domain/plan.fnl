@@ -19,14 +19,16 @@
 
 (fn item-row [item]
   "Annotate one target item with its at-least-one chance this week.
-   item : {:label string :p number :runs number :item-id ?number}
-   Returns: {:label :p :runs :item-id :chance} (inputs preserved, :chance added).
-   :item-id is carried through verbatim so the UI can show the standard
-   game tooltip (GameTooltip:SetItemByID); nil is fine."
+   item : {:label string :p number :runs number :item-id ?number :slot ?keyword}
+   Returns: {:label :p :runs :item-id :slot :chance} (inputs preserved, :chance
+   added). :item-id is carried through verbatim so the UI can show the standard
+   game tooltip (GameTooltip:SetItemByID); :slot is carried so the why-drawer can
+   weight each item's contribution. Both nil is fine."
   {:label item.label
    :p item.p
    :runs item.runs
    :item-id item.item-id
+   :slot item.slot
    :chance (chance.at-least-one item.p item.runs)})
 
 (fn by-score-then-time [a b]
@@ -63,7 +65,7 @@
    Returns: sequence of rows ordered by score desc (ties: minutes asc, name,
             id), each row = the activity plus :score and per-item :chance:
             {:id :name :type :detail :minutes :score
-             :items [{:label :p :runs :item-id :chance} ...]}."
+             :items [{:label :p :runs :item-id :slot :chance} ...]}."
   (let [score (or ?score-fn M.score-activity)
         rows (icollect [_ activity (ipairs catalog)]
                {:id activity.id

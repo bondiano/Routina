@@ -69,7 +69,11 @@
                                 (assert.are.equal kara-minutes step.minutes)
                                 ;; the step carries its attunement slug for the
                                 ;; UI advisory badge
-                                (assert.are.equal :kara-key step.attunement))))
+                                (assert.are.equal :kara-key step.attunement)
+                                ;; items carry :slot through plan for the
+                                ;; why-drawer's weighted breakdown
+                                (each [_ it (ipairs step.items)]
+                                  (assert.is_not_nil it.slot)))))
                         (it "drops an item once it is owned"
                             (fn []
                               (let [step (kara-step (route.plan-week (player)

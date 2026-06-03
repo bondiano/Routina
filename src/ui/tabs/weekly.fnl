@@ -16,13 +16,12 @@
 (local dom (or Routina.dom (require :src.ui.dom)))
 (local route (or Routina.route (require :src.domain.route)))
 (local planner (or Routina.planner (require :src.core.planner)))
+(local CreateFrame _G.CreateFrame)
 
 (local M {})
 
 ;; --- Layout constants ------------------------------------------------------
 
-(local max-cards 4)
-;; cards shown before an overflow note (no scroll frame yet)
 (local max-rows 3)
 ;; top-N target items per card (PRD §6.1 G2: "top 3 target items")
 (local rows-top 64)
@@ -83,8 +82,12 @@
 (fn item-row-leave [_self]
   (_G.GameTooltip:Hide))
 
-(fn open-why-drawer [_self]
-  (_G.DEFAULT_CHAT_FRAME:AddMessage "|cffC9A24A[Routina]|r why-drawer not implemented yet."))
+(fn open-why-drawer [self]
+  ;; self carries the step + ctx that populate-card! stashed on the button.
+  ;; Route through root (it owns the singleton drawer); lazy lookup so weekly
+  ;; doesn't require root, which requires the tabs.
+  (when (and Routina.root self.why-step)
+    (Routina.root.show-why! self.why-step self.why-ctx)))
 
 ;; --- Card frame spec (built once per pool slot, then populated) ------------
 
@@ -161,13 +164,13 @@
 
 ;; --- Pool + refresh (imperative singleton state) ---------------------------
 
+(var scroll-frame nil)
+
 (var container nil)
 
 (local cards [])
 
 (var empty-fs nil)
-
-(var overflow-fs nil)
 
 (fn card-top [rank]
   "Y-offset (negative, from the container top) of card `rank`."
@@ -191,6 +194,7 @@
      :sub (. refs (.. :sub rank))
      :summary (. refs (.. :summary rank))
      :advisory (. refs (.. :advisory rank))
+     :why (. refs (.. :why rank))
      : rows}))
 
 (fn ensure-card! [rank]
@@ -199,8 +203,9 @@
                        (tset cards rank c)
                        c)))
 
-(fn populate-card! [c vm]
-  "Apply a pure view-model to a pooled card's frames."
+(fn populate-card! [c vm step ctx]
+  "Apply a pure view-model to a pooled card's frames, and stash the raw step +
+   ctx on the Why? button so its handler can open the drawer."
   (c.title:SetText vm.title)
   (c.sub:SetText vm.subtitle)
   (c.summary:SetText vm.summary)
@@ -209,6 +214,8 @@
         (c.advisory:SetText vm.advisory)
         (c.advisory:Show))
       (c.advisory:Hide))
+  (set c.why.why-step step)
+  (set c.why.why-ctx ctx)
   (each [i row (ipairs c.rows)]
     (let [item (. vm.items i)]
       (if item
@@ -224,8 +231,10 @@
     (c.frame:Hide)))
 
 (fn ensure-empty-fs! []
+  ;; Anchored to the scroll frame (not the scroll child, whose height collapses
+  ;; to 0 when empty), so the note stays centred in the visible area.
   (when (not empty-fs)
-    (set empty-fs (. (dom.render! container
+    (set empty-fs (. (dom.render! scroll-frame
                                   [:FontString
                                    {:font :body
                                     :size :body
@@ -233,24 +242,6 @@
                                     :anchors [[:CENTER :parent :CENTER 0 0]]}])
                      :root)))
   empty-fs)
-
-(fn ensure-overflow-fs! []
-  (when (not overflow-fs)
-    ;; just below the last possible card; anchored to the container, since this
-    ;; is its own dom.render! and can't reference a card frame's ref-key.
-    (let [y (- (* max-cards (+ (card-height) card-gap)))]
-      (set overflow-fs (. (dom.render! container
-                                       [:FontString
-                                        {:font :body
-                                         :size :caption
-                                         :color :ink-faint
-                                         :anchors [[:TOPLEFT
-                                                    :parent
-                                                    :TOPLEFT
-                                                    0
-                                                    y]]}])
-                          :root))))
-  overflow-fs)
 
 (fn show-empty! [message]
   (let [fs (ensure-empty-fs!)]
@@ -260,47 +251,62 @@
 (fn hide-empty! []
   (when empty-fs (empty-fs:Hide)))
 
-(fn show-overflow! [n]
-  (let [fs (ensure-overflow-fs!)]
-    (fs:SetText (.. "+ " n " more this week"))
-    (fs:Show)))
-
-(fn hide-overflow! []
-  (when overflow-fs (overflow-fs:Hide)))
+(fn content-height [n]
+  "Total height of n stacked cards, so the scroll child can size itself."
+  (math.max 1 (+ (* n (card-height)) (* (math.max 0 (- n 1)) card-gap))))
 
 ;; --- Public API ------------------------------------------------------------
 
 (lambda M.refresh! []
-  "Recompute the plan from the live client and repaint the pooled cards.
-   Safe to call before build! (no-op) and repeatedly (pool is reused).
+  "Recompute the plan from the live client and repaint the pooled cards inside
+   the scroll child. Safe before build! (no-op) and repeatable (pool reused).
    Returns: nil."
   (when container
     (release-all!)
-    (hide-overflow!)
     (let [input (planner.route-input)
           ok? (and input input.ok)
           steps (if ok? (. (route.plan-week input.player input.ctx) :steps) [])
           advice (and input input.advice)
-          shown (math.min (length steps) max-cards)]
-      (if (= 0 (length steps))
+          n (length steps)]
+      (container:SetHeight (content-height n))
+      (if (= 0 n)
           (show-empty! (if ok? "Nothing left to chase this week."
                            "Log in to a character to see your plan."))
           (do
             (hide-empty!)
-            (for [rank 1 shown]
-              (populate-card! (ensure-card! rank)
-                              (M.card-view-model (. steps rank) rank advice)))
-            (when (> (length steps) max-cards)
-              (show-overflow! (- (length steps) max-cards)))))))
+            (for [rank 1 n]
+              (let [step (. steps rank)]
+                (populate-card! (ensure-card! rank)
+                                (M.card-view-model step rank advice) step
+                                input.ctx)))))))
   nil)
 
+(fn on-wheel [self delta]
+  "Mouse-wheel vertical scroll, clamped to the scroll range."
+  (let [step 40
+        next (- (self:GetVerticalScroll) (* delta step))
+        clamped (math.max 0 (math.min (self:GetVerticalScrollRange) next))]
+    (self:SetVerticalScroll clamped)))
+
 (lambda M.build! [parent]
-  "Build the Plan tab container and do the first paint.
+  "Build the scrolling Plan tab: a ScrollFrame whose child holds the card pool,
+   then the first paint.
    Domain:  parent : WoW Frame (the content area)
-   Returns: the content frame."
-  (set container (. (dom.render! parent [:Frame {:fill true}]) :root))
-  (M.refresh!)
-  container)
+   Returns: the scroll frame."
+  (let [scroll (CreateFrame :ScrollFrame nil parent)
+        child (CreateFrame :Frame nil scroll)]
+    (scroll:SetPoint :TOPLEFT parent :TOPLEFT 0 0)
+    (scroll:SetPoint :BOTTOMRIGHT parent :BOTTOMRIGHT 0 0)
+    (scroll:SetScrollChild child)
+    ;; the scroll child must track the scroll frame's width; height is set per
+    ;; refresh to drive the scroll range.
+    (scroll:SetScript :OnSizeChanged (fn [_ w] (child:SetWidth w)))
+    (scroll:EnableMouseWheel true)
+    (scroll:SetScript :OnMouseWheel on-wheel)
+    (set scroll-frame scroll)
+    (set container child)
+    (M.refresh!)
+    scroll))
 
 (set _G.Routina Routina)
 (set Routina.tab-weekly M)

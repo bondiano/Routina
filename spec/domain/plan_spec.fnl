@@ -85,6 +85,20 @@
                                     o3 (ids (plan.plan-week [b c a]))]
                                 (assert.are.same o1 o2)
                                 (assert.are.same o2 o3))))
+                        (it "carries :slot through to the rendered item rows"
+                            (fn []
+                              (let [a {:id :kara
+                                       :name :Karazhan
+                                       :type :raid
+                                       :detail :10-man
+                                       :minutes 95
+                                       :items [{:label :sh
+                                                :p 0.2
+                                                :runs 3
+                                                :slot :shoulder}]}
+                                    rows (plan.plan-week [a])]
+                                (assert.are.equal :shoulder
+                                                  (. rows 1 :items 1 :slot)))))
                         (it "uses an injected ?score-fn for score and ordering"
                             (fn []
                               (let [a (activity :a :Alpha 60 [(item :i 0.2 2)])
