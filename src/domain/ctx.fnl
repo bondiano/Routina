@@ -62,13 +62,22 @@
 ;;                      -- reconfirm before ever gating on it.
 ;; Heroic keys (Flamewrought / Auchindoun) are reputation-granted items, never
 ;; removed, but are not a quest flag -- detection would be item/rep based, TODO.
-(local attune-quests {:kara-key {:quest-id 9837 :gate? false}
-                      :ssc-attune {:quest-id 10901 :gate? false}
-                      :tk-attune {:quest-id 10888 :gate? false}
-                      :hyjal-vials {:quest-id 10445 :gate? false}
-                      :bt-medallion {:quest-id 10985 :gate? false}
-                      :heroic-flamewrought {:gate? false}
-                      :heroic-auchindoun {:gate? false}})
+;; :gate? hard-filters the raid (all false -- removed reqs); :advise? shows a
+;; soft "not attuned" badge without hiding. Only Karazhan advises by default:
+;; its key still opens the gate, so it is genuinely worth flagging. The removed
+;; SSC/TK/Hyjal/BT attunements neither gate nor advise (a badge there would lie).
+;; Both flags are options-overridable per attunement (see effective-attune).
+(local attune-quests
+       {:kara-key {:quest-id 9837
+                   :gate? false
+                   :advise? true
+                   :advice-text "the Master's Key"}
+        :ssc-attune {:quest-id 10901 :gate? false :advise? false}
+        :tk-attune {:quest-id 10888 :gate? false :advise? false}
+        :hyjal-vials {:quest-id 10445 :gate? false :advise? false}
+        :bt-medallion {:quest-id 10985 :gate? false :advise? false}
+        :heroic-flamewrought {:gate? false :advise? false}
+        :heroic-auchindoun {:gate? false :advise? false}})
 
 ;; Reputation faction slug (as used by activities :rep gates) -> WoW faction id.
 ;; :ogrila = 1038 (verified: wowhead.com/tbc/faction=1038/ogrila).
@@ -125,15 +134,36 @@
   (collect [_ id (ipairs (or item-ids []))]
     (when (and id (> id 0)) (values id true))))
 
-(fn attunement-set [quest-completed?]
-  "Set {slug true} of attunements the player holds. A slug whose entry opts into
-   gating (:gate? true with a :quest-id) is gated on (quest-completed? id); every
-   other slug is assumed held, so a removed-from-the-game attunement never hides
-   a raid (see attune-quests for the per-attunement rationale)."
-  (collect [slug entry (pairs attune-quests)]
+(fn effective-attune [opts]
+  "attune-quests merged with per-attunement option overrides. opts.attune is
+   {slug {:gate? bool :advise? bool}}; an absent flag keeps the default."
+  (let [ov (or (?. opts :attune) {})]
+    (collect [slug base (pairs attune-quests)]
+      (let [o (or (. ov slug) {})]
+        (values slug
+                {:quest-id base.quest-id
+                 :advice-text base.advice-text
+                 :gate? (if (= nil o.gate?) base.gate? o.gate?)
+                 :advise? (if (= nil o.advise?) base.advise? o.advise?)})))))
+
+(fn attunement-set [eff quest-completed?]
+  "Set {slug true} of attunements the player holds. A slug that opts into gating
+   (:gate? true with a :quest-id) is gated on (quest-completed? id); every other
+   slug is assumed held, so a removed-from-the-game attunement never hides a
+   raid (see attune-quests for the per-attunement rationale)."
+  (collect [slug entry (pairs eff)]
     (if (and entry.gate? entry.quest-id)
         (when (quest-completed? entry.quest-id) (values slug true))
         (values slug true))))
+
+(fn attunement-advice [eff quest-completed?]
+  "Soft advisory {slug advice-text} for still-relevant attunements the player
+   lacks: :advise? true, a :quest-id, and the quest not completed. Used for a UI
+   badge -- it never filters, so it is safe even when gating is off."
+  (collect [slug entry (pairs eff)]
+    (when (and entry.advise? entry.quest-id
+               (not (quest-completed? entry.quest-id)))
+      (values slug entry.advice-text))))
 
 (fn reputation-map [faction-standing]
   "Map {faction standing-keyword} for every tracked faction the player has a
@@ -176,13 +206,16 @@
                         :owner string                  -- char key for lockouts
                         :quest-completed? (fn [qid] -> bool)
                         :faction-standing (fn [fid] -> standingId|nil)
-                        :options {:spec ?kw :phase ?int
-                                  :weights ?{} :competitors ?{}}}
-   Returns: {:player schemas.Player :ctx schemas.RouteContext}
+                        :options {:spec ?kw :phase ?int :weights ?{}
+                                  :competitors ?{} :default-competitors ?int
+                                  :attune ?{slug {:gate? ?bool :advise? ?bool}}}}
+   Returns: {:player schemas.Player :ctx schemas.RouteContext
+             :advice {attune-slug advice-text}}  -- soft 'not attuned' notes
    Errors:  if the assembled player or ctx fails its schema."
   (let [opts (or snapshot.options {})
+        eff (effective-attune opts)
         player {:level snapshot.level
-                :attunements (attunement-set snapshot.quest-completed?)
+                :attunements (attunement-set eff snapshot.quest-completed?)
                 :reputations (reputation-map snapshot.faction-standing)}
         ctx {:class snapshot.class
              :spec (detect-spec snapshot.class snapshot.talent-points opts.spec)
@@ -191,10 +224,11 @@
              :owned-items (owned-set snapshot.owned-item-ids)
              :lockouts (lockout-views snapshot.raw-lockouts snapshot.owner)
              :weights opts.weights
-             :competitors opts.competitors}]
+             :competitors opts.competitors
+             :default-competitors opts.default-competitors}]
     (validate.assert! schemas.Player player :ctx/player)
     (validate.assert! schemas.RouteContext ctx :ctx/ctx)
-    {: player : ctx}))
+    {: player : ctx :advice (attunement-advice eff snapshot.quest-completed?)}))
 
 ;; --- Register into the addon namespace -------------------------------------
 ;;

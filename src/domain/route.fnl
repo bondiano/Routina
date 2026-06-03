@@ -67,8 +67,10 @@
   (or (and ctx.weights (. ctx.weights slot)) default-slot-weight))
 
 (fn competitors-for [ctx activity-id]
-  "The competition pool for an activity's loot (default 1 = solo, when unset)."
-  (or (and ctx.competitors (. ctx.competitors activity-id)) default-competitors))
+  "The competition pool for an activity's loot: a per-activity override, else the
+   context-wide :default-competitors (the options panel's global slider), else 1."
+  (or (and ctx.competitors (. ctx.competitors activity-id))
+      ctx.default-competitors default-competitors))
 
 (fn owned? [ctx item-id]
   "True iff the player already holds this item-id."
@@ -112,6 +114,7 @@
          :type (or (. type-label adef.type) (tostring adef.type))
          :detail (or (. reset-label adef.reset) (tostring adef.reset))
          :minutes adef.length-estimate
+         :attunement (?. adef :requirements :attunement)
          : items}))))
 
 (fn make-scorer [ctx]
@@ -133,9 +136,12 @@
    Domain:  player : schemas.Player -- level + attunements + reputations, for the
                      activity requirement / availability gate
             ctx    : schemas.RouteContext -- {:class :spec :phase :now
-                     :owned-items :lockouts :weights? :competitors?}
+                     :owned-items :lockouts :weights? :competitors?
+                     :default-competitors?}
    Returns: {:steps [plan-row ...]  -- available, item-bearing activities,
-                                       score desc (ties: minutes asc, name, id)
+                                       score desc (ties: minutes asc, name, id);
+                                       each row carries its :attunement slug (or
+                                       nil) so the UI can attach an advisory
              :score number          -- Σ step :score
              :est-minutes number}   -- Σ step :minutes
    Errors:  if player or ctx fails its schema at the boundary."
@@ -143,9 +149,15 @@
   (validate.assert! schemas.RouteContext ctx :route/ctx)
   (let [catalog (icollect [_ adef (ipairs (activities.all))]
                   (candidate-activity player ctx adef))
+        attune-by-id (collect [_ a (ipairs catalog)]
+                       (values a.id a.attunement))
         steps (plan.plan-week catalog (make-scorer ctx))
         score (accumulate [s 0 _ row (ipairs steps)] (+ s row.score))
         est-minutes (accumulate [m 0 _ row (ipairs steps)] (+ m row.minutes))]
+    ;; plan.plan-week rebuilds rows with its own field set, so re-attach the
+    ;; activity's attunement slug (the UI keys the "not attuned" advisory on it).
+    (each [_ s (ipairs steps)]
+      (tset s :attunement (. attune-by-id s.id)))
     {: steps : score : est-minutes}))
 
 ;; --- Register into the addon namespace -------------------------------------

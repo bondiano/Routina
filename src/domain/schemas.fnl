@@ -186,7 +186,8 @@
       :owned-items [:map :integer :boolean]
       :lockouts [:map :string [:ref :LockoutView]]
       :weights [:optional [:map :string :number]]
-      :competitors [:optional [:map :string :number]]})
+      :competitors [:optional [:map :string :number]]
+      :default-competitors [:optional :number]})
 
 ;; --- Register into the addon namespace -------------------------------------
 ;;

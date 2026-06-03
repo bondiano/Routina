@@ -30,8 +30,8 @@
    Impure -- reads WoW APIs and SavedVariables; never throws (a mid-load nil or
    a validation miss comes back as {:ok false}).
    Domain:  (none)
-   Returns: {:ok true :player schemas.Player :ctx schemas.RouteContext}
-            | {:ok false :err string}"
+   Returns: {:ok true :player schemas.Player :ctx schemas.RouteContext
+             :advice {attune-slug advice-text}} | {:ok false :err string}"
   (let [info (wow.player-info)
         level (wow.player-level)]
     (if (or (not info) (not info.class) (= info.class :unknown) (not level))
@@ -50,7 +50,10 @@
                         :options (route-options)}
               (ok? built) (pcall ctx.build snapshot)]
           (if ok?
-              {:ok true :player built.player :ctx built.ctx}
+              {:ok true
+               :player built.player
+               :ctx built.ctx
+               :advice built.advice}
               {:ok false :err (tostring built)})))))
 
 ;; --- Register into the addon namespace -------------------------------------

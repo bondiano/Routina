@@ -88,6 +88,25 @@
                                                         :ssc-attune))
                                      (assert.is_true (. r.player.attunements
                                                         :bt-medallion)))))))
+                 (describe :advice
+                           (fn []
+                             (it "advises the Karazhan key when not completed"
+                                 (fn []
+                                   ;; kara-key :advise? true, quest 9837 not done
+                                   (let [r (ctx.build (snapshot {:quest-completed? #false}))]
+                                     (assert.is_not_nil (. r.advice :kara-key))
+                                     ;; removed attunements never advise
+                                     (assert.is_nil (. r.advice :ssc-attune)))))
+                             (it "drops the advisory once the key quest is done"
+                                 (fn []
+                                   (let [done #(= $ 9837)
+                                         r (ctx.build (snapshot {:quest-completed? done}))]
+                                     (assert.is_nil (. r.advice :kara-key)))))
+                             (it "honors an options override that disables advising"
+                                 (fn []
+                                   (let [r (ctx.build (snapshot {:quest-completed? #false
+                                                                 :options {:attune {:kara-key {:advise? false}}}}))]
+                                     (assert.is_nil (. r.advice :kara-key)))))))
                  (describe :reputations
                            (fn []
                              (it "resolves a tracked faction's standing"
@@ -129,6 +148,11 @@
                                      (assert.are.equal 3
                                                        (. r.ctx.competitors
                                                           :karazhan)))))
+                             (it "carries the global default-competitors"
+                                 (fn []
+                                   (let [r (ctx.build (snapshot {:options {:default-competitors 4}}))]
+                                     (assert.are.equal 4
+                                                       r.ctx.default-competitors))))
                              (it "defaults the phase when options omit it"
                                  (fn []
                                    (let [r (ctx.build (snapshot {}))]

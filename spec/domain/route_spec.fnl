@@ -66,7 +66,10 @@
                                                                      (ctx)))]
                                 (assert.is_not_nil step)
                                 (assert.are.equal 2 (length step.items))
-                                (assert.are.equal kara-minutes step.minutes))))
+                                (assert.are.equal kara-minutes step.minutes)
+                                ;; the step carries its attunement slug for the
+                                ;; UI advisory badge
+                                (assert.are.equal :kara-key step.attunement))))
                         (it "drops an item once it is owned"
                             (fn []
                               (let [step (kara-step (route.plan-week (player)
@@ -145,6 +148,18 @@
                                                  (when (= i.item-id kara-feet)
                                                    i.chance))]
                                 (assert.is_true (< (chance-of contested)
+                                                   (chance-of solo))))))
+                        (it "falls back to the global default-competitors"
+                            (fn []
+                              (let [solo (kara-step (route.plan-week (player)
+                                                                     (ctx)))
+                                    pooled (kara-step (route.plan-week (player)
+                                                                       (ctx {:default-competitors 4})))
+                                    chance-of #(accumulate [c nil _ i (ipairs $.items)
+                                                            &until c]
+                                                 (when (= i.item-id kara-feet)
+                                                   i.chance))]
+                                (assert.is_true (< (chance-of pooled)
                                                    (chance-of solo))))))
                         (it "sums est-minutes over the planned steps"
                             (fn []
