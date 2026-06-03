@@ -27,6 +27,9 @@ build\ui\dom.lua
 # schemas before validate (validate reads the registry at load).
 build\domain\schemas.lua
 build\domain\validate.lua
+# ctx: pure raw-snapshot -> (player, RouteContext) assembler. Needs only
+# schemas + validate; the shell (wow + planner) feeds it live client data.
+build\domain\ctx.lua
 build\domain\lockouts.lua
 build\domain\activities.lua
 # BiS catalog: generated per-spec data modules + manifest register into
@@ -74,6 +77,9 @@ build\domain\route.lua
 # above); events is pure dispatch. ace (the AceAddon entry) loads LAST -- it
 # requires root and wires everything via the Ace3 libs loaded at the top.
 build\core\wow.lua
+# planner: gathers the live client (wow) into ctx.build's snapshot -> route
+# input for the Plan tab. Loads after wow + domain/ctx, before the UI tabs.
+build\core\planner.lua
 build\core\saved-vars.lua
 build\core\events.lua
 build\ui\tabs\weekly.lua

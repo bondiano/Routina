@@ -23,6 +23,27 @@
 (local GetSavedInstanceEncounterInfo _G.GetSavedInstanceEncounterInfo)
 (local bit _G.bit)
 
+;; Route-input reads (Phase 2). Captured at load like the rest; the container /
+;; quest APIs are resolved defensively at call time because TBC Anniversary may
+;; expose either the legacy globals or the newer C_* namespaces.
+(local UnitLevel _G.UnitLevel)
+(local GetInventoryItemID _G.GetInventoryItemID)
+(local GetNumTalentTabs _G.GetNumTalentTabs)
+(local GetTalentTabInfo _G.GetTalentTabInfo)
+(local GetFactionInfoByID _G.GetFactionInfoByID)
+(local RequestRaidInfo _G.RequestRaidInfo)
+(local C_QuestLog _G.C_QuestLog)
+(local IsQuestFlaggedCompleted _G.IsQuestFlaggedCompleted)
+(local C_Container _G.C_Container)
+(local GetContainerItemID _G.GetContainerItemID)
+(local GetContainerNumSlots _G.GetContainerNumSlots)
+
+;; Equipment slots 1..19 (head..tabard) and the containers we scan for owned
+;; gear: backpack (0), bags (1-4), main bank (-1) and bank bags (5-11). Bank
+;; containers report 0 slots away from a banker, so scanning them is harmless.
+(local last-equipped-slot 19)
+(local scan-bags [0 1 2 3 4 -1 5 6 7 8 9 10 11])
+
 (local Routina (or _G.Routina {}))
 (local schemas (or Routina.schemas (require :src.domain.schemas)))
 (local validate (or Routina.validate (require :src.domain.validate)))
@@ -70,6 +91,23 @@
          :encounters (parse-encounter-progress encounter-progress n-encounters
                                                encounter-names)}))))
 
+(fn container-num-slots [bag]
+  "Slot count of a container via whichever container API the client exposes; 0
+   when neither is present (so the bag scan simply contributes nothing)."
+  (if (and C_Container C_Container.GetContainerNumSlots)
+      (or (C_Container.GetContainerNumSlots bag) 0)
+      GetContainerNumSlots
+      (or (GetContainerNumSlots bag) 0)
+      0))
+
+(fn container-item-id [bag slot]
+  "Item id in a container slot via whichever container API exists, or nil."
+  (if (and C_Container C_Container.GetContainerItemID)
+      (C_Container.GetContainerItemID bag slot)
+      GetContainerItemID
+      (GetContainerItemID bag slot)
+      nil))
+
 ;; --- Public API ------------------------------------------------------------
 
 (lambda M.now []
@@ -114,6 +152,67 @@
           (if (= 0 (length errs))
               {:ok true : lockouts}
               {:ok true : lockouts :err (table.concat errs " | ")})))))
+
+(lambda M.player-level []
+  "The player's character level, or nil mid-load.
+   Domain:  (none)
+   Returns: integer | nil (UnitLevel 'player')."
+  (and UnitLevel (UnitLevel :player)))
+
+(lambda M.talent-points []
+  "Points spent in each talent tab, in tab order (1..3 in TBC).
+   Domain:  (none)
+   Returns: [integer ...] -- one entry per talent tab; [] mid-load. Used by
+            src/domain/ctx.fnl to infer the active spec."
+  (if (not (and GetNumTalentTabs GetTalentTabInfo))
+      []
+      (let [n (or (GetNumTalentTabs) 0)]
+        (fcollect [i 1 n]
+          (let [(_name _icon points-spent) (GetTalentTabInfo i)]
+            (or points-spent 0))))))
+
+(lambda M.owned-item-ids []
+  "Every item id the player currently holds: equipped slots plus bag and bank
+   containers. May contain duplicates (an item in two places) -- the domain
+   layer dedupes into a set.
+   Domain:  (none)
+   Returns: [integer ...] -- possibly empty (loading screen / empty bags)."
+  (let [ids []]
+    (when GetInventoryItemID
+      (for [slot 1 last-equipped-slot]
+        (let [id (GetInventoryItemID :player slot)]
+          (when id (table.insert ids id)))))
+    (each [_ bag (ipairs scan-bags)]
+      (for [slot 1 (container-num-slots bag)]
+        (let [id (container-item-id bag slot)]
+          (when id (table.insert ids id)))))
+    ids))
+
+(lambda M.quest-completed? [quest-id]
+  "Whether a quest is flagged complete, via whichever quest API exists.
+   Domain:  quest-id : integer
+   Returns: boolean (false when no quest API is available)."
+  (if (and C_QuestLog C_QuestLog.IsQuestFlaggedCompleted)
+      (wow-true? (C_QuestLog.IsQuestFlaggedCompleted quest-id))
+      IsQuestFlaggedCompleted
+      (wow-true? (IsQuestFlaggedCompleted quest-id))
+      false))
+
+(lambda M.faction-standing [faction-id]
+  "The player's standing id (1=Hated .. 8=Exalted) with a faction, or nil if
+   unknown / unavailable.
+   Domain:  faction-id : integer
+   Returns: integer in [1, 8] | nil (GetFactionInfoByID standingId)."
+  (when GetFactionInfoByID
+    (let [(_name _desc standing-id) (GetFactionInfoByID faction-id)]
+      standing-id)))
+
+(lambda M.request-raid-info! []
+  "Ask the server to refresh saved-instance data (fires UPDATE_INSTANCE_INFO).
+   Domain:  (none)
+   Returns: nil. No-op if the API is unavailable."
+  (when RequestRaidInfo (RequestRaidInfo))
+  nil)
 
 ;; --- Register into the addon namespace -------------------------------------
 ;;

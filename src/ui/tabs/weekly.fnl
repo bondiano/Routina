@@ -1,12 +1,11 @@
 ;; tabs/weekly.fnl -- Plan tab content.
 ;;
-;; VERTICAL SLICE: a small sample catalog (scaffold input) flows through
-;; the pure domain planner (src/domain/plan.fnl) and renders as a score-
-;; ordered stack of activity cards. The real drop-table is Phase 2 and an
-;; open question (PRD OQ-1), so `sample-catalog` stays a clearly-marked
-;; scaffold until it lands -- but the scoring, ordering, per-item
-;; probabilities, and item IDs below are genuine (IDs verified on Wowhead
-;; TBC), not hardcoded strings.
+;; END-TO-END SLICE: src/core/planner.fnl reads the live client (gear, spec,
+;; phase, lockouts) into a (player, ctx) pair, src/domain/route.fnl scores it
+;; against the real catalog (activities + bis-catalog + drop-table +
+;; drop-chance), and the resulting steps render as a score-ordered stack of
+;; activity cards. No scaffold inputs remain; an empty plan (loading screen or
+;; nothing left to chase) shows a placeholder instead of cards.
 ;;
 ;; Card layout is data (dom.render!, docs/UI.md s15). Item rows are
 ;; hoverable buttons that show the standard game tooltip via
@@ -18,6 +17,7 @@
 (local format (or Routina.format (require :src.ui.format)))
 (local dom (or Routina.dom (require :src.ui.dom)))
 (local route (or Routina.route (require :src.domain.route)))
+(local planner (or Routina.planner (require :src.core.planner)))
 
 (local M {})
 
@@ -35,36 +35,6 @@
 (fn card-height [n-items]
   "Card height that snugly fits a title block, n item rows, and the footer."
   (+ rows-top (* n-items row-step) card-foot))
-
-;; --- Scaffold input (TEMP: real player/ctx is wired by the shell later) ----
-;;
-;; The catalog is no longer hand-written: route.plan-week builds it from the
-;; live domain (activities + bis-catalog + drop-table + drop-chance), so the
-;; cards below are genuine BiS-aware scoring. Only the *inputs* are a scaffold
-;; -- a fixture player/RouteContext stands in until src/core/ wires real
-;; gear/spec/lockouts from the WoW client (gear scanning is not built yet).
-;;
-;; This fixture (feral druid, phase 3, fully attuned, owning nothing) spans the
-;; progression path: route surfaces every raid whose drops match an unowned
-;; feral BiS item -- Karazhan, Tempest Keep, Serpentshrine Cavern, and Black
-;; Temple -- score-ordered. (Hyjal carries no feral-DPS BiS in the catalog, so
-;; it self-filters out.) The plan reshapes automatically as the player's owned
-;; gear, phase, and attunements arrive from the shell.
-
-(local sample-player {:level 70
-                      :attunements {:kara-key true
-                                    :ssc-attune true
-                                    :tk-attune true
-                                    :bt-medallion true
-                                    :hyjal-vials true}
-                      :reputations {}})
-
-(local sample-ctx {:class :druid
-                   :spec :feral-dps
-                   :phase 3
-                   :now 0
-                   :owned-items {}
-                   :lockouts {}})
 
 ;; --- Event handlers (imperative, per UI.md s15) ----------------------------
 
@@ -188,14 +158,34 @@
         (table.insert node (card-spec row rank anchor))))
     node))
 
+(fn empty-spec [message]
+  "A centered note shown when the plan has no steps (loading, or done for the
+   week) -- a blank card stack would read as broken."
+  [:Frame
+   {:fill true}
+   [:FontString
+    {:font :body
+     :size :body
+     :color :ink-faint
+     :text message
+     :anchors [[:CENTER :parent :CENTER 0 0]]}]])
+
 ;; --- Construction ----------------------------------------------------------
 
 (lambda M.build! [parent]
-  "Build the Plan tab content: the scored, ordered weekly plan.
+  "Build the Plan tab content: the live, scored, ordered weekly plan.
+   Reads the current character via src/core/planner.fnl and scores it through
+   src/domain/route.fnl; falls back to a placeholder when no plan is available.
    Domain:  parent : WoW Frame (the content area)
    Returns: the new content frame."
-  (let [plan (route.plan-week sample-player sample-ctx)]
-    (. (dom.render! parent (stack-spec plan.steps)) :root)))
+  (let [input (planner.route-input)
+        steps (if input.ok (. (route.plan-week input.player input.ctx) :steps)
+                  [])
+        spec (if (> (length steps) 0)
+                 (stack-spec steps)
+                 (empty-spec (if input.ok "Nothing left to chase this week."
+                                 "Log in to a character to see your plan.")))]
+    (. (dom.render! parent spec) :root)))
 
 (set _G.Routina Routina)
 (set Routina.tab-weekly M)

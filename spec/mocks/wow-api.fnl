@@ -20,7 +20,16 @@
               ; 2024-06-09 Sunday 00:00 UTC, example fixture
               :player-name :TestPriest
               :player-realm :TestRealm
+              :player-level 70
               :inventory {}
+              :equipped {}
+              ; slot -> item-id
+              :bags {}
+              ; bag-id -> [item-id ...]
+              :talent-points [0 0 0]
+              ; points per talent tab
+              :faction-standings {}
+              ; faction-id -> standing-id (1..8)
               :quest-completed {}})
 
 ;; --- Stub implementations ---
@@ -66,6 +75,37 @@
 
 (fn stub-C_QuestLog-IsQuestFlaggedCompleted [quest-id]
   (= true (. state.quest-completed quest-id)))
+
+(fn stub-UnitLevel [unit]
+  (if (= unit :player) state.player-level nil))
+
+(fn stub-GetInventoryItemID [unit slot]
+  (if (= unit :player) (. state.equipped slot) nil))
+
+(fn stub-GetContainerNumSlots [bag]
+  ;; Real WoW: total capacity of the container (empty slots included).
+  (let [b (. state.bags bag)]
+    (if b (or b.size 0) 0)))
+
+(fn stub-GetContainerItemID [bag slot]
+  ;; nil for an empty slot, mirroring WoW; gaps don't affect the slot count.
+  (let [b (. state.bags bag)]
+    (and b b.items (. b.items slot))))
+
+(fn stub-GetNumTalentTabs []
+  (length state.talent-points))
+
+(fn stub-GetTalentTabInfo [tab]
+  ;; Real WoW: name, iconTexture, pointsSpent, background, previewPoints, unlocked
+  (values (.. :Tab tab) "Interface\\Icons\\Spell" (. state.talent-points tab) 0
+          0 true))
+
+(fn stub-GetFactionInfoByID [faction-id]
+  ;; Real WoW: name, description, standingId, bottom, top, earned, ...
+  (let [sid (. state.faction-standings faction-id)]
+    (when sid (values :Faction :desc sid 0 1000 500))))
+
+(fn stub-RequestRaidInfo [] nil)
 
 ;; --- Frame stubs (CreateFrame and the surface src/ui/* touches) ---
 ;;
@@ -153,6 +193,15 @@
   (set _G.GetRealmName stub-GetRealmName)
   (set _G.C_QuestLog
        {:IsQuestFlaggedCompleted stub-C_QuestLog-IsQuestFlaggedCompleted})
+  (set _G.UnitLevel stub-UnitLevel)
+  (set _G.GetInventoryItemID stub-GetInventoryItemID)
+  ;; legacy container globals (TBC 2.5.x); wow.fnl also probes C_Container
+  (set _G.GetContainerNumSlots stub-GetContainerNumSlots)
+  (set _G.GetContainerItemID stub-GetContainerItemID)
+  (set _G.GetNumTalentTabs stub-GetNumTalentTabs)
+  (set _G.GetTalentTabInfo stub-GetTalentTabInfo)
+  (set _G.GetFactionInfoByID stub-GetFactionInfoByID)
+  (set _G.RequestRaidInfo stub-RequestRaidInfo)
   (set _G.bit bit)
   ;; UI globals (see docs/UI.md for what each is used for):
   (set _G.CreateFrame stub-CreateFrame)
@@ -172,7 +221,12 @@
   (set state.current-time 1717891200)
   (set state.player-name :TestPriest)
   (set state.player-realm :TestRealm)
+  (set state.player-level 70)
   (set state.inventory {})
+  (set state.equipped {})
+  (set state.bags {})
+  (set state.talent-points [0 0 0])
+  (set state.faction-standings {})
   (set state.quest-completed {}))
 
 (fn M.set-saved-instances! [instances]
@@ -190,6 +244,26 @@
 (fn M.set-player! [name realm]
   (set state.player-name name)
   (set state.player-realm realm))
+
+(fn M.set-player-level! [level]
+  (set state.player-level level))
+
+(fn M.set-equipped! [slot->id]
+  "Set equipped gear as a {slot item-id} table."
+  (set state.equipped slot->id))
+
+(fn M.set-bags! [bags]
+  "Set bag/bank contents as {bag-id {:size N :items {slot item-id}}} -- :size is
+   the container capacity (empty slots allowed), :items the occupied slots."
+  (set state.bags bags))
+
+(fn M.set-talent-points! [points]
+  "Set points spent per talent tab, e.g. [0 61 0]."
+  (set state.talent-points points))
+
+(fn M.set-faction-standing! [faction-id standing-id]
+  "Set a faction's standing id (1=Hated .. 8=Exalted)."
+  (tset state.faction-standings faction-id standing-id))
 
 M
 

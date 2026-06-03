@@ -12,6 +12,7 @@
 ;; lands in Phase 2.
 
 (local Routina (or _G.Routina {}))
+(local wow (or Routina.wow (require :src.core.wow)))
 
 (local M {})
 
@@ -40,12 +41,15 @@
 
 (fn on-player-entering-world []
   (log:debug :PLAYER_ENTERING_WORLD)
-  ;; TODO Phase 2: (wow.request-raid-info!) to populate lockouts.
+  ;; Kick a saved-instance refresh; the server replies via UPDATE_INSTANCE_INFO,
+  ;; after which wow.saved-instances has live data for the route planner.
+  (wow.request-raid-info!)
   nil)
 
 (fn on-update-instance-info []
   (log:debug :UPDATE_INSTANCE_INFO)
-  ;; TODO Phase 2: (lockouts.refresh! (wow.saved-instances)).
+  ;; Lockout data is now available. The Plan tab reads it on demand via
+  ;; src/core/planner.fnl (wow.saved-instances); no cache to keep in sync here.
   nil)
 
 (fn on-raid-instance-welcome [...]

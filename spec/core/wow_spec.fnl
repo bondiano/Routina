@@ -88,3 +88,60 @@
                                                            :encounters []}])
                               (let [result (wow.saved-instances)]
                                 (assert.are.equal 0 (length result.lockouts)))))))))
+
+;; --- Route-input gatherers (Phase 2) ---------------------------------------
+
+(describe :wow-route-input
+          (fn []
+            (before_each (fn [] (mock.reset!)))
+            (describe ":player-level"
+                      (fn []
+                        (it "returns the player's level"
+                            (fn []
+                              (mock.set-player-level! 64)
+                              (assert.are.equal 64 (wow.player-level))))))
+            (describe ":talent-points"
+                      (fn []
+                        (it "returns points spent per talent tab"
+                            (fn []
+                              (mock.set-talent-points! [5 41 15])
+                              (assert.are.same [5 41 15] (wow.talent-points))))))
+            (describe ":owned-item-ids"
+                      (fn []
+                        (it "is empty with nothing equipped or bagged"
+                            (fn []
+                              (assert.are.equal 0 (length (wow.owned-item-ids)))))
+                        (it "collects equipped and bagged item ids"
+                            (fn []
+                              (mock.set-equipped! {1 28745 5 28746})
+                              ;; 16-slot bag with two occupied slots (1 and 3)
+                              (mock.set-bags! {0 {:size 16
+                                                  :items {1 29434 3 30627}}})
+                              (let [ids (wow.owned-item-ids)
+                                    seen {}]
+                                (each [_ id (ipairs ids)] (tset seen id true))
+                                (assert.is_true (. seen 28745))
+                                (assert.is_true (. seen 28746))
+                                (assert.is_true (. seen 29434))
+                                (assert.is_true (. seen 30627)))))))
+            (describe ":quest-completed?"
+                      (fn []
+                        (it "reflects the quest flag"
+                            (fn []
+                              (mock.set-quest-completed! 9999 true)
+                              (assert.is_true (wow.quest-completed? 9999))
+                              (assert.is_false (wow.quest-completed? 8888))))))
+            (describe ":faction-standing"
+                      (fn []
+                        (it "returns the standing id for a known faction"
+                            (fn []
+                              (mock.set-faction-standing! 1038 6)
+                              (assert.are.equal 6 (wow.faction-standing 1038))))
+                        (it "returns nil for an unknown faction"
+                            (fn []
+                              (assert.is_nil (wow.faction-standing 1234))))))
+            (describe ":request-raid-info!"
+                      (fn []
+                        (it "is a safe no-op call"
+                            (fn []
+                              (assert.is_nil (wow.request-raid-info!))))))))
