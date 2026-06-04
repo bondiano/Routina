@@ -86,6 +86,12 @@ build\core\planner.lua
 build\core\saved-vars.lua
 build\core\events.lua
 build\ui\widgets\why-drawer.lua
+# chance-meter + lockout-timer: the two sanctioned custom CreateFrame widgets
+# (AceGUI lacks a proportional fill / a ticking countdown). After core\wow
+# (lockout-timer reads server time via wow.now, injected by the lockouts tab)
+# and before the tabs that compose them.
+build\ui\widgets\chance-meter.lua
+build\ui\widgets\lockout-timer.lua
 build\ui\tabs\weekly.lua
 build\ui\tabs\lockouts.lua
 build\ui\tabs\bis.lua

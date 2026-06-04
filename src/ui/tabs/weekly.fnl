@@ -11,16 +11,22 @@
 ;; is no bespoke frame pool any more. render! is driven by src/ui/root.fnl
 ;; (OnGroupSelected + refresh!), itself fed by src/core/events.fnl.
 ;;
-;; NOTE: the chance is shown as text + item-quality colour. The proportional
-;; chance-meter bar from the old custom UI is deferred -- a per-pixel fill
-;; fights AceGUI's deferred layout (card width is unknown until DoLayout) and is
-;; better reintroduced later as a small standalone meter widget.
+;; NOTE: the chance is shown as text + item-quality colour AND a proportional
+;; chance-meter bar (src/ui/widgets/chance-meter.fnl) anchored to the right edge
+;; of each item row. The meter is fixed-width, so it sidesteps AceGUI's deferred
+;; layout (the reason it was originally deferred): a RIGHT-anchored 80px bar
+;; resolves at draw time regardless of DoLayout. Meters are pooled by the widget;
+;; this tab tracks the ones it acquired and releases them at the top of every
+;; repaint (AceGUI recycles its own rows, but the custom child frames are ours).
 
 (local Routina (or _G.Routina {}))
 (local acegui (or Routina.acegui (require :src.ui.acegui)))
 (local format (or Routina.format (require :src.ui.format)))
 (local route (or Routina.route (require :src.domain.route)))
 (local planner (or Routina.planner (require :src.core.planner)))
+(local chance-meter
+       (or Routina.chance-meter (require :src.ui.widgets.chance-meter)))
+
 (local GetItemInfo _G.GetItemInfo)
 (local GetItemIcon _G.GetItemIcon)
 (local GetItemQualityColor _G.GetItemQualityColor)
@@ -33,6 +39,18 @@
 ;; top-N target items per card (PRD §6.1 G2: "top 3 target items")
 (local max-rows 3)
 (local epic-quality 4)
+
+;; Right inset of the chance-meter from the item row's right edge.
+(local meter-inset -8)
+
+;; Chance-meters acquired during the current paint, drained on the next one.
+(var live-meters [])
+
+(fn release-meters! []
+  "Return every meter from the last paint to the pool. Called at the top of
+   render! before AceGUI rebuilds the rows the meters were anchored to."
+  (each [_ m (ipairs live-meters)] (chance-meter.release! m))
+  (set live-meters []))
 
 ;; --- Pure view-model (UI.md: data->spec is pure, busted-tested) ------------
 
@@ -60,8 +78,8 @@
             rank   : integer >= 1 (display rank)
             ?advice: {attune-slug text} -- soft 'not attuned' notes, or nil
    Returns: {:title :subtitle :summary :advisory? string
-             :items [{:name string :chance-text string :item-id ?integer}
-                     ...<= max-rows]}"
+             :items [{:name string :chance-text string :chance number
+                      :item-id ?integer} ...<= max-rows]}"
   {:title (.. "#" rank "  " (tostring step.name))
    :subtitle (.. (tostring step.type) " · " (tostring step.detail))
    :summary (.. "~" step.minutes " min · score "
@@ -70,7 +88,10 @@
                              (. ?advice step.attunement))]
                (and text (.. "Requires " text)))
    :items (icollect [_ it (ipairs (top-items step.items))]
-            {:name it.label :chance-text (chance-text it) :item-id it.item-id})})
+            {:name it.label
+             :chance-text (chance-text it)
+             :chance it.chance
+             :item-id it.item-id})})
 
 ;; --- Item-quality helpers (imperative, WoW API) ----------------------------
 
@@ -100,9 +121,22 @@
 (fn on-row-leave []
   (when GameTooltip (GameTooltip:Hide)))
 
+(fn attach-meter! [row chance]
+  "Anchor a fixed-width chance-meter to the right edge of an item row's frame
+   and remember it for the next release-meters! sweep. Skips a nil/out-of-range
+   chance (the text column still carries the number, UI.md §11)."
+  (when (and row row.frame chance (>= chance 0) (<= chance 1))
+    (let [meter (chance-meter.acquire! row.frame)]
+      (when meter
+        (chance-meter.set! meter (chance-meter.view-model chance))
+        (meter:ClearAllPoints)
+        (meter:SetPoint :RIGHT row.frame :RIGHT meter-inset 0)
+        (table.insert live-meters meter)))))
+
 (fn build-row! [item]
   "One hoverable item row: an InteractiveLabel showing icon + name, quality
-   coloured, with chance text and the native item tooltip on hover."
+   coloured, with chance text, a right-anchored chance-meter, and the native
+   item tooltip on hover."
   (let [row (acegui.create! :InteractiveLabel)]
     (when row
       (row:SetFullWidth true)
@@ -116,7 +150,8 @@
             (row:SetImage icon)
             (row:SetImageSize 18 18))))
       (row:SetCallback :OnEnter (make-tooltip-enter item.item-id))
-      (row:SetCallback :OnLeave on-row-leave))
+      (row:SetCallback :OnLeave on-row-leave)
+      (attach-meter! row item.chance))
     row))
 
 ;; --- Card (AceGUI InlineGroup) ---------------------------------------------
@@ -179,6 +214,7 @@
    headless (no AceGUI).
    Domain:  container : an AceGUI container widget
    Returns: nil."
+  (release-meters!)
   (let [scroll (acegui.create! :ScrollFrame)]
     (when (and scroll container)
       ;; Fill so the single ScrollFrame spans the whole tab; the scroll's own

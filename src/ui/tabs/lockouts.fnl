@@ -12,10 +12,16 @@
 ;; imperative. render! follows the tab contract in src/ui/root.fnl: idempotent
 ;; populate of the AceGUI container (the caller ReleaseChildren's it first).
 ;;
-;; NOTE: the reset value is computed once at render time (ctx.now), not a live
-;; ticking countdown. A per-frame OnUpdate timer (PRD's lockout-timer, 1/4 Hz)
-;; is deferred to a standalone widget -- the tab already re-renders on the
-;; lockout events src/core/events.fnl dispatches, same as the Plan tab.
+;; NOTE: the static reset line is computed once at render (ctx.now) as a
+;; guaranteed-readable fallback; on top of it each card carries a LIVE
+;; lockout-timer (src/ui/widgets/lockout-timer.fnl) anchored as a badge to the
+;; card frame's top-right corner -- a ticking countdown + urgency bar that fills
+;; over the last 24h with a one-shot gold pulse on crossing it. The timer is the
+;; panel's one OnUpdate widget (throttled 1/4 Hz). It reads server time through
+;; core/wow.now (injected as now-fn -- the widget itself touches no WoW API).
+;; Timers are pooled; this tab releases the ones it started at the top of every
+;; repaint (release! also stops the OnUpdate), same discipline as the Plan tab's
+;; chance-meters.
 
 (local Routina (or _G.Routina {}))
 (local acegui (or Routina.acegui (require :src.ui.acegui)))
@@ -23,6 +29,9 @@
 (local lockouts (or Routina.lockouts (require :src.domain.lockouts)))
 (local activities (or Routina.activities (require :src.domain.activities)))
 (local planner (or Routina.planner (require :src.core.planner)))
+(local wow (or Routina.wow (require :src.core.wow)))
+(local lockout-timer
+       (or Routina.lockout-timer (require :src.ui.widgets.lockout-timer)))
 
 (local M {})
 
@@ -31,6 +40,19 @@
 ;; Reset within a day flags the lockout as urgent (warn-coloured). Raids reset
 ;; weekly, so this only fires in the final stretch before the weekly reset.
 (local urgent-window 86400)
+
+;; Inset of the live-timer badge from the card frame's top-right corner.
+(local badge-x -12)
+(local badge-y -8)
+
+;; Live timers acquired during the current paint, drained on the next one.
+(var live-timers [])
+
+(fn release-timers! []
+  "Stop and pool every timer from the last paint. Called at the top of render!
+   before AceGUI rebuilds the cards the timers were anchored to."
+  (each [_ t (ipairs live-timers)] (lockout-timer.release! t))
+  (set live-timers []))
 
 ;; --- Pure view-model (UI.md: data->spec is pure, busted-tested) ------------
 
@@ -43,7 +65,7 @@
             name    : string -- human-readable instance name
             now     : integer -- current server time in seconds
    Returns: {:title string :progress string :status string :reset-text string
-             :urgent? boolean :shareable? boolean}
+             :reset-at integer :urgent? boolean :shareable? boolean}
    Errors:  if the LockoutView shape is invalid, or now is not a number."
   (let [killed lockout.bosses-killed
         total lockout.bosses-total
@@ -54,6 +76,7 @@
      :status (if (= remaining 0) "Fully cleared"
                  (.. remaining (boss-word remaining) " remaining"))
      :reset-text (.. "Resets in " (format.duration-short secs))
+     :reset-at lockout.expiry
      :urgent? (< secs urgent-window)
      :shareable? (lockouts.lockout-shareable? lockout now)}))
 
@@ -89,8 +112,22 @@
       (acegui.themed-label! label (or ?color :ink) :body (or ?size :body))
       (card:AddChild label))))
 
+(fn attach-timer! [card vm]
+  "Anchor a live lockout-timer badge to the card frame's top-right corner and
+   remember it for the next release-timers! sweep. The static reset line stays
+   as the readable fallback (UI.md §11); the badge adds the live tick + urgency
+   bar + 24h pulse."
+  (when (and card card.frame vm.reset-at)
+    (let [timer (lockout-timer.acquire! card.frame)]
+      (when timer
+        (timer:ClearAllPoints)
+        (timer:SetPoint :TOPRIGHT card.frame :TOPRIGHT badge-x badge-y)
+        (lockout-timer.start! timer vm.reset-at wow.now)
+        (table.insert live-timers timer)))))
+
 (fn build-card! [vm]
-  "Build one lockout card as an InlineGroup from a pure view-model."
+  "Build one lockout card as an InlineGroup from a pure view-model, with a live
+   countdown badge anchored to its corner."
   (let [card (acegui.create! :InlineGroup)]
     (when card
       (card:SetTitle vm.title)
@@ -100,7 +137,8 @@
       (add-line! card vm.status :ink-faint :caption)
       (add-line! card vm.reset-text (if vm.urgent? :warn :ink-faint) :caption)
       (when vm.shareable?
-        (add-line! card "Shareable -- can extend to group" :gold :caption)))
+        (add-line! card "Shareable -- can extend to group" :gold :caption))
+      (attach-timer! card vm))
     card))
 
 ;; --- Public API ------------------------------------------------------------
@@ -125,6 +163,7 @@
    the container first. No-op headless (no AceGUI).
    Domain:  container : an AceGUI container widget
    Returns: nil."
+  (release-timers!)
   (let [scroll (acegui.create! :ScrollFrame)]
     (when (and scroll container)
       (container:SetLayout :Fill)
