@@ -12,22 +12,35 @@
                                   {:value :restoration :text :Resto}]
                           : on-change}))
 
+(fn general [t]
+  (. t.args.general :args))
+
 (describe :options-table
           (fn []
-            (it "exposes spec, phase, competitors, weights and attunement groups"
+            (it "splits into general, weights and attunement sub-groups"
                 (fn []
                   (let [t (build {} (fn []))]
-                    (assert.are.equal :select (. t.args.spec :type))
-                    (assert.are.equal :range (. t.args.phase :type))
-                    (assert.are.equal 1 (. t.args.phase :min))
-                    (assert.are.equal 5 (. t.args.phase :max))
-                    (assert.are.equal :range (. t.args.competitors :type))
+                    (assert.are.equal :group (. t.args.general :type))
                     (assert.are.equal :group (. t.args.weights :type))
                     (assert.are.equal :group (. t.args.attune :type)))))
+            (it "keeps the sub-groups non-inline so each maps to a Bliz sub-panel"
+                (fn []
+                  (let [t (build {} (fn []))]
+                    (assert.is_nil (. t.args.general :inline))
+                    (assert.is_nil (. t.args.weights :inline))
+                    (assert.is_nil (. t.args.attune :inline)))))
+            (it "exposes spec, phase and competitors in the general group"
+                (fn []
+                  (let [g (general (build {} (fn [])))]
+                    (assert.are.equal :select (. g.spec :type))
+                    (assert.are.equal :range (. g.phase :type))
+                    (assert.are.equal 1 (. g.phase :min))
+                    (assert.are.equal 5 (. g.phase :max))
+                    (assert.are.equal :range (. g.competitors :type)))))
             (it "offers an auto sentinel plus each class spec in the dropdown"
                 (fn []
-                  (let [t (build {} (fn []))
-                        vals (. t.args.spec :values)]
+                  (let [g (general (build {} (fn [])))
+                        vals (. g.spec :values)]
                     (assert.is_truthy (. vals :auto))
                     (assert.is_truthy (. vals :feral-dps))
                     (assert.is_truthy (. vals :restoration)))))
@@ -39,50 +52,51 @@
                     (assert.are.equal 17 n))))
             (it "reads current values back through :get"
                 (fn []
-                  (let [t (build {:phase 4 :default-competitors 3} (fn []))]
-                    (assert.are.equal 4 ((. t.args.phase :get) nil))
-                    (assert.are.equal 3 ((. t.args.competitors :get) nil)))))
+                  (let [g (general (build {:phase 4 :default-competitors 3}
+                                          (fn [])))]
+                    (assert.are.equal 4 ((. g.phase :get) nil))
+                    (assert.are.equal 3 ((. g.competitors :get) nil)))))
             (it "exposes a projection seed slider, default 1, written via :set"
                 (fn []
                   (let [db {}
                         hits {:n 0}
-                        t (build db (fn [] (set hits.n (+ hits.n 1))))]
-                    (assert.are.equal :range (. t.args.seed :type))
-                    (assert.are.equal 1 ((. t.args.seed :get) nil))
-                    ((. t.args.seed :set) nil 4242)
+                        g (general (build db (fn [] (set hits.n (+ hits.n 1)))))]
+                    (assert.are.equal :range (. g.seed :type))
+                    (assert.are.equal 1 ((. g.seed :get) nil))
+                    ((. g.seed :set) nil 4242)
                     (assert.are.equal 4242 db.seed)
                     (assert.are.equal 1 hits.n))))
             (it "exposes an include-classic toggle, off by default, written via :set"
                 (fn []
                   (let [db {}
-                        t (build db (fn []))]
-                    (assert.are.equal :toggle (. t.args.include-classic :type))
-                    (assert.is_false ((. t.args.include-classic :get) nil))
-                    ((. t.args.include-classic :set) nil true)
+                        g (general (build db (fn [])))]
+                    (assert.are.equal :toggle (. g.include-classic :type))
+                    (assert.is_false ((. g.include-classic :get) nil))
+                    ((. g.include-classic :set) nil true)
                     (assert.is_true db.include-classic?))))
             (it "exposes a luck-tracking toggle, off by default, written via :set"
                 (fn []
                   (let [db {}
-                        t (build db (fn []))]
-                    (assert.are.equal :toggle (. t.args.track-luck :type))
-                    (assert.is_false ((. t.args.track-luck :get) nil))
-                    ((. t.args.track-luck :set) nil true)
+                        g (general (build db (fn [])))]
+                    (assert.are.equal :toggle (. g.track-luck :type))
+                    (assert.is_false ((. g.track-luck :get) nil))
+                    ((. g.track-luck :set) nil true)
                     (assert.is_true db.track-luck?))))
             (it "writes phase and fires on-change via :set"
                 (fn []
                   (let [db {}
                         hits {:n 0}
-                        t (build db (fn [] (set hits.n (+ hits.n 1))))]
-                    ((. t.args.phase :set) nil 2)
+                        g (general (build db (fn [] (set hits.n (+ hits.n 1)))))]
+                    ((. g.phase :set) nil 2)
                     (assert.are.equal 2 db.phase)
                     (assert.are.equal 1 hits.n))))
             (it "stores a spec override, and :auto clears it"
                 (fn []
                   (let [db {}
-                        t (build db (fn []))]
-                    ((. t.args.spec :set) nil :feral-dps)
+                        g (general (build db (fn [])))]
+                    ((. g.spec :set) nil :feral-dps)
                     (assert.are.equal :feral-dps db.spec)
-                    ((. t.args.spec :set) nil :auto)
+                    ((. g.spec :set) nil :auto)
                     (assert.is_nil db.spec))))
             (it "writes a slot weight into the nested weights table"
                 (fn []
@@ -100,4 +114,9 @@
                     ((. advise :set) nil true)
                     ((. gate :set) nil true)
                     (assert.is_true (. db.attune :kara-key :advise?))
-                    (assert.is_true (. db.attune :kara-key :gate?)))))))
+                    (assert.is_true (. db.attune :kara-key :gate?)))))
+            (it "gives attunement toggles full width so labels aren't truncated"
+                (fn []
+                  (let [t (build {} (fn []))]
+                    (each [_ toggle (pairs t.args.attune.args)]
+                      (assert.are.equal :full (. toggle :width))))))))

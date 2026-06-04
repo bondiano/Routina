@@ -61,11 +61,10 @@
     out))
 
 (fn weights-group [db changed]
-  "Inline group of one 1..5 weight slider per gear slot."
+  "Group of one 1..5 weight slider per gear slot (own Bliz sub-panel)."
   {:type :group
    :name "Slot weights"
-   :inline true
-   :order 4
+   :order 2
    :args (collect [i slot (ipairs slots)]
            (values (tostring slot)
                    {:type :range
@@ -88,6 +87,7 @@
               {:type :toggle
                :name (.. row.label ": advise if missing")
                :order (* i 2)
+               :width :full
                :get (fn [_] (= true (?. db :attune slug :advise?)))
                :set (fn [_ v]
                       (tset (ensure-sub! (ensure-sub! db :attune) slug)
@@ -97,6 +97,7 @@
               {:type :toggle
                :name (.. row.label ": hide if not attuned")
                :order (+ 1 (* i 2))
+               :width :full
                :get (fn [_] (= true (?. db :attune slug :gate?)))
                :set (fn [_ v]
                       (tset (ensure-sub! (ensure-sub! db :attune) slug) :gate?
@@ -104,10 +105,73 @@
                       (changed))})))
     args))
 
+(fn general-group [db specs changed]
+  "Group of the standalone settings (spec, phase, sliders, toggles)."
+  {:type :group
+   :name :General
+   :order 1
+   :args {:spec {:type :select
+                 :name :Specialization
+                 :order 1
+                 :values (spec-values specs)
+                 :get (fn [_] (or db.spec :auto))
+                 :set (fn [_ v]
+                        (tset db :spec (if (= v :auto) nil v))
+                        (changed))}
+          :phase {:type :range
+                  :name "Content phase"
+                  :order 2
+                  :min 1
+                  :max 5
+                  :step 1
+                  :get (fn [_] (or db.phase 3))
+                  :set (fn [_ v] (tset db :phase v) (changed))}
+          :competitors {:type :range
+                        :name "Loot competitors (per drop)"
+                        :order 3
+                        :min 1
+                        :max 8
+                        :step 1
+                        :get (fn [_] (or db.default-competitors 1))
+                        :set (fn [_ v]
+                               (tset db :default-competitors v)
+                               (changed))}
+          :seed {:type :range
+                 :name "Projection seed"
+                 :desc "Monte Carlo seed for the weekly fill projection. Change it to resample; the same seed always projects identically."
+                 :order 4
+                 :min 1
+                 :max 9999
+                 :step 1
+                 :get (fn [_] (or db.seed 1))
+                 :set (fn [_ v] (tset db :seed v) (changed))}
+          :track-luck {:type :toggle
+                       :name "Track loot luck (experimental)"
+                       :desc "Record boss kills and your loot to compute a Bayesian luck score. Off by default."
+                       :order 5
+                       :width :full
+                       :get (fn [_] (= true db.track-luck?))
+                       :set (fn [_ v]
+                              (tset db :track-luck? v)
+                              (when (?. Routina :events :set-history-tracking!)
+                                (Routina.events.set-history-tracking! v))
+                              (changed))}
+          :include-classic {:type :toggle
+                            :name "Include pre-TBC (Classic) drops"
+                            :desc "Show gear from vanilla content (Naxx40, AQ, Blackrock, etc.). Off by default. Atiesh is never suggested."
+                            :order 6
+                            :width :full
+                            :get (fn [_] (= true db.include-classic?))
+                            :set (fn [_ v]
+                                   (tset db :include-classic? v)
+                                   (changed))}}})
+
 ;; --- Public API ------------------------------------------------------------
 
 (lambda M.options-table [api]
-  "Build the AceConfig options spec.
+  "Build the AceConfig options spec. Top-level args are all non-inline groups
+   (general / weights / attune) so register! can map each onto its own
+   Blizzard sub-panel -- one flat page overflowed the fixed-size frame.
    Domain:  api : {:db {route-options table, mutated by :set closures}
                    :specs [{:value keyword :text string} ...]  -- spec choices
                    :on-change (fn []) | nil  -- fired after any :set (re-plan)}
@@ -116,65 +180,12 @@
         changed (fn [] (when api.on-change (api.on-change)))]
     {:type :group
      :name :Routina
-     :args {:spec {:type :select
-                   :name :Specialization
-                   :order 1
-                   :values (spec-values (or api.specs []))
-                   :get (fn [_] (or db.spec :auto))
-                   :set (fn [_ v]
-                          (tset db :spec (if (= v :auto) nil v))
-                          (changed))}
-            :phase {:type :range
-                    :name "Content phase"
-                    :order 2
-                    :min 1
-                    :max 5
-                    :step 1
-                    :get (fn [_] (or db.phase 3))
-                    :set (fn [_ v] (tset db :phase v) (changed))}
-            :competitors {:type :range
-                          :name "Loot competitors (per drop)"
-                          :order 3
-                          :min 1
-                          :max 8
-                          :step 1
-                          :get (fn [_] (or db.default-competitors 1))
-                          :set (fn [_ v]
-                                 (tset db :default-competitors v)
-                                 (changed))}
-            :seed {:type :range
-                   :name "Projection seed"
-                   :desc "Monte Carlo seed for the weekly fill projection. Change it to resample; the same seed always projects identically."
-                   :order 6
-                   :min 1
-                   :max 9999
-                   :step 1
-                   :get (fn [_] (or db.seed 1))
-                   :set (fn [_ v] (tset db :seed v) (changed))}
-            :include-classic {:type :toggle
-                              :name "Include pre-TBC (Classic) drops"
-                              :desc "Show gear from vanilla content (Naxx40, AQ, Blackrock, etc.). Off by default. Atiesh is never suggested."
-                              :order 8
-                              :get (fn [_] (= true db.include-classic?))
-                              :set (fn [_ v]
-                                     (tset db :include-classic? v)
-                                     (changed))}
-            :track-luck {:type :toggle
-                         :name "Track loot luck (experimental)"
-                         :desc "Record boss kills and your loot to compute a Bayesian luck score. Off by default."
-                         :order 7
-                         :get (fn [_] (= true db.track-luck?))
-                         :set (fn [_ v]
-                                (tset db :track-luck? v)
-                                (when (?. Routina :events
-                                          :set-history-tracking!)
-                                  (Routina.events.set-history-tracking! v))
-                                (changed))}
+     :childGroups :tree
+     :args {:general (general-group db (or api.specs []) changed)
             :weights (weights-group db changed)
             :attune {:type :group
                      :name "Attunement gating"
-                     :inline true
-                     :order 5
+                     :order 3
                      :args (attune-args db changed)}}}))
 
 ;; --- Impure registration (guarded: no-op without the config libs) ----------
@@ -197,8 +208,9 @@
         [])))
 
 (lambda M.register! [addon]
-  "Register and bind the options panel to addon.db. No-op if the AceConfig libs
-   or the DB aren't available (so headless tests stay quiet).
+  "Register and bind the options panel to addon.db. Each top-level group gets
+   its own Blizzard sub-panel (the fixed-size frame can't fit one flat page).
+   No-op if the AceConfig libs or the DB aren't available (headless tests).
    Domain:  addon : the AceAddon object (has :db)
    Returns: true when registered, false otherwise."
   (let [AceConfig (and LibStub (LibStub :AceConfig-3.0 true))
@@ -208,14 +220,22 @@
         (let [table (M.options-table {: db
                                       :specs (class-specs addon)
                                       :on-change root.refresh!})
-              AceDBOptions (and LibStub (LibStub :AceDBOptions-3.0 true))]
-          (when (and AceDBOptions addon.db)
+              AceDBOptions (and LibStub (LibStub :AceDBOptions-3.0 true))
+              profiles? (and AceDBOptions addon.db)]
+          (when profiles?
             (tset table.args :profiles
                   (let [p (AceDBOptions:GetOptionsTable addon.db)]
                     (tset p :order 100)
                     p)))
           (AceConfig:RegisterOptionsTable :Routina table)
-          (AceConfigDialog:AddToBlizOptions :Routina :Routina)
+          (AceConfigDialog:AddToBlizOptions :Routina :Routina nil :general)
+          (AceConfigDialog:AddToBlizOptions :Routina "Slot weights" :Routina
+                                            :weights)
+          (AceConfigDialog:AddToBlizOptions :Routina "Attunement gating"
+                                            :Routina :attune)
+          (when profiles?
+            (AceConfigDialog:AddToBlizOptions :Routina :Profiles :Routina
+                                              :profiles))
           true)
         false)))
 
