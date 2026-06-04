@@ -38,6 +38,23 @@
 (local default-slot-weight 1)
 (local default-competitors 1)
 
+;; Items never recommended, regardless of settings: the four Atiesh variants are
+;; vanilla legendaries whose quest line was removed with Naxxramas-40 in TBC, so
+;; they are unobtainable on TBC Anniversary. (The BiS import lists them and the
+;; drop import mislabelled them as guaranteed quest rewards.)
+(local excluded-item-ids {22589 true 22630 true 22631 true 22632 true})
+
+;; Pre-TBC ("classic") gear is hidden unless ctx.include-classic? opts it back in.
+;; The imported dataset's classic items top out at id 23207 (Atiesh / AQ40 / Naxx40)
+;; and the lowest TBC item is 24116, so anything below this cutoff is pre-TBC.
+(local classic-item-id-cutoff 23500)
+
+;; Monte Carlo projection defaults (PRD §6.5 / ROADMAP Phase 4 §3). 1000 sims
+;; keeps the run well under the 50 ms budget; the seed is fixed so a plan
+;; projects identically until the options panel exposes a user seed.
+(local default-sims 1000)
+(local default-seed 1)
+
 ;; Planned clears per reset cadence over one week (greedy v1; no multi-week
 ;; "score per hour" warp yet -- OQ-6). A weekly raid is one clear; a daily
 ;; instance is capped at a casual "nights per week" estimate; :none is one-shot.
@@ -79,6 +96,12 @@
   "True iff the player already holds this item-id."
   (and ctx.owned-items (not= nil (. ctx.owned-items item-id))))
 
+(fn show-item? [ctx item-id]
+  "Whether an item may be recommended: never if hard-excluded (Atiesh), and
+   pre-TBC gear only when ctx.include-classic? opts it in."
+  (and (not (. excluded-item-ids item-id))
+       (or ctx.include-classic? (>= item-id classic-item-id-cutoff))))
+
 (fn target-item [ctx adef bis-entry]
   "A scored TargetItem for one BiS entry IF its item drops from this activity.
    Returns nil when the item is untracked or sourced elsewhere, so the activity
@@ -100,7 +123,8 @@
    fall away, so an empty result means 'nothing here for this player'."
   (let [bis (bis-catalog.by-class-spec ctx.class ctx.spec)]
     (icollect [_ e (ipairs bis)]
-      (when (and (<= e.phase ctx.phase) (not (owned? ctx e.item.id)))
+      (when (and (<= e.phase ctx.phase) (not (owned? ctx e.item.id))
+                 (show-item? ctx e.item.id))
         (target-item ctx adef e)))))
 
 (fn candidate-activity [player ctx adef]
@@ -129,7 +153,43 @@
       (+ total (* (weight-for ctx item.slot)
                   (chance.at-least-one item.p item.runs))))))
 
+(fn slot-fill-probs [steps]
+  "Map gear-slot -> P(at least one upgrade for that slot by reset), folding every
+   target item across all plan steps. Each item's week-probability is
+   at-least-one(p, runs); items sharing a slot combine via the complement product
+   (the slot is filled if ANY of its candidates drops). Items without a :slot are
+   skipped -- their fill is unobservable."
+  (let [probs {}]
+    (each [_ step (ipairs steps)]
+      (each [_ item (ipairs step.items)]
+        (when item.slot
+          (let [p-week (chance.at-least-one item.p item.runs)
+                prior (or (. probs item.slot) 0)]
+            (tset probs item.slot (- 1 (* (- 1 prior) (- 1 p-week))))))))
+    probs))
+
 ;; --- Public API ------------------------------------------------------------
+
+(lambda M.project-week [plan ?opts]
+  "Monte Carlo projection of how many BiS slots this week's plan fills by reset.
+   Pure + deterministic for a given seed -- no clock, no math.random (a seeded
+   MINSTD generator is built internally). Collapses each target item into a
+   per-slot 'any upgrade this week' Bernoulli (slot-fill-probs), then samples it
+   via drop-chance.coupon-collector-mc.
+   Domain:  plan  : {:steps [plan-row ...]} -- the M.plan-week result
+            ?opts : {:sims ?integer >0 :seed ?integer} (defaults 1000 / 1)
+   Returns: {:p10 :p50 :p90 :slots integer} -- p10/p50/p90 are fractions in
+            [0,1] of distinct target slots filled by reset; :slots is that slot
+            count. {:p10 0 :p50 0 :p90 0 :slots 0} when the plan targets none."
+  (let [sims (or (and ?opts ?opts.sims) default-sims)
+        seed (or (and ?opts ?opts.seed) default-seed)
+        probs (slot-fill-probs (or (and plan plan.steps) []))
+        items (icollect [slot p (pairs probs)] {: slot : p})]
+    (if (= 0 (length items))
+        {:p10 0 :p50 0 :p90 0 :slots 0}
+        (let [rng (chance.make-rng seed)
+              mc (chance.coupon-collector-mc items 1 sims rng)]
+          {:p10 mc.p10 :p50 mc.p50 :p90 mc.p90 :slots (length items)}))))
 
 (lambda M.plan-week [player ctx]
   "Build this week's recommended route for a player.
@@ -140,7 +200,7 @@
                      activity requirement / availability gate
             ctx    : schemas.RouteContext -- {:class :spec :phase :now
                      :owned-items :lockouts :weights? :competitors?
-                     :default-competitors?}
+                     :default-competitors? :seed? :include-classic?}
    Returns: {:steps [plan-row ...]  -- available, item-bearing activities,
                                        score desc (ties: minutes asc, name, id);
                                        each row carries its :attunement slug (or

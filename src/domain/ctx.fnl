@@ -211,6 +211,7 @@
                         :faction-standing (fn [fid] -> standingId|nil)
                         :options {:spec ?kw :phase ?int :weights ?{}
                                   :competitors ?{} :default-competitors ?int
+                                  :seed ?int :include-classic? ?bool
                                   :attune ?{slug {:gate? ?bool :advise? ?bool}}}}
    Returns: {:player schemas.Player :ctx schemas.RouteContext
              :advice {attune-slug advice-text}}  -- soft 'not attuned' notes
@@ -228,7 +229,9 @@
              :lockouts (lockout-views snapshot.raw-lockouts snapshot.owner)
              :weights opts.weights
              :competitors opts.competitors
-             :default-competitors opts.default-competitors}]
+             :default-competitors opts.default-competitors
+             :seed opts.seed
+             :include-classic? opts.include-classic?}]
     (validate.assert! schemas.Player player :ctx/player)
     (validate.assert! schemas.RouteContext ctx :ctx/ctx)
     {: player : ctx :advice (attunement-advice eff snapshot.quest-completed?)}))

@@ -60,4 +60,44 @@
                 (fn []
                   (let [vm (why.view-model (step {:items []}))]
                     (assert.are.equal 0 (length vm.score-breakdown))
-                    (assert.is_nil vm.weight-explanation))))))
+                    (assert.is_nil vm.weight-explanation))))
+            (it "has no diff without a comparison step"
+                (fn []
+                  (assert.is_nil (. (why.view-model (step {})) :diff))))
+            (it "diffs against the alternative it out-scores"
+                (fn []
+                  (let [a (step {:name :Karazhan :score 0.7 :minutes 95})
+                        b (step {:name :Gruul :score 0.5 :minutes 60})
+                        diff (. (why.view-model a nil b) :diff)]
+                    (assert.are.equal :Gruul diff.vs)
+                    (assert.is_true diff.leads?)
+                    ;; 0.7 - 0.5, within float tolerance
+                    (assert.is_true (< (math.abs (- 0.2 diff.delta)) 1e-09))
+                    ;; the score line is always the first reason
+                    (assert.is_truthy (string.find (. diff.reasons 1) :0.70 1
+                                                   true))
+                    (assert.is_truthy (string.find (. diff.reasons 1) :0.50 1
+                                                   true)))))
+            (it "ranks top contributors (<=3) and names the strongest"
+                (fn []
+                  (let [a (step {:name :Karazhan
+                                 :score 0.7
+                                 :items [(item :boots :feet 0.2)
+                                         (item :ring :ring1 0.5)
+                                         (item :cloak :back 0.1)
+                                         (item :belt :waist 0.05)]})
+                        b (step {:name :Gruul :score 0.3})
+                        diff (. (why.view-model a nil b) :diff)]
+                    (assert.are.equal 3 (length diff.top-items))
+                    (assert.are.equal :ring (. diff.top-items 1 :label))
+                    ;; "Most of the edge: ring ..." is among the reasons
+                    (assert.is_truthy (string.find (. diff.reasons 2) :ring 1
+                                                   true)))))
+            (it "explains a weighted slot and a shorter run in the diff"
+                (fn []
+                  (let [a (step {:name :Karazhan :score 1.2 :minutes 60})
+                        b (step {:name :Gruul :score 0.5 :minutes 95})
+                        diff (. (why.view-model a {:weights {:feet 5}} b) :diff)
+                        joined (table.concat diff.reasons " | ")]
+                    (assert.is_truthy (string.find joined "×5" 1 true))
+                    (assert.is_truthy (string.find joined "min shorter" 1 true)))))))

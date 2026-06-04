@@ -67,6 +67,24 @@
 
 ;; --- Construction (lazy singleton) -----------------------------------------
 
+(local escape-frame-name :RoutinaRootFrame)
+
+(fn register-escape-close! [wow-frame]
+  "Make Escape close the panel the WoW-idiomatic way: expose the underlying
+   frame under a global name and add that name to UISpecialFrames (Blizzard then
+   hides it on Escape). Also dismiss the why-drawer whenever the frame hides, so
+   Escape and the X button behave identically. No-op headless / on a nil frame."
+  (when (and wow-frame _G.UISpecialFrames)
+    (tset _G escape-frame-name wow-frame)
+    (var present? false)
+    (each [_ n (ipairs _G.UISpecialFrames)]
+      (when (= n escape-frame-name) (set present? true)))
+    (when (not present?)
+      (table.insert _G.UISpecialFrames escape-frame-name))
+    (when wow-frame.HookScript
+      (wow-frame:HookScript :OnHide (fn [] (why-drawer.close!)))))
+  nil)
+
 (fn build-ui! []
   "Build the AceGUI Frame + TabGroup once. Returns {:frame :tabs} or nil when
    AceGUI is unavailable (headless busted)."
@@ -81,7 +99,10 @@
       ;; Closing (X button) just hides the singleton and dismisses the drawer;
       ;; we never Release so re-show is instant.
       (frame:SetCallback :OnClose (fn [] (why-drawer.close!)))
-      (acegui.tint-frame! frame :parchment)
+      (acegui.tint-frame! frame)
+      ;; ESC closes the panel like any WoW window: register the underlying frame
+      ;; in UISpecialFrames (by global name) and dismiss the drawer when hidden.
+      (register-escape-close! frame.frame)
       (tabs:SetLayout :Flow)
       (tabs:SetTabs tabs-def)
       (tabs:SetCallback :OnGroupSelected on-tab-selected)
@@ -124,11 +145,12 @@
     (when u (u.tabs:SelectTab key)))
   nil)
 
-(lambda M.show-why! [step ?ctx]
+(lambda M.show-why! [step ?ctx ?compare]
   "Open the why-drawer for a plan step, anchored to the right of the panel.
-   Domain:  step : a route plan step; ?ctx : the RouteContext (weights/comp)
+   Domain:  step : a route plan step; ?ctx : the RouteContext (weights/comp);
+            ?compare : the next-best alternative step out-scored, or nil
    Returns: nil."
-  (when ui (why-drawer.open! (and ui.frame ui.frame.frame) step ?ctx))
+  (when ui (why-drawer.open! (and ui.frame ui.frame.frame) step ?ctx ?compare))
   nil)
 
 (lambda M.refresh! []

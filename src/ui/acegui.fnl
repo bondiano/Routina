@@ -72,20 +72,25 @@
   label)
 
 (lambda M.tint-frame! [widget ?color-token ?alpha]
-  "Tint an AceGUI Frame's backdrop with a palette token, nudging it off the
-   default grey toward parchment. The Frame container's widget.frame is created
-   with BackdropTemplate and already carries a backdrop, so SetBackdropColor is
-   safe with no template injection (verified:
-   Libs/Ace3/AceGUI-3.0/widgets/AceGUIContainer-Frame.lua). No-op when the
-   widget or its frame is absent.
+  "Give an AceGUI Frame a solid, opaque themed fill. The default AceGUI dialog
+   backdrop is largely see-through (the game world bleeds through an otherwise
+   empty panel), so besides tinting the backdrop we lay a full-cover solid colour
+   texture in the BACKGROUND layer (created once, behind all content). No-op when
+   the widget or its frame is absent.
    Domain:  widget       : AceGUI Frame widget (has .frame) | nil
-            ?color-token : palette key, default :parchment
-            ?alpha       : number in [0, 1], default 0.94
+            ?color-token : palette key, default :panel
+            ?alpha       : number in [0, 1], default 0.96
    Returns: widget."
-  (let [frame (and widget widget.frame)]
+  (let [frame (and widget widget.frame)
+        token (or ?color-token :panel)
+        alpha (or ?alpha 0.96)]
     (when (and frame frame.SetBackdropColor)
-      (frame:SetBackdropColor (theme.color (or ?color-token :parchment)
-                                           (or ?alpha 0.94)))))
+      (frame:SetBackdropColor (theme.color token alpha)))
+    (when (and frame frame.CreateTexture (not frame.routina-bg))
+      (let [bg (frame:CreateTexture nil :BACKGROUND)]
+        (bg:SetAllPoints frame)
+        (bg:SetColorTexture (theme.color token alpha))
+        (set frame.routina-bg bg))))
   widget)
 
 ;; --- Register --------------------------------------------------------------

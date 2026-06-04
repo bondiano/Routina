@@ -42,6 +42,32 @@
                   (let [t (build {:phase 4 :default-competitors 3} (fn []))]
                     (assert.are.equal 4 ((. t.args.phase :get) nil))
                     (assert.are.equal 3 ((. t.args.competitors :get) nil)))))
+            (it "exposes a projection seed slider, default 1, written via :set"
+                (fn []
+                  (let [db {}
+                        hits {:n 0}
+                        t (build db (fn [] (set hits.n (+ hits.n 1))))]
+                    (assert.are.equal :range (. t.args.seed :type))
+                    (assert.are.equal 1 ((. t.args.seed :get) nil))
+                    ((. t.args.seed :set) nil 4242)
+                    (assert.are.equal 4242 db.seed)
+                    (assert.are.equal 1 hits.n))))
+            (it "exposes an include-classic toggle, off by default, written via :set"
+                (fn []
+                  (let [db {}
+                        t (build db (fn []))]
+                    (assert.are.equal :toggle (. t.args.include-classic :type))
+                    (assert.is_false ((. t.args.include-classic :get) nil))
+                    ((. t.args.include-classic :set) nil true)
+                    (assert.is_true db.include-classic?))))
+            (it "exposes a luck-tracking toggle, off by default, written via :set"
+                (fn []
+                  (let [db {}
+                        t (build db (fn []))]
+                    (assert.are.equal :toggle (. t.args.track-luck :type))
+                    (assert.is_false ((. t.args.track-luck :get) nil))
+                    ((. t.args.track-luck :set) nil true)
+                    (assert.is_true db.track-luck?))))
             (it "writes phase and fires on-change via :set"
                 (fn []
                   (let [db {}

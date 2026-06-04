@@ -69,3 +69,33 @@
                         s (step {: items})
                         _ (weekly.card-view-model s 1)]
                     (assert.are.equal 1 (. items 1 :item-id)))))))
+
+(describe :weekly-projection-view-model
+          (fn []
+            (it "is nil when the plan targets no slots"
+                (fn []
+                  (assert.is_nil (weekly.projection-view-model {:p10 0
+                                                                :p50 0
+                                                                :p90 0
+                                                                :slots 0}))
+                  (assert.is_nil (weekly.projection-view-model nil))))
+            (it "formats the percentiles and slot count"
+                (fn []
+                  (let [vm (weekly.projection-view-model {:p10 0.2
+                                                          :p50 0.4
+                                                          :p90 0.6
+                                                          :slots 5})]
+                    (assert.is_truthy (string.find vm.detail "P10 20%" 1 true))
+                    (assert.is_truthy (string.find vm.detail "P50 40%" 1 true))
+                    (assert.is_truthy (string.find vm.detail "P90 60%" 1 true))
+                    (assert.is_truthy (string.find vm.detail "5 target slots" 1
+                                                   true)))))
+            (it "uses the singular for a single target slot"
+                (fn []
+                  (let [vm (weekly.projection-view-model {:p10 0
+                                                          :p50 1
+                                                          :p90 1
+                                                          :slots 1})]
+                    (assert.is_truthy (string.find vm.detail "1 target slot" 1
+                                                   true))
+                    (assert.is_nil (string.find vm.detail :slots 1 true)))))))

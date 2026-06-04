@@ -214,6 +214,30 @@
   (when RequestRaidInfo (RequestRaidInfo))
   nil)
 
+(lambda M.loot-item-id [?text]
+  "Extract the itemID from a CHAT_MSG_LOOT message's item hyperlink, or nil.
+   WoW embeds it as |Hitem:<id>:...|h[Name]|h|r. Pure string parse, no API.
+   Domain:  ?text : string | nil
+   Returns: integer | nil"
+  (when (= (type ?text) :string)
+    (let [id (string.match ?text "|?Hitem:(%d+)")]
+      (and id (tonumber id)))))
+
+(lambda M.self-loot? [?text]
+  "Whether a CHAT_MSG_LOOT message is the player's OWN loot (vs a group member's).
+   Matched against the client's LOOT_ITEM_SELF / LOOT_ITEM_PUSHED_SELF format
+   prefixes, so it stays locale-correct in game and falls back to enUS under
+   tests. Pure -- reads only the global string constants, never a WoW API.
+   Domain:  ?text : string | nil
+   Returns: boolean"
+  (let [formats [(or _G.LOOT_ITEM_SELF "You receive loot: %s")
+                 (or _G.LOOT_ITEM_PUSHED_SELF "You receive item: %s")]]
+    (and (= (type ?text) :string)
+         (accumulate [hit false _ fmt (ipairs formats) &until hit]
+           (let [prefix (string.match fmt "^(.-)%%")]
+             (and prefix (> (length prefix) 0)
+                  (= 1 (string.find ?text prefix 1 true))))))))
+
 ;; --- Register into the addon namespace -------------------------------------
 ;;
 ;; Dual-mode: in-game the .toc loads build/core/wow.lua after the domain

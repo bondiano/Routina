@@ -93,6 +93,19 @@
              :chance it.chance
              :item-id it.item-id})})
 
+(lambda M.projection-view-model [?projection]
+  "Pure render spec for the weekly Monte Carlo fill projection (the tail summary
+   row), or nil when there is no projection / the plan targets no slots.
+   Domain:  ?projection : a route.project-week result, or nil
+                          {:p10 :p50 :p90 number (fractions) :slots integer}
+   Returns: {:headline string :detail string} | nil"
+  (when (and ?projection (> (or ?projection.slots 0) 0))
+    {:headline "Projected fill by reset"
+     :detail (.. "P10 " (format.percent ?projection.p10) " · P50 "
+                 (format.percent ?projection.p50) " · P90 "
+                 (format.percent ?projection.p90) " of " ?projection.slots
+                 (if (= ?projection.slots 1) " target slot" " target slots"))}))
+
 ;; --- Item-quality helpers (imperative, WoW API) ----------------------------
 
 (fn item-quality [item-id]
@@ -156,9 +169,10 @@
 
 ;; --- Card (AceGUI InlineGroup) ---------------------------------------------
 
-(fn build-card! [vm rank step ctx]
+(fn build-card! [vm rank step ctx ?next]
   "Build one activity card as an InlineGroup from a pure view-model. The raw
-   step + ctx are closed over by the Why? button so it can open the drawer."
+   step + ctx (+ the next-ranked step it out-scores) are closed over by the Why?
+   button so it can open the drawer with the recommendation diff."
   (let [card (acegui.create! :InlineGroup)]
     (when card
       (card:SetTitle vm.title)
@@ -193,11 +207,37 @@
           (why:SetCallback :OnClick
                            (fn []
                              (when Routina.root
-                               (Routina.root.show-why! step ctx))))
+                               (Routina.root.show-why! step ctx ?next))))
           (card:AddChild why))))
     card))
 
 ;; --- Public API ------------------------------------------------------------
+
+(fn build-projection! [container vm]
+  "Tail summary card showing the Monte Carlo fill projection for the week."
+  (let [card (acegui.create! :InlineGroup)]
+    (when card
+      (card:SetTitle vm.headline)
+      (card:SetFullWidth true)
+      (card:SetLayout :List)
+      (let [label (acegui.create! :Label)]
+        (when label
+          (label:SetText vm.detail)
+          (label:SetFullWidth true)
+          (acegui.themed-label! label :ink :body :body)
+          (card:AddChild label)))
+      (container:AddChild card))
+    card))
+
+(fn add-spacer! [container]
+  "A thin full-width blank row, so the score-ordered cards breathe instead of
+   stacking flush against each other (UI.md spacing rhythm)."
+  (let [s (acegui.create! :Label)]
+    (when s
+      (s:SetText " ")
+      (s:SetFullWidth true)
+      (acegui.themed-label! s :ink-faint :body :caption)
+      (container:AddChild s))))
 
 (fn add-empty! [container message]
   (let [label (acegui.create! :Label)]
@@ -226,8 +266,8 @@
       (container:AddChild scroll)
       (let [input (planner.route-input)
             ok? (and input input.ok)
-            steps (if ok? (. (route.plan-week input.player input.ctx) :steps)
-                      [])
+            plan (and ok? (route.plan-week input.player input.ctx))
+            steps (if plan plan.steps [])
             advice (and input input.advice)
             ctx (and input input.ctx)
             n (length steps)]
@@ -235,11 +275,20 @@
             (add-empty! scroll
                         (if ok? "Nothing left to chase this week."
                             "Log in to a character to see your plan."))
-            (for [rank 1 n]
-              (let [step (. steps rank)
-                    card (build-card! (M.card-view-model step rank advice) rank
-                                      step ctx)]
-                (when card (scroll:AddChild card))))))))
+            (do
+              (for [rank 1 n]
+                (let [step (. steps rank)
+                      next-step (. steps (+ rank 1))
+                      card (build-card! (M.card-view-model step rank advice)
+                                        rank step ctx next-step)]
+                  (when card (scroll:AddChild card))
+                  (add-spacer! scroll)))
+              ;; Tail summary: Monte Carlo projection of slots filled by reset,
+              ;; seeded from options (route.project-week defaults the seed).
+              (let [projection (route.project-week plan
+                                                   {:seed (and ctx ctx.seed)})
+                    pvm (M.projection-view-model projection)]
+                (when pvm (build-projection! scroll pvm))))))))
   nil)
 
 (set _G.Routina Routina)

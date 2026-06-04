@@ -142,6 +142,34 @@
                           :set (fn [_ v]
                                  (tset db :default-competitors v)
                                  (changed))}
+            :seed {:type :range
+                   :name "Projection seed"
+                   :desc "Monte Carlo seed for the weekly fill projection. Change it to resample; the same seed always projects identically."
+                   :order 6
+                   :min 1
+                   :max 9999
+                   :step 1
+                   :get (fn [_] (or db.seed 1))
+                   :set (fn [_ v] (tset db :seed v) (changed))}
+            :include-classic {:type :toggle
+                              :name "Include pre-TBC (Classic) drops"
+                              :desc "Show gear from vanilla content (Naxx40, AQ, Blackrock, etc.). Off by default. Atiesh is never suggested."
+                              :order 8
+                              :get (fn [_] (= true db.include-classic?))
+                              :set (fn [_ v]
+                                     (tset db :include-classic? v)
+                                     (changed))}
+            :track-luck {:type :toggle
+                         :name "Track loot luck (experimental)"
+                         :desc "Record boss kills and your loot to compute a Bayesian luck score. Off by default."
+                         :order 7
+                         :get (fn [_] (= true db.track-luck?))
+                         :set (fn [_ v]
+                                (tset db :track-luck? v)
+                                (when (?. Routina :events
+                                          :set-history-tracking!)
+                                  (Routina.events.set-history-tracking! v))
+                                (changed))}
             :weights (weights-group db changed)
             :attune {:type :group
                      :name "Attunement gating"

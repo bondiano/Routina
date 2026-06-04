@@ -19,6 +19,7 @@
 
 (local defaults {:global {:version 1 :options {:log-level :info}}
                  :char {:weekly-state {:reset-time 0 :lockouts {}}
+                        :history {:runs {} :drops {}}
                         :preferences {}}})
 
 (set M.defaults defaults)

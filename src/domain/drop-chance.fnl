@@ -85,6 +85,21 @@
      :luck-z z
      :n observed-runs}))
 
+(fn M.make-rng [seed]
+  "Deterministic [0,1) generator from an integer seed (Park-Miller MINSTD).
+   Domain code never calls math.random -- a caller seeds this so a Monte Carlo
+   projection is reproducible (same seed -> same stream). Overflow-safe in WoW's
+   Lua 5.1 doubles: state*16807 < 2^53, so the modulus is exact.
+   Domain:  seed : integer (any; normalised into the MINSTD range [1, m-1]).
+   Returns: fn [] -> number in [0, 1)."
+  (let [m 2147483647
+        a 16807]
+    (var state (let [s (% (math.floor (math.abs seed)) m)]
+                 (if (= s 0) 1 s)))
+    (fn []
+      (set state (% (* state a) m))
+      (/ state m))))
+
 (fn M.coupon-collector-mc [items n-runs n-sims rng]
   "Monte Carlo simulation of coupon collector: how many slots filled after n-runs.
    items: sequence of {:slot kw :p number} entries.

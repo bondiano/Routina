@@ -107,6 +107,29 @@
                               (let [r (chance.bayesian-luck 0 20 0.15)]
                                 (assert.is_true (< r.posterior-mean 0.15))
                                 (assert.is_true (< r.luck-z 0)))))))
+            (describe ":make-rng"
+                      (fn []
+                        (it "is deterministic for a given seed"
+                            (fn []
+                              (let [a (chance.make-rng 42)
+                                    b (chance.make-rng 42)]
+                                (for [_ 1 5]
+                                  (assert.are.equal (a) (b))))))
+                        (it "stays in [0, 1)"
+                            (fn []
+                              (let [rng (chance.make-rng 7)]
+                                (for [_ 1 100]
+                                  (let [x (rng)]
+                                    (assert.is_true (and (>= x 0) (< x 1))))))))
+                        (it "different seeds yield different streams"
+                            (fn []
+                              (assert.are_not.equal ((chance.make-rng 1))
+                                                    ((chance.make-rng 2)))))
+                        (it "normalises a zero seed to a non-degenerate stream"
+                            (fn []
+                              (let [rng (chance.make-rng 0)]
+                                ;; MINSTD fixed point at 0 would freeze the stream
+                                (assert.are_not.equal (rng) (rng)))))))
             (describe ":coupon-collector-mc"
                       (fn []
                         (it "p10 <= p50 <= p90 (property of order statistics)"

@@ -33,6 +33,8 @@
                                                 :PLAYER_EQUIPMENT_CHANGED
                                                 :BAG_UPDATE_DELAYED
                                                 :CHARACTER_POINTS_CHANGED
+                                                :ENCOUNTER_END
+                                                :CHAT_MSG_LOOT
                                                 :PLAYER_LOGOUT]
                                                events.event-list)))))
             (describe :dispatch
@@ -72,6 +74,103 @@
                                                         (events.dispatch :RAID_INSTANCE_WELCOME
                                                                          :Karazhan
                                                                          3600))))))))
+            (describe :weekly-state
+                      (fn []
+                        (it "marks an entered raid in-progress and flushes it on logout"
+                            (fn []
+                              (let [log (make-log)
+                                    char {:weekly-state nil}]
+                                (events.set-logger! log)
+                                (events.set-store! (fn [] char))
+                                (events.dispatch :RAID_INSTANCE_WELCOME
+                                                 :Karazhan 3600)
+                                (events.dispatch :PLAYER_LOGOUT)
+                                ;; flushed to the injected db.char slot
+                                (assert.is_truthy char.weekly-state)
+                                (assert.is_true (. char.weekly-state :lockouts
+                                                   :Karazhan :in-progress?))
+                                (events.set-store! nil))))
+                        (it "no-ops the weekly handlers when no store is wired"
+                            (fn []
+                              (let [log (make-log)]
+                                (events.set-logger! log)
+                                (events.set-store! nil)
+                                (assert.has_no.errors (fn []
+                                                        (events.dispatch :RAID_INSTANCE_WELCOME
+                                                                         :Karazhan
+                                                                         3600)
+                                                        (events.dispatch :PLAYER_LOGOUT))))))))
+            (describe :luck-history
+                      (fn []
+                        (it "does not record while tracking is off (default)"
+                            (fn []
+                              (let [log (make-log)
+                                    char {}]
+                                (events.set-logger! log)
+                                (events.set-store! (fn [] char))
+                                (events.record-run! :karazhan)
+                                (events.record-drop! 28545)
+                                (events.dispatch :PLAYER_LOGOUT)
+                                (assert.is_nil char.history)
+                                (events.set-store! nil))))
+                        (it "records runs/drops and flushes on logout when on"
+                            (fn []
+                              (let [log (make-log)
+                                    char {}]
+                                (events.set-logger! log)
+                                (events.set-store! (fn [] char))
+                                (events.set-history-tracking! true)
+                                (events.record-run! :karazhan)
+                                (events.record-run! :karazhan)
+                                (events.record-drop! 28545)
+                                (events.dispatch :PLAYER_LOGOUT)
+                                (assert.are.equal 2
+                                                  (. char.history :runs
+                                                     :karazhan))
+                                (assert.are.equal 1
+                                                  (. char.history :drops :28545))
+                                ;; clean up module state for later specs
+                                (events.set-history-tracking! false)
+                                (events.set-store! nil))))
+                        (it "tallies a boss kill and self-loot from live events"
+                            (fn []
+                              (let [log (make-log)
+                                    char {}]
+                                (events.set-logger! log)
+                                (events.set-store! (fn [] char))
+                                (events.set-history-tracking! true)
+                                (events.dispatch :ENCOUNTER_END 652 :Attumen 3
+                                                 10 1)
+                                (events.dispatch :CHAT_MSG_LOOT
+                                                 "You receive loot: |cffa335ee|Hitem:28545::::::::70:::::|h[Edgewalker Longboots]|h|r.")
+                                (events.dispatch :PLAYER_LOGOUT)
+                                (assert.are.equal 1
+                                                  (. char.history :runs
+                                                     :Attumen))
+                                (assert.are.equal 1
+                                                  (. char.history :drops :28545))
+                                (events.set-history-tracking! false)
+                                (events.set-store! nil))))
+                        (it "ignores wipes, others' loot and untracked drops"
+                            (fn []
+                              (let [log (make-log)
+                                    char {}]
+                                (events.set-logger! log)
+                                (events.set-store! (fn [] char))
+                                (events.set-history-tracking! true)
+                                ;; a wipe (success 0) is not a trial
+                                (events.dispatch :ENCOUNTER_END 652 :Attumen 3
+                                                 10 0)
+                                ;; a group member's loot is not the player's
+                                (events.dispatch :CHAT_MSG_LOOT
+                                                 "Bob receives loot: |Hitem:28545::::::::70:::::|h[Edgewalker Longboots]|h|r.")
+                                ;; self-loot of an item we do not track
+                                (events.dispatch :CHAT_MSG_LOOT
+                                                 "You receive loot: |Hitem:2589::::::::70:::::|h[Linen Cloth]|h|r.")
+                                (events.dispatch :PLAYER_LOGOUT)
+                                (assert.is_nil char.history)
+                                (events.set-history-tracking! false)
+                                (events.set-store! nil))))))
             (describe :init!
                       (fn []
                         (it "embeds a frame and registers every event"

@@ -11,14 +11,18 @@
 
 ;; --- Palette (warm parchment + gold + ink) ---------------------------------
 
+;; Foreground (ink / ink-faint) is LIGHT: AceGUI owns the backdrop and renders
+;; dark, so body text is a warm cream and secondary text a muted tan -- both sit
+;; high-contrast on the dark frame (the old dark ink was near-invisible on it).
 (set M.palette {:parchment :C4A370
                 :parchment-2 :A88752
-                :ink :312B22
-                :ink-faint :4A3820
+                :panel :211A10
+                :ink :F2E9D0
+                :ink-faint :C7B488
                 :gold :C9A24A
                 :gold-bright :F0CC6E
-                :warn :A93F2D
-                :ok :5C7A4A
+                :warn :D85A45
+                :ok :8FBF6E
                 :shadow :000000})
 
 ;; --- Fonts (TBC client built-ins, no LibSharedMedia) -----------------------

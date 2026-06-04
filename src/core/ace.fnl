@@ -80,7 +80,13 @@
   (let [AceEvent (LibStub :AceEvent-3.0)]
     (set self.event-frame (events.init! AceEvent self.log)))
   ;; Plan inputs change at runtime (gear, talents, lockouts) -> repaint live.
-  (events.set-refresh! (debounced-refresh self)))
+  (events.set-refresh! (debounced-refresh self))
+  ;; Give the dispatcher the per-character DB slot so it can seed + flush the
+  ;; weekly-state across the session (RAID_INSTANCE_WELCOME -> PLAYER_LOGOUT).
+  (events.set-store! (fn [] (and self.db self.db.char)))
+  ;; Apply the persisted luck-tracking opt-in (experimental; off unless set).
+  (events.set-history-tracking! (?. self :db :char :preferences :route
+                                    :track-luck?)))
 
 (fn addon.OnDisable [self]
   (self.log:info :OnDisable)

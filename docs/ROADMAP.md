@@ -22,7 +22,7 @@
 5. **Small, sharp surface.** It is better to ship a tight weekly planner with
    trustworthy probabilities than a sprawling assistant that approximates.
 
-## Status snapshot (2026-06-01)
+## Status snapshot (2026-06-04)
 
 | Area | State |
 |---|---|
@@ -32,7 +32,8 @@
 | Tests: busted + Fennel searcher | Wired, 115 passing across core/domain/ui |
 | WoW API mocks | Stub harness in `spec/mocks/wow-api.fnl` + `spec/mocks/ace3.fnl` |
 | Ace3 wiring | **Done** -- `src/core/ace.fnl` (AceAddon entry, wires root + events) |
-| Event dispatcher | **Done** -- `src/core/events.fnl` (`case` dispatch) |
+| Event dispatcher | **Done** -- `src/core/events.fnl` (`case` dispatch; `RAID_INSTANCE_WELCOME`/`PLAYER_LOGOUT` drive `weekly-state`) |
+| Weekly-state | **Done** -- `src/domain/weekly-state.fnl` (pure; entered-raid tracking, seeded/flushed via `db.char` by events) |
 | SavedVariables / AceDB | **Done** -- `src/core/saved-vars.fnl` (versioned, migration list) |
 | Schemas + runtime validation | **Done** -- `src/domain/{schemas,validate}.fnl` |
 | WoW API wrapper | **Done** -- `src/core/wow.fnl` |
@@ -219,15 +220,40 @@ Exit criteria:
 
 Once the pipeline is honest end-to-end, sharpen the math.
 
-1. **Bayesian luck score** -- already drafted in `drop-chance.bayesian-luck`.
-   Wire `observed-drops` / `observed-runs` from SavedVariables history.
+1. **Bayesian luck score** -- pure model + live recording **DONE** (experimental,
+   pending in-game smoke):
+   - `src/domain/history.fnl` -- pure cumulative log (`record-run` / `record-drop`
+     / `runs-for` / `drops-for` / `luck` -> `drop-chance.bayesian-luck`, with a
+     runs>=drops clamp; `normalize`/`to-db` for SavedVariables). Persisted at
+     `db.char.history`; the shell seeds it on first use and flushes on
+     `PLAYER_LOGOUT`.
+   - Events wired (signatures verified on warcraft.wiki.gg, all TBC 2.5.5-valid):
+     **ENCOUNTER_END** (`encounterID, encounterName, difficultyID, groupSize,
+     success`) tallies a per-boss trial on a kill; **CHAT_MSG_LOOT** tallies a
+     drop for the player's own loot (`wow.self-loot?`) of a tracked item
+     (`wow.loot-item-id` -> `drop-table.for-item`). Both are always registered but
+     inert until the **off-by-default** options toggle "Track loot luck
+     (experimental)" calls `set-history-tracking!`.
+   - **Remaining (not a blocker):** validate that ENCOUNTER_END's `encounterName`
+     matches the `drop-table` `:boss` strings (the runs key) against live data,
+     and surface the luck score in the UI (why-drawer) once real history exists.
 2. **ML competition modelling** -- per-activity `competitors-by-role` map,
    exposed in options. `effective-rate` flows through `route` scoring.
-3. **Monte Carlo route projection** -- `coupon-collector-mc` over the planned
-   week with a user-controlled seed; UI reports P10/P50/P90 of "slots filled
-   by reset".
-4. **Recommendation diff** -- explain why activity A out-scores B for *this*
-   player (top-3 contributing items, slot weights, lockout decay).
+3. **Monte Carlo route projection** -- **DONE** (pending in-game smoke):
+   `route.project-week` collapses each plan step's target items into a per-slot
+   "any upgrade by reset" Bernoulli (`drop-chance.at-least-one` + complement
+   product) and samples it via `drop-chance.coupon-collector-mc`, returning
+   P10/P50/P90 of "slots filled by reset" + the slot count. Pure + seeded
+   (`drop-chance.make-rng`, MINSTD; 1000 sims). The seed is user-controlled via
+   the options panel (`Projection seed`, 1..9999) -> `RouteContext.seed`; the Plan
+   tab renders the projection as a tail summary card (pure `weekly.projection-view-model`).
+4. **Recommendation diff** -- **DONE** (pending in-game smoke): the why-drawer's
+   pure `view-model` now takes the next-best alternative the focused step
+   out-scores and emits a `:diff` -- score delta, top-3 contributing items, and
+   plain-English reasons (strongest item, weighted slot, shorter run). The Plan
+   tab passes each card's rank+1 neighbour through `root.show-why!`; the drawer
+   renders a "Why over B" section. Lockout decay is still flat (OQ-7), so it is
+   not yet a differentiator in the diff.
 
 Exit criteria:
 

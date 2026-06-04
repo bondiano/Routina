@@ -10,6 +10,7 @@
                             (fn []
                               (each [_ k (ipairs [:parchment
                                                   :parchment-2
+                                                  :panel
                                                   :ink
                                                   :ink-faint
                                                   :gold
@@ -23,7 +24,21 @@
                         (it "stores tokens as 6-char hex strings"
                             (fn []
                               (each [_ hex (pairs theme.palette)]
-                                (assert.are.equal 6 (length hex)))))))
+                                (assert.are.equal 6 (length hex)))))
+                        (it "keeps text foreground light + ranked for dark-bg contrast"
+                            (fn []
+                              ;; AceGUI renders a dark backdrop, so ink must be a
+                              ;; bright (high-luminance) cream and clearly brighter
+                              ;; than the secondary ink-faint.
+                              (let [lum (fn [tok]
+                                          (let [(r g b) (theme.color tok)]
+                                            (+ r g b)))]
+                                (assert.is_true (> (lum :ink) 2.4))
+                                (assert.is_true (> (lum :ink) (lum :ink-faint)))
+                                ;; the panel fill is the opposite end: dark, so
+                                ;; the light text reads against a solid backdrop
+                                (assert.is_true (< (lum :panel) 0.6))
+                                (assert.is_true (> (lum :ink) (lum :panel))))))))
             (describe ":fonts"
                       (fn []
                         (it "has title and body paths"

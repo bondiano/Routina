@@ -33,26 +33,68 @@
 (fn by-contribution-desc [a b]
   (> a.contribution b.contribution))
 
-(lambda M.view-model [step ?ctx]
-  "Pure explainer spec for one plan step (UI.md §6.6 inputs).
-   Domain:  step : a route step {:name :id :score :attunement?
-                   :items [{:label :slot :chance :runs} ...]}
-            ?ctx : the RouteContext (for slot weights + competitors), optional
-   Returns: {:title string
-             :score-breakdown [{:label :slot :weight :chance :contribution} ...]
-                              -- contribution desc (weight · chance)
-             :weight-explanation string|nil
-             :competition-note string|nil}"
+(fn breakdown [step ?ctx]
+  "Per-item score rows for a step, contribution desc (weight · chance)."
   (let [rows (icollect [_ it (ipairs (or step.items []))]
                (let [w (weight-of ?ctx it.slot)]
                  {:label it.label
                   :slot it.slot
                   :weight w
                   :chance it.chance
-                  :contribution (* w it.chance)}))
+                  :contribution (* w it.chance)}))]
+    (table.sort rows by-contribution-desc)
+    rows))
+
+(fn diff-of [step compare rows]
+  "Pure 'why this step out-scores the next alternative' spec, or nil without a
+   comparison step. `rows` is step's contribution-sorted breakdown.
+   Returns: {:vs string :delta number :leads? boolean
+             :top-items [{:label :contribution} ...<=3] :reasons [string ...]}"
+  (when compare
+    (let [delta (- (or step.score 0) (or compare.score 0))
+          top (fcollect [i 1 (math.min 3 (length rows))]
+                (let [r (. rows i)]
+                  {:label r.label :contribution r.contribution}))
+          weighted-top (accumulate [found nil _ r (ipairs rows)]
+                         (or found (and (> r.weight 1) r)))
+          reasons [(.. "Scores " (format.score-short (or step.score 0)) " vs "
+                       (format.score-short (or compare.score 0)) " ("
+                       (if (>= delta 0) "+" "") (format.score-short delta)
+                       " expected upgrades)")]]
+      (when (> (length rows) 0)
+        (let [t (. rows 1)]
+          (table.insert reasons
+                        (.. "Most of the edge: " t.label " ("
+                            (format.percent t.chance) " this week)"))))
+      (when weighted-top
+        (table.insert reasons
+                      (.. (tostring weighted-top.slot) " is weighted ×"
+                          weighted-top.weight)))
+      (when (and step.minutes compare.minutes (< step.minutes compare.minutes))
+        (table.insert reasons (.. "~" (- compare.minutes step.minutes)
+                                  " min shorter")))
+      {:vs (tostring compare.name)
+       : delta
+       :leads? (>= delta 0)
+       :top-items top
+       : reasons})))
+
+(lambda M.view-model [step ?ctx ?compare]
+  "Pure explainer spec for one plan step (UI.md §6.6 inputs), optionally diffed
+   against the next-best alternative it out-scores (ROADMAP Phase 4 §4).
+   Domain:  step : a route step {:name :id :score :minutes? :attunement?
+                   :items [{:label :slot :chance :runs} ...]}
+            ?ctx : the RouteContext (for slot weights + competitors), optional
+            ?compare : the alternative step this one out-scores, or nil
+   Returns: {:title string
+             :score-breakdown [{:label :slot :weight :chance :contribution} ...]
+                              -- contribution desc (weight · chance)
+             :weight-explanation string|nil
+             :competition-note string|nil
+             :diff {:vs :delta :leads? :top-items :reasons} | nil}"
+  (let [rows (breakdown step ?ctx)
         weighted (icollect [_ r (ipairs rows)] (when (not= r.weight 1) r))
         competitors (competitors-of ?ctx step.id)]
-    (table.sort rows by-contribution-desc)
     {:title (tostring step.name)
      :score-breakdown rows
      :weight-explanation (when (> (length weighted) 0)
@@ -60,7 +102,8 @@
                                " slot(s) weighted above default"))
      :competition-note (when (> competitors 1)
                          (.. "Drop chance split among " competitors
-                             " in the loot pool"))}))
+                             " in the loot pool"))
+     :diff (diff-of step ?compare rows)}))
 
 ;; --- Singleton frame (imperative; built once, repopulated per open) --------
 
@@ -108,6 +151,19 @@
           (acegui.themed-label! lbl :ink-faint :body :caption)
           (frame:AddChild lbl))))))
 
+(fn add-diff! [vm]
+  "Render the recommendation-diff section: a header naming the beaten alternative
+   and one themed Label per reason. No-op when there's no comparison."
+  (when vm.diff
+    (add-header! (.. "Why over " vm.diff.vs))
+    (each [_ reason (ipairs vm.diff.reasons)]
+      (let [lbl (acegui.create! :Label)]
+        (when lbl
+          (lbl:SetText (.. "• " reason))
+          (lbl:SetFullWidth true)
+          (acegui.themed-label! lbl :ink :body :body)
+          (frame:AddChild lbl))))))
+
 (fn build! []
   (let [f (acegui.create! :Frame)]
     (when f
@@ -116,7 +172,7 @@
       (f:SetHeight 400)
       (f:SetStatusText "")
       (f:SetCallback :OnClose (fn [] (M.close!)))
-      (acegui.tint-frame! f :parchment)
+      (acegui.tint-frame! f)
       (set frame f))
     f))
 
@@ -132,22 +188,23 @@
 
 ;; --- Public API ------------------------------------------------------------
 
-(lambda M.open! [parent step ?ctx]
+(lambda M.open! [parent step ?ctx ?compare]
   "Open (or re-open) the drawer for a plan step, popping up to the right of
    `parent` (the panel's WoW frame). Builds the singleton on first call. No-op
    headless (no AceGUI).
    Domain:  parent : WoW Frame (panel) | nil; step : a route step;
-            ?ctx : RouteContext
+            ?ctx : RouteContext; ?compare : the alternative step out-scored, or nil
    Returns: nil."
   (when (acegui.gui)
     (when (not frame) (build!))
     (when frame
       (frame:ReleaseChildren)
-      (let [vm (M.view-model step ?ctx)]
+      (let [vm (M.view-model step ?ctx ?compare)]
         (frame:SetTitle vm.title)
         (add-header! "Score breakdown")
         (each [_ r (ipairs vm.score-breakdown)] (add-row! r))
-        (add-notes! vm))
+        (add-notes! vm)
+        (add-diff! vm))
       (frame:Show)
       (position! parent)))
   nil)

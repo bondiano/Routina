@@ -144,4 +144,25 @@
                       (fn []
                         (it "is a safe no-op call"
                             (fn []
-                              (assert.is_nil (wow.request-raid-info!))))))))
+                              (assert.is_nil (wow.request-raid-info!))))))
+            (describe ":loot-item-id"
+                      (fn []
+                        (it "parses the itemID from a loot hyperlink"
+                            (fn []
+                              (assert.are.equal 28545
+                                                (wow.loot-item-id "You receive loot: |cffa335ee|Hitem:28545::::::::70:::::|h[Boots]|h|r."))))
+                        (it "is nil when there is no item link"
+                            (fn []
+                              (assert.is_nil (wow.loot-item-id "You receive coin"))
+                              (assert.is_nil (wow.loot-item-id nil))))))
+            (describe ":self-loot?"
+                      (fn []
+                        (it "is true for the player's own loot line"
+                            (fn []
+                              (assert.is_true (wow.self-loot? "You receive loot: |Hitem:28545:|h[Boots]|h|r."))))
+                        (it "is false for a group member's loot line"
+                            (fn []
+                              (assert.is_false (wow.self-loot? "Bob receives loot: |Hitem:28545:|h[Boots]|h|r."))))
+                        (it "is false for a nil message"
+                            (fn []
+                              (assert.is_false (wow.self-loot? nil))))))))

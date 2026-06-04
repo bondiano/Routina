@@ -153,6 +153,14 @@
                                    (let [r (ctx.build (snapshot {:options {:default-competitors 4}}))]
                                      (assert.are.equal 4
                                                        r.ctx.default-competitors))))
+                             (it "carries the projection seed from options"
+                                 (fn []
+                                   (let [r (ctx.build (snapshot {:options {:seed 1234}}))]
+                                     (assert.are.equal 1234 r.ctx.seed))))
+                             (it "carries the include-classic flag from options"
+                                 (fn []
+                                   (let [r (ctx.build (snapshot {:options {:include-classic? true}}))]
+                                     (assert.is_true r.ctx.include-classic?))))
                              (it "defaults the phase when options omit it"
                                  (fn []
                                    (let [r (ctx.build (snapshot {}))]

@@ -64,6 +64,29 @@
                     :bosses-total :integer
                     :owner :string})
 
+;; --- Weekly-state (persisted per character; src/domain/weekly-state.fnl) ----
+;;
+;; The in-memory record the imperative shell (src/core/events.fnl) accumulates
+;; across a session -- which saved raids were entered this week -- and flushes to
+;; addon.db.char.weekly-state on logout. :reset-at 0 means "reset unknown" (kept
+;; until a real reset is learned); :reset-time on the parent is derived from the
+;; entries by weekly-state.fnl, never stored independently.
+
+(set M.WeeklyLockout {:in-progress? :boolean
+                      :entered-at :integer
+                      :reset-at :integer})
+
+(set M.WeeklyState
+     {:reset-time :integer :lockouts [:map :string [:ref :WeeklyLockout]]})
+
+;; --- History (cumulative; persisted per character; src/domain/history.fnl) --
+;;
+;; Lifetime observation counts feeding drop-chance.bayesian-luck: how often each
+;; activity ran and each item dropped. Keys are stringified ids (SavedVariables-
+;; safe). Distinct from WeeklyState (which resets weekly) -- history never prunes.
+
+(set M.History {:runs [:map :string :integer] :drops [:map :string :integer]})
+
 ;; --- Planner inputs (consumed by src/domain/plan.fnl) ----------------------
 ;;
 ;; TargetItem mirrors the per-item shape plan.fnl scores; :item-id is carried
@@ -183,8 +206,9 @@
 ;; :owned-items is the set of item-ids already acquired (a gap is "unowned"),
 ;; :lockouts maps an ActivityDef :id to its planner-facing LockoutView, and the
 ;; optional :weights (slot -> 1..5) / :competitors (activity-id -> >=1) carry the
-;; player's options (defaults: weight 1, competitors 1). Validated once at the
-;; route boundary, never in the scoring loop.
+;; player's options (defaults: weight 1, competitors 1). :seed is the optional
+;; user-controlled Monte Carlo seed for route.project-week (default applied
+;; downstream). Validated once at the route boundary, never in the scoring loop.
 
 (set M.RouteContext
      {:class :string
@@ -195,7 +219,9 @@
       :lockouts [:map :string [:ref :LockoutView]]
       :weights [:optional [:map :string :number]]
       :competitors [:optional [:map :string :number]]
-      :default-competitors [:optional :number]})
+      :default-competitors [:optional :number]
+      :seed [:optional :integer]
+      :include-classic? [:optional :boolean]})
 
 ;; --- Register into the addon namespace -------------------------------------
 ;;

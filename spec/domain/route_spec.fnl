@@ -48,6 +48,20 @@
   (accumulate [found nil _ s (ipairs plan.steps) &until found]
     (when (= s.id :karazhan) s)))
 
+(fn all-item-ids [plan]
+  "Set of every item-id recommended anywhere in the plan."
+  (let [ids {}]
+    (each [_ s (ipairs plan.steps)]
+      (each [_ it (ipairs s.items)]
+        (tset ids it.item-id true)))
+    ids))
+
+(fn warlock-ctx [?overrides]
+  (ctx (collect [k v (pairs (or ?overrides {}))
+                 &into {:class :warlock :spec :affliction :phase 1}]
+         k
+         v)))
+
 (describe :route
           (fn []
             (describe ":plan-week shape"
@@ -206,6 +220,82 @@
                                                     (.. "unmapped drop sources: "
                                                         (table.concat unmapped
                                                                       ", ")))))))))
+            (describe ":project-week"
+                      (fn []
+                        ;; head: filled w.p 1 (a guaranteed drop); neck: never;
+                        ;; ring1: filled w.p 1. So exactly 2 of 3 slots always
+                        ;; fill -> every percentile is 2/3, deterministically.
+                        (let [mixed {:steps [{:items [{:slot :head
+                                                       :p 1.0
+                                                       :runs 1}
+                                                      {:slot :neck
+                                                       :p 0.0
+                                                       :runs 1}]}
+                                             {:items [{:slot :head
+                                                       :p 0.5
+                                                       :runs 2}
+                                                      {:slot :ring1
+                                                       :p 1.0
+                                                       :runs 1}]}]}]
+                          (it "returns zeros for a plan that targets no slots"
+                              (fn []
+                                (assert.are.same {:p10 0
+                                                  :p50 0
+                                                  :p90 0
+                                                  :slots 0}
+                                                 (route.project-week {:steps []}))))
+                          (it "counts distinct target slots, deded across steps"
+                              (fn []
+                                (assert.are.equal 3
+                                                  (. (route.project-week mixed)
+                                                     :slots))))
+                          (it "projects guaranteed/never slots exactly"
+                              (fn []
+                                (let [r (route.project-week mixed)]
+                                  (assert.are.equal (/ 2 3) r.p10)
+                                  (assert.are.equal (/ 2 3) r.p50)
+                                  (assert.are.equal (/ 2 3) r.p90))))
+                          (it "is deterministic for a given seed"
+                              (fn []
+                                (assert.are.same (route.project-week mixed
+                                                                     {:seed 99})
+                                                 (route.project-week mixed
+                                                                     {:seed 99}))))
+                          (it "keeps p10 <= p50 <= p90 (order statistics)"
+                              (fn []
+                                (let [r (route.project-week {:steps [{:items [{:slot :head
+                                                                               :p 0.5
+                                                                               :runs 1}]}]}
+                                                            {:sims 2000})]
+                                  (assert.is_true (<= r.p10 r.p50))
+                                  (assert.is_true (<= r.p50 r.p90))))))
+                        (it "projects a real route.plan-week result"
+                            (fn []
+                              (let [r (route.project-week (route.plan-week (player)
+                                                                           (ctx)))]
+                                (assert.is_true (> r.slots 0))
+                                (assert.is_true (and (>= r.p50 0) (<= r.p50 1))))))))
+            (describe "classic + excluded filtering"
+                      (fn []
+                        ;; warlock affliction phase 1 lists Atiesh (22630, a
+                        ;; removed vanilla legendary) and Mark of the Champion
+                        ;; (23207, pre-TBC) -- both source-activity :quest.
+                        (it "never suggests Atiesh, even with classic on"
+                            (fn []
+                              (let [off (all-item-ids (route.plan-week (player)
+                                                                       (warlock-ctx)))
+                                    on (all-item-ids (route.plan-week (player)
+                                                                      (warlock-ctx {:include-classic? true})))]
+                                (assert.is_nil (. off 22630))
+                                (assert.is_nil (. on 22630)))))
+                        (it "hides pre-TBC drops by default, shows them when opted in"
+                            (fn []
+                              (let [off (all-item-ids (route.plan-week (player)
+                                                                       (warlock-ctx)))
+                                    on (all-item-ids (route.plan-week (player)
+                                                                      (warlock-ctx {:include-classic? true})))]
+                                (assert.is_nil (. off 23207))
+                                (assert.is_true (. on 23207)))))))
             (describe "purity + determinism"
                       (fn []
                         (it "does not mutate player or context"

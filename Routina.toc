@@ -34,6 +34,9 @@ build\domain\validate.lua
 # schemas + validate; the shell (wow + planner) feeds it live client data.
 build\domain\ctx.lua
 build\domain\lockouts.lua
+# weekly-state: pure per-character weekly-progress record. Accumulated by
+# src/core/events.fnl across a session and flushed to db.char on logout.
+build\domain\weekly-state.lua
 build\domain\activities.lua
 # BiS catalog: generated per-spec data modules + manifest register into
 # _G.Routina.bis-by-spec; bis-catalog.lua loads LAST and flattens them. See
@@ -72,6 +75,9 @@ build\domain\bis-catalog.lua
 build\domain\drops\data.lua
 build\domain\drop-table.lua
 build\domain\drop-chance.lua
+# history: cumulative observation log feeding bayesian-luck. After drop-chance
+# (uses it); accumulated by src/core/events.fnl behind a default-off flag.
+build\domain\history.lua
 build\domain\plan.lua
 # route: the orchestrator -- ties activities + bis-catalog + drop-table +
 # drop-chance together and delegates ordering to plan. Loads after all of them.
