@@ -14,165 +14,1267 @@
 (local entries [{:class :shaman
                  :spec :enhancement
                  :phase 1
+                 :kind :pre-raid
+                 :rank 3
+                 :slot :back
+                 :item {:id 24259 :name "Vengeance Wrap"}
+                 :sources [{:instance :unknown}]}
+                {:class :shaman
+                 :spec :enhancement
+                 :phase 1
+                 :kind :bis
+                 :rank 4
+                 :slot :back
+                 :item {:id 28672 :name "Drape of the Dark Reavers"}
+                 :sources [{:instance :raid}]}
+                {:class :shaman
+                 :spec :enhancement
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 5
+                 :slot :back
+                 :item {:id 27878 :name "Auchenai Death Shroud"}
+                 :sources [{:instance :unknown}]}
+                {:class :shaman
+                 :spec :enhancement
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 6
+                 :slot :back
+                 :item {:id 27892 :name "Cloak of the Inciter"}
+                 :sources [{:instance :unknown}]}
+                {:class :shaman
+                 :spec :enhancement
+                 :phase 1
+                 :kind :bis
+                 :rank 5
+                 :slot :chest
+                 :item {:id 29038 :name "Cyclone Breastplate"}
+                 :sources [{:instance :raid}]}
+                {:class :shaman
+                 :spec :enhancement
+                 :phase 1
+                 :kind :bis
+                 :rank 6
+                 :slot :chest
+                 :item {:id 30730 :name "Terrorweave Tunic"}
+                 :sources [{:instance :world-boss}]}
+                {:class :shaman
+                 :spec :enhancement
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 7
+                 :slot :chest
+                 :item {:id 29525 :name "Primalstrike Vest"}
+                 :sources [{:instance :unknown}]}
+                {:class :shaman
+                 :spec :enhancement
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 8
+                 :slot :chest
+                 :item {:id 29515 :name "Ebon Netherscale Breastplate"}
+                 :sources [{:instance :unknown}]}
+                {:class :shaman
+                 :spec :enhancement
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 9
+                 :slot :chest
+                 :item {:id 25997 :name "Gladiator's Linked Armor"}
+                 :sources [{:instance :unknown}]}
+                {:class :shaman
+                 :spec :enhancement
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 10
+                 :slot :chest
+                 :item {:id 30933 :name "Hauberk of Karabor"}
+                 :sources [{:instance :unknown}]}
+                {:class :shaman
+                 :spec :enhancement
+                 :phase 1
+                 :kind :bis
+                 :rank 6
+                 :slot :feet
+                 :item {:id 28545 :name "Edgewalker Longboots"}
+                 :sources [{:instance :raid}]}
+                {:class :shaman
+                 :spec :enhancement
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 7
+                 :slot :feet
+                 :item {:id 25686 :name "Fel Leather Boots"}
+                 :sources [{:instance :unknown}]}
+                {:class :shaman
+                 :spec :enhancement
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 8
+                 :slot :feet
+                 :item {:id 27867 :name "Boots of the Unjust"}
+                 :sources [{:instance :unknown}]}
+                {:class :shaman
+                 :spec :enhancement
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 9
+                 :slot :feet
+                 :item {:id 28746 :name "Fiend Slayer Boots"}
+                 :sources [{:instance :unknown}]}
+                {:class :shaman
+                 :spec :enhancement
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 10
+                 :slot :feet
+                 :item {:id 30401 :name "Farahlite Studded Boots"}
+                 :sources [{:instance :unknown}]}
+                {:class :shaman
+                 :spec :enhancement
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 11
+                 :slot :feet
+                 :item {:id 31288 :name "The Master's Treads"}
+                 :sources [{:instance :unknown}]}
+                {:class :shaman
+                 :spec :enhancement
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 12
+                 :slot :feet
+                 :item {:id 29248 :name "Shadowstep Striders"}
+                 :sources [{:instance :unknown}]}
+                {:class :shaman
+                 :spec :enhancement
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 13
+                 :slot :feet
+                 :item {:id 30939 :name "Felboar Hide Shoes"}
+                 :sources [{:instance :unknown}]}
+                {:class :shaman
+                 :spec :enhancement
+                 :phase 1
+                 :kind :bis
+                 :rank 5
+                 :slot :hands
+                 :item {:id 28776 :name "Liar's Tongue Gloves"}
+                 :sources [{:instance :raid}]}
+                {:class :shaman
+                 :spec :enhancement
+                 :phase 1
+                 :kind :bis
+                 :rank 6
+                 :slot :hands
+                 :item {:id 30644 :name "Grips of Deftness"}
+                 :sources [{:instance :raid}]}
+                {:class :shaman
+                 :spec :enhancement
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 7
+                 :slot :hands
+                 :item {:id 29503 :name "Cobrascale Gloves"}
+                 :sources [{:instance :unknown}]}
+                {:class :shaman
+                 :spec :enhancement
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 8
+                 :slot :hands
+                 :item {:id 30341 :name "Flesh Handler's Gauntlets"}
+                 :sources [{:instance :unknown}]}
+                {:class :shaman
+                 :spec :enhancement
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 9
+                 :slot :hands
+                 :item {:id 25685 :name "Fel Leather Gloves"}
+                 :sources [{:instance :unknown}]}
+                {:class :shaman
+                 :spec :enhancement
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 10
+                 :slot :hands
+                 :item {:id 27509 :name "Handgrips of Assassination"}
+                 :sources [{:instance :unknown}]}
+                {:class :shaman
+                 :spec :enhancement
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 11
+                 :slot :hands
+                 :item {:id 27825 :name "Predatory Gloves"}
+                 :sources [{:instance :unknown}]}
+                {:class :shaman
+                 :spec :enhancement
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 12
+                 :slot :hands
+                 :item {:id 28396 :name "Gloves of the Unbound"}
+                 :sources [{:instance :unknown}]}
+                {:class :shaman
+                 :spec :enhancement
+                 :phase 1
+                 :kind :bis
+                 :rank 6
+                 :slot :head
+                 :item {:id 29040 :name "Cyclone Helm"}
+                 :sources [{:instance :raid}]}
+                {:class :shaman
+                 :spec :enhancement
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 7
+                 :slot :head
+                 :item {:id 28224 :name "Wastewalker Helm"}
+                 :sources [{:instance :unknown}]}
+                {:class :shaman
+                 :spec :enhancement
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 8
+                 :slot :head
+                 :item {:id 28182 :name "Helm of the Claw"}
+                 :sources [{:instance :unknown}]}
+                {:class :shaman
+                 :spec :enhancement
+                 :phase 1
+                 :kind :bis
+                 :rank 9
+                 :slot :head
+                 :item {:id 28732 :name "Cowl of Defiance"}
+                 :sources [{:instance :raid}]}
+                {:class :shaman
+                 :spec :enhancement
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 10
+                 :slot :head
+                 :item {:id 31109 :name "Stealther's Helmet of Second Sight"}
+                 :sources [{:instance :unknown}]}
+                {:class :shaman
+                 :spec :enhancement
+                 :phase 1
+                 :kind :bis
+                 :rank 11
+                 :slot :head
+                 :item {:id 32087 :name "Mask of the Deceiver"}
+                 :sources [{:instance :unknown}]}
+                {:class :shaman
+                 :spec :enhancement
+                 :phase 1
+                 :kind :bis
+                 :rank 4
+                 :slot :legs
+                 :item {:id 28741 :name "Skulker's Greaves"}
+                 :sources [{:instance :raid}]}
+                {:class :shaman
+                 :spec :enhancement
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 5
+                 :slot :legs
+                 :item {:id 30257 :name "Shattrath Leggings"}
+                 :sources [{:instance :unknown}]}
+                {:class :shaman
+                 :spec :enhancement
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 6
+                 :slot :legs
+                 :item {:id 31544 :name "Clefthoof Hide Leggings"}
+                 :sources [{:instance :unknown}]}
+                {:class :shaman
+                 :spec :enhancement
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 7
+                 :slot :legs
+                 :item {:id 25687 :name "Fel Leather Leggings"}
+                 :sources [{:instance :unknown}]}
+                {:class :shaman
+                 :spec :enhancement
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 8
+                 :slot :legs
+                 :item {:id 30538 :name "Midnight Legguards"}
+                 :sources [{:instance :unknown}]}
+                {:class :shaman
+                 :spec :enhancement
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 5
+                 :slot :main-hand
+                 :item {:id 28433 :name "Wicked Edge of the Planes"}
+                 :sources [{:instance :unknown}]}
+                {:class :shaman
+                 :spec :enhancement
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 8
+                 :slot :main-hand
+                 :item {:id 28439 :name :Dragonstrike}
+                 :sources [{:instance :unknown}]}
+                {:class :shaman
+                 :spec :enhancement
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 9
+                 :slot :main-hand
+                 :item {:id 28920 :name "High Warlord's Cleaver"}
+                 :sources [{:instance :unknown}]}
+                {:class :shaman
+                 :spec :enhancement
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 9
+                 :slot :main-hand
+                 :item {:id 28944 :name "Grand Marshal's Cleaver"}
+                 :sources [{:instance :unknown}]}
+                {:class :shaman
+                 :spec :enhancement
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 10
+                 :slot :main-hand
+                 :item {:id 28308 :name "Gladiator's Cleaver"}
+                 :sources [{:instance :unknown}]}
+                {:class :shaman
+                 :spec :enhancement
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 10
+                 :slot :main-hand
+                 :item {:id 31139 :name "Fist of Reckoning"}
+                 :sources [{:instance :unknown}]}
+                {:class :shaman
+                 :spec :enhancement
+                 :phase 1
+                 :kind :bis
+                 :rank 11
+                 :slot :main-hand
+                 :item {:id 28767 :name "The Decapitator"}
+                 :sources [{:instance :raid}]}
+                {:class :shaman
+                 :spec :enhancement
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 12
+                 :slot :main-hand
+                 :item {:id 27872 :name "The Harvester of Souls"}
+                 :sources [{:instance :unknown}]}
+                {:class :shaman
+                 :spec :enhancement
+                 :phase 1
+                 :kind :bis
+                 :rank 13
+                 :slot :main-hand
+                 :item {:id 28657 :name "Fool's Bane"}
+                 :sources [{:instance :raid}]}
+                {:class :shaman
+                 :spec :enhancement
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 14
+                 :slot :main-hand
+                 :item {:id 28438 :name :Dragonmaw}
+                 :sources [{:instance :unknown}]}
+                {:class :shaman
+                 :spec :enhancement
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 15
+                 :slot :main-hand
+                 :item {:id 28432 :name "Black Planar Edge"}
+                 :sources [{:instance :unknown}]}
+                {:class :shaman
+                 :spec :enhancement
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 16
+                 :slot :main-hand
+                 :item {:id 28392 :name "Reflex Blades"}
+                 :sources [{:instance :unknown}]}
+                {:class :shaman
+                 :spec :enhancement
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 17
+                 :slot :main-hand
+                 :item {:id 28313 :name "Gladiator's Right Ripper"}
+                 :sources [{:instance :unknown}]}
+                {:class :shaman
+                 :spec :enhancement
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 18
+                 :slot :main-hand
+                 :item {:id 29348 :name "The Bladefist"}
+                 :sources [{:instance :unknown}]}
+                {:class :shaman
+                 :spec :enhancement
+                 :phase 1
+                 :kind :bis
+                 :rank 5
+                 :slot :neck
+                 :item {:id 29381 :name "Choker of Vile Intent"}
+                 :sources [{:instance :unknown}]}
+                {:class :shaman
+                 :spec :enhancement
+                 :phase 1
+                 :kind :bis
+                 :rank 6
+                 :slot :neck
+                 :item {:id 28509 :name "Worgen Claw Necklace"}
+                 :sources [{:instance :raid}]}
+                {:class :shaman
+                 :spec :enhancement
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 7
+                 :slot :neck
+                 :item {:id 31695 :name "Natasha's Choker"}
+                 :sources [{:instance :unknown}]}
+                {:class :shaman
+                 :spec :enhancement
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 8
+                 :slot :neck
+                 :item {:id 27546 :name "Traitor's Noose"}
+                 :sources [{:instance :unknown}]}
+                {:class :shaman
+                 :spec :enhancement
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 1
                  :slot :ranged
                  :item {:id 27815 :name "Totem of the Astral Winds"}
                  :sources [{:instance :unknown}]}
                 {:class :shaman
                  :spec :enhancement
                  :phase 1
+                 :kind :bis
+                 :rank 8
+                 :slot :ring1
+                 :item {:id 28757 :name "Ring of a Thousand Marks"}
+                 :sources [{:instance :raid}]}
+                {:class :shaman
+                 :spec :enhancement
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 11
+                 :slot :ring1
+                 :item {:id 30834 :name "Shapeshifter's Signet"}
+                 :sources [{:instance :unknown}]}
+                {:class :shaman
+                 :spec :enhancement
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 13
+                 :slot :ring1
+                 :item {:id 29283 :name "Violet Signet of the Master Assassin"}
+                 :sources [{:instance :unknown}]}
+                {:class :shaman
+                 :spec :enhancement
+                 :phase 1
+                 :kind :bis
+                 :rank 15
+                 :slot :ring1
+                 :item {:id 29379 :name "Ring of Arathi Warlords"}
+                 :sources [{:instance :unknown}]}
+                {:class :shaman
+                 :spec :enhancement
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 17
+                 :slot :ring1
+                 :item {:id 31077 :name "Slayer's Mark of the Redemption"}
+                 :sources [{:instance :unknown}]}
+                {:class :shaman
+                 :spec :enhancement
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 19
+                 :slot :ring1
+                 :item {:id 30860 :name "Kaylaan's Signet"}
+                 :sources [{:instance :unknown}]}
+                {:class :shaman
+                 :spec :enhancement
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 21
+                 :slot :ring1
+                 :item {:id 30365 :name "Overseer's Signet"}
+                 :sources [{:instance :unknown}]}
+                {:class :shaman
+                 :spec :enhancement
+                 :phase 1
+                 :kind :bis
+                 :rank 9
+                 :slot :ring2
+                 :item {:id 28649 :name "Garona's Signet Ring"}
+                 :sources [{:instance :raid}]}
+                {:class :shaman
+                 :spec :enhancement
+                 :phase 1
+                 :kind :bis
+                 :rank 12
+                 :slot :ring2
+                 :item {:id 30738 :name "Ring of Reciprocity"}
+                 :sources [{:instance :world-boss}]}
+                {:class :shaman
+                 :spec :enhancement
+                 :phase 1
+                 :kind :bis
+                 :rank 14
+                 :slot :ring2
+                 :item {:id 28730 :name "Mithril Band of the Unscarred"}
+                 :sources [{:instance :raid}]}
+                {:class :shaman
+                 :spec :enhancement
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 16
+                 :slot :ring2
+                 :item {:id 28323 :name "Ring of Umbral Doom"}
+                 :sources [{:instance :unknown}]}
+                {:class :shaman
+                 :spec :enhancement
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 18
+                 :slot :ring2
+                 :item {:id 31920 :name "Shaffar's Band of Brutality"}
+                 :sources [{:instance :unknown}]}
+                {:class :shaman
+                 :spec :enhancement
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 20
+                 :slot :ring2
+                 :item {:id 31380 :name "Acrobat's Mark of the Sha'tar"}
+                 :sources [{:instance :unknown}]}
+                {:class :shaman
+                 :spec :enhancement
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 22
+                 :slot :ring2
+                 :item {:id 27925 :name "Ravenclaw Band"}
+                 :sources [{:instance :unknown}]}
+                {:class :shaman
+                 :spec :enhancement
+                 :phase 1
+                 :kind :bis
+                 :rank 5
+                 :slot :shoulder
+                 :item {:id 29043 :name "Cyclone Shoulderplates"}
+                 :sources [{:instance :raid}]}
+                {:class :shaman
+                 :spec :enhancement
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 6
+                 :slot :shoulder
+                 :item {:id 28755 :name "Bladed Shoulderpads of the Merciless"}
+                 :sources [{:instance :unknown}]}
+                {:class :shaman
+                 :spec :enhancement
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 7
+                 :slot :shoulder
+                 :item {:id 27797 :name "Wastewalker Shoulderpads"}
+                 :sources [{:instance :unknown}]}
+                {:class :shaman
+                 :spec :enhancement
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 8
+                 :slot :shoulder
+                 :item {:id 27434 :name "Mantle of Perenolde"}
+                 :sources [{:instance :unknown}]}
+                {:class :shaman
+                 :spec :enhancement
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 9
+                 :slot :shoulder
+                 :item {:id 25790 :name "Expedition Scout's Epaulets"}
+                 :sources [{:instance :unknown}]}
+                {:class :shaman
+                 :spec :enhancement
+                 :phase 1
+                 :kind :bis
+                 :rank 2
                  :slot :trinket1
                  :item {:id 29383 :name "Bloodlust Brooch"}
                  :sources [{:instance :unknown}]}
                 {:class :shaman
                  :spec :enhancement
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 4
+                 :slot :trinket1
+                 :item {:id 38287 :name "Empty Mug of Direbrew"}
+                 :sources [{:instance :unknown}]}
+                {:class :shaman
+                 :spec :enhancement
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 8
+                 :slot :trinket1
+                 :item {:id 28288 :name "Abacus of Violent Odds"}
+                 :sources [{:instance :unknown}]}
+                {:class :shaman
+                 :spec :enhancement
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 10
+                 :slot :trinket1
+                 :item {:id 28034 :name "Hourglass of the Unraveller"}
+                 :sources [{:instance :unknown}]}
+                {:class :shaman
+                 :spec :enhancement
+                 :phase 1
+                 :kind :bis
+                 :rank 3
+                 :slot :trinket2
+                 :item {:id 28830 :name "Dragonspine Trophy"}
+                 :sources [{:instance :raid}]}
+                {:class :shaman
+                 :spec :enhancement
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 5
+                 :slot :trinket2
+                 :item {:id 23041 :name "Slayer's Crest"}
+                 :sources [{:instance :unknown}]}
+                {:class :shaman
+                 :spec :enhancement
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 9
+                 :slot :trinket2
+                 :item {:id 29776 :name "Core of Ar'kelos"}
+                 :sources [{:instance :unknown}]}
+                {:class :shaman
+                 :spec :enhancement
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 11
+                 :slot :trinket2
+                 :item {:id 23206 :name "Mark of the Champion"}
+                 :sources [{:instance :unknown}]}
+                {:class :shaman
+                 :spec :enhancement
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 7
+                 :slot :waist
+                 :item {:id 29526 :name "Primalstrike Belt"}
+                 :sources [{:instance :unknown}]}
+                {:class :shaman
+                 :spec :enhancement
+                 :phase 1
+                 :kind :bis
+                 :rank 8
+                 :slot :waist
+                 :item {:id 28828 :name "Gronn-Stitched Girdle"}
+                 :sources [{:instance :raid}]}
+                {:class :shaman
+                 :spec :enhancement
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 9
+                 :slot :waist
+                 :item {:id 29516 :name "Ebon Netherscale Belt"}
+                 :sources [{:instance :unknown}]}
+                {:class :shaman
+                 :spec :enhancement
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 10
+                 :slot :waist
+                 :item {:id 29247 :name "Girdle of the Deathdealer"}
+                 :sources [{:instance :unknown}]}
+                {:class :shaman
+                 :spec :enhancement
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 11
+                 :slot :waist
+                 :item {:id 27911 :name "Epoch's Whispering Cinch"}
+                 :sources [{:instance :unknown}]}
+                {:class :shaman
+                 :spec :enhancement
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 12
+                 :slot :waist
+                 :item {:id 31462 :name "Shattrath's Champion Belt"}
+                 :sources [{:instance :unknown}]}
+                {:class :shaman
+                 :spec :enhancement
+                 :phase 1
+                 :kind :bis
+                 :rank 6
+                 :slot :wrist
+                 :item {:id 28514 :name "Bracers of Maliciousness"}
+                 :sources [{:instance :raid}]}
+                {:class :shaman
+                 :spec :enhancement
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 7
+                 :slot :wrist
+                 :item {:id 29527 :name "Primalstrike Bracers"}
+                 :sources [{:instance :unknown}]}
+                {:class :shaman
+                 :spec :enhancement
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 8
+                 :slot :wrist
+                 :item {:id 29517 :name "Ebon Netherscale Bracers"}
+                 :sources [{:instance :unknown}]}
+                {:class :shaman
+                 :spec :enhancement
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 9
+                 :slot :wrist
+                 :item {:id 28171 :name "Spymistress's Wristguards"}
+                 :sources [{:instance :unknown}]}
+                {:class :shaman
+                 :spec :enhancement
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 10
+                 :slot :wrist
+                 :item {:id 30399 :name "Nightstalker's Wristguards"}
+                 :sources [{:instance :unknown}]}
+                {:class :shaman
+                 :spec :enhancement
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 12
+                 :slot :wrist
+                 :item {:id 25697 :name "Felstalker Bracers"}
+                 :sources [{:instance :unknown}]}
+                {:class :shaman
+                 :spec :enhancement
                  :phase 2
+                 :kind :bis
+                 :rank 2
                  :slot :back
                  :item {:id 29994 :name "Thalassian Wildercloak"}
                  :sources [{:instance :raid}]}
                 {:class :shaman
                  :spec :enhancement
                  :phase 2
+                 :kind :bis
+                 :rank 7
+                 :slot :back
+                 :item {:id 32665 :name "Crystalweave Cape"}
+                 :sources [{:instance :unknown}]}
+                {:class :shaman
+                 :spec :enhancement
+                 :phase 2
+                 :kind :bis
+                 :rank 3
+                 :slot :chest
+                 :item {:id 30101 :name "Bloodsea Brigand's Vest"}
+                 :sources [{:instance :raid}]}
+                {:class :shaman
+                 :spec :enhancement
+                 :phase 2
+                 :kind :bis
+                 :rank 4
+                 :slot :chest
+                 :item {:id 30185 :name "Cataclysm Chestplate"}
+                 :sources [{:instance :raid}]}
+                {:class :shaman
+                 :spec :enhancement
+                 :phase 2
+                 :kind :pre-raid
+                 :rank 4
+                 :slot :feet
+                 :item {:id 30039 :name "Boots of Utter Darkness"}
+                 :sources [{:instance :unknown}]}
+                {:class :shaman
+                 :spec :enhancement
+                 :phase 2
+                 :kind :bis
+                 :rank 5
+                 :slot :feet
+                 :item {:id 30104 :name "Cobra-Lash Boots"}
+                 :sources [{:instance :raid}]}
+                {:class :shaman
+                 :spec :enhancement
+                 :phase 2
+                 :kind :bis
+                 :rank 3
+                 :slot :hands
+                 :item {:id 29947 :name "Gloves of the Searing Grip"}
+                 :sources [{:instance :raid}]}
+                {:class :shaman
+                 :spec :enhancement
+                 :phase 2
+                 :kind :bis
+                 :rank 4
+                 :slot :hands
+                 :item {:id 30189 :name "Cataclysm Gauntlets"}
+                 :sources [{:instance :raid}]}
+                {:class :shaman
+                 :spec :enhancement
+                 :phase 2
+                 :kind :bis
+                 :rank 4
+                 :slot :head
+                 :item {:id 30190 :name "Cataclysm Helm"}
+                 :sources [{:instance :raid}]}
+                {:class :shaman
+                 :spec :enhancement
+                 :phase 2
+                 :kind :pre-raid
+                 :rank 5
+                 :slot :head
+                 :item {:id 32474 :name "Surestrike Goggles v2.0"}
+                 :sources [{:instance :unknown}]}
+                {:class :shaman
+                 :spec :enhancement
+                 :phase 2
+                 :kind :bis
+                 :rank 3
+                 :slot :legs
+                 :item {:id 30192 :name "Cataclysm Legplates"}
+                 :sources [{:instance :raid}]}
+                {:class :shaman
+                 :spec :enhancement
+                 :phase 2
+                 :kind :bis
+                 :rank 3
+                 :slot :main-hand
+                 :item {:id 29996 :name "Rod of the Sun King"}
+                 :sources [{:instance :raid}]}
+                {:class :shaman
+                 :spec :enhancement
+                 :phase 2
+                 :kind :bis
+                 :rank 4
+                 :slot :main-hand
+                 :item {:id 32944 :name "Talon of the Phoenix"}
+                 :sources [{:instance :raid}]}
+                {:class :shaman
+                 :spec :enhancement
+                 :phase 2
+                 :kind :pre-raid
+                 :rank 7
+                 :slot :main-hand
+                 :item {:id 31965 :name "Merciless Gladiator's Cleaver"}
+                 :sources [{:instance :unknown}]}
+                {:class :shaman
+                 :spec :enhancement
+                 :phase 2
+                 :kind :bis
+                 :rank 9
+                 :slot :main-hand
+                 :item {:id 29924 :name :Netherbane}
+                 :sources [{:instance :raid}]}
+                {:class :shaman
+                 :spec :enhancement
+                 :phase 2
+                 :kind :bis
+                 :rank 3
+                 :slot :neck
+                 :item {:id 30017 :name "Telonicus's Pendant of Mayhem"}
+                 :sources [{:instance :raid}]}
+                {:class :shaman
+                 :spec :enhancement
+                 :phase 2
+                 :kind :bis
+                 :rank 4
+                 :slot :neck
+                 :item {:id 30022 :name "Pendant of the Perilous"}
+                 :sources [{:instance :raid}]}
+                {:class :shaman
+                 :spec :enhancement
+                 :phase 2
+                 :kind :bis
+                 :rank 3
+                 :slot :ring1
+                 :item {:id 29997 :name "Band of the Ranger-General"}
+                 :sources [{:instance :raid}]}
+                {:class :shaman
+                 :spec :enhancement
+                 :phase 2
+                 :kind :bis
+                 :rank 7
+                 :slot :ring2
+                 :item {:id 30052 :name "Ring of Lethality"}
+                 :sources [{:instance :raid}]}
+                {:class :shaman
+                 :spec :enhancement
+                 :phase 2
+                 :kind :bis
+                 :rank 3
+                 :slot :shoulder
+                 :item {:id 30055 :name "Shoulderpads of the Stranger"}
+                 :sources [{:instance :raid}]}
+                {:class :shaman
+                 :spec :enhancement
+                 :phase 2
+                 :kind :bis
+                 :rank 7
+                 :slot :trinket1
+                 :item {:id 30627 :name "Tsunami Talisman"}
+                 :sources [{:instance :raid}]}
+                {:class :shaman
+                 :spec :enhancement
+                 :phase 2
+                 :kind :bis
+                 :rank 1
                  :slot :waist
                  :item {:id 30106 :name "Belt of One-Hundred Deaths"}
                  :sources [{:instance :raid}]}
                 {:class :shaman
                  :spec :enhancement
+                 :phase 2
+                 :kind :pre-raid
+                 :rank 6
+                 :slot :waist
+                 :item {:id 30040 :name "Belt of Deep Shadow"}
+                 :sources [{:instance :unknown}]}
+                {:class :shaman
+                 :spec :enhancement
+                 :phase 2
+                 :kind :bis
+                 :rank 4
+                 :slot :wrist
+                 :item {:id 30091 :name "True-Aim Stalker Bands"}
+                 :sources [{:instance :raid}]}
+                {:class :shaman
+                 :spec :enhancement
+                 :phase 2
+                 :kind :bis
+                 :rank 5
+                 :slot :wrist
+                 :item {:id 29966 :name "Vambraces of Ending"}
+                 :sources [{:instance :raid}]}
+                {:class :shaman
+                 :spec :enhancement
+                 :phase 2
+                 :kind :bis
+                 :rank 11
+                 :slot :wrist
+                 :item {:id 32647 :name "Shard-bound Bracers"}
+                 :sources [{:instance :unknown}]}
+                {:class :shaman
+                 :spec :enhancement
                  :phase 3
+                 :kind :bis
+                 :rank 1
                  :slot :back
                  :item {:id 32323 :name "Shadowmoon Destroyer's Drape"}
                  :sources [{:instance :raid}]}
                 {:class :shaman
                  :spec :enhancement
                  :phase 3
+                 :kind :bis
+                 :rank 1
                  :slot :chest
                  :item {:id 30905 :name "Midnight Chestguard"}
                  :sources [{:instance :raid}]}
                 {:class :shaman
                  :spec :enhancement
                  :phase 3
+                 :kind :bis
+                 :rank 2
                  :slot :chest
                  :item {:id 32252 :name "Nether Shadow Tunic"}
                  :sources [{:instance :raid}]}
                 {:class :shaman
                  :spec :enhancement
                  :phase 3
+                 :kind :bis
+                 :rank 1
                  :slot :feet
                  :item {:id 32366 :name "Shadowmaster's Boots"}
                  :sources [{:instance :raid}]}
                 {:class :shaman
                  :spec :enhancement
                  :phase 3
+                 :kind :bis
+                 :rank 2
                  :slot :feet
                  :item {:id 32510 :name "Softstep Boots of Tracking"}
                  :sources [{:instance :raid}]}
                 {:class :shaman
                  :spec :enhancement
                  :phase 3
+                 :kind :bis
+                 :rank 3
+                 :slot :feet
+                 :item {:id 30880 :name "Quickstrider Moccasins"}
+                 :sources [{:instance :raid}]}
+                {:class :shaman
+                 :spec :enhancement
+                 :phase 3
+                 :kind :bis
+                 :rank 1
                  :slot :hands
                  :item {:id 32234 :name "Fists of Mukoa"}
                  :sources [{:instance :raid}]}
                 {:class :shaman
                  :spec :enhancement
                  :phase 3
+                 :kind :bis
+                 :rank 2
                  :slot :hands
                  :item {:id 32347 :name "Grips of Damnation"}
                  :sources [{:instance :raid}]}
                 {:class :shaman
                  :spec :enhancement
                  :phase 3
+                 :kind :bis
+                 :rank 1
                  :slot :head
                  :item {:id 32235 :name "Cursed Vision of Sargeras"}
                  :sources [{:instance :raid}]}
                 {:class :shaman
                  :spec :enhancement
                  :phase 3
+                 :kind :bis
+                 :rank 2
                  :slot :head
                  :item {:id 31015 :name "Skyshatter Cover"}
                  :sources [{:instance :raid}]}
                 {:class :shaman
                  :spec :enhancement
                  :phase 3
+                 :kind :bis
+                 :rank 3
+                 :slot :head
+                 :item {:id 32376 :name "Forest Prowler's Helm"}
+                 :sources [{:instance :raid}]}
+                {:class :shaman
+                 :spec :enhancement
+                 :phase 3
+                 :kind :bis
+                 :rank 1
                  :slot :legs
                  :item {:id 30900 :name "Bow-stitched Leggings"}
                  :sources [{:instance :raid}]}
                 {:class :shaman
                  :spec :enhancement
                  :phase 3
+                 :kind :bis
+                 :rank 2
                  :slot :legs
                  :item {:id 30898 :name "Shady Dealer's Pantaloons"}
                  :sources [{:instance :raid}]}
                 {:class :shaman
                  :spec :enhancement
                  :phase 3
+                 :kind :pre-raid
+                 :rank 1
                  :slot :main-hand
                  :item {:id 33669 :name "Vengeful Gladiator's Cleaver"}
                  :sources [{:instance :unknown}]}
                 {:class :shaman
                  :spec :enhancement
                  :phase 3
+                 :kind :bis
+                 :rank 2
                  :slot :main-hand
                  :item {:id 32262 :name "Syphon of the Nathrezim"}
                  :sources [{:instance :raid}]}
                 {:class :shaman
                  :spec :enhancement
                  :phase 3
+                 :kind :bis
+                 :rank 3
+                 :slot :main-hand
+                 :item {:id 32946 :name "Claw of Molten Fury"}
+                 :sources [{:instance :raid}]}
+                {:class :shaman
+                 :spec :enhancement
+                 :phase 3
+                 :kind :bis
+                 :rank 6
+                 :slot :main-hand
+                 :item {:id 32236 :name "Rising Tide"}
+                 :sources [{:instance :raid}]}
+                {:class :shaman
+                 :spec :enhancement
+                 :phase 3
+                 :kind :bis
+                 :rank 1
                  :slot :neck
                  :item {:id 32260 :name "Choker of Endless Nightmares"}
                  :sources [{:instance :raid}]}
                 {:class :shaman
                  :spec :enhancement
                  :phase 3
+                 :kind :bis
+                 :rank 2
                  :slot :neck
                  :item {:id 32591 :name "Choker of Serrated Blades"}
                  :sources [{:instance :raid}]}
                 {:class :shaman
                  :spec :enhancement
                  :phase 3
+                 :kind :bis
+                 :rank 1
                  :slot :ring1
                  :item {:id 32497 :name "Stormrage Signet Ring"}
                  :sources [{:instance :raid}]}
                 {:class :shaman
                  :spec :enhancement
                  :phase 3
+                 :kind :bis
+                 :rank 4
+                 :slot :ring1
+                 :item {:id 32526 :name "Band of Devastation"}
+                 :sources [{:instance :raid}]}
+                {:class :shaman
+                 :spec :enhancement
+                 :phase 3
+                 :kind :bis
+                 :rank 6
+                 :slot :ring1
+                 :item {:id 32266 :name "Ring of Deceitful Intent"}
+                 :sources [{:instance :raid}]}
+                {:class :shaman
+                 :spec :enhancement
+                 :phase 3
+                 :kind :bis
+                 :rank 2
                  :slot :ring2
                  :item {:id 29301 :name "Band of the Eternal Champion"}
                  :sources [{:instance :raid}]}
                 {:class :shaman
                  :spec :enhancement
                  :phase 3
+                 :kind :bis
+                 :rank 5
+                 :slot :ring2
+                 :item {:id 32335 :name "Unstoppable Aggressor's Ring"}
+                 :sources [{:instance :raid}]}
+                {:class :shaman
+                 :spec :enhancement
+                 :phase 3
+                 :kind :bis
+                 :rank 10
+                 :slot :ring2
+                 :item {:id 29298 :name "Band of Eternity"}
+                 :sources [{:instance :raid}]}
+                {:class :shaman
+                 :spec :enhancement
+                 :phase 3
+                 :kind :pre-raid
+                 :rank 1
                  :slot :shoulder
                  :item {:id 32581 :name "Swiftstrike Shoulders"}
                  :sources [{:instance :unknown}]}
                 {:class :shaman
                  :spec :enhancement
                  :phase 3
+                 :kind :pre-raid
+                 :rank 2
                  :slot :shoulder
                  :item {:id 32575 :name "Shoulders of Lightning Reflexes"}
                  :sources [{:instance :unknown}]}
                 {:class :shaman
                  :spec :enhancement
                  :phase 3
+                 :kind :bis
+                 :rank 4
+                 :slot :shoulder
+                 :item {:id 32377 :name "Mantle of Darkness"}
+                 :sources [{:instance :raid}]}
+                {:class :shaman
+                 :spec :enhancement
+                 :phase 3
+                 :kind :bis
+                 :rank 1
                  :slot :trinket1
                  :item {:id 32505 :name "Madness of the Betrayer"}
                  :sources [{:instance :raid}]}
                 {:class :shaman
                  :spec :enhancement
                  :phase 3
+                 :kind :pre-raid
+                 :rank 6
+                 :slot :trinket2
+                 :item {:id 31856 :name "Darkmoon Card: Crusade"}
+                 :sources [{:instance :unknown}]}
+                {:class :shaman
+                 :spec :enhancement
+                 :phase 3
+                 :kind :bis
+                 :rank 2
                  :slot :waist
                  :item {:id 32346 :name "Boneweave Girdle"}
                  :sources [{:instance :raid}]}
                 {:class :shaman
                  :spec :enhancement
                  :phase 3
+                 :kind :bis
+                 :rank 3
+                 :slot :waist
+                 :item {:id 32265 :name "Shadow-walker's Cord"}
+                 :sources [{:instance :raid}]}
+                {:class :shaman
+                 :spec :enhancement
+                 :phase 3
+                 :kind :bis
+                 :rank 4
+                 :slot :waist
+                 :item {:id 30879 :name "Don Alejandro's Money Belt"}
+                 :sources [{:instance :raid}]}
+                {:class :shaman
+                 :spec :enhancement
+                 :phase 3
+                 :kind :bis
+                 :rank 5
+                 :slot :waist
+                 :item {:id 30919 :name "Valestalker Girdle"}
+                 :sources [{:instance :raid}]}
+                {:class :shaman
+                 :spec :enhancement
+                 :phase 3
+                 :kind :bis
+                 :rank 1
                  :slot :wrist
                  :item {:id 30863 :name "Deadly Cuffs"}
                  :sources [{:instance :raid}]}
                 {:class :shaman
                  :spec :enhancement
                  :phase 3
+                 :kind :pre-raid
+                 :rank 2
                  :slot :wrist
                  :item {:id 32574 :name "Bindings of Lightning Reflexes"}
-                 :sources [{:instance :unknown}]}])
+                 :sources [{:instance :unknown}]}
+                {:class :shaman
+                 :spec :enhancement
+                 :phase 3
+                 :kind :bis
+                 :rank 3
+                 :slot :wrist
+                 :item {:id 32324 :name "Insidious Bands"}
+                 :sources [{:instance :raid}]}])
 
 (tset by-spec :shaman-enhancement entries)
 

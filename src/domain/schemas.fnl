@@ -159,6 +159,15 @@
                         :shaman]
                 :spec :string
                 :phase :integer
+                ;; :kind -- provenance class of the recommendation, orthogonal to
+                ;; :phase. :bis = endgame raid/world-boss/tier-token target;
+                ;; :pre-raid = catch-up gear worn TOWARD that BiS (dungeon,
+                ;; heroic, crafted, reputation, quest, vendor, PvP, BoE).
+                :kind [:enum :pre-raid :bis]
+                ;; :rank -- within (class spec phase kind slot), 1 = best. Maps
+                ;; to the source's Priority (lower = better); not contiguous when
+                ;; a slot mixes kinds, but always monotone within one.
+                :rank :integer
                 :slot [:enum
                        :head
                        :neck

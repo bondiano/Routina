@@ -14,186 +14,1233 @@
 (local entries [{:class :hunter
                  :spec :survival
                  :phase 1
+                 :kind :bis
+                 :rank 2
                  :slot :back
                  :item {:id 28672 :name "Drape of the Dark Reavers"}
                  :sources [{:instance :raid}]}
                 {:class :hunter
                  :spec :survival
                  :phase 1
+                 :kind :bis
+                 :rank 3
+                 :slot :back
+                 :item {:id 29382 :name "Blood Knight War Cloak"}
+                 :sources [{:instance :unknown}]}
+                {:class :hunter
+                 :spec :survival
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 4
+                 :slot :back
+                 :item {:id 27878 :name "Auchenai Death Shroud"}
+                 :sources [{:instance :unknown}]}
+                {:class :hunter
+                 :spec :survival
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 5
+                 :slot :back
+                 :item {:id 24259 :name "Vengeance Wrap"}
+                 :sources [{:instance :unknown}]}
+                {:class :hunter
+                 :spec :survival
+                 :phase 1
+                 :kind :bis
+                 :rank 6
+                 :slot :back
+                 :item {:id 28777 :name "Cloak of the Pit Stalker"}
+                 :sources [{:instance :raid}]}
+                {:class :hunter
+                 :spec :survival
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 7
+                 :slot :back
+                 :item {:id 27892 :name "Cloak of the Inciter"}
+                 :sources [{:instance :unknown}]}
+                {:class :hunter
+                 :spec :survival
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 8
+                 :slot :back
+                 :item {:id 31255 :name "Cloak of the Craft"}
+                 :sources [{:instance :unknown}]}
+                {:class :hunter
+                 :spec :survival
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 3
+                 :slot :chest
+                 :item {:id 28228 :name "Beast Lord Cuirass"}
+                 :sources [{:instance :unknown}]}
+                {:class :hunter
+                 :spec :survival
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 4
+                 :slot :chest
+                 :item {:id 29525 :name "Primalstrike Vest"}
+                 :sources [{:instance :unknown}]}
+                {:class :hunter
+                 :spec :survival
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 5
+                 :slot :chest
+                 :item {:id 30933 :name "Hauberk of Karabor"}
+                 :sources [{:instance :unknown}]}
+                {:class :hunter
+                 :spec :survival
+                 :phase 1
+                 :kind :bis
+                 :rank 6
+                 :slot :chest
+                 :item {:id 22436 :name "Cryptstalker Tunic"}
+                 :sources [{:instance :raid}]}
+                {:class :hunter
+                 :spec :survival
+                 :phase 1
+                 :kind :bis
+                 :rank 4
+                 :slot :feet
+                 :item {:id 30682 :name "Glider's Sabatons"}
+                 :sources [{:instance :raid}]}
+                {:class :hunter
+                 :spec :survival
+                 :phase 1
+                 :kind :bis
+                 :rank 5
+                 :slot :feet
+                 :item {:id 28545 :name "Edgewalker Longboots"}
+                 :sources [{:instance :raid}]}
+                {:class :hunter
+                 :spec :survival
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 6
+                 :slot :feet
+                 :item {:id 28746 :name "Fiend Slayer Boots"}
+                 :sources [{:instance :unknown}]}
+                {:class :hunter
+                 :spec :survival
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 7
+                 :slot :feet
+                 :item {:id 29248 :name "Shadowstep Striders"}
+                 :sources [{:instance :unknown}]}
+                {:class :hunter
+                 :spec :survival
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 8
+                 :slot :feet
+                 :item {:id 25686 :name "Fel Leather Boots"}
+                 :sources [{:instance :unknown}]}
+                {:class :hunter
+                 :spec :survival
+                 :phase 1
+                 :kind :bis
+                 :rank 9
+                 :slot :feet
+                 :item {:id 28669 :name "Rapscallion Boots"}
+                 :sources [{:instance :raid}]}
+                {:class :hunter
+                 :spec :survival
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 10
+                 :slot :feet
+                 :item {:id 29262 :name "Boots of the Endless Hunt"}
+                 :sources [{:instance :unknown}]}
+                {:class :hunter
+                 :spec :survival
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 11
+                 :slot :feet
+                 :item {:id 31288 :name "The Master's Treads"}
+                 :sources [{:instance :unknown}]}
+                {:class :hunter
+                 :spec :survival
+                 :phase 1
+                 :kind :bis
+                 :rank 12
+                 :slot :feet
+                 :item {:id 22440 :name "Cryptstalker Boots"}
+                 :sources [{:instance :raid}]}
+                {:class :hunter
+                 :spec :survival
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 13
+                 :slot :feet
+                 :item {:id 30401 :name "Farahlite Studded Boots"}
+                 :sources [{:instance :unknown}]}
+                {:class :hunter
+                 :spec :survival
+                 :phase 1
+                 :kind :bis
+                 :rank 2
                  :slot :hands
                  :item {:id 28506 :name "Gloves of Dexterous Manipulation"}
                  :sources [{:instance :raid}]}
                 {:class :hunter
                  :spec :survival
                  :phase 1
+                 :kind :pre-raid
+                 :rank 3
+                 :slot :hands
+                 :item {:id 27474 :name "Beast Lord Handguards"}
+                 :sources [{:instance :unknown}]}
+                {:class :hunter
+                 :spec :survival
+                 :phase 1
+                 :kind :bis
+                 :rank 4
+                 :slot :hands
+                 :item {:id 28827 :name "Gauntlets of the Dragonslayer"}
+                 :sources [{:instance :raid}]}
+                {:class :hunter
+                 :spec :survival
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 5
+                 :slot :hands
+                 :item {:id 25685 :name "Fel Leather Gloves"}
+                 :sources [{:instance :unknown}]}
+                {:class :hunter
+                 :spec :survival
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 6
+                 :slot :hands
+                 :item {:id 30951 :name "Ar'tor's Mainstay"}
+                 :sources [{:instance :unknown}]}
+                {:class :hunter
+                 :spec :survival
+                 :phase 1
+                 :kind :bis
+                 :rank 7
+                 :slot :hands
+                 :item {:id 22441 :name "Cryptstalker Handguards"}
+                 :sources [{:instance :raid}]}
+                {:class :hunter
+                 :spec :survival
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 8
+                 :slot :hands
+                 :item {:id 30003 :name "Gloves of the Nether-Stalker"}
+                 :sources [{:instance :unknown}]}
+                {:class :hunter
+                 :spec :survival
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 3
+                 :slot :head
+                 :item {:id 28275 :name "Beast Lord Helm"}
+                 :sources [{:instance :unknown}]}
+                {:class :hunter
+                 :spec :survival
+                 :phase 1
+                 :kind :bis
+                 :rank 4
+                 :slot :head
+                 :item {:id 29081 :name "Demon Stalker Greathelm"}
+                 :sources [{:instance :raid}]}
+                {:class :hunter
+                 :spec :survival
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 6
+                 :slot :head
+                 :item {:id 27414 :name "Mok'Nathal Beast-Mask"}
+                 :sources [{:instance :unknown}]}
+                {:class :hunter
+                 :spec :survival
+                 :phase 1
+                 :kind :bis
+                 :rank 7
+                 :slot :head
+                 :item {:id 22438 :name "Cryptstalker Headpiece"}
+                 :sources [{:instance :raid}]}
+                {:class :hunter
+                 :spec :survival
+                 :phase 1
+                 :kind :bis
+                 :rank 5
+                 :slot :legs
+                 :item {:id 30739 :name "Scaled Greaves of the Marksman"}
+                 :sources [{:instance :world-boss}]}
+                {:class :hunter
+                 :spec :survival
+                 :phase 1
+                 :kind :bis
+                 :rank 7
+                 :slot :legs
+                 :item {:id 28741 :name "Skulker's Greaves"}
+                 :sources [{:instance :raid}]}
+                {:class :hunter
+                 :spec :survival
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 8
+                 :slot :legs
+                 :item {:id 27837 :name "Wastewalker Leggings"}
+                 :sources [{:instance :unknown}]}
+                {:class :hunter
+                 :spec :survival
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 9
+                 :slot :legs
+                 :item {:id 30538 :name "Midnight Legguards"}
+                 :sources [{:instance :unknown}]}
+                {:class :hunter
+                 :spec :survival
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 10
+                 :slot :legs
+                 :item {:id 27874 :name "Beast Lord Leggings"}
+                 :sources [{:instance :unknown}]}
+                {:class :hunter
+                 :spec :survival
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 11
+                 :slot :legs
+                 :item {:id 28219 :name "Emerald-Scale Greaves"}
+                 :sources [{:instance :unknown}]}
+                {:class :hunter
+                 :spec :survival
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 12
+                 :slot :legs
+                 :item {:id 27430 :name "Scaled Greaves of Patience"}
+                 :sources [{:instance :unknown}]}
+                {:class :hunter
+                 :spec :survival
+                 :phase 1
+                 :kind :bis
+                 :rank 13
+                 :slot :legs
+                 :item {:id 22437 :name "Cryptstalker Legguards"}
+                 :sources [{:instance :raid}]}
+                {:class :hunter
+                 :spec :survival
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 3
+                 :slot :main-hand
+                 :item {:id 28263 :name :Stellaris}
+                 :sources [{:instance :unknown}]}
+                {:class :hunter
+                 :spec :survival
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 3
+                 :slot :main-hand
+                 :item {:id 28436 :name :Bloodmoon}
+                 :sources [{:instance :unknown}]}
+                {:class :hunter
+                 :spec :survival
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 4
+                 :slot :main-hand
+                 :item {:id 27846 :name "Claw of the Watcher"}
+                 :sources [{:instance :unknown}]}
+                {:class :hunter
+                 :spec :survival
+                 :phase 1
+                 :kind :bis
+                 :rank 4
+                 :slot :main-hand
+                 :item {:id 28572 :name "Blade of the Unrequited"}
+                 :sources [{:instance :raid}]}
+                {:class :hunter
+                 :spec :survival
+                 :phase 1
+                 :kind :bis
+                 :rank 4
+                 :slot :main-hand
+                 :item {:id 28587 :name :Legacy}
+                 :sources [{:instance :raid}]}
+                {:class :hunter
+                 :spec :survival
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 5
+                 :slot :main-hand
+                 :item {:id 28435 :name :Mooncleaver}
+                 :sources [{:instance :unknown}]}
+                {:class :hunter
+                 :spec :survival
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 5
+                 :slot :main-hand
+                 :item {:id 29121 :name "Guile of Khoraazi"}
+                 :sources [{:instance :unknown}]}
+                {:class :hunter
+                 :spec :survival
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 6
+                 :slot :main-hand
+                 :item {:id 27903 :name "Sonic Spear"}
+                 :sources [{:instance :unknown}]}
+                {:class :hunter
+                 :spec :survival
+                 :phase 1
+                 :kind :bis
+                 :rank 6
+                 :slot :main-hand
+                 :item {:id 28524 :name "Emerald Ripper"}
+                 :sources [{:instance :raid}]}
+                {:class :hunter
+                 :spec :survival
+                 :phase 1
+                 :kind :bis
+                 :rank 7
+                 :slot :main-hand
+                 :item {:id 28584 :name "Big Bad Wolf's Paw"}
+                 :sources [{:instance :raid}]}
+                {:class :hunter
+                 :spec :survival
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 7
+                 :slot :main-hand
+                 :item {:id 29356 :name "Quantum Blade"}
+                 :sources [{:instance :unknown}]}
+                {:class :hunter
+                 :spec :survival
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 8
+                 :slot :main-hand
+                 :item {:id 23039 :name "The Eye of Nerub"}
+                 :sources [{:instance :unknown}]}
+                {:class :hunter
+                 :spec :survival
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 9
+                 :slot :main-hand
+                 :item {:id 29329 :name "Terokk's Quill"}
+                 :sources [{:instance :unknown}]}
+                {:class :hunter
+                 :spec :survival
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 10
+                 :slot :main-hand
+                 :item {:id 30277 :name "Ripfang Paw"}
+                 :sources [{:instance :unknown}]}
+                {:class :hunter
+                 :spec :survival
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 10
+                 :slot :main-hand
+                 :item {:id 32781 :name "Talon of Anzu"}
+                 :sources [{:instance :unknown}]}
+                {:class :hunter
+                 :spec :survival
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 2
                  :slot :neck
                  :item {:id 32508 :name "Necklace of the Deep"}
                  :sources [{:instance :unknown}]}
                 {:class :hunter
                  :spec :survival
                  :phase 1
+                 :kind :pre-raid
+                 :rank 3
+                 :slot :neck
+                 :item {:id 28343 :name "Jagged Bark Pendant"}
+                 :sources [{:instance :unknown}]}
+                {:class :hunter
+                 :spec :survival
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 4
+                 :slot :neck
+                 :item {:id 19377 :name "Prestor's Talisman of Connivery"}
+                 :sources [{:instance :unknown}]}
+                {:class :hunter
+                 :spec :survival
+                 :phase 1
+                 :kind :bis
+                 :rank 5
+                 :slot :neck
+                 :item {:id 29381 :name "Choker of Vile Intent"}
+                 :sources [{:instance :unknown}]}
+                {:class :hunter
+                 :spec :survival
+                 :phase 1
+                 :kind :bis
+                 :rank 6
+                 :slot :neck
+                 :item {:id 28509 :name "Worgen Claw Necklace"}
+                 :sources [{:instance :raid}]}
+                {:class :hunter
+                 :spec :survival
+                 :phase 1
+                 :kind :bis
+                 :rank 7
+                 :slot :neck
+                 :item {:id 28674 :name "Saberclaw Talisman"}
+                 :sources [{:instance :raid}]}
+                {:class :hunter
+                 :spec :survival
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 8
+                 :slot :neck
+                 :item {:id 25562 :name "Earthen Mark of Razing"}
+                 :sources [{:instance :unknown}]}
+                {:class :hunter
+                 :spec :survival
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 5
+                 :slot :off-hand
+                 :item {:id 29372 :name :Void-Talon}
+                 :sources [{:instance :unknown}]}
+                {:class :hunter
+                 :spec :survival
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 6
+                 :slot :off-hand
+                 :item {:id 28315 :name "Stormreaver Warblades"}
+                 :sources [{:instance :unknown}]}
+                {:class :hunter
+                 :spec :survival
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 8
+                 :slot :off-hand
+                 :item {:id 23242 :name "Claw of the Frost Wyrm"}
+                 :sources [{:instance :unknown}]}
+                {:class :hunter
+                 :spec :survival
+                 :phase 1
+                 :kind :bis
+                 :rank 6
+                 :slot :ranged
+                 :item {:id 30724 :name "Barrel-Blade Longrifle"}
+                 :sources [{:instance :world-boss}]}
+                {:class :hunter
+                 :spec :survival
+                 :phase 1
+                 :kind :bis
+                 :rank 7
+                 :slot :ranged
+                 :item {:id 28772 :name "Sunfury Bow of the Phoenix"}
+                 :sources [{:instance :raid}]}
+                {:class :hunter
+                 :spec :survival
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 8
+                 :slot :ranged
+                 :item {:id 29351 :name "Wrathtide Longbow"}
+                 :sources [{:instance :unknown}]}
+                {:class :hunter
+                 :spec :survival
+                 :phase 1
+                 :kind :bis
+                 :rank 9
+                 :slot :ranged
+                 :item {:id 28581 :name "Wolfslayer Sniper Rifle"}
+                 :sources [{:instance :raid}]}
+                {:class :hunter
+                 :spec :survival
+                 :phase 1
+                 :kind :bis
+                 :rank 10
+                 :slot :ranged
+                 :item {:id 28504 :name "Steelhawk Crossbow"}
+                 :sources [{:instance :raid}]}
+                {:class :hunter
+                 :spec :survival
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 11
+                 :slot :ranged
+                 :item {:id 22812 :name "Nerubian Slavemaker"}
+                 :sources [{:instance :unknown}]}
+                {:class :hunter
+                 :spec :survival
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 12
+                 :slot :ranged
+                 :item {:id 31323 :name "Don Santos' Famous Hunting Rifle"}
+                 :sources [{:instance :unknown}]}
+                {:class :hunter
+                 :spec :survival
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 13
+                 :slot :ranged
+                 :item {:id 31303 :name "Valanos' Longbow"}
+                 :sources [{:instance :unknown}]}
+                {:class :hunter
+                 :spec :survival
+                 :phase 1
+                 :kind :bis
+                 :rank 1
                  :slot :ring1
                  :item {:id 28791 :name "Ring of the Recalcitrant"}
                  :sources [{:instance :raid}]}
                 {:class :hunter
                  :spec :survival
                  :phase 1
+                 :kind :bis
+                 :rank 5
+                 :slot :ring1
+                 :item {:id 28649 :name "Garona's Signet Ring"}
+                 :sources [{:instance :raid}]}
+                {:class :hunter
+                 :spec :survival
+                 :phase 1
+                 :kind :bis
+                 :rank 7
+                 :slot :ring1
+                 :item {:id 28757 :name "Ring of a Thousand Marks"}
+                 :sources [{:instance :raid}]}
+                {:class :hunter
+                 :spec :survival
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 9
+                 :slot :ring1
+                 :item {:id 30860 :name "Kaylaan's Signet"}
+                 :sources [{:instance :unknown}]}
+                {:class :hunter
+                 :spec :survival
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 11
+                 :slot :ring1
+                 :item {:id 23038 :name "Band of Unnatural Forces"}
+                 :sources [{:instance :unknown}]}
+                {:class :hunter
+                 :spec :survival
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 14
+                 :slot :ring1
+                 :item {:id 31326 :name "Truestrike Ring"}
+                 :sources [{:instance :unknown}]}
+                {:class :hunter
+                 :spec :survival
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 4
+                 :slot :ring2
+                 :item {:id 31277 :name "Pathfinder's Band"}
+                 :sources [{:instance :unknown}]}
+                {:class :hunter
+                 :spec :survival
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 6
+                 :slot :ring2
+                 :item {:id 27925 :name "Ravenclaw Band"}
+                 :sources [{:instance :unknown}]}
+                {:class :hunter
+                 :spec :survival
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 8
+                 :slot :ring2
+                 :item {:id 31920 :name "Shaffar's Band of Brutality"}
+                 :sources [{:instance :unknown}]}
+                {:class :hunter
+                 :spec :survival
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 10
+                 :slot :ring2
+                 :item {:id 31077 :name "Slayer's Mark of the Redemption"}
+                 :sources [{:instance :unknown}]}
+                {:class :hunter
+                 :spec :survival
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 12
+                 :slot :ring2
+                 :item {:id 30973 :name "Band of Anguish"}
+                 :sources [{:instance :unknown}]}
+                {:class :hunter
+                 :spec :survival
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 15
+                 :slot :ring2
+                 :item {:id 22961 :name "Band of Reanimation"}
+                 :sources [{:instance :unknown}]}
+                {:class :hunter
+                 :spec :survival
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 3
+                 :slot :shoulder
+                 :item {:id 27801 :name "Beast Lord Mantle"}
+                 :sources [{:instance :unknown}]}
+                {:class :hunter
+                 :spec :survival
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 5
+                 :slot :shoulder
+                 :item {:id 27797 :name "Wastewalker Shoulderpads"}
+                 :sources [{:instance :unknown}]}
+                {:class :hunter
+                 :spec :survival
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 7
+                 :slot :shoulder
+                 :item {:id 25790 :name "Expedition Scout's Epaulets"}
+                 :sources [{:instance :unknown}]}
+                {:class :hunter
+                 :spec :survival
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 8
+                 :slot :shoulder
+                 :item {:id 27434 :name "Mantle of Perenolde"}
+                 :sources [{:instance :unknown}]}
+                {:class :hunter
+                 :spec :survival
+                 :phase 1
+                 :kind :bis
+                 :rank 9
+                 :slot :shoulder
+                 :item {:id 22439 :name "Cryptstalker Spaulders"}
+                 :sources [{:instance :raid}]}
+                {:class :hunter
+                 :spec :survival
+                 :phase 1
+                 :kind :bis
+                 :rank 1
                  :slot :trinket1
                  :item {:id 28830 :name "Dragonspine Trophy"}
                  :sources [{:instance :raid}]}
                 {:class :hunter
                  :spec :survival
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 5
+                 :slot :trinket1
+                 :item {:id 28288 :name "Abacus of Violent Odds"}
+                 :sources [{:instance :unknown}]}
+                {:class :hunter
+                 :spec :survival
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 8
+                 :slot :trinket1
+                 :item {:id 21670 :name "Badge of the Swarmguard"}
+                 :sources [{:instance :unknown}]}
+                {:class :hunter
+                 :spec :survival
+                 :phase 1
+                 :kind :bis
+                 :rank 3
+                 :slot :trinket2
+                 :item {:id 29383 :name "Bloodlust Brooch"}
+                 :sources [{:instance :unknown}]}
+                {:class :hunter
+                 :spec :survival
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 7
+                 :slot :trinket2
+                 :item {:id 28034 :name "Hourglass of the Unraveller"}
+                 :sources [{:instance :unknown}]}
+                {:class :hunter
+                 :spec :survival
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 9
+                 :slot :trinket2
+                 :item {:id 28041 :name "Bladefist's Breadth"}
+                 :sources [{:instance :unknown}]}
+                {:class :hunter
+                 :spec :survival
+                 :phase 1
+                 :kind :bis
+                 :rank 3
+                 :slot :waist
+                 :item {:id 30677 :name "Lurker's Belt"}
+                 :sources [{:instance :raid}]}
+                {:class :hunter
+                 :spec :survival
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 6
+                 :slot :waist
+                 :item {:id 28750 :name "Girdle of Treachery"}
+                 :sources [{:instance :unknown}]}
+                {:class :hunter
+                 :spec :survival
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 7
+                 :slot :waist
+                 :item {:id 27760 :name "Dunewind Sash"}
+                 :sources [{:instance :unknown}]}
+                {:class :hunter
+                 :spec :survival
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 8
+                 :slot :waist
+                 :item {:id 29247 :name "Girdle of the Deathdealer"}
+                 :sources [{:instance :unknown}]}
+                {:class :hunter
+                 :spec :survival
+                 :phase 1
+                 :kind :bis
+                 :rank 9
+                 :slot :waist
+                 :item {:id 28656 :name "Girdle of the Prowler"}
+                 :sources [{:instance :raid}]}
+                {:class :hunter
+                 :spec :survival
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 10
+                 :slot :waist
+                 :item {:id 29526 :name "Primalstrike Belt"}
+                 :sources [{:instance :unknown}]}
+                {:class :hunter
+                 :spec :survival
+                 :phase 1
+                 :kind :bis
+                 :rank 11
+                 :slot :waist
+                 :item {:id 28828 :name "Gronn-Stitched Girdle"}
+                 :sources [{:instance :raid}]}
+                {:class :hunter
+                 :spec :survival
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 12
+                 :slot :waist
+                 :item {:id 25695 :name "Felstalker Belt"}
+                 :sources [{:instance :unknown}]}
+                {:class :hunter
+                 :spec :survival
+                 :phase 1
+                 :kind :bis
+                 :rank 13
+                 :slot :waist
+                 :item {:id 22442 :name "Cryptstalker Girdle"}
+                 :sources [{:instance :raid}]}
+                {:class :hunter
+                 :spec :survival
+                 :phase 1
+                 :kind :bis
+                 :rank 3
+                 :slot :wrist
+                 :item {:id 30686 :name "Ravager's Bands"}
+                 :sources [{:instance :raid}]}
+                {:class :hunter
+                 :spec :survival
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 4
+                 :slot :wrist
+                 :item {:id 25697 :name "Felstalker Bracers"}
+                 :sources [{:instance :unknown}]}
+                {:class :hunter
+                 :spec :survival
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 6
+                 :slot :wrist
+                 :item {:id 29527 :name "Primalstrike Bracers"}
+                 :sources [{:instance :unknown}]}
+                {:class :hunter
+                 :spec :survival
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 7
+                 :slot :wrist
+                 :item {:id 29246 :name "Nightfall Wristguards"}
+                 :sources [{:instance :unknown}]}
+                {:class :hunter
+                 :spec :survival
+                 :phase 1
+                 :kind :bis
+                 :rank 8
+                 :slot :wrist
+                 :item {:id 22443 :name "Cryptstalker Wristguards"}
+                 :sources [{:instance :raid}]}
+                {:class :hunter
+                 :spec :survival
                  :phase 2
+                 :kind :bis
+                 :rank 1
                  :slot :back
                  :item {:id 29994 :name "Thalassian Wildercloak"}
                  :sources [{:instance :raid}]}
                 {:class :hunter
                  :spec :survival
                  :phase 2
+                 :kind :bis
+                 :rank 2
                  :slot :chest
                  :item {:id 30139 :name "Rift Stalker Hauberk"}
                  :sources [{:instance :raid}]}
                 {:class :hunter
                  :spec :survival
                  :phase 2
+                 :kind :bis
+                 :rank 2
                  :slot :feet
                  :item {:id 30104 :name "Cobra-Lash Boots"}
                  :sources [{:instance :raid}]}
                 {:class :hunter
                  :spec :survival
                  :phase 2
+                 :kind :bis
+                 :rank 3
+                 :slot :feet
+                 :item {:id 29951 :name "Star-Strider Boots"}
+                 :sources [{:instance :raid}]}
+                {:class :hunter
+                 :spec :survival
+                 :phase 2
+                 :kind :bis
+                 :rank 2
                  :slot :head
                  :item {:id 30141 :name "Rift Stalker Helm"}
                  :sources [{:instance :raid}]}
                 {:class :hunter
                  :spec :survival
                  :phase 2
+                 :kind :pre-raid
+                 :rank 5
+                 :slot :head
+                 :item {:id 32474 :name "Surestrike Goggles v2.0"}
+                 :sources [{:instance :unknown}]}
+                {:class :hunter
+                 :spec :survival
+                 :phase 2
+                 :kind :bis
+                 :rank 3
+                 :slot :legs
+                 :item {:id 30142 :name "Rift Stalker Leggings"}
+                 :sources [{:instance :raid}]}
+                {:class :hunter
+                 :spec :survival
+                 :phase 2
+                 :kind :bis
+                 :rank 6
+                 :slot :legs
+                 :item {:id 29985 :name "Void Reaver Greaves"}
+                 :sources [{:instance :raid}]}
+                {:class :hunter
+                 :spec :survival
+                 :phase 2
+                 :kind :bis
+                 :rank 2
                  :slot :main-hand
                  :item {:id 29924 :name :Netherbane}
                  :sources [{:instance :raid}]}
                 {:class :hunter
                  :spec :survival
                  :phase 2
+                 :kind :bis
+                 :rank 2
                  :slot :main-hand
                  :item {:id 29993 :name "Twinblade of the Phoenix"}
                  :sources [{:instance :raid}]}
                 {:class :hunter
                  :spec :survival
                  :phase 2
+                 :kind :bis
+                 :rank 1
                  :slot :neck
                  :item {:id 30017 :name "Telonicus's Pendant of Mayhem"}
                  :sources [{:instance :raid}]}
                 {:class :hunter
                  :spec :survival
                  :phase 2
+                 :kind :bis
+                 :rank 2
                  :slot :off-hand
                  :item {:id 29948 :name "Claw of the Phoenix"}
                  :sources [{:instance :raid}]}
                 {:class :hunter
                  :spec :survival
                  :phase 2
+                 :kind :bis
+                 :rank 4
+                 :slot :ranged
+                 :item {:id 30105 :name "Serpent Spine Longbow"}
+                 :sources [{:instance :raid}]}
+                {:class :hunter
+                 :spec :survival
+                 :phase 2
+                 :kind :bis
+                 :rank 5
+                 :slot :ranged
+                 :item {:id 29949 :name "Arcanite Steam-Pistol"}
+                 :sources [{:instance :raid}]}
+                {:class :hunter
+                 :spec :survival
+                 :phase 2
+                 :kind :pre-raid
+                 :rank 24
+                 :slot :ranged
+                 :item {:id 31986
+                        :name "Merciless Gladiator's Crossbow of the Phoenix"}
+                 :sources [{:instance :unknown}]}
+                {:class :hunter
+                 :spec :survival
+                 :phase 2
+                 :kind :bis
+                 :rank 3
+                 :slot :ring1
+                 :item {:id 30052 :name "Ring of Lethality"}
+                 :sources [{:instance :raid}]}
+                {:class :hunter
+                 :spec :survival
+                 :phase 2
+                 :kind :bis
+                 :rank 2
                  :slot :shoulder
                  :item {:id 30143 :name "Rift Stalker Mantle"}
                  :sources [{:instance :raid}]}
                 {:class :hunter
                  :spec :survival
                  :phase 2
+                 :kind :bis
+                 :rank 4
+                 :slot :shoulder
+                 :item {:id 30055 :name "Shoulderpads of the Stranger"}
+                 :sources [{:instance :raid}]}
+                {:class :hunter
+                 :spec :survival
+                 :phase 2
+                 :kind :bis
+                 :rank 6
+                 :slot :shoulder
+                 :item {:id 30085 :name "Mantle of the Tireless Tracker"}
+                 :sources [{:instance :raid}]}
+                {:class :hunter
+                 :spec :survival
+                 :phase 2
+                 :kind :bis
+                 :rank 6
+                 :slot :trinket1
+                 :item {:id 30627 :name "Tsunami Talisman"}
+                 :sources [{:instance :raid}]}
+                {:class :hunter
+                 :spec :survival
+                 :phase 2
+                 :kind :pre-raid
+                 :rank 2
                  :slot :waist
                  :item {:id 30040 :name "Belt of Deep Shadow"}
                  :sources [{:instance :unknown}]}
                 {:class :hunter
                  :spec :survival
                  :phase 2
+                 :kind :bis
+                 :rank 4
+                 :slot :waist
+                 :item {:id 30106 :name "Belt of One-Hundred Deaths"}
+                 :sources [{:instance :raid}]}
+                {:class :hunter
+                 :spec :survival
+                 :phase 2
+                 :kind :pre-raid
+                 :rank 5
+                 :slot :waist
+                 :item {:id 30046 :name "Belt of the Black Eagle"}
+                 :sources [{:instance :unknown}]}
+                {:class :hunter
+                 :spec :survival
+                 :phase 2
+                 :kind :bis
+                 :rank 2
                  :slot :wrist
                  :item {:id 29966 :name "Vambraces of Ending"}
                  :sources [{:instance :raid}]}
                 {:class :hunter
                  :spec :survival
+                 :phase 2
+                 :kind :bis
+                 :rank 5
+                 :slot :wrist
+                 :item {:id 30026 :name "Bands of the Celestial Archer"}
+                 :sources [{:instance :raid}]}
+                {:class :hunter
+                 :spec :survival
                  :phase 3
+                 :kind :bis
+                 :rank 1
                  :slot :chest
                  :item {:id 31004 :name "Gronnstalker's Chestguard"}
                  :sources [{:instance :raid}]}
                 {:class :hunter
                  :spec :survival
                  :phase 3
+                 :kind :bis
+                 :rank 1
                  :slot :feet
                  :item {:id 32366 :name "Shadowmaster's Boots"}
                  :sources [{:instance :raid}]}
                 {:class :hunter
                  :spec :survival
                  :phase 3
+                 :kind :bis
+                 :rank 1
                  :slot :hands
                  :item {:id 31001 :name "Gronnstalker's Gloves"}
                  :sources [{:instance :raid}]}
                 {:class :hunter
                  :spec :survival
                  :phase 3
+                 :kind :bis
+                 :rank 1
                  :slot :head
                  :item {:id 31003 :name "Gronnstalker's Helmet"}
                  :sources [{:instance :raid}]}
                 {:class :hunter
                  :spec :survival
                  :phase 3
+                 :kind :bis
+                 :rank 1
                  :slot :legs
                  :item {:id 30900 :name "Bow-stitched Leggings"}
                  :sources [{:instance :raid}]}
                 {:class :hunter
                  :spec :survival
                  :phase 3
+                 :kind :bis
+                 :rank 2
                  :slot :legs
                  :item {:id 31005 :name "Gronnstalker's Leggings"}
                  :sources [{:instance :raid}]}
                 {:class :hunter
                  :spec :survival
                  :phase 3
+                 :kind :bis
+                 :rank 4
+                 :slot :legs
+                 :item {:id 30898 :name "Shady Dealer's Pantaloons"}
+                 :sources [{:instance :raid}]}
+                {:class :hunter
+                 :spec :survival
+                 :phase 3
+                 :kind :bis
+                 :rank 1
                  :slot :main-hand
                  :item {:id 30881 :name "Blade of Infamy"}
                  :sources [{:instance :raid}]}
                 {:class :hunter
                  :spec :survival
                  :phase 3
+                 :kind :bis
+                 :rank 1
                  :slot :main-hand
                  :item {:id 32248 :name "Halberd of Desolation"}
                  :sources [{:instance :raid}]}
                 {:class :hunter
                  :spec :survival
                  :phase 3
+                 :kind :bis
+                 :rank 1
                  :slot :ranged
                  :item {:id 30906 :name "Bristleblitz Striker"}
                  :sources [{:instance :raid}]}
                 {:class :hunter
                  :spec :survival
                  :phase 3
+                 :kind :pre-raid
+                 :rank 2
                  :slot :ranged
                  :item {:id 34530 :name "Vengeful Gladiator's Rifle"}
                  :sources [{:instance :unknown}]}
                 {:class :hunter
                  :spec :survival
                  :phase 3
+                 :kind :bis
+                 :rank 3
+                 :slot :ranged
+                 :item {:id 32336 :name "Black Bow of the Betrayer"}
+                 :sources [{:instance :raid}]}
+                {:class :hunter
+                 :spec :survival
+                 :phase 3
+                 :kind :bis
+                 :rank 2
                  :slot :ring1
                  :item {:id 29301 :name "Band of the Eternal Champion"}
                  :sources [{:instance :raid}]}
                 {:class :hunter
                  :spec :survival
                  :phase 3
+                 :kind :bis
+                 :rank 13
+                 :slot :ring2
+                 :item {:id 29298 :name "Band of Eternity"}
+                 :sources [{:instance :raid}]}
+                {:class :hunter
+                 :spec :survival
+                 :phase 3
+                 :kind :bis
+                 :rank 1
                  :slot :shoulder
                  :item {:id 31006 :name "Gronnstalker's Spaulders"}
                  :sources [{:instance :raid}]}
                 {:class :hunter
                  :spec :survival
                  :phase 3
+                 :kind :bis
+                 :rank 2
                  :slot :trinket1
                  :item {:id 32505 :name "Madness of the Betrayer"}
                  :sources [{:instance :raid}]}
                 {:class :hunter
                  :spec :survival
                  :phase 3
+                 :kind :pre-raid
+                 :rank 4
+                 :slot :trinket2
+                 :item {:id 32487 :name "Ashtongue Talisman of Swiftness"}
+                 :sources [{:instance :unknown}]}
+                {:class :hunter
+                 :spec :survival
+                 :phase 3
+                 :kind :bis
+                 :rank 1
                  :slot :waist
                  :item {:id 30879 :name "Don Alejandro's Money Belt"}
                  :sources [{:instance :raid}]}
                 {:class :hunter
                  :spec :survival
                  :phase 3
+                 :kind :bis
+                 :rank 1
                  :slot :wrist
                  :item {:id 32324 :name "Insidious Bands"}
                  :sources [{:instance :raid}]}])

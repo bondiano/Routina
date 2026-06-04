@@ -14,170 +14,1189 @@
 (local entries [{:class :paladin
                  :spec :retribution
                  :phase 1
+                 :kind :pre-raid
+                 :rank 1
                  :slot :back
                  :item {:id 33122 :name "Cloak of Darkness"}
                  :sources [{:instance :unknown}]}
                 {:class :paladin
                  :spec :retribution
                  :phase 1
+                 :kind :pre-raid
+                 :rank 3
+                 :slot :back
+                 :item {:id 24259 :name "Vengeance Wrap"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :retribution
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 5
+                 :slot :back
+                 :item {:id 27878 :name "Auchenai Death Shroud"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :retribution
+                 :phase 1
+                 :kind :bis
+                 :rank 6
+                 :slot :back
+                 :item {:id 28529 :name "Royal Cloak of Arathi Kings"}
+                 :sources [{:instance :raid}]}
+                {:class :paladin
+                 :spec :retribution
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 7
+                 :slot :back
+                 :item {:id 27892 :name "Cloak of the Inciter"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :retribution
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 8
+                 :slot :back
+                 :item {:id 28249 :name "Capacitus' Cloak of Calibration"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :retribution
+                 :phase 1
+                 :kind :bis
+                 :rank 7
+                 :slot :chest
+                 :item {:id 29071 :name "Justicar Breastplate"}
+                 :sources [{:instance :raid}]}
+                {:class :paladin
+                 :spec :retribution
+                 :phase 1
+                 :kind :bis
+                 :rank 8
+                 :slot :chest
+                 :item {:id 30730 :name "Terrorweave Tunic"}
+                 :sources [{:instance :world-boss}]}
+                {:class :paladin
+                 :spec :retribution
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 11
+                 :slot :chest
+                 :item {:id 29515 :name "Ebon Netherscale Breastplate"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :retribution
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 12
+                 :slot :chest
+                 :item {:id 29525 :name "Primalstrike Vest"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :retribution
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 13
+                 :slot :chest
+                 :item {:id 28403 :name "Doomplate Chestguard"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :retribution
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 14
+                 :slot :chest
+                 :item {:id 23522 :name "Ragesteel Breastplate"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :retribution
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 15
+                 :slot :chest
+                 :item {:id 24396 :name "Vest of Vengeance"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :retribution
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 16
+                 :slot :chest
+                 :item {:id 31548 :name "Blackened Chestplate"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :retribution
+                 :phase 1
+                 :kind :bis
+                 :rank 4
+                 :slot :feet
+                 :item {:id 28608 :name "Ironstriders of Urgency"}
+                 :sources [{:instance :raid}]}
+                {:class :paladin
+                 :spec :retribution
+                 :phase 1
+                 :kind :bis
+                 :rank 5
+                 :slot :feet
+                 :item {:id 28545 :name "Edgewalker Longboots"}
+                 :sources [{:instance :raid}]}
+                {:class :paladin
+                 :spec :retribution
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 7
+                 :slot :feet
+                 :item {:id 28746 :name "Fiend Slayer Boots"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :retribution
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 8
+                 :slot :feet
+                 :item {:id 25686 :name "Fel Leather Boots"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :retribution
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 9
+                 :slot :feet
+                 :item {:id 28176 :name "Sha'tari Wrought Greaves"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :retribution
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 10
+                 :slot :feet
+                 :item {:id 28318 :name "Obsidian Clodstompers"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :retribution
+                 :phase 1
+                 :kind :bis
+                 :rank 3
+                 :slot :hands
+                 :item {:id 30644 :name "Grips of Deftness"}
+                 :sources [{:instance :raid}]}
+                {:class :paladin
+                 :spec :retribution
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 4
+                 :slot :hands
+                 :item {:id 30341 :name "Flesh Handler's Gauntlets"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :retribution
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 5
+                 :slot :hands
+                 :item {:id 18823 :name "Aged Core Leather Gloves"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :retribution
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 6
+                 :slot :hands
+                 :item {:id 29509 :name "Windstrike Gloves"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :retribution
+                 :phase 1
+                 :kind :bis
+                 :rank 8
+                 :slot :head
+                 :item {:id 29073 :name "Justicar Crown"}
+                 :sources [{:instance :raid}]}
+                {:class :paladin
+                 :spec :retribution
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 10
+                 :slot :head
+                 :item {:id 28182 :name "Helm of the Claw"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :retribution
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 11
+                 :slot :head
+                 :item {:id 27881 :name "Gladiator's Scaled Helm"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :retribution
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 12
+                 :slot :head
+                 :item {:id 31105 :name "Overlord's Helmet of Second Sight"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :retribution
+                 :phase 1
+                 :kind :bis
+                 :rank 13
+                 :slot :head
+                 :item {:id 32087 :name "Mask of the Deceiver"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :retribution
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 3
+                 :slot :legs
+                 :item {:id 30257 :name "Shattrath Leggings"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :retribution
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 5
+                 :slot :legs
+                 :item {:id 31544 :name "Clefthoof Hide Leggings"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :retribution
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 8
+                 :slot :legs
+                 :item {:id 30533 :name "Vanquisher's Legplates"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :retribution
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 4
+                 :slot :main-hand
+                 :item {:id 28430 :name "Lionheart Executioner"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :retribution
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 6
+                 :slot :main-hand
+                 :item {:id 28442 :name :Stormherald}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :retribution
+                 :phase 1
+                 :kind :bis
+                 :rank 8
+                 :slot :main-hand
+                 :item {:id 28773 :name :Gorehowl}
+                 :sources [{:instance :raid}]}
+                {:class :paladin
+                 :spec :retribution
+                 :phase 1
+                 :kind :bis
+                 :rank 10
+                 :slot :main-hand
+                 :item {:id 28429 :name "Lionheart Champion"}
+                 :sources [{:instance :raid}]}
+                {:class :paladin
+                 :spec :retribution
+                 :phase 1
+                 :kind :bis
+                 :rank 11
+                 :slot :main-hand
+                 :item {:id 30722 :name "Ethereum Nexus-Reaver"}
+                 :sources [{:instance :world-boss}]}
+                {:class :paladin
+                 :spec :retribution
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 12
+                 :slot :main-hand
+                 :item {:id 24550 :name "Gladiator's Greatsword"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :retribution
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 13
+                 :slot :main-hand
+                 :item {:id 29356 :name "Quantum Blade"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :retribution
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 14
+                 :slot :main-hand
+                 :item {:id 31322 :name "The Hammer of Destiny"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :retribution
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 15
+                 :slot :main-hand
+                 :item {:id 23541 :name "Khorium Champion"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :retribution
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 16
+                 :slot :main-hand
+                 :item {:id 22798 :name "Might of Menethil"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :retribution
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 17
+                 :slot :main-hand
+                 :item {:id 27986 :name "Crow Wing Reaper"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :retribution
+                 :phase 1
+                 :kind :bis
+                 :rank 3
+                 :slot :neck
+                 :item {:id 29381 :name "Choker of Vile Intent"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :retribution
+                 :phase 1
+                 :kind :bis
+                 :rank 4
+                 :slot :neck
+                 :item {:id 28509 :name "Worgen Claw Necklace"}
+                 :sources [{:instance :raid}]}
+                {:class :paladin
+                 :spec :retribution
+                 :phase 1
+                 :kind :bis
+                 :rank 5
+                 :slot :neck
+                 :item {:id 28745 :name "Mithril Chain of Heroism"}
+                 :sources [{:instance :raid}]}
+                {:class :paladin
+                 :spec :retribution
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 6
+                 :slot :neck
+                 :item {:id 29119 :name "Haramad's Bargain"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :retribution
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 7
+                 :slot :neck
+                 :item {:id 31275 :name "Necklace of Trophies"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :retribution
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 1
                  :slot :ranged
                  :item {:id 27484 :name "Libram of Avengement"}
                  :sources [{:instance :unknown}]}
                 {:class :paladin
                  :spec :retribution
                  :phase 1
+                 :kind :pre-raid
+                 :rank 2
                  :slot :ranged
                  :item {:id 22401 :name "Libram of Hope"}
                  :sources [{:instance :unknown}]}
                 {:class :paladin
                  :spec :retribution
                  :phase 1
+                 :kind :pre-raid
+                 :rank 3
+                 :slot :ranged
+                 :item {:id 23203 :name "Libram of Fervor"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :retribution
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 4
+                 :slot :ranged
+                 :item {:id 22402 :name "Libram of Grace"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :retribution
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 1
                  :slot :ring1
                  :item {:id 30834 :name "Shapeshifter's Signet"}
                  :sources [{:instance :unknown}]}
                 {:class :paladin
                  :spec :retribution
                  :phase 1
+                 :kind :bis
+                 :rank 7
+                 :slot :ring1
+                 :item {:id 28757 :name "Ring of a Thousand Marks"}
+                 :sources [{:instance :raid}]}
+                {:class :paladin
+                 :spec :retribution
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 9
+                 :slot :ring1
+                 :item {:id 29283 :name "Violet Signet of the Master Assassin"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :retribution
+                 :phase 1
+                 :kind :bis
+                 :rank 11
+                 :slot :ring1
+                 :item {:id 28649 :name "Garona's Signet Ring"}
+                 :sources [{:instance :raid}]}
+                {:class :paladin
+                 :spec :retribution
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 13
+                 :slot :ring1
+                 :item {:id 30365 :name "Overseer's Signet"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :retribution
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 15
+                 :slot :ring1
+                 :item {:id 31380 :name "Acrobat's Mark of the Sha'tar"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :retribution
+                 :phase 1
+                 :kind :bis
+                 :rank 6
+                 :slot :ring2
+                 :item {:id 30738 :name "Ring of Reciprocity"}
+                 :sources [{:instance :world-boss}]}
+                {:class :paladin
+                 :spec :retribution
+                 :phase 1
+                 :kind :bis
+                 :rank 8
+                 :slot :ring2
+                 :item {:id 28730 :name "Mithril Band of the Unscarred"}
+                 :sources [{:instance :raid}]}
+                {:class :paladin
+                 :spec :retribution
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 10
+                 :slot :ring2
+                 :item {:id 31920 :name "Shaffar's Band of Brutality"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :retribution
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 12
+                 :slot :ring2
+                 :item {:id 29177 :name "A'dal's Command"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :retribution
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 14
+                 :slot :ring2
+                 :item {:id 23038 :name "Band of Unnatural Forces"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :retribution
+                 :phase 1
+                 :kind :bis
+                 :rank 5
+                 :slot :shoulder
+                 :item {:id 29075 :name "Justicar Shoulderplates"}
+                 :sources [{:instance :raid}]}
+                {:class :paladin
+                 :spec :retribution
+                 :phase 1
+                 :kind :bis
+                 :rank 6
+                 :slot :shoulder
+                 :item {:id 30740 :name "Ripfiend Shoulderplates"}
+                 :sources [{:instance :world-boss}]}
+                {:class :paladin
+                 :spec :retribution
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 8
+                 :slot :shoulder
+                 :item {:id 28755 :name "Bladed Shoulderpads of the Merciless"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :retribution
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 9
+                 :slot :shoulder
+                 :item {:id 27883 :name "Gladiator's Scaled Shoulders"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :retribution
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 10
+                 :slot :shoulder
+                 :item {:id 33173 :name "Ragesteel Shoulders"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :retribution
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 11
+                 :slot :shoulder
+                 :item {:id 27771 :name "Doomplate Shoulderguards"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :retribution
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 12
+                 :slot :shoulder
+                 :item {:id 27434 :name "Mantle of Perenolde"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :retribution
+                 :phase 1
+                 :kind :bis
+                 :rank 1
                  :slot :trinket1
                  :item {:id 28830 :name "Dragonspine Trophy"}
                  :sources [{:instance :raid}]}
                 {:class :paladin
                  :spec :retribution
                  :phase 1
+                 :kind :bis
+                 :rank 3
+                 :slot :trinket1
+                 :item {:id 29383 :name "Bloodlust Brooch"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :retribution
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 5
+                 :slot :trinket1
+                 :item {:id 38287 :name "Empty Mug of Direbrew"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :retribution
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 10
+                 :slot :trinket1
+                 :item {:id 22954 :name "Kiss of the Spider"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :retribution
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 12
+                 :slot :trinket1
+                 :item {:id 19406 :name "Drake Fang Talisman"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :retribution
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 14
+                 :slot :trinket1
+                 :item {:id 29776 :name "Core of Ar'kelos"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :retribution
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 2
                  :slot :trinket2
                  :item {:id 23206 :name "Mark of the Champion"}
                  :sources [{:instance :unknown}]}
                 {:class :paladin
                  :spec :retribution
                  :phase 1
+                 :kind :pre-raid
+                 :rank 4
+                 :slot :trinket2
+                 :item {:id 28288 :name "Abacus of Violent Odds"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :retribution
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 9
+                 :slot :trinket2
+                 :item {:id 28034 :name "Hourglass of the Unraveller"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :retribution
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 11
+                 :slot :trinket2
+                 :item {:id 23041 :name "Slayer's Crest"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :retribution
+                 :phase 1
+                 :kind :bis
+                 :rank 13
+                 :slot :trinket2
+                 :item {:id 28579 :name "Romulo's Poison Vial"}
+                 :sources [{:instance :raid}]}
+                {:class :paladin
+                 :spec :retribution
+                 :phase 1
+                 :kind :bis
+                 :rank 2
                  :slot :waist
                  :item {:id 28779 :name "Girdle of the Endless Pit"}
                  :sources [{:instance :raid}]}
                 {:class :paladin
                  :spec :retribution
+                 :phase 1
+                 :kind :bis
+                 :rank 3
+                 :slot :waist
+                 :item {:id 28828 :name "Gronn-Stitched Girdle"}
+                 :sources [{:instance :raid}]}
+                {:class :paladin
+                 :spec :retribution
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 4
+                 :slot :waist
+                 :item {:id 29247 :name "Girdle of the Deathdealer"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :retribution
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 5
+                 :slot :waist
+                 :item {:id 28750 :name "Girdle of Treachery"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :retribution
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 6
+                 :slot :waist
+                 :item {:id 27755 :name "Girdle of Gallantry"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :retribution
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 7
+                 :slot :waist
+                 :item {:id 27760 :name "Dunewind Sash"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :retribution
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 8
+                 :slot :waist
+                 :item {:id 29516 :name "Ebon Netherscale Belt"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :retribution
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 9
+                 :slot :waist
+                 :item {:id 27985 :name "Deathforge Girdle"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :retribution
+                 :phase 1
+                 :kind :bis
+                 :rank 4
+                 :slot :wrist
+                 :item {:id 28795 :name "Bladespire Warbands"}
+                 :sources [{:instance :raid}]}
+                {:class :paladin
+                 :spec :retribution
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 6
+                 :slot :wrist
+                 :item {:id 23537 :name "Black Felsteel Bracers"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :retribution
+                 :phase 1
+                 :kind :bis
+                 :rank 7
+                 :slot :wrist
+                 :item {:id 28646 :name "General's Scaled Bracers"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :retribution
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 8
+                 :slot :wrist
+                 :item {:id 27918 :name "Bands of Syth"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :retribution
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 9
+                 :slot :wrist
+                 :item {:id 29517 :name "Ebon Netherscale Bracers"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :retribution
                  :phase 2
+                 :kind :bis
+                 :rank 2
                  :slot :back
                  :item {:id 30098 :name "Razor-Scale Battlecloak"}
                  :sources [{:instance :raid}]}
                 {:class :paladin
                  :spec :retribution
                  :phase 2
+                 :kind :bis
+                 :rank 4
+                 :slot :back
+                 :item {:id 29994 :name "Thalassian Wildercloak"}
+                 :sources [{:instance :raid}]}
+                {:class :paladin
+                 :spec :retribution
+                 :phase 2
+                 :kind :bis
+                 :rank 3
+                 :slot :chest
+                 :item {:id 30129 :name "Crystalforge Breastplate"}
+                 :sources [{:instance :raid}]}
+                {:class :paladin
+                 :spec :retribution
+                 :phase 2
+                 :kind :pre-raid
+                 :rank 4
+                 :slot :chest
+                 :item {:id 28485 :name "Bulwark of the Ancient Kings"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :retribution
+                 :phase 2
+                 :kind :bis
+                 :rank 5
+                 :slot :chest
+                 :item {:id 30101 :name "Bloodsea Brigand's Vest"}
+                 :sources [{:instance :raid}]}
+                {:class :paladin
+                 :spec :retribution
+                 :phase 2
+                 :kind :bis
+                 :rank 9
+                 :slot :chest
+                 :item {:id 30102 :name "Krakken-Heart Breastplate"}
+                 :sources [{:instance :raid}]}
+                {:class :paladin
+                 :spec :retribution
+                 :phase 2
+                 :kind :pre-raid
+                 :rank 10
+                 :slot :chest
+                 :item {:id 32039
+                        :name "Merciless Gladiator's Scaled Chestpiece"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :retribution
+                 :phase 2
+                 :kind :bis
+                 :rank 3
+                 :slot :feet
+                 :item {:id 30081 :name "Warboots of Obliteration"}
+                 :sources [{:instance :raid}]}
+                {:class :paladin
+                 :spec :retribution
+                 :phase 2
+                 :kind :bis
+                 :rank 6
+                 :slot :feet
+                 :item {:id 29951 :name "Star-Strider Boots"}
+                 :sources [{:instance :raid}]}
+                {:class :paladin
+                 :spec :retribution
+                 :phase 2
+                 :kind :bis
+                 :rank 1
                  :slot :hands
                  :item {:id 29947 :name "Gloves of the Searing Grip"}
                  :sources [{:instance :raid}]}
                 {:class :paladin
                  :spec :retribution
                  :phase 2
+                 :kind :pre-raid
+                 :rank 5
+                 :slot :head
+                 :item {:id 32461 :name "Furious Gizmatic Goggles"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :retribution
+                 :phase 2
+                 :kind :bis
+                 :rank 6
+                 :slot :head
+                 :item {:id 30131 :name "Crystalforge War-Helm"}
+                 :sources [{:instance :raid}]}
+                {:class :paladin
+                 :spec :retribution
+                 :phase 2
+                 :kind :pre-raid
+                 :rank 7
+                 :slot :head
+                 :item {:id 32041 :name "Merciless Gladiator's Scaled Helm"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :retribution
+                 :phase 2
+                 :kind :bis
+                 :rank 9
+                 :slot :head
+                 :item {:id 29983 :name "Fel-Steel Warhelm"}
+                 :sources [{:instance :raid}]}
+                {:class :paladin
+                 :spec :retribution
+                 :phase 2
+                 :kind :bis
+                 :rank 4
+                 :slot :legs
+                 :item {:id 29950 :name "Greaves of the Bloodwarder"}
+                 :sources [{:instance :raid}]}
+                {:class :paladin
+                 :spec :retribution
+                 :phase 2
+                 :kind :bis
+                 :rank 6
+                 :slot :legs
+                 :item {:id 29995 :name "Leggings of Murderous Intent"}
+                 :sources [{:instance :raid}]}
+                {:class :paladin
+                 :spec :retribution
+                 :phase 2
+                 :kind :bis
+                 :rank 7
+                 :slot :legs
+                 :item {:id 30132 :name "Crystalforge Greaves"}
+                 :sources [{:instance :raid}]}
+                {:class :paladin
+                 :spec :retribution
+                 :phase 2
+                 :kind :bis
+                 :rank 5
+                 :slot :main-hand
+                 :item {:id 29993 :name "Twinblade of the Phoenix"}
+                 :sources [{:instance :raid}]}
+                {:class :paladin
+                 :spec :retribution
+                 :phase 2
+                 :kind :bis
+                 :rank 7
+                 :slot :main-hand
+                 :item {:id 30090 :name "World Breaker"}
+                 :sources [{:instance :raid}]}
+                {:class :paladin
+                 :spec :retribution
+                 :phase 2
+                 :kind :pre-raid
+                 :rank 9
+                 :slot :main-hand
+                 :item {:id 31984 :name "Merciless Gladiator's Greatsword"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :retribution
+                 :phase 2
+                 :kind :bis
+                 :rank 1
                  :slot :neck
                  :item {:id 30022 :name "Pendant of the Perilous"}
                  :sources [{:instance :raid}]}
                 {:class :paladin
                  :spec :retribution
                  :phase 2
+                 :kind :bis
+                 :rank 3
+                 :slot :ring1
+                 :item {:id 29997 :name "Band of the Ranger-General"}
+                 :sources [{:instance :raid}]}
+                {:class :paladin
+                 :spec :retribution
+                 :phase 2
+                 :kind :bis
+                 :rank 5
+                 :slot :ring2
+                 :item {:id 30061 :name "Ancestral Ring of Conquest"}
+                 :sources [{:instance :raid}]}
+                {:class :paladin
+                 :spec :retribution
+                 :phase 2
+                 :kind :bis
+                 :rank 1
                  :slot :shoulder
                  :item {:id 30055 :name "Shoulderpads of the Stranger"}
                  :sources [{:instance :raid}]}
                 {:class :paladin
                  :spec :retribution
                  :phase 2
+                 :kind :bis
+                 :rank 4
+                 :slot :shoulder
+                 :item {:id 30133 :name "Crystalforge Shoulderbraces"}
+                 :sources [{:instance :raid}]}
+                {:class :paladin
+                 :spec :retribution
+                 :phase 2
+                 :kind :pre-raid
+                 :rank 7
+                 :slot :shoulder
+                 :item {:id 32043
+                        :name "Merciless Gladiator's Scaled Shoulders"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :retribution
+                 :phase 2
+                 :kind :bis
+                 :rank 6
+                 :slot :trinket1
+                 :item {:id 30627 :name "Tsunami Talisman"}
+                 :sources [{:instance :raid}]}
+                {:class :paladin
+                 :spec :retribution
+                 :phase 2
+                 :kind :bis
+                 :rank 1
                  :slot :waist
                  :item {:id 30106 :name "Belt of One-Hundred Deaths"}
                  :sources [{:instance :raid}]}
                 {:class :paladin
                  :spec :retribution
+                 :phase 2
+                 :kind :bis
+                 :rank 3
+                 :slot :wrist
+                 :item {:id 30057 :name "Bracers of Eradication"}
+                 :sources [{:instance :raid}]}
+                {:class :paladin
+                 :spec :retribution
                  :phase 3
+                 :kind :bis
+                 :rank 1
                  :slot :chest
                  :item {:id 30905 :name "Midnight Chestguard"}
                  :sources [{:instance :raid}]}
                 {:class :paladin
                  :spec :retribution
                  :phase 3
+                 :kind :bis
+                 :rank 2
                  :slot :chest
                  :item {:id 30990 :name "Lightbringer Breastplate"}
                  :sources [{:instance :raid}]}
                 {:class :paladin
                  :spec :retribution
                  :phase 3
+                 :kind :pre-raid
+                 :rank 6
+                 :slot :chest
+                 :item {:id 33749
+                        :name "Vengeful Gladiator's Scaled Chestpiece"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :retribution
+                 :phase 3
+                 :kind :bis
+                 :rank 1
                  :slot :feet
                  :item {:id 32366 :name "Shadowmaster's Boots"}
                  :sources [{:instance :raid}]}
                 {:class :paladin
                  :spec :retribution
                  :phase 3
+                 :kind :bis
+                 :rank 2
                  :slot :feet
                  :item {:id 32345 :name "Dreadboots of the Legion"}
                  :sources [{:instance :raid}]}
                 {:class :paladin
                  :spec :retribution
                  :phase 3
+                 :kind :bis
+                 :rank 2
                  :slot :hands
                  :item {:id 32347 :name "Grips of Damnation"}
                  :sources [{:instance :raid}]}
                 {:class :paladin
                  :spec :retribution
                  :phase 3
+                 :kind :bis
+                 :rank 1
                  :slot :head
                  :item {:id 32235 :name "Cursed Vision of Sargeras"}
                  :sources [{:instance :raid}]}
                 {:class :paladin
                  :spec :retribution
                  :phase 3
+                 :kind :bis
+                 :rank 2
                  :slot :head
                  :item {:id 32376 :name "Forest Prowler's Helm"}
                  :sources [{:instance :raid}]}
                 {:class :paladin
                  :spec :retribution
                  :phase 3
+                 :kind :bis
+                 :rank 3
+                 :slot :head
+                 :item {:id 32373 :name "Helm of the Illidari Shatterer"}
+                 :sources [{:instance :raid}]}
+                {:class :paladin
+                 :spec :retribution
+                 :phase 3
+                 :kind :bis
+                 :rank 4
+                 :slot :head
+                 :item {:id 30989 :name "Lightbringer War-Helm"}
+                 :sources [{:instance :raid}]}
+                {:class :paladin
+                 :spec :retribution
+                 :phase 3
+                 :kind :bis
+                 :rank 1
                  :slot :legs
                  :item {:id 30900 :name "Bow-stitched Leggings"}
                  :sources [{:instance :raid}]}
                 {:class :paladin
                  :spec :retribution
                  :phase 3
+                 :kind :bis
+                 :rank 2
                  :slot :legs
                  :item {:id 30993 :name "Lightbringer Greaves"}
                  :sources [{:instance :raid}]}
                 {:class :paladin
                  :spec :retribution
                  :phase 3
+                 :kind :bis
+                 :rank 1
                  :slot :main-hand
                  :item {:id 32332 :name "Torch of the Damned"}
                  :sources [{:instance :raid}]}
                 {:class :paladin
                  :spec :retribution
                  :phase 3
+                 :kind :bis
+                 :rank 2
                  :slot :main-hand
                  :item {:id 30902 :name "Cataclysm's Edge"}
                  :sources [{:instance :raid}]}
                 {:class :paladin
                  :spec :retribution
                  :phase 3
+                 :kind :pre-raid
+                 :rank 3
+                 :slot :main-hand
+                 :item {:id 33688 :name "Vengeful Gladiator's Greatsword"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :retribution
+                 :phase 3
+                 :kind :bis
+                 :rank 2
                  :slot :neck
                  :item {:id 32260 :name "Choker of Endless Nightmares"}
                  :sources [{:instance :raid}]}
                 {:class :paladin
                  :spec :retribution
                  :phase 3
+                 :kind :bis
+                 :rank 2
                  :slot :ring1
                  :item {:id 32526 :name "Band of Devastation"}
                  :sources [{:instance :raid}]}
                 {:class :paladin
                  :spec :retribution
                  :phase 3
+                 :kind :bis
+                 :rank 4
+                 :slot :ring2
+                 :item {:id 32335 :name "Unstoppable Aggressor's Ring"}
+                 :sources [{:instance :raid}]}
+                {:class :paladin
+                 :spec :retribution
+                 :phase 3
+                 :kind :pre-raid
+                 :rank 2
                  :slot :shoulder
                  :item {:id 32581 :name "Swiftstrike Shoulders"}
                  :sources [{:instance :unknown}]}
                 {:class :paladin
                  :spec :retribution
                  :phase 3
+                 :kind :bis
+                 :rank 3
+                 :slot :shoulder
+                 :item {:id 30997 :name "Lightbringer Shoulderbraces"}
+                 :sources [{:instance :raid}]}
+                {:class :paladin
+                 :spec :retribution
+                 :phase 3
+                 :kind :bis
+                 :rank 7
+                 :slot :trinket1
+                 :item {:id 32505 :name "Madness of the Betrayer"}
+                 :sources [{:instance :raid}]}
+                {:class :paladin
+                 :spec :retribution
+                 :phase 3
+                 :kind :pre-raid
+                 :rank 8
+                 :slot :trinket2
+                 :item {:id 31856 :name "Darkmoon Card: Crusade"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :retribution
+                 :phase 3
+                 :kind :pre-raid
+                 :rank 1
                  :slot :wrist
                  :item {:id 32574 :name "Bindings of Lightning Reflexes"}
                  :sources [{:instance :unknown}]}
                 {:class :paladin
                  :spec :retribution
                  :phase 3
+                 :kind :pre-raid
+                 :rank 2
                  :slot :wrist
                  :item {:id 32568 :name "Swiftsteel Bracers"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :retribution
+                 :phase 3
+                 :kind :bis
+                 :rank 5
+                 :slot :wrist
+                 :item {:id 33910 :name "Vindicator's Scaled Bracers"}
                  :sources [{:instance :unknown}]}])
 
 (tset by-spec :paladin-retribution entries)

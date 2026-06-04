@@ -14,144 +14,1537 @@
 (local entries [{:class :druid
                  :spec :feral-tank-threat
                  :phase 1
+                 :kind :bis
+                 :rank 1
                  :slot :back
                  :item {:id 28660 :name "Gilded Thorium Cloak"}
                  :sources [{:instance :raid}]}
                 {:class :druid
                  :spec :feral-tank-threat
                  :phase 1
+                 :kind :bis
+                 :rank 4
+                 :slot :back
+                 :item {:id 28672 :name "Drape of the Dark Reavers"}
+                 :sources [{:instance :raid}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 1
+                 :kind :bis
+                 :rank 6
+                 :slot :back
+                 :item {:id 28777 :name "Cloak of the Pit Stalker"}
+                 :sources [{:instance :raid}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 1
+                 :kind :bis
+                 :rank 7
+                 :slot :back
+                 :item {:id 29382 :name "Blood Knight War Cloak"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 8
+                 :slot :back
+                 :item {:id 28256 :name "Thoriumweave Cloak"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 9
+                 :slot :back
+                 :item {:id 24258 :name "Resolute Cape"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 10
+                 :slot :back
+                 :item {:id 28377 :name "Sergeant's Heavy Cloak"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 11
+                 :slot :back
+                 :item {:id 24379 :name "Bogstrok Scale Cloak"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 12
+                 :slot :back
+                 :item {:id 27878 :name "Auchenai Death Shroud"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 1
+                 :kind :bis
+                 :rank 6
+                 :slot :chest
+                 :item {:id 29096 :name "Breastplate of Malorne"}
+                 :sources [{:instance :raid}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 9
+                 :slot :chest
+                 :item {:id 29525 :name "Primalstrike Vest"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 10
+                 :slot :chest
+                 :item {:id 28130 :name "Gladiator's Dragonhide Tunic"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 1
+                 :kind :bis
+                 :rank 11
+                 :slot :chest
+                 :item {:id 28601 :name "Chestguard of the Conniver"}
+                 :sources [{:instance :raid}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 12
+                 :slot :chest
+                 :item {:id 25689 :name "Heavy Clefthoof Vest"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 13
+                 :slot :chest
+                 :item {:id 28264 :name "Wastewalker Tunic"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 14
+                 :slot :chest
+                 :item {:id 28204 :name "Tunic of Assassination"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 15
+                 :slot :chest
+                 :item {:id 23226 :name "Ghoul Skin Tunic"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 1
+                 :kind :bis
+                 :rank 7
+                 :slot :feet
+                 :item {:id 30674 :name "Zierhut's Lost Treads"}
+                 :sources [{:instance :raid}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 1
+                 :kind :bis
+                 :rank 9
+                 :slot :feet
+                 :item {:id 28545 :name "Edgewalker Longboots"}
+                 :sources [{:instance :raid}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 10
+                 :slot :feet
+                 :item {:id 29265 :name "Barkchip Boots"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 11
+                 :slot :feet
+                 :item {:id 25691 :name "Heavy Clefthoof Boots"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 12
+                 :slot :feet
+                 :item {:id 28339 :name "Boots of the Shifting Sands"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 13
+                 :slot :feet
+                 :item {:id 29248 :name "Shadowstep Striders"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 14
+                 :slot :feet
+                 :item {:id 31532 :name "Supple Leather Boots"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 15
+                 :slot :feet
+                 :item {:id 19381 :name "Boots of the Shadow Flame"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 1
+                 :kind :bis
+                 :rank 5
+                 :slot :hands
+                 :item {:id 29097 :name "Gauntlets of Malorne"}
+                 :sources [{:instance :raid}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 1
+                 :kind :bis
+                 :rank 6
+                 :slot :hands
+                 :item {:id 30644 :name "Grips of Deftness"}
+                 :sources [{:instance :raid}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 1
+                 :kind :bis
+                 :rank 8
+                 :slot :hands
+                 :item {:id 28506 :name "Gloves of Dexterous Manipulation"}
+                 :sources [{:instance :raid}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 1
+                 :kind :bis
+                 :rank 9
+                 :slot :hands
+                 :item {:id 28776 :name "Liar's Tongue Gloves"}
+                 :sources [{:instance :raid}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 10
+                 :slot :hands
+                 :item {:id 27531 :name "Wastewalker Gloves"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 11
+                 :slot :hands
+                 :item {:id 29503 :name "Cobrascale Gloves"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 12
+                 :slot :hands
+                 :item {:id 30341 :name "Flesh Handler's Gauntlets"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 13
+                 :slot :hands
+                 :item {:id 28126 :name "Gladiator's Dragonhide Gloves"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 14
+                 :slot :hands
+                 :item {:id 29507 :name "Windslayer Wraps"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 15
+                 :slot :hands
+                 :item {:id 28396 :name "Gloves of the Unbound"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 1
+                 :kind :bis
+                 :rank 5
+                 :slot :head
+                 :item {:id 29098 :name "Stag-Helm of Malorne"}
+                 :sources [{:instance :raid}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 6
+                 :slot :head
+                 :item {:id 8345 :name "Wolfshead Helm"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 1
+                 :kind :bis
+                 :rank 9
+                 :slot :head
+                 :item {:id 32087 :name "Mask of the Deceiver"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 1
+                 :kind :bis
+                 :rank 10
+                 :slot :head
+                 :item {:id 28796 :name "Malefic Mask of the Shadows"}
+                 :sources [{:instance :raid}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 11
+                 :slot :head
+                 :item {:id 28127 :name "Gladiator's Dragonhide Helm"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 1
+                 :kind :bis
+                 :rank 12
+                 :slot :head
+                 :item {:id 28732 :name "Cowl of Defiance"}
+                 :sources [{:instance :raid}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 13
+                 :slot :head
+                 :item {:id 28182 :name "Helm of the Claw"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 1
+                 :kind :bis
+                 :rank 14
+                 :slot :head
+                 :item {:id 32088 :name "Cowl of Beastly Rage"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 15
+                 :slot :head
+                 :item {:id 28224 :name "Wastewalker Helm"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 1
+                 :kind :bis
+                 :rank 5
+                 :slot :legs
+                 :item {:id 29099 :name "Greaves of Malorne"}
+                 :sources [{:instance :raid}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 1
+                 :kind :bis
+                 :rank 7
+                 :slot :legs
+                 :item {:id 28741 :name "Skulker's Greaves"}
+                 :sources [{:instance :raid}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 8
+                 :slot :legs
+                 :item {:id 30535 :name "Forestwalker Kilt"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 9
+                 :slot :legs
+                 :item {:id 28128 :name "Gladiator's Dragonhide Legguards"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 10
+                 :slot :legs
+                 :item {:id 30538 :name "Midnight Legguards"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 11
+                 :slot :legs
+                 :item {:id 31544 :name "Clefthoof Hide Leggings"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 13
+                 :slot :legs
+                 :item {:id 30941 :name "Ash Tempered Legguards"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 14
+                 :slot :legs
+                 :item {:id 30257 :name "Shattrath Leggings"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 5
+                 :slot :main-hand
+                 :item {:id 28476 :name "Gladiator's Maul"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 1
+                 :kind :bis
+                 :rank 6
+                 :slot :main-hand
+                 :item {:id 28658 :name "Terestian's Stranglestaff"}
+                 :sources [{:instance :raid}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 7
+                 :slot :main-hand
+                 :item {:id 29171 :name :Earthwarden}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 8
+                 :slot :main-hand
+                 :item {:id 29359 :name "Feral Staff of Lashing"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 9
+                 :slot :main-hand
+                 :item {:id 31334 :name "Staff of Natural Fury"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 10
+                 :slot :main-hand
+                 :item {:id 27757 :name "Greatstaff of the Leviathan"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 11
+                 :slot :main-hand
+                 :item {:id 27877 :name "Draenic Wildstaff"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 12
+                 :slot :main-hand
+                 :item {:id 30010 :name "Fleshling Simulation Staff"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 13
+                 :slot :main-hand
+                 :item {:id 28325 :name "Dreamer's Dragonstaff"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 1
+                 :kind :bis
+                 :rank 4
+                 :slot :neck
+                 :item {:id 28509 :name "Worgen Claw Necklace"}
+                 :sources [{:instance :raid}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 1
+                 :kind :bis
+                 :rank 5
+                 :slot :neck
+                 :item {:id 29381 :name "Choker of Vile Intent"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 1
+                 :kind :bis
+                 :rank 8
+                 :slot :neck
+                 :item {:id 28674 :name "Saberclaw Talisman"}
+                 :sources [{:instance :raid}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 1
+                 :kind :bis
+                 :rank 9
+                 :slot :neck
+                 :item {:id 28745 :name "Mithril Chain of Heroism"}
+                 :sources [{:instance :raid}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 1
+                 :kind :bis
+                 :rank 10
+                 :slot :neck
+                 :item {:id 29386 :name "Necklace of the Juggernaut"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 1
+                 :kind :bis
+                 :rank 11
+                 :slot :neck
+                 :item {:id 28244 :name "Pendant of Triumph"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 12
+                 :slot :neck
+                 :item {:id 29815 :name "Chain of Glowing Tendrils"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 13
+                 :slot :neck
+                 :item {:id 28168 :name "Insignia of the Mag'hari Hero"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 14
+                 :slot :neck
+                 :item {:id 27779 :name "Bone Chain Necklace"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 15
+                 :slot :neck
+                 :item {:id 27546 :name "Traitor's Noose"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 16
+                 :slot :neck
+                 :item {:id 29335 :name "Talon Lord's Collar"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 3
+                 :slot :ranged
+                 :item {:id 23198 :name "Idol of Brutality"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 4
+                 :slot :ranged
+                 :item {:id 28064 :name "Idol of the Wild"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 5
+                 :slot :ranged
+                 :item {:id 27744 :name "Idol of Ursoc"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 7
+                 :slot :ranged
+                 :item {:id 33945 :name "Gladiator's Idol of Resolve"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 1
                  :slot :ring1
                  :item {:id 29279 :name "Violet Signet of the Great Protector"}
                  :sources [{:instance :unknown}]}
                 {:class :druid
                  :spec :feral-tank-threat
+                 :phase 1
+                 :kind :bis
+                 :rank 9
+                 :slot :ring1
+                 :item {:id 29384 :name "Ring of Unyielding Force"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 1
+                 :kind :bis
+                 :rank 13
+                 :slot :ring1
+                 :item {:id 28757 :name "Ring of a Thousand Marks"}
+                 :sources [{:instance :raid}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 15
+                 :slot :ring1
+                 :item {:id 27925 :name "Ravenclaw Band"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 18
+                 :slot :ring1
+                 :item {:id 31919 :name "Nexus-Prince's Ring of Balance"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 5
+                 :slot :ring2
+                 :item {:id 30834 :name "Shapeshifter's Signet"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 1
+                 :kind :bis
+                 :rank 11
+                 :slot :ring2
+                 :item {:id 28649 :name "Garona's Signet Ring"}
+                 :sources [{:instance :raid}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 14
+                 :slot :ring2
+                 :item {:id 27436 :name "Iron Band of the Unbreakable"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 16
+                 :slot :ring2
+                 :item {:id 24151 :name "Mok'Nathal Clan Ring"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 1
+                 :kind :bis
+                 :rank 19
+                 :slot :ring2
+                 :item {:id 28553 :name "Band of the Exorcist"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 1
+                 :kind :bis
+                 :rank 6
+                 :slot :shoulder
+                 :item {:id 29100 :name "Mantle of Malorne"}
+                 :sources [{:instance :raid}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 8
+                 :slot :shoulder
+                 :item {:id 28129 :name "Gladiator's Dragonhide Spaulders"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 9
+                 :slot :shoulder
+                 :item {:id 28755 :name "Bladed Shoulderpads of the Merciless"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 10
+                 :slot :shoulder
+                 :item {:id 32080 :name "Mantle of Shadowy Embrace"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 11
+                 :slot :shoulder
+                 :item {:id 27797 :name "Wastewalker Shoulderpads"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 12
+                 :slot :shoulder
+                 :item {:id 27434 :name "Mantle of Perenolde"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 13
+                 :slot :shoulder
+                 :item {:id 27776 :name "Shoulderpads of Assassination"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 1
+                 :kind :bis
+                 :rank 3
+                 :slot :trinket1
+                 :item {:id 29383 :name "Bloodlust Brooch"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 1
+                 :kind :bis
+                 :rank 6
+                 :slot :trinket1
+                 :item {:id 28830 :name "Dragonspine Trophy"}
+                 :sources [{:instance :raid}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 12
+                 :slot :trinket1
+                 :item {:id 23206 :name "Mark of the Champion"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 14
+                 :slot :trinket1
+                 :item {:id 23836 :name "Goblin Rocket Launcher"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 17
+                 :slot :trinket1
+                 :item {:id 13503 :name "Alchemist's Stone"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 19
+                 :slot :trinket1
+                 :item {:id 29181 :name "Timelapse Shard"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 21
+                 :slot :trinket1
+                 :item {:id 28034 :name "Hourglass of the Unraveller"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 23
+                 :slot :trinket1
+                 :item {:id 27770 :name "Argussian Compass"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 1
+                 :kind :bis
+                 :rank 25
+                 :slot :trinket1
+                 :item {:id 13966 :name "Mark of Tyranny"}
+                 :sources [{:instance :raid}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 4
+                 :slot :trinket2
+                 :item {:id 38287 :name "Empty Mug of Direbrew"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 1
+                 :kind :bis
+                 :rank 11
+                 :slot :trinket2
+                 :item {:id 28579 :name "Romulo's Poison Vial"}
+                 :sources [{:instance :raid}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 13
+                 :slot :trinket2
+                 :item {:id 28121 :name "Icon of Unyielding Courage"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 15
+                 :slot :trinket2
+                 :item {:id 23835 :name "Gnomish Poultryizer"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 18
+                 :slot :trinket2
+                 :item {:id 19406 :name "Drake Fang Talisman"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 20
+                 :slot :trinket2
+                 :item {:id 23041 :name "Slayer's Crest"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 22
+                 :slot :trinket2
+                 :item {:id 28288 :name "Abacus of Violent Odds"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 24
+                 :slot :trinket2
+                 :item {:id 31113 :name "Violet Badge"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 6
+                 :slot :waist
+                 :item {:id 29264 :name "Tree-Mender's Belt"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 1
+                 :kind :bis
+                 :rank 8
+                 :slot :waist
+                 :item {:id 28828 :name "Gronn-Stitched Girdle"}
+                 :sources [{:instance :raid}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 9
+                 :slot :waist
+                 :item {:id 28750 :name "Girdle of Treachery"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 10
+                 :slot :waist
+                 :item {:id 29247 :name "Girdle of the Deathdealer"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 11
+                 :slot :waist
+                 :item {:id 30942 :name "Manimal's Cinch"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 9
+                 :slot :wrist
+                 :item {:id 29263 :name "Forestheart Bracers"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 10
+                 :slot :wrist
+                 :item {:id 30944 :name "Umberhowl's Collar"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 1
+                 :kind :bis
+                 :rank 11
+                 :slot :wrist
+                 :item {:id 28514 :name "Bracers of Maliciousness"}
+                 :sources [{:instance :raid}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 12
+                 :slot :wrist
+                 :item {:id 29246 :name "Nightfall Wristguards"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-tank-threat
                  :phase 2
+                 :kind :bis
+                 :rank 2
                  :slot :back
                  :item {:id 29994 :name "Thalassian Wildercloak"}
                  :sources [{:instance :raid}]}
                 {:class :druid
                  :spec :feral-tank-threat
                  :phase 2
+                 :kind :bis
+                 :rank 5
+                 :slot :back
+                 :item {:id 30098 :name "Razor-Scale Battlecloak"}
+                 :sources [{:instance :raid}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 2
+                 :kind :bis
+                 :rank 2
                  :slot :chest
                  :item {:id 30222 :name "Nordrassil Chestplate"}
                  :sources [{:instance :raid}]}
                 {:class :druid
                  :spec :feral-tank-threat
                  :phase 2
+                 :kind :pre-raid
+                 :rank 7
+                 :slot :chest
+                 :item {:id 31972
+                        :name "Merciless Gladiator's Dragonhide Tunic"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 2
+                 :kind :bis
+                 :rank 8
+                 :slot :chest
+                 :item {:id 30101 :name "Bloodsea Brigand's Vest"}
+                 :sources [{:instance :raid}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 2
+                 :kind :bis
+                 :rank 4
+                 :slot :feet
+                 :item {:id 30041 :name "Boots of Natural Grace"}
+                 :sources [{:instance :raid}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 2
+                 :kind :pre-raid
+                 :rank 6
+                 :slot :feet
+                 :item {:id 32790 :name "Veteran's Leather Boots"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 2
+                 :kind :bis
+                 :rank 8
+                 :slot :feet
+                 :item {:id 30060 :name "Boots of Effortless Striking"}
+                 :sources [{:instance :raid}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 2
+                 :kind :bis
+                 :rank 2
                  :slot :hands
                  :item {:id 30223 :name "Nordrassil Handgrips"}
                  :sources [{:instance :raid}]}
                 {:class :druid
                  :spec :feral-tank-threat
                  :phase 2
+                 :kind :bis
+                 :rank 3
+                 :slot :hands
+                 :item {:id 29947 :name "Gloves of the Searing Grip"}
+                 :sources [{:instance :raid}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 2
+                 :kind :pre-raid
+                 :rank 7
+                 :slot :hands
+                 :item {:id 31967
+                        :name "Merciless Gladiator's Dragonhide Gloves"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 2
+                 :kind :bis
+                 :rank 4
+                 :slot :head
+                 :item {:id 30228 :name "Nordrassil Headdress"}
+                 :sources [{:instance :raid}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 2
+                 :kind :pre-raid
+                 :rank 7
+                 :slot :head
+                 :item {:id 32478 :name "Deathblow X11 Goggles"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 2
+                 :kind :pre-raid
+                 :rank 8
+                 :slot :head
+                 :item {:id 31968
+                        :name "Merciless Gladiator's Dragonhide Helm"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 2
+                 :kind :bis
+                 :rank 2
                  :slot :legs
                  :item {:id 30229 :name "Nordrassil Feral-Kilt"}
                  :sources [{:instance :raid}]}
                 {:class :druid
                  :spec :feral-tank-threat
                  :phase 2
+                 :kind :bis
+                 :rank 6
+                 :slot :legs
+                 :item {:id 29995 :name "Leggings of Murderous Intent"}
+                 :sources [{:instance :raid}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 2
+                 :kind :pre-raid
+                 :rank 12
+                 :slot :legs
+                 :item {:id 31969
+                        :name "Merciless Gladiator's Dragonhide Legguards"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 2
+                 :kind :bis
+                 :rank 3
+                 :slot :main-hand
+                 :item {:id 30021 :name "Wildfury Greatstaff"}
+                 :sources [{:instance :raid}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 2
+                 :kind :pre-raid
+                 :rank 4
+                 :slot :main-hand
+                 :item {:id 32014 :name "Merciless Gladiator's Maul"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 2
+                 :kind :bis
+                 :rank 1
                  :slot :neck
                  :item {:id 30017 :name "Telonicus's Pendant of Mayhem"}
                  :sources [{:instance :raid}]}
                 {:class :druid
                  :spec :feral-tank-threat
                  :phase 2
+                 :kind :pre-raid
+                 :rank 6
+                 :slot :neck
+                 :item {:id 33066 :name "Veteran's Pendant of Triumph"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 2
+                 :kind :bis
+                 :rank 7
+                 :slot :neck
+                 :item {:id 30099 :name "Frayed Tether of the Drowned"}
+                 :sources [{:instance :raid}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 2
+                 :kind :pre-raid
+                 :rank 6
+                 :slot :ranged
+                 :item {:id 33946
+                        :name "Merciless Gladiator's Idol of Resolve"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 2
+                 :kind :bis
+                 :rank 7
+                 :slot :ring1
+                 :item {:id 30052 :name "Ring of Lethality"}
+                 :sources [{:instance :raid}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 2
+                 :kind :bis
+                 :rank 10
+                 :slot :ring1
+                 :item {:id 29997 :name "Band of the Ranger-General"}
+                 :sources [{:instance :raid}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 2
+                 :kind :pre-raid
+                 :rank 17
+                 :slot :ring1
+                 :item {:id 33057 :name "Veteran's Band of Triumph"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 2
+                 :kind :bis
+                 :rank 8
+                 :slot :ring2
+                 :item {:id 33054 :name "The Seal of Danzalar"}
+                 :sources [{:instance :raid}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 2
+                 :kind :bis
+                 :rank 12
+                 :slot :ring2
+                 :item {:id 30061 :name "Ancestral Ring of Conquest"}
+                 :sources [{:instance :raid}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 2
+                 :kind :bis
+                 :rank 3
+                 :slot :shoulder
+                 :item {:id 30230 :name "Nordrassil Feral-Mantle"}
+                 :sources [{:instance :raid}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 2
+                 :kind :bis
+                 :rank 4
+                 :slot :shoulder
+                 :item {:id 30055 :name "Shoulderpads of the Stranger"}
+                 :sources [{:instance :raid}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 2
+                 :kind :pre-raid
+                 :rank 7
+                 :slot :shoulder
+                 :item {:id 31971
+                        :name "Merciless Gladiator's Dragonhide Spaulders"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 2
+                 :kind :bis
+                 :rank 7
+                 :slot :trinket1
+                 :item {:id 32658 :name "Badge of Tenacity"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 2
+                 :kind :bis
+                 :rank 16
+                 :slot :trinket1
+                 :item {:id 30620 :name "Spyglass of the Hidden Fleet"}
+                 :sources [{:instance :raid}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 2
+                 :kind :bis
+                 :rank 8
+                 :slot :trinket2
+                 :item {:id 30627 :name "Tsunami Talisman"}
+                 :sources [{:instance :raid}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 2
+                 :kind :bis
+                 :rank 1
                  :slot :waist
                  :item {:id 30106 :name "Belt of One-Hundred Deaths"}
                  :sources [{:instance :raid}]}
                 {:class :druid
                  :spec :feral-tank-threat
                  :phase 2
+                 :kind :pre-raid
+                 :rank 2
                  :slot :waist
                  :item {:id 30042 :name "Belt of Natural Power"}
                  :sources [{:instance :unknown}]}
                 {:class :druid
                  :spec :feral-tank-threat
+                 :phase 2
+                 :kind :pre-raid
+                 :rank 5
+                 :slot :waist
+                 :item {:id 30040 :name "Belt of Deep Shadow"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 2
+                 :kind :pre-raid
+                 :rank 7
+                 :slot :waist
+                 :item {:id 32802 :name "Veteran's Leather Belt"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 2
+                 :kind :pre-raid
+                 :rank 12
+                 :slot :waist
+                 :item {:id 32798 :name "Veteran's Dragonhide Belt"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 2
+                 :kind :bis
+                 :rank 6
+                 :slot :wrist
+                 :item {:id 29966 :name "Vambraces of Ending"}
+                 :sources [{:instance :raid}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 2
+                 :kind :pre-raid
+                 :rank 7
+                 :slot :wrist
+                 :item {:id 32810 :name "Veteran's Dragonhide Bracers"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 2
+                 :kind :pre-raid
+                 :rank 8
+                 :slot :wrist
+                 :item {:id 32814 :name "Veteran's Leather Bracers"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 2
+                 :kind :bis
+                 :rank 13
+                 :slot :wrist
+                 :item {:id 32647 :name "Shard-bound Bracers"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-tank-threat
                  :phase 3
+                 :kind :bis
+                 :rank 3
+                 :slot :back
+                 :item {:id 32323 :name "Shadowmoon Destroyer's Drape"}
+                 :sources [{:instance :raid}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 3
+                 :kind :bis
+                 :rank 1
                  :slot :chest
                  :item {:id 31042 :name "Thunderheart Chestguard"}
                  :sources [{:instance :raid}]}
                 {:class :druid
                  :spec :feral-tank-threat
                  :phase 3
+                 :kind :pre-raid
+                 :rank 3
+                 :slot :chest
+                 :item {:id 33675
+                        :name "Vengeful Gladiator's Dragonhide Tunic"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 3
+                 :kind :bis
+                 :rank 4
+                 :slot :chest
+                 :item {:id 32252 :name "Nether Shadow Tunic"}
+                 :sources [{:instance :raid}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 3
+                 :kind :bis
+                 :rank 5
+                 :slot :chest
+                 :item {:id 30905 :name "Midnight Chestguard"}
+                 :sources [{:instance :raid}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 3
+                 :kind :bis
+                 :rank 1
                  :slot :feet
                  :item {:id 32593 :name "Treads of the Den Mother"}
                  :sources [{:instance :raid}]}
                 {:class :druid
                  :spec :feral-tank-threat
                  :phase 3
+                 :kind :bis
+                 :rank 2
                  :slot :feet
                  :item {:id 32366 :name "Shadowmaster's Boots"}
                  :sources [{:instance :raid}]}
                 {:class :druid
                  :spec :feral-tank-threat
                  :phase 3
+                 :kind :bis
+                 :rank 3
+                 :slot :feet
+                 :item {:id 33880 :name "Vindicator's Dragonhide Boots"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 3
+                 :kind :bis
+                 :rank 5
+                 :slot :feet
+                 :item {:id 33892 :name "Vindicator's Leather Boots"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 3
+                 :kind :bis
+                 :rank 1
                  :slot :hands
                  :item {:id 31034 :name "Thunderheart Gauntlets"}
                  :sources [{:instance :raid}]}
                 {:class :druid
                  :spec :feral-tank-threat
                  :phase 3
+                 :kind :pre-raid
+                 :rank 4
+                 :slot :hands
+                 :item {:id 33671
+                        :name "Vengeful Gladiator's Dragonhide Gloves"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 3
+                 :kind :bis
+                 :rank 1
                  :slot :head
                  :item {:id 31039 :name "Thunderheart Cover"}
                  :sources [{:instance :raid}]}
                 {:class :druid
                  :spec :feral-tank-threat
                  :phase 3
+                 :kind :pre-raid
+                 :rank 2
                  :slot :head
                  :item {:id 33672 :name "Vengeful Gladiator's Dragonhide Helm"}
                  :sources [{:instance :unknown}]}
                 {:class :druid
                  :spec :feral-tank-threat
                  :phase 3
+                 :kind :bis
+                 :rank 3
+                 :slot :head
+                 :item {:id 32235 :name "Cursed Vision of Sargeras"}
+                 :sources [{:instance :raid}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 3
+                 :kind :bis
+                 :rank 1
                  :slot :legs
                  :item {:id 31044 :name "Thunderheart Leggings"}
                  :sources [{:instance :raid}]}
                 {:class :druid
                  :spec :feral-tank-threat
                  :phase 3
+                 :kind :bis
+                 :rank 3
+                 :slot :legs
+                 :item {:id 30898 :name "Shady Dealer's Pantaloons"}
+                 :sources [{:instance :raid}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 3
+                 :kind :pre-raid
+                 :rank 4
+                 :slot :legs
+                 :item {:id 33673
+                        :name "Vengeful Gladiator's Dragonhide Legguards"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 3
+                 :kind :bis
+                 :rank 1
                  :slot :main-hand
                  :item {:id 30883 :name "Pillar of Ferocity"}
                  :sources [{:instance :raid}]}
                 {:class :druid
                  :spec :feral-tank-threat
                  :phase 3
+                 :kind :pre-raid
+                 :rank 2
                  :slot :main-hand
                  :item {:id 33716 :name "Vengeful Gladiator's Staff"}
                  :sources [{:instance :unknown}]}
                 {:class :druid
                  :spec :feral-tank-threat
                  :phase 3
+                 :kind :bis
+                 :rank 2
                  :slot :neck
                  :item {:id 33923 :name "Vindicator's Pendant of Triumph"}
                  :sources [{:instance :unknown}]}
                 {:class :druid
                  :spec :feral-tank-threat
                  :phase 3
+                 :kind :bis
+                 :rank 3
+                 :slot :neck
+                 :item {:id 32362 :name "Pendant of Titans"}
+                 :sources [{:instance :raid}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 3
+                 :kind :pre-raid
+                 :rank 1
                  :slot :ranged
                  :item {:id 32387 :name "Idol of the Raven Goddess"}
                  :sources [{:instance :unknown}]}
                 {:class :druid
                  :spec :feral-tank-threat
                  :phase 3
+                 :kind :bis
+                 :rank 2
                  :slot :ranged
                  :item {:id 32257 :name "Idol of the White Stag"}
                  :sources [{:instance :raid}]}
                 {:class :druid
                  :spec :feral-tank-threat
                  :phase 3
+                 :kind :bis
+                 :rank 2
                  :slot :ring1
                  :item {:id 32266 :name "Ring of Deceitful Intent"}
                  :sources [{:instance :raid}]}
                 {:class :druid
                  :spec :feral-tank-threat
                  :phase 3
+                 :kind :bis
+                 :rank 4
+                 :slot :ring1
+                 :item {:id 32497 :name "Stormrage Signet Ring"}
+                 :sources [{:instance :raid}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 3
+                 :kind :bis
+                 :rank 3
+                 :slot :ring2
+                 :item {:id 29301 :name "Band of the Eternal Champion"}
+                 :sources [{:instance :raid}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 3
+                 :kind :bis
+                 :rank 6
+                 :slot :ring2
+                 :item {:id 29300 :name "Band of Eternity"}
+                 :sources [{:instance :raid}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 3
+                 :kind :bis
+                 :rank 1
                  :slot :shoulder
                  :item {:id 31048 :name "Thunderheart Pauldrons"}
                  :sources [{:instance :raid}]}
                 {:class :druid
                  :spec :feral-tank-threat
                  :phase 3
+                 :kind :pre-raid
+                 :rank 2
                  :slot :shoulder
                  :item {:id 33674
                         :name "Vengeful Gladiator's Dragonhide Spaulders"}
@@ -159,26 +1552,106 @@
                 {:class :druid
                  :spec :feral-tank-threat
                  :phase 3
+                 :kind :bis
+                 :rank 5
+                 :slot :shoulder
+                 :item {:id 30917 :name "Razorfury Mantle"}
+                 :sources [{:instance :raid}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 3
+                 :kind :bis
+                 :rank 1
                  :slot :trinket1
                  :item {:id 32501 :name "Shadowmoon Insignia"}
                  :sources [{:instance :raid}]}
                 {:class :druid
                  :spec :feral-tank-threat
                  :phase 3
+                 :kind :pre-raid
+                 :rank 10
+                 :slot :trinket1
+                 :item {:id 31858 :name "Darkmoon Card: Vengeance"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 3
+                 :kind :bis
+                 :rank 5
+                 :slot :trinket2
+                 :item {:id 32505 :name "Madness of the Betrayer"}
+                 :sources [{:instance :raid}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 3
+                 :kind :bis
+                 :rank 3
+                 :slot :waist
+                 :item {:id 30879 :name "Don Alejandro's Money Belt"}
+                 :sources [{:instance :raid}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 3
+                 :kind :bis
+                 :rank 4
+                 :slot :waist
+                 :item {:id 33879 :name "Vindicator's Dragonhide Belt"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 3
+                 :kind :bis
+                 :rank 1
                  :slot :wrist
                  :item {:id 32324 :name "Insidious Bands"}
                  :sources [{:instance :raid}]}
                 {:class :druid
                  :spec :feral-tank-threat
                  :phase 3
+                 :kind :bis
+                 :rank 2
                  :slot :wrist
                  :item {:id 33881 :name "Vindicator's Dragonhide Bracers"}
                  :sources [{:instance :unknown}]}
                 {:class :druid
                  :spec :feral-tank-threat
+                 :phase 3
+                 :kind :bis
+                 :rank 3
+                 :slot :wrist
+                 :item {:id 33893 :name "Vindicator's Leather Bracers"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 3
+                 :kind :pre-raid
+                 :rank 4
+                 :slot :wrist
+                 :item {:id 32580 :name "Swiftstrike Bracers"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 3
+                 :kind :bis
+                 :rank 5
+                 :slot :wrist
+                 :item {:id 30863 :name "Deadly Cuffs"}
+                 :sources [{:instance :raid}]}
+                {:class :druid
+                 :spec :feral-tank-threat
                  :phase 4
+                 :kind :bis
+                 :rank 2
                  :slot :trinket1
                  :item {:id 34578 :name "Battlemaster's Determination"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-tank-threat
+                 :phase 4
+                 :kind :bis
+                 :rank 9
+                 :slot :trinket2
+                 :item {:id 34576 :name "Battlemaster's Cruelty"}
                  :sources [{:instance :unknown}]}])
 
 (tset by-spec :druid-feral-tank-threat entries)

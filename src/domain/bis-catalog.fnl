@@ -63,12 +63,15 @@
   (icollect [_ e (ipairs registry)]
     (when (and (= e.class class) (= e.spec spec)) e)))
 
-(lambda M.by-class-spec-phase [class spec phase]
+(lambda M.by-class-spec-phase [class spec phase ?kind]
   "BisItem entries for (class, spec) at a given content phase.
-   Domain:  class, spec : keywords; phase : integer >= 1
+   Domain:  class, spec : keywords; phase : integer >= 1;
+            ?kind : :pre-raid | :bis -- when given, keep only that provenance
    Returns: [BisItem] -- fresh sequence, possibly empty."
   (icollect [_ e (ipairs registry)]
-    (when (and (= e.class class) (= e.spec spec) (= e.phase phase)) e)))
+    (when (and (= e.class class) (= e.spec spec) (= e.phase phase)
+               (or (= nil ?kind) (= e.kind ?kind)))
+      e)))
 
 (lambda M.by-slot [class spec slot]
   "BisItem entries for (class, spec) in one gear slot, in source-Priority order.
@@ -87,6 +90,32 @@
                (= e.phase phase) (= e.slot slot))
       (set found e)))
   found)
+
+(lambda M.ranked-for-slot [class spec phase slot ?kind]
+  "Ranked candidates for one gear slot up to a content phase, best first.
+   The head is the primary (highest phase, then lowest rank); the tail is the
+   ranked alternatives the BiS tab surfaces.
+   Domain:  class, spec, slot : keywords; phase : integer >= 1 (inclusive ceiling)
+            ?kind : :pre-raid | :bis -- default :bis
+   Returns: [BisItem] -- fresh sequence sorted by (phase desc, rank asc, id asc),
+            possibly empty."
+  (let [kind (or ?kind :bis)
+        out (icollect [_ e (ipairs registry)]
+              (when (and (= e.class class) (= e.spec spec) (= e.slot slot)
+                         (= e.kind kind) (<= e.phase phase))
+                e))]
+    (table.sort out (fn [a b]
+                      (if (not= a.phase b.phase) (> a.phase b.phase)
+                          (not= a.rank b.rank) (< a.rank b.rank)
+                          (< a.item.id b.item.id))))
+    out))
+
+(lambda M.pre-raid-for-slot [class spec phase slot]
+  "Ranked pre-raid (catch-up) candidates for one slot, best first.
+   Convenience for (ranked-for-slot class spec phase slot :pre-raid).
+   Domain:  class, spec, slot : keywords; phase : integer >= 1
+   Returns: [BisItem] -- fresh sequence, possibly empty."
+  (M.ranked-for-slot class spec phase slot :pre-raid))
 
 (lambda M.specs-for-class [class]
   "Distinct spec keywords present for a class, in catalog order.

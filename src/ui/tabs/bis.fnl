@@ -50,41 +50,78 @@
                    [:off-hand "Off Hand"]
                    [:ranged :Ranged]])
 
+;; How many ranked alternatives to surface under each slot's primary. The
+;; catalog keeps every source rank (ROADMAP Phase 4b), but the long Priority tail
+;; (BoE / vendor catch-up down to ~rank 30) is noise in a checklist -- cap the
+;; display at the primary plus this many alternatives (OQ-9, display side).
+(local max-alts 3)
+
 ;; --- Pure view-model (UI.md: data->spec is pure, busted-tested) ------------
 
-(fn best-in [items slot]
-  "The best BiS entry for a slot: the one at the highest phase (the latest
-   upgrade), ties resolving to the earliest in catalog/priority order. nil when
-   the slot has no entry."
-  (accumulate [best nil _ e (ipairs items)]
-    (if (and (= e.slot slot) (or (not best) (> e.phase best.phase))) e best)))
+(fn slot-entries [items slot kind]
+  "Kind-matching catalog entries for one slot, sorted best-first
+   (phase desc, rank asc, id asc). Missing :kind defaults to :bis and missing
+   :rank to 1, so hand-built fixtures stay usable."
+  (let [es (icollect [_ e (ipairs items)]
+             (when (and (= e.slot slot) (= (or e.kind :bis) kind))
+               e))]
+    (table.sort es (fn [a b]
+                     (let [ra (or a.rank 1)
+                           rb (or b.rank 1)]
+                       (if (not= a.phase b.phase) (> a.phase b.phase)
+                           (not= ra rb) (< ra rb)
+                           (< a.item.id b.item.id)))))
+    es))
 
-(lambda M.list-view-model [items ?owned-set]
-  "Pure render spec for the BiS checklist: one row per gear slot, in slot-order.
+(fn entry-view [owned e]
+  "Flatten one BisItem into a render record (primary or alternative)."
+  {:name e.item.name
+   :item-id e.item.id
+   :phase e.phase
+   :rank (or e.rank 1)
+   :owned? (not (not (. owned e.item.id)))})
+
+(lambda M.list-view-model [items ?owned-set ?kind]
+  "Pure render spec for the BiS checklist: one row per gear slot, in slot-order,
+   each row a primary (best) target plus its top ranked alternatives.
    Domain:  items      : [BisItem] -- catalog entries already scoped to the
                          player's class/spec and phase <= current
             ?owned-set : {item-id true} | nil -- the player's owned item ids
-   Returns: {:summary string :owned integer :total integer
+            ?kind      : :pre-raid | :bis -- provenance to show (default :bis)
+   Returns: {:summary string :owned integer :total integer :kind keyword
              :rows [{:slot-label string :name string :item-id integer
-                     :phase integer :owned? boolean} ...]}"
+                     :phase integer :rank integer :owned? boolean
+                     :alts [{:name :item-id :phase :rank :owned?} ...]} ...]}"
   (let [owned (or ?owned-set {})
+        kind (or ?kind :bis)
         rows (icollect [_ [slot label] (ipairs slot-order)]
-               (let [it (best-in items slot)]
-                 (when it
-                   {:slot-label label
-                    :name it.item.name
-                    :item-id it.item.id
-                    :phase it.phase
-                    :owned? (not (not (. owned it.item.id)))})))
+               (let [es (slot-entries items slot kind)
+                     primary (. es 1)]
+                 (when primary
+                   (let [view (entry-view owned primary)]
+                     (doto view
+                       (tset :slot-label label)
+                       (tset :alts
+                             (icollect [i e (ipairs es)]
+                               (when (and (> i 1) (<= i (+ 1 max-alts)))
+                                 (entry-view owned e)))))))))
         total (length rows)
         owned-n (accumulate [n 0 _ r (ipairs rows)]
-                  (if r.owned? (+ n 1) n))]
-    {:summary (.. owned-n "/" total " best-in-slot items owned")
+                  (if r.owned? (+ n 1) n))
+        kind-label (if (= kind :pre-raid) :pre-raid :best-in-slot)]
+    {:summary (.. owned-n "/" total " " kind-label " items owned")
      :owned owned-n
      : total
+     : kind
      : rows}))
 
 ;; --- Item-row widgets (imperative, WoW API) --------------------------------
+
+;; UI state for the tab. `selected-kind` is the Best-in-slot / Road-to-BiS
+;; toggle; `active-container` is the AceGUI container last rendered into, so the
+;; toggle can repaint in place (AceGUI owns pooling -- ReleaseChildren + rebuild).
+(var selected-kind :bis)
+(var active-container nil)
 
 (fn make-tooltip-enter [item-id]
   "OnEnter handler closing over the item id. AceGUI passes the widget; the WoW
@@ -116,6 +153,41 @@
       (w:SetCallback :OnLeave on-row-leave))
     w))
 
+(fn build-alt-row! [alt]
+  "A subordinate, indented alternative listed under a primary slot row. Always
+   dim -- it's a fallback, not the target -- and a notch smaller."
+  (let [w (acegui.create! :InteractiveLabel)]
+    (when w
+      (w:SetFullWidth true)
+      (w:SetText (.. "        " (if alt.owned? "[x] " "[ ] ") alt.name))
+      (acegui.themed-label! w :ink-faint :body :caption)
+      (when (and GetItemIcon alt.item-id)
+        (let [icon (GetItemIcon alt.item-id)]
+          (when icon
+            (w:SetImage icon)
+            (w:SetImageSize 14 14))))
+      (w:SetCallback :OnEnter (make-tooltip-enter alt.item-id))
+      (w:SetCallback :OnLeave on-row-leave))
+    w))
+
+(fn add-kind-toggle! [scroll]
+  "A Best-in-slot / Road-to-BiS (pre-raid) selector. AceGUI Dropdown; switching
+   sets selected-kind and repaints the active container in place. No-op headless."
+  (let [dd (acegui.create! :Dropdown)]
+    (when dd
+      (dd:SetLabel :Show)
+      (dd:SetList {:bis :Best-in-slot :pre-raid "Road to BiS (pre-raid)"})
+      (dd:SetValue selected-kind)
+      (dd:SetFullWidth true)
+      (dd:SetCallback :OnValueChanged
+                      (fn [_ _ key]
+                        (set selected-kind key)
+                        (when active-container
+                          (active-container:ReleaseChildren)
+                          (M.render! active-container))))
+      (scroll:AddChild dd))
+    dd))
+
 ;; --- Public API ------------------------------------------------------------
 
 (fn add-empty! [container message]
@@ -141,11 +213,14 @@
 
 (lambda M.render! [container]
   "Repaint the BiS tab into an AceGUI container (the TabGroup). Reads the live
-   client's class/spec/phase + owned items and adds a ScrollFrame: a progress
-   header then one checklist row per gear slot. Idempotent -- the caller
-   (src/ui/root.fnl) ReleaseChildren's the container first. No-op headless.
+   client's class/spec/phase + owned items and adds a ScrollFrame: a kind toggle
+   (Best-in-slot / Road-to-BiS), a progress header, then one checklist row per
+   gear slot -- each with its top ranked alternatives indented beneath. The
+   toggle repaints in place. Idempotent -- the caller (src/ui/root.fnl) and the
+   toggle both ReleaseChildren the container first. No-op headless.
    Domain:  container : an AceGUI container widget
    Returns: nil."
+  (set active-container container)
   (let [scroll (acegui.create! :ScrollFrame)]
     (when (and scroll container)
       (container:SetLayout :Fill)
@@ -162,16 +237,22 @@
                         (if ok? "No best-in-slot data for this spec yet."
                             "Log in to a character to see your BiS list."))
             (let [items (scoped-items ctx.class spec ctx.phase)
-                  vm (M.list-view-model items ctx.owned-items)]
+                  vm (M.list-view-model items ctx.owned-items selected-kind)
+                  kind-label (if (= selected-kind :pre-raid) :pre-raid
+                                 :best-in-slot)]
+              (add-kind-toggle! scroll)
               (if (= 0 vm.total)
                   (add-empty! scroll
-                              (.. "No best-in-slot data for " (tostring spec)
+                              (.. "No " kind-label " data for " (tostring spec)
                                   " at phase " (tostring ctx.phase) "."))
                   (do
                     (add-header! scroll vm.summary)
                     (each [_ row (ipairs vm.rows)]
                       (let [w (build-row! row)]
-                        (when w (scroll:AddChild w)))))))))))
+                        (when w (scroll:AddChild w)))
+                      (each [_ alt (ipairs row.alts)]
+                        (let [w (build-alt-row! alt)]
+                          (when w (scroll:AddChild w))))))))))))
   nil)
 
 (set _G.Routina Routina)

@@ -6,8 +6,12 @@
 
 (local bis-tab (require :src.ui.tabs.bis))
 
-(fn entry [slot id name phase]
-  {: slot :item {: id : name} :phase (or phase 1)})
+(fn entry [slot id name phase kind rank]
+  {: slot
+   :item {: id : name}
+   :phase (or phase 1)
+   :kind (or kind :bis)
+   :rank (or rank 1)})
 
 (describe :bis-list-view-model
           (fn []
@@ -61,4 +65,42 @@
                 (fn []
                   (let [vm (bis-tab.list-view-model [] {})]
                     (assert.are.equal 0 vm.total)
-                    (assert.are.equal 0 (length vm.rows)))))))
+                    (assert.are.equal 0 (length vm.rows)))))
+            (it "lists ranked alternatives under the primary, best rank first"
+                (fn []
+                  (let [items [(entry :head 1 :Best 1 :bis 1)
+                               (entry :head 2 :Second 1 :bis 2)
+                               (entry :head 3 :Third 1 :bis 3)]
+                        vm (bis-tab.list-view-model items {})
+                        row (. vm.rows 1)]
+                    (assert.are.equal :Best row.name)
+                    (assert.are.equal 2 (length row.alts))
+                    (assert.are.equal :Second (. row.alts 1 :name))
+                    (assert.are.equal :Third (. row.alts 2 :name)))))
+            (it "caps the alternatives at three per slot"
+                (fn []
+                  (let [items [(entry :head 1 :R1 1 :bis 1)
+                               (entry :head 2 :R2 1 :bis 2)
+                               (entry :head 3 :R3 1 :bis 3)
+                               (entry :head 4 :R4 1 :bis 4)
+                               (entry :head 5 :R5 1 :bis 5)]
+                        vm (bis-tab.list-view-model items {})]
+                    (assert.are.equal 3 (length (. vm.rows 1 :alts))))))
+            (it "filters by kind, defaulting to :bis"
+                (fn []
+                  (let [items [(entry :head 1 :RaidHelm 1 :bis 1)
+                               (entry :head 2 :DungeonHelm 1 :pre-raid 1)]
+                        bis-vm (bis-tab.list-view-model items {})
+                        pre-vm (bis-tab.list-view-model items {} :pre-raid)]
+                    (assert.are.equal :RaidHelm (. bis-vm.rows 1 :name))
+                    (assert.are.equal :bis bis-vm.kind)
+                    (assert.are.equal :DungeonHelm (. pre-vm.rows 1 :name))
+                    (assert.are.equal :pre-raid pre-vm.kind))))
+            (it "marks an alternative owned from the owned set"
+                (fn []
+                  (let [items [(entry :head 1 :Best 1 :bis 1)
+                               (entry :head 2 :Alt 1 :bis 2)]
+                        vm (bis-tab.list-view-model items {2 true})
+                        row (. vm.rows 1)]
+                    (assert.is_false row.owned?)
+                    (assert.is_true (. row.alts 1 :owned?)))))))

@@ -14,42 +14,1306 @@
 (local entries [{:class :warrior
                  :spec :protection-mitigation
                  :phase 1
+                 :kind :pre-raid
+                 :rank 2
                  :slot :back
                  :item {:id 33122 :name "Cloak of Darkness"}
                  :sources [{:instance :unknown}]}
                 {:class :warrior
                  :spec :protection-mitigation
+                 :phase 1
+                 :kind :bis
+                 :rank 3
+                 :slot :back
+                 :item {:id 28529 :name "Royal Cloak of Arathi Kings"}
+                 :sources [{:instance :raid}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 1
+                 :kind :bis
+                 :rank 4
+                 :slot :back
+                 :item {:id 28672 :name "Drape of the Dark Reavers"}
+                 :sources [{:instance :raid}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 1
+                 :kind :bis
+                 :rank 8
+                 :slot :back
+                 :item {:id 28777 :name "Cloak of the Pit Stalker"}
+                 :sources [{:instance :raid}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 1
+                 :kind :bis
+                 :rank 9
+                 :slot :back
+                 :item {:id 28660 :name "Gilded Thorium Cloak"}
+                 :sources [{:instance :raid}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 1
+                 :kind :bis
+                 :rank 10
+                 :slot :back
+                 :item {:id 29385 :name "Farstrider Defender's Cloak"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 11
+                 :slot :back
+                 :item {:id 27804 :name "Devilshark Cape"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 12
+                 :slot :back
+                 :item {:id 24253 :name "Cloak of Eternity"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 13
+                 :slot :back
+                 :item {:id 28328 :name "Mithril-Bark Cloak"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 1
+                 :kind :bis
+                 :rank 4
+                 :slot :chest
+                 :item {:id 29012 :name "Warbringer Chestguard"}
+                 :sources [{:instance :raid}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 1
+                 :kind :bis
+                 :rank 5
+                 :slot :chest
+                 :item {:id 28597 :name "Panzar'Thar Breastplate"}
+                 :sources [{:instance :raid}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 6
+                 :slot :chest
+                 :item {:id 28484 :name "Bulwark of Kings"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 7
+                 :slot :chest
+                 :item {:id 35407 :name "Savage Plate Chestpiece"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 8
+                 :slot :chest
+                 :item {:id 28205 :name "Breastplate of the Bold"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 9
+                 :slot :chest
+                 :item {:id 28262 :name "Jade-Skull Breastplate"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 10
+                 :slot :chest
+                 :item {:id 25819 :name "Breastplate of the Warbringer"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 1
+                 :kind :bis
+                 :rank 11
+                 :slot :chest
+                 :item {:id 22416 :name "Dreadnaught Breastplate"}
+                 :sources [{:instance :raid}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 1
+                 :kind :bis
+                 :rank 5
+                 :slot :feet
+                 :item {:id 28608 :name "Ironstriders of Urgency"}
+                 :sources [{:instance :raid}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 6
+                 :slot :feet
+                 :item {:id 28747 :name "Battlescar Boots"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 1
+                 :kind :bis
+                 :rank 7
+                 :slot :feet
+                 :item {:id 30641 :name "Boots of Elusion"}
+                 :sources [{:instance :raid}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 1
+                 :kind :bis
+                 :rank 8
+                 :slot :feet
+                 :item {:id 28997 :name "Marshal's Plate Greaves"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 10
+                 :slot :feet
+                 :item {:id 29239 :name "Eaglecrest Warboots"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 11
+                 :slot :feet
+                 :item {:id 28176 :name "Sha'tari Wrought Greaves"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 12
+                 :slot :feet
+                 :item {:id 30386 :name "Bloodguard's Greaves"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 1
+                 :kind :bis
+                 :rank 13
+                 :slot :feet
+                 :item {:id 22420 :name "Dreadnaught Sabatons"}
+                 :sources [{:instance :raid}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 1
+                 :kind :bis
+                 :rank 5
+                 :slot :hands
+                 :item {:id 30741 :name "Topaz-Studded Battlegrips"}
+                 :sources [{:instance :world-boss}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 1
+                 :kind :bis
+                 :rank 6
+                 :slot :hands
+                 :item {:id 28518 :name "Iron Gauntlets of the Maiden"}
+                 :sources [{:instance :raid}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 1
+                 :kind :bis
+                 :rank 7
+                 :slot :hands
+                 :item {:id 29017 :name "Warbringer Handguards"}
+                 :sources [{:instance :raid}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 8
+                 :slot :hands
+                 :item {:id 27475 :name "Gauntlets of the Bold"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 9
+                 :slot :hands
+                 :item {:id 32072 :name "Gauntlets of Dissension"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 10
+                 :slot :hands
+                 :item {:id 23517 :name "Felsteel Gloves"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 11
+                 :slot :hands
+                 :item {:id 29134 :name "Gauntlets of the Chosen"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 12
+                 :slot :hands
+                 :item {:id 30375 :name "Gauntlets of the Vanquisher"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 1
+                 :kind :bis
+                 :rank 5
+                 :slot :head
+                 :item {:id 29011 :name "Warbringer Greathelm"}
+                 :sources [{:instance :raid}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 1
+                 :kind :bis
+                 :rank 6
+                 :slot :head
+                 :item {:id 30731 :name "Faceguard of the Endless Watch"}
+                 :sources [{:instance :world-boss}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 1
+                 :kind :bis
+                 :rank 7
+                 :slot :head
+                 :item {:id 28593 :name "Eternium Greathelm"}
+                 :sources [{:instance :raid}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 8
+                 :slot :head
+                 :item {:id 28180 :name "Myrmidon's Headdress"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 9
+                 :slot :head
+                 :item {:id 23519 :name "Felsteel Helm"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 10
+                 :slot :head
+                 :item {:id 28350 :name "Warhelm of the Bold"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 1
+                 :kind :bis
+                 :rank 6
+                 :slot :legs
+                 :item {:id 28621 :name "Wrynn Dynasty Greaves"}
+                 :sources [{:instance :raid}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 1
+                 :kind :bis
+                 :rank 7
+                 :slot :legs
+                 :item {:id 29015 :name "Warbringer Legguards"}
+                 :sources [{:instance :raid}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 8
+                 :slot :legs
+                 :item {:id 29184 :name "Timewarden's Leggings"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 9
+                 :slot :legs
+                 :item {:id 23518 :name "Felsteel Leggings"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 10
+                 :slot :legs
+                 :item {:id 27527 :name "Greaves of the Shatterer"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 11
+                 :slot :legs
+                 :item {:id 28175 :name "Mag'hari Warlord's Legplates"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 12
+                 :slot :legs
+                 :item {:id 29783 :name "Legguards of the Resolute Defender"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 4
+                 :slot :main-hand
+                 :item {:id 28427 :name :Blazefury}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 7
+                 :slot :main-hand
+                 :item {:id 29165 :name :Warbringer}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 8
+                 :slot :main-hand
+                 :item {:id 28749 :name "King's Defender"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 9
+                 :slot :main-hand
+                 :item {:id 29362 :name "The Sun Eater"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 10
+                 :slot :main-hand
+                 :item {:id 28426 :name :Blazeguard}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 11
+                 :slot :main-hand
+                 :item {:id 28189 :name "Latro's Shifting Sword"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 12
+                 :slot :main-hand
+                 :item {:id 23577 :name "The Hungering Cold"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 13
+                 :slot :main-hand
+                 :item {:id 27980 :name "Terokk's Nightmace"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 14
+                 :slot :main-hand
+                 :item {:id 29156 :name "Honor's Call"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 15
+                 :slot :main-hand
+                 :item {:id 19019
+                        :name "Thunderfury, Blessed Blade of the Windseeker"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 16
+                 :slot :main-hand
+                 :item {:id 31071 :name "Grom'tor's Charge"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 1
+                 :kind :bis
+                 :rank 7
+                 :slot :neck
+                 :item {:id 28674 :name "Saberclaw Talisman"}
+                 :sources [{:instance :raid}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 1
+                 :kind :bis
+                 :rank 8
+                 :slot :neck
+                 :item {:id 29386 :name "Necklace of the Juggernaut"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 1
+                 :kind :bis
+                 :rank 9
+                 :slot :neck
+                 :item {:id 28516 :name "Barbed Choker of Discipline"}
+                 :sources [{:instance :raid}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 10
+                 :slot :neck
+                 :item {:id 29336 :name "Mark of the Ravenguard"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 11
+                 :slot :neck
+                 :item {:id 30378 :name "Thalodien's Charm"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 12
+                 :slot :neck
+                 :item {:id 31696 :name "Natasha's Battle Chain"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 1
+                 :kind :bis
+                 :rank 4
+                 :slot :off-hand
+                 :item {:id 28825 :name "Aldori Legacy Defender"}
+                 :sources [{:instance :raid}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 6
+                 :slot :off-hand
+                 :item {:id 28358 :name "Gladiator's Shield Wall"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 1
+                 :kind :bis
+                 :rank 7
+                 :slot :off-hand
+                 :item {:id 28606 :name "Shield of Impenetrable Darkness"}
+                 :sources [{:instance :raid}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 8
+                 :slot :off-hand
+                 :item {:id 29176 :name "Crest of the Sha'tar"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 1
+                 :kind :bis
+                 :rank 9
+                 :slot :off-hand
+                 :item {:id 29266 :name "Azure-Shield of Coldarra"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 11
+                 :slot :off-hand
+                 :item {:id 32082 :name "The Fel Barrier"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 12
+                 :slot :off-hand
+                 :item {:id 28316 :name "Aegis of the Sunbird"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 13
+                 :slot :off-hand
+                 :item {:id 27887 :name "Platinum Shield of the Valorous"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 14
+                 :slot :off-hand
+                 :item {:id 31490 :name "Netherwing Protector's Shield"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 15
+                 :slot :off-hand
+                 :item {:id 23043 :name "The Face of Death"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 5
+                 :slot :ranged
+                 :item {:id 32756 :name "Gyro-Balanced Khorium Destroyer"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 1
+                 :kind :bis
+                 :rank 6
+                 :slot :ranged
+                 :item {:id 30724 :name "Barrel-Blade Longrifle"}
+                 :sources [{:instance :world-boss}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 1
+                 :kind :bis
+                 :rank 9
+                 :slot :ranged
+                 :item {:id 28826 :name "Shuriken of Negation"}
+                 :sources [{:instance :raid}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 10
+                 :slot :ranged
+                 :item {:id 28319 :name "Gladiator's War Edge"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 11
+                 :slot :ranged
+                 :item {:id 32780 :name "The Boomstick"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 12
+                 :slot :ranged
+                 :item {:id 27817 :name "Starbolt Longbow"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 13
+                 :slot :ranged
+                 :item {:id 30227 :name "Mark V's Throwing Star"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 15
+                 :slot :ranged
+                 :item {:id 29115 :name "Consortium Blaster"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 16
+                 :slot :ranged
+                 :item {:id 28258 :name :Nethershrike}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 17
+                 :slot :ranged
+                 :item {:id 21459 :name "Crossbow of Imminent Doom"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 3
+                 :slot :ring1
+                 :item {:id 29279 :name "Violet Signet of the Great Protector"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 7
+                 :slot :ring1
+                 :item {:id 29283 :name "Violet Signet of the Master Assassin"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 1
+                 :kind :bis
+                 :rank 11
+                 :slot :ring1
+                 :item {:id 29384 :name "Ring of Unyielding Force"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 13
+                 :slot :ring1
+                 :item {:id 31078 :name "Protector's Mark of the Redemption"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 15
+                 :slot :ring1
+                 :item {:id 23059 :name "Ring of the Dreadnaught"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 1
+                 :kind :bis
+                 :rank 6
+                 :slot :ring2
+                 :item {:id 28792 :name "A'dal's Signet of Defense"}
+                 :sources [{:instance :raid}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 1
+                 :kind :bis
+                 :rank 10
+                 :slot :ring2
+                 :item {:id 28675 :name "Shermanar Great-Ring"}
+                 :sources [{:instance :raid}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 12
+                 :slot :ring2
+                 :item {:id 30006 :name "Wind Trader's Band"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 14
+                 :slot :ring2
+                 :item {:id 28407 :name "Elementium Band of the Sentry"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 1
+                 :kind :bis
+                 :rank 5
+                 :slot :shoulder
+                 :item {:id 29023 :name "Warbringer Shoulderplates"}
+                 :sources [{:instance :raid}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 1
+                 :kind :bis
+                 :rank 6
+                 :slot :shoulder
+                 :item {:id 29016 :name "Warbringer Shoulderguards"}
+                 :sources [{:instance :raid}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 1
+                 :kind :bis
+                 :rank 7
+                 :slot :shoulder
+                 :item {:id 28743 :name "Mantle of Abrahmis"}
+                 :sources [{:instance :raid}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 8
+                 :slot :shoulder
+                 :item {:id 35411 :name "Savage Plate Shoulders"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 9
+                 :slot :shoulder
+                 :item {:id 27847 :name "Fanblade Pauldrons"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 10
+                 :slot :shoulder
+                 :item {:id 32073 :name "Spaulders of Dementia"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 11
+                 :slot :shoulder
+                 :item {:id 27803 :name "Shoulderguards of the Bold"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 12
+                 :slot :shoulder
+                 :item {:id 29316 :name "Warchief's Mantle"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 3
+                 :slot :trinket1
+                 :item {:id 37128 :name "Balebrew Charm"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 5
+                 :slot :trinket1
+                 :item {:id 32864 :name "Commander's Badge"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 7
+                 :slot :trinket1
+                 :item {:id 23835 :name "Gnomish Poultryizer"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 10
+                 :slot :trinket1
+                 :item {:id 10725 :name "Gnomish Battle Chicken"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 13
+                 :slot :trinket1
+                 :item {:id 31113 :name "Violet Badge"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 15
+                 :slot :trinket1
+                 :item {:id 19406 :name "Drake Fang Talisman"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 17
+                 :slot :trinket1
+                 :item {:id 30300 :name "Dabiri's Enigma"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 4
+                 :slot :trinket2
+                 :item {:id 37127 :name "Brightbrew Charm"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 6
+                 :slot :trinket2
+                 :item {:id 23836 :name "Goblin Rocket Launcher"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 8
+                 :slot :trinket2
+                 :item {:id 29181 :name "Timelapse Shard"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 12
+                 :slot :trinket2
+                 :item {:id 27770 :name "Argussian Compass"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 1
+                 :kind :bis
+                 :rank 14
+                 :slot :trinket2
+                 :item {:id 29387 :name "Gnomeregan Auto-Blocker 600"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 16
+                 :slot :trinket2
+                 :item {:id 27891 :name "Adamantine Figurine"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 18
+                 :slot :trinket2
+                 :item {:id 28042 :name "Regal Protectorate"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 1
+                 :kind :bis
+                 :rank 5
+                 :slot :waist
+                 :item {:id 28995 :name "Marshal's Plate Belt"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 1
+                 :kind :bis
+                 :rank 6
+                 :slot :waist
+                 :item {:id 28566 :name "Crimson Girdle of the Indomitable"}
+                 :sources [{:instance :raid}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 7
+                 :slot :waist
+                 :item {:id 29238 :name "Lion's Heart Girdle"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 9
+                 :slot :waist
+                 :item {:id 27672 :name "Girdle of the Immovable"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 10
+                 :slot :waist
+                 :item {:id 31460 :name "Sha'tari Vindicator's Waistguard"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 11
+                 :slot :waist
+                 :item {:id 25922 :name "Fearless Girdle"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 1
+                 :kind :bis
+                 :rank 12
+                 :slot :waist
+                 :item {:id 22422 :name "Dreadnaught Waistguard"}
+                 :sources [{:instance :raid}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 1
+                 :kind :bis
+                 :rank 6
+                 :slot :wrist
+                 :item {:id 28996 :name "Marshal's Plate Bracers"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 1
+                 :kind :bis
+                 :rank 7
+                 :slot :wrist
+                 :item {:id 28502 :name "Vambraces of Courage"}
+                 :sources [{:instance :raid}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 1
+                 :kind :bis
+                 :rank 8
+                 :slot :wrist
+                 :item {:id 28795 :name "Bladespire Warbands"}
+                 :sources [{:instance :raid}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 9
+                 :slot :wrist
+                 :item {:id 23538 :name "Bracers of the Green Fortress"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 10
+                 :slot :wrist
+                 :item {:id 29463 :name "Amber Bands of the Aggressor"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 11
+                 :slot :wrist
+                 :item {:id 27459 :name "Vambraces of Daring"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 12
+                 :slot :wrist
+                 :item {:id 28167 :name "Sha'tari Wrought Armguards"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 13
+                 :slot :wrist
+                 :item {:id 30225 :name "Junior Technician 3rd Grade Bracers"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :protection-mitigation
                  :phase 2
+                 :kind :bis
+                 :rank 5
+                 :slot :back
+                 :item {:id 30098 :name "Razor-Scale Battlecloak"}
+                 :sources [{:instance :raid}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 2
+                 :kind :bis
+                 :rank 6
+                 :slot :back
+                 :item {:id 29925 :name "Phoenix-Wing Cloak"}
+                 :sources [{:instance :raid}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 2
+                 :kind :bis
+                 :rank 7
+                 :slot :back
+                 :item {:id 29994 :name "Thalassian Wildercloak"}
+                 :sources [{:instance :raid}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 2
+                 :kind :bis
+                 :rank 2
                  :slot :chest
                  :item {:id 30113 :name "Destroyer Chestguard"}
                  :sources [{:instance :raid}]}
                 {:class :warrior
                  :spec :protection-mitigation
                  :phase 2
+                 :kind :pre-raid
+                 :rank 3
+                 :slot :feet
+                 :item {:id 32793 :name "Veteran's Plate Greaves"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 2
+                 :kind :bis
+                 :rank 4
+                 :slot :feet
+                 :item {:id 32267 :name "Boots of the Resilient"}
+                 :sources [{:instance :raid}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 2
+                 :kind :pre-raid
+                 :rank 9
+                 :slot :feet
+                 :item {:id 30031 :name "Red Havoc Boots"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 2
+                 :kind :bis
+                 :rank 3
+                 :slot :hands
+                 :item {:id 29998 :name "Royal Gauntlets of Silvermoon"}
+                 :sources [{:instance :raid}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 2
+                 :kind :bis
+                 :rank 4
+                 :slot :hands
+                 :item {:id 30114 :name "Destroyer Handguards"}
+                 :sources [{:instance :raid}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 2
+                 :kind :pre-raid
+                 :rank 3
+                 :slot :head
+                 :item {:id 32473 :name "Tankatronic Goggles"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 2
+                 :kind :bis
+                 :rank 4
+                 :slot :head
+                 :item {:id 30115 :name "Destroyer Greathelm"}
+                 :sources [{:instance :raid}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 2
+                 :kind :bis
+                 :rank 4
+                 :slot :legs
+                 :item {:id 30116 :name "Destroyer Legguards"}
+                 :sources [{:instance :raid}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 2
+                 :kind :pre-raid
+                 :rank 5
+                 :slot :legs
+                 :item {:id 30489
+                        :name "Merciless Gladiator's Plate Legguards"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 2
+                 :kind :bis
+                 :rank 5
+                 :slot :main-hand
+                 :item {:id 30058 :name "Mallet of the Tides"}
+                 :sources [{:instance :raid}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 2
+                 :kind :bis
+                 :rank 6
+                 :slot :main-hand
+                 :item {:id 30103 :name "Fang of Vashj"}
+                 :sources [{:instance :raid}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 2
+                 :kind :bis
+                 :rank 3
+                 :slot :neck
+                 :item {:id 30099 :name "Frayed Tether of the Drowned"}
+                 :sources [{:instance :raid}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 2
+                 :kind :pre-raid
+                 :rank 5
+                 :slot :neck
+                 :item {:id 33066 :name "Veteran's Pendant of Triumph"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 2
+                 :kind :pre-raid
+                 :rank 5
+                 :slot :off-hand
+                 :item {:id 32045 :name "Merciless Gladiator's Shield Wall"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 2
+                 :kind :bis
+                 :rank 10
+                 :slot :off-hand
+                 :item {:id 32652 :name "Ogri'la Aegis"}
+                 :sources [{:instance :raid}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 2
+                 :kind :bis
+                 :rank 2
                  :slot :ranged
                  :item {:id 29949 :name "Arcanite Steam-Pistol"}
                  :sources [{:instance :raid}]}
                 {:class :warrior
                  :spec :protection-mitigation
                  :phase 2
+                 :kind :bis
+                 :rank 3
+                 :slot :ranged
+                 :item {:id 30025 :name "Serpentshrine Shuriken"}
+                 :sources [{:instance :raid}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 2
+                 :kind :pre-raid
+                 :rank 7
+                 :slot :ranged
+                 :item {:id 32054 :name "Merciless Gladiator's War Edge"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 2
+                 :kind :bis
+                 :rank 8
+                 :slot :ranged
+                 :item {:id 32645 :name "Crystalline Crossbow"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 2
+                 :kind :bis
+                 :rank 4
+                 :slot :ring1
+                 :item {:id 30083 :name "Ring of Sundered Souls"}
+                 :sources [{:instance :raid}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 2
+                 :kind :bis
+                 :rank 9
+                 :slot :ring2
+                 :item {:id 30061 :name "Ancestral Ring of Conquest"}
+                 :sources [{:instance :raid}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 2
+                 :kind :bis
+                 :rank 4
+                 :slot :shoulder
+                 :item {:id 30117 :name "Destroyer Shoulderguards"}
+                 :sources [{:instance :raid}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 2
+                 :kind :bis
+                 :rank 11
+                 :slot :trinket1
+                 :item {:id 30620 :name "Spyglass of the Hidden Fleet"}
+                 :sources [{:instance :raid}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 2
+                 :kind :pre-raid
+                 :rank 1
                  :slot :waist
                  :item {:id 30032 :name "Red Belt of Battle"}
                  :sources [{:instance :unknown}]}
                 {:class :warrior
                  :spec :protection-mitigation
                  :phase 2
+                 :kind :bis
+                 :rank 4
+                 :slot :waist
+                 :item {:id 30096 :name "Girdle of the Invulnerable"}
+                 :sources [{:instance :raid}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 2
+                 :kind :pre-raid
+                 :rank 8
+                 :slot :waist
+                 :item {:id 32805 :name "Veteran's Plate Belt"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 2
+                 :kind :bis
+                 :rank 2
                  :slot :wrist
                  :item {:id 30057 :name "Bracers of Eradication"}
                  :sources [{:instance :raid}]}
                 {:class :warrior
                  :spec :protection-mitigation
+                 :phase 2
+                 :kind :pre-raid
+                 :rank 5
+                 :slot :wrist
+                 :item {:id 32818 :name "Veteran's Plate Bracers"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :protection-mitigation
                  :phase 3
+                 :kind :bis
+                 :rank 1
                  :slot :back
                  :item {:id 34010 :name "Pepe's Shroud of Pacification"}
                  :sources [{:instance :raid}]}
                 {:class :warrior
                  :spec :protection-mitigation
                  :phase 3
+                 :kind :pre-raid
+                 :rank 1
                  :slot :chest
                  :item {:id 33728
                         :name "Vengeful Gladiator's Plate Chestpiece"}
@@ -57,140 +1321,306 @@
                 {:class :warrior
                  :spec :protection-mitigation
                  :phase 3
+                 :kind :bis
+                 :rank 3
+                 :slot :chest
+                 :item {:id 30896 :name "Glory of the Defender"}
+                 :sources [{:instance :raid}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 3
+                 :kind :bis
+                 :rank 1
                  :slot :feet
                  :item {:id 33812 :name "Vindicator's Plate Greaves"}
                  :sources [{:instance :unknown}]}
                 {:class :warrior
                  :spec :protection-mitigation
                  :phase 3
+                 :kind :bis
+                 :rank 2
                  :slot :feet
                  :item {:id 32268 :name "Myrmidon's Treads"}
                  :sources [{:instance :raid}]}
                 {:class :warrior
                  :spec :protection-mitigation
                  :phase 3
+                 :kind :bis
+                 :rank 1
                  :slot :hands
                  :item {:id 32280 :name "Gauntlets of Enforcement"}
                  :sources [{:instance :raid}]}
                 {:class :warrior
                  :spec :protection-mitigation
                  :phase 3
+                 :kind :bis
+                 :rank 2
                  :slot :hands
                  :item {:id 32608 :name "Pillager's Gauntlets"}
                  :sources [{:instance :raid}]}
                 {:class :warrior
                  :spec :protection-mitigation
                  :phase 3
+                 :kind :bis
+                 :rank 1
                  :slot :head
                  :item {:id 32521 :name "Faceplate of the Impenetrable"}
                  :sources [{:instance :raid}]}
                 {:class :warrior
                  :spec :protection-mitigation
                  :phase 3
+                 :kind :bis
+                 :rank 2
                  :slot :head
                  :item {:id 30974 :name "Onslaught Greathelm"}
                  :sources [{:instance :raid}]}
                 {:class :warrior
                  :spec :protection-mitigation
                  :phase 3
+                 :kind :pre-raid
+                 :rank 1
                  :slot :legs
                  :item {:id 33731 :name "Vengeful Gladiator's Plate Legguards"}
                  :sources [{:instance :unknown}]}
                 {:class :warrior
                  :spec :protection-mitigation
                  :phase 3
+                 :kind :bis
+                 :rank 2
                  :slot :legs
                  :item {:id 32263 :name "Praetorian's Legguards"}
                  :sources [{:instance :raid}]}
                 {:class :warrior
                  :spec :protection-mitigation
                  :phase 3
+                 :kind :bis
+                 :rank 3
+                 :slot :legs
+                 :item {:id 30978 :name "Onslaught Legguards"}
+                 :sources [{:instance :raid}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 3
+                 :kind :bis
+                 :rank 1
                  :slot :main-hand
                  :item {:id 32254 :name "The Brutalizer"}
                  :sources [{:instance :raid}]}
                 {:class :warrior
                  :spec :protection-mitigation
                  :phase 3
+                 :kind :bis
+                 :rank 2
                  :slot :main-hand
                  :item {:id 32369 :name "Blade of Savagery"}
                  :sources [{:instance :raid}]}
                 {:class :warrior
                  :spec :protection-mitigation
                  :phase 3
+                 :kind :bis
+                 :rank 3
+                 :slot :main-hand
+                 :item {:id 32943 :name "Swiftsteel Bludgeon"}
+                 :sources [{:instance :raid}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 3
+                 :kind :bis
+                 :rank 1
                  :slot :neck
                  :item {:id 32362 :name "Pendant of Titans"}
                  :sources [{:instance :raid}]}
                 {:class :warrior
                  :spec :protection-mitigation
                  :phase 3
+                 :kind :bis
+                 :rank 2
                  :slot :neck
                  :item {:id 33923 :name "Vindicator's Pendant of Triumph"}
                  :sources [{:instance :unknown}]}
                 {:class :warrior
                  :spec :protection-mitigation
                  :phase 3
+                 :kind :bis
+                 :rank 4
+                 :slot :neck
+                 :item {:id 32591 :name "Choker of Serrated Blades"}
+                 :sources [{:instance :raid}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 3
+                 :kind :bis
+                 :rank 1
                  :slot :off-hand
                  :item {:id 32375 :name "Bulwark of Azzinoth"}
                  :sources [{:instance :raid}]}
                 {:class :warrior
                  :spec :protection-mitigation
                  :phase 3
+                 :kind :bis
+                 :rank 2
                  :slot :off-hand
                  :item {:id 30889 :name "Kaz'rogal's Hardened Heart"}
                  :sources [{:instance :raid}]}
                 {:class :warrior
                  :spec :protection-mitigation
                  :phase 3
+                 :kind :pre-raid
+                 :rank 3
+                 :slot :off-hand
+                 :item {:id 33755 :name "Vengeful Gladiator's Shield Wall"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 3
+                 :kind :bis
+                 :rank 1
                  :slot :ranged
                  :item {:id 32253 :name :Legionkiller}
                  :sources [{:instance :raid}]}
                 {:class :warrior
                  :spec :protection-mitigation
                  :phase 3
+                 :kind :pre-raid
+                 :rank 4
+                 :slot :ranged
+                 :item {:id 33765 :name "Vengeful Gladiator's War Edge"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 3
+                 :kind :pre-raid
+                 :rank 14
+                 :slot :ranged
+                 :item {:id 32832 :name "Scout's Throwing Knives"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 3
+                 :kind :bis
+                 :rank 1
                  :slot :ring1
                  :item {:id 29296 :name "Band of Eternity"}
                  :sources [{:instance :raid}]}
                 {:class :warrior
                  :spec :protection-mitigation
                  :phase 3
+                 :kind :pre-raid
+                 :rank 5
+                 :slot :ring1
+                 :item {:id 29294 :name "Band of Eternity"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 3
+                 :kind :bis
+                 :rank 2
                  :slot :ring2
                  :item {:id 32261 :name "Band of the Abyssal Lord"}
                  :sources [{:instance :raid}]}
                 {:class :warrior
                  :spec :protection-mitigation
                  :phase 3
+                 :kind :bis
+                 :rank 8
+                 :slot :ring2
+                 :item {:id 29298 :name "Band of Eternity"}
+                 :sources [{:instance :raid}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 3
+                 :kind :pre-raid
+                 :rank 1
                  :slot :shoulder
                  :item {:id 33732 :name "Vengeful Gladiator's Plate Shoulders"}
                  :sources [{:instance :unknown}]}
                 {:class :warrior
                  :spec :protection-mitigation
                  :phase 3
+                 :kind :bis
+                 :rank 2
                  :slot :shoulder
                  :item {:id 30980 :name "Onslaught Shoulderguards"}
                  :sources [{:instance :raid}]}
                 {:class :warrior
                  :spec :protection-mitigation
                  :phase 3
+                 :kind :bis
+                 :rank 3
+                 :slot :shoulder
+                 :item {:id 32250 :name "Pauldrons of Abyssal Fury"}
+                 :sources [{:instance :raid}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 3
+                 :kind :pre-raid
+                 :rank 1
                  :slot :trinket1
                  :item {:id 31858 :name "Darkmoon Card: Vengeance"}
                  :sources [{:instance :unknown}]}
                 {:class :warrior
                  :spec :protection-mitigation
                  :phase 3
+                 :kind :bis
+                 :rank 9
+                 :slot :trinket1
+                 :item {:id 32501 :name "Shadowmoon Insignia"}
+                 :sources [{:instance :raid}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 3
+                 :kind :pre-raid
+                 :rank 2
                  :slot :trinket2
                  :item {:id 31859 :name "Darkmoon Card: Madness"}
                  :sources [{:instance :unknown}]}
                 {:class :warrior
                  :spec :protection-mitigation
                  :phase 3
+                 :kind :bis
+                 :rank 2
                  :slot :waist
                  :item {:id 32333 :name "Girdle of Stability"}
                  :sources [{:instance :raid}]}
                 {:class :warrior
                  :spec :protection-mitigation
                  :phase 3
+                 :kind :bis
+                 :rank 3
+                 :slot :waist
+                 :item {:id 32342 :name "Girdle of Mighty Resolve"}
+                 :sources [{:instance :raid}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 3
+                 :kind :bis
+                 :rank 1
                  :slot :wrist
                  :item {:id 33813 :name "Vindicator's Plate Bracers"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 3
+                 :kind :bis
+                 :rank 3
+                 :slot :wrist
+                 :item {:id 30861 :name "Furious Shackles"}
+                 :sources [{:instance :raid}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 3
+                 :kind :bis
+                 :rank 4
+                 :slot :wrist
+                 :item {:id 32232 :name "Eternium Shell Bracers"}
+                 :sources [{:instance :raid}]}
+                {:class :warrior
+                 :spec :protection-mitigation
+                 :phase 5
+                 :kind :pre-raid
+                 :rank 6
+                 :slot :neck
+                 :item {:id 35511 :name "Hailstone Pendant"}
                  :sources [{:instance :unknown}]}])
 
 (tset by-spec :warrior-protection-mitigation entries)

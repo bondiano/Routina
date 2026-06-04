@@ -22,9 +22,20 @@
 
 (local kara-feet 28545)
 (local kara-legs 28741)
+(local kara-back 28672)
 (local kara-feet-p 0.1606)
 (local kara-legs-p 0.155)
 (local kara-minutes 95)
+
+(fn near [a b]
+  "Float near-equality. The per-slot scorer combines candidates via a complement
+   product (1 - Π(1 - p)); for a single-item slot this is 1-(1-p), which differs
+   from a raw at-least-one(p) by a rounding epsilon -- semantically identical."
+  (< (math.abs (- a b)) 1e-09))
+
+(fn id-set [step]
+  "Set of item-ids carried by one plan step."
+  (collect [_ it (ipairs step.items)] (values it.item-id true)))
 
 (fn player [?overrides]
   (let [base {:level 70 :attunements {:kara-key true} :reputations {}}]
@@ -79,12 +90,16 @@
                                                                   {:class :druid}))))))
             (describe "gap + availability filtering"
                       (fn []
-                        (it "plans Karazhan with both unowned feral drops"
+                        (it "plans Karazhan with the unowned feral drops"
                             (fn []
                               (let [step (kara-step (route.plan-week (player)
-                                                                     (ctx)))]
+                                                                     (ctx)))
+                                    ids (id-set step)]
                                 (assert.is_not_nil step)
-                                (assert.are.equal 2 (length step.items))
+                                ;; both signature feral drops present (alongside
+                                ;; any ranked alternative Karazhan also awards)
+                                (assert.is_true (. ids kara-feet))
+                                (assert.is_true (. ids kara-legs))
                                 (assert.are.equal kara-minutes step.minutes)
                                 ;; the step carries its attunement slug for the
                                 ;; UI advisory badge
@@ -96,15 +111,17 @@
                         (it "drops an item once it is owned"
                             (fn []
                               (let [step (kara-step (route.plan-week (player)
-                                                                     (ctx {:owned-items {kara-feet true}})))]
-                                (assert.are.equal 1 (length step.items))
-                                (assert.are.equal kara-legs
-                                                  (. step.items 1 :item-id)))))
+                                                                     (ctx {:owned-items {kara-feet true}})))
+                                    ids (id-set step)]
+                                ;; the owned boots fall away; other drops remain
+                                (assert.is_nil (. ids kara-feet))
+                                (assert.is_true (. ids kara-legs)))))
                         (it "omits an activity with nothing left to want"
                             (fn []
                               (let [plan (route.plan-week (player)
                                                           (ctx {:owned-items {kara-feet true
-                                                                              kara-legs true}}))]
+                                                                              kara-legs true
+                                                                              kara-back true}}))]
                                 (assert.is_nil (kara-step plan)))))
                         (it "omits an activity the player cannot enter"
                             (fn []
@@ -144,15 +161,18 @@
                             (fn []
                               (let [plan (route.plan-week (player) (ctx))
                                     kara (kara-step plan)
-                                    kara-expected (+ (chance.at-least-one kara-feet-p
-                                                                          1)
-                                                     (chance.at-least-one kara-legs-p
-                                                                          1))
+                                    ;; each feral drop sits in a distinct slot, so
+                                    ;; the per-slot combination reduces to the sum
+                                    ;; of the step's per-item week-chances
+                                    kara-expected (accumulate [s 0 _ it (ipairs kara.items)]
+                                                    (+ s
+                                                       (chance.at-least-one it.p
+                                                                            it.runs)))
                                     summed (accumulate [s 0 _ r (ipairs plan.steps)]
                                              (+ s r.score))]
-                                ;; the Karazhan step scores its two feral drops
-                                ;; under default weights...
-                                (assert.are.equal kara-expected kara.score)
+                                ;; the Karazhan step scores its feral drops under
+                                ;; default weights...
+                                (assert.is_true (near kara-expected kara.score))
                                 ;; ...and the plan score sums every planned step.
                                 (assert.are.equal summed plan.score))))
                         (it "scales a slot's contribution by its weight"
@@ -161,9 +181,9 @@
                                     heavy (route.plan-week (player)
                                                            (ctx {:weights {:feet 5}}))
                                     feet (chance.at-least-one kara-feet-p 1)]
-                                ;; +4× the feet item's contribution (weight 5 vs 1)
-                                (assert.are.equal (+ base.score (* 4 feet))
-                                                  heavy.score))))
+                                ;; +4× the feet slot's contribution (weight 5 vs 1)
+                                (assert.is_true (near (+ base.score (* 4 feet))
+                                                      heavy.score)))))
                         (it "lowers a chance under loot competition"
                             (fn []
                               (let [solo (kara-step (route.plan-week (player)

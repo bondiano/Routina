@@ -14,183 +14,1195 @@
 (local entries [{:class :shaman
                  :spec :restoration
                  :phase 1
+                 :kind :bis
+                 :rank 4
+                 :slot :back
+                 :item {:id 28765 :name "Stainless Cloak of the Pure Hearted"}
+                 :sources [{:instance :raid}]}
+                {:class :shaman
+                 :spec :restoration
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 5
+                 :slot :back
+                 :item {:id 31329 :name "Lifegiving Cloak"}
+                 :sources [{:instance :unknown}]}
+                {:class :shaman
+                 :spec :restoration
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 6
+                 :slot :back
+                 :item {:id 24254 :name "White Remedy Cape"}
+                 :sources [{:instance :unknown}]}
+                {:class :shaman
+                 :spec :restoration
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 7
+                 :slot :back
+                 :item {:id 27448 :name "Cloak of the Everliving"}
+                 :sources [{:instance :unknown}]}
+                {:class :shaman
+                 :spec :restoration
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 5
+                 :slot :chest
+                 :item {:id 29522 :name "Windhawk Hauberk"}
+                 :sources [{:instance :unknown}]}
+                {:class :shaman
+                 :spec :restoration
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 6
+                 :slot :chest
+                 :item {:id 21875 :name "Primal Mooncloth Robe"}
+                 :sources [{:instance :unknown}]}
+                {:class :shaman
+                 :spec :restoration
+                 :phase 1
+                 :kind :bis
+                 :rank 7
+                 :slot :chest
+                 :item {:id 29029 :name "Cyclone Hauberk"}
+                 :sources [{:instance :raid}]}
+                {:class :shaman
+                 :spec :restoration
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 8
+                 :slot :chest
+                 :item {:id 23527 :name "Earthpeace Breastplate"}
+                 :sources [{:instance :unknown}]}
+                {:class :shaman
+                 :spec :restoration
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 9
+                 :slot :chest
+                 :item {:id 30298 :name "Void Slayer's Tunic"}
+                 :sources [{:instance :unknown}]}
+                {:class :shaman
+                 :spec :restoration
+                 :phase 1
+                 :kind :bis
+                 :rank 3
+                 :slot :feet
+                 :item {:id 30737 :name "Gold-Leaf Wildboots"}
+                 :sources [{:instance :world-boss}]}
+                {:class :shaman
+                 :spec :restoration
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 5
+                 :slot :feet
+                 :item {:id 28752 :name "Forestlord Striders"}
+                 :sources [{:instance :unknown}]}
+                {:class :shaman
+                 :spec :restoration
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 7
+                 :slot :feet
+                 :item {:id 27525 :name "Jeweled Boots of Sanctification"}
+                 :sources [{:instance :unknown}]}
+                {:class :shaman
+                 :spec :restoration
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 8
+                 :slot :feet
+                 :item {:id 27411 :name "Slippers of Serenity"}
+                 :sources [{:instance :unknown}]}
+                {:class :shaman
+                 :spec :restoration
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 9
+                 :slot :feet
+                 :item {:id 27549 :name "Wavefury Boots"}
+                 :sources [{:instance :unknown}]}
+                {:class :shaman
+                 :spec :restoration
+                 :phase 1
+                 :kind :bis
+                 :rank 6
+                 :slot :hands
+                 :item {:id 28520 :name "Gloves of Centering"}
+                 :sources [{:instance :raid}]}
+                {:class :shaman
+                 :spec :restoration
+                 :phase 1
+                 :kind :bis
+                 :rank 7
+                 :slot :hands
+                 :item {:id 28521 :name "Mitts of the Treemender"}
+                 :sources [{:instance :raid}]}
+                {:class :shaman
+                 :spec :restoration
+                 :phase 1
+                 :kind :bis
+                 :rank 8
+                 :slot :hands
+                 :item {:id 29032 :name "Cyclone Gloves"}
+                 :sources [{:instance :raid}]}
+                {:class :shaman
+                 :spec :restoration
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 9
+                 :slot :hands
+                 :item {:id 27806 :name "Fathomheart Gauntlets"}
+                 :sources [{:instance :unknown}]}
+                {:class :shaman
+                 :spec :restoration
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 10
+                 :slot :hands
+                 :item {:id 28304 :name "Prismatic Mittens of Mending"}
+                 :sources [{:instance :unknown}]}
+                {:class :shaman
+                 :spec :restoration
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 11
+                 :slot :hands
+                 :item {:id 29506 :name "Gloves of the Living Touch"}
+                 :sources [{:instance :unknown}]}
+                {:class :shaman
+                 :spec :restoration
+                 :phase 1
+                 :kind :bis
+                 :rank 5
+                 :slot :head
+                 :item {:id 29028 :name "Cyclone Headdress"}
+                 :sources [{:instance :raid}]}
+                {:class :shaman
+                 :spec :restoration
+                 :phase 1
+                 :kind :bis
+                 :rank 6
+                 :slot :head
+                 :item {:id 30728 :name "Fathom-Helm of the Deeps"}
+                 :sources [{:instance :world-boss}]}
+                {:class :shaman
+                 :spec :restoration
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 7
+                 :slot :head
+                 :item {:id 24264 :name "Whitemend Hood"}
+                 :sources [{:instance :unknown}]}
+                {:class :shaman
+                 :spec :restoration
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 8
+                 :slot :head
+                 :item {:id 29508 :name "Living Dragonscale Helm"}
+                 :sources [{:instance :unknown}]}
+                {:class :shaman
+                 :spec :restoration
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 9
+                 :slot :head
+                 :item {:id 27759 :name "Headdress of the Tides"}
+                 :sources [{:instance :unknown}]}
+                {:class :shaman
+                 :spec :restoration
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 10
+                 :slot :head
+                 :item {:id 29174 :name "Watcher's Cowl"}
+                 :sources [{:instance :unknown}]}
+                {:class :shaman
+                 :spec :restoration
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 7
+                 :slot :legs
+                 :item {:id 28751 :name "Heart-Flame Leggings"}
+                 :sources [{:instance :unknown}]}
+                {:class :shaman
+                 :spec :restoration
+                 :phase 1
+                 :kind :bis
+                 :rank 8
+                 :slot :legs
+                 :item {:id 28591 :name "Earthsoul Leggings"}
+                 :sources [{:instance :raid}]}
+                {:class :shaman
+                 :spec :restoration
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 9
+                 :slot :legs
+                 :item {:id 24261 :name "Whitemend Pants"}
+                 :sources [{:instance :unknown}]}
+                {:class :shaman
+                 :spec :restoration
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 10
+                 :slot :legs
+                 :item {:id 30543 :name "Pontifex Kilt"}
+                 :sources [{:instance :unknown}]}
+                {:class :shaman
+                 :spec :restoration
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 11
+                 :slot :legs
+                 :item {:id 31343 :name "Kamaei's Cerulean Skirt"}
+                 :sources [{:instance :unknown}]}
+                {:class :shaman
+                 :spec :restoration
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 12
+                 :slot :legs
+                 :item {:id 27875 :name "Hallowed Trousers"}
+                 :sources [{:instance :unknown}]}
+                {:class :shaman
+                 :spec :restoration
+                 :phase 1
+                 :kind :bis
+                 :rank 6
+                 :slot :main-hand
+                 :item {:id 28771 :name "Light's Justice"}
+                 :sources [{:instance :raid}]}
+                {:class :shaman
+                 :spec :restoration
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 7
+                 :slot :main-hand
+                 :item {:id 32451 :name "Gladiator's Salvation"}
+                 :sources [{:instance :unknown}]}
+                {:class :shaman
+                 :spec :restoration
+                 :phase 1
+                 :kind :bis
+                 :rank 8
+                 :slot :main-hand
+                 :item {:id 28522 :name "Shard of the Virtuous"}
+                 :sources [{:instance :raid}]}
+                {:class :shaman
+                 :spec :restoration
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 9
+                 :slot :main-hand
+                 :item {:id 23556 :name "Hand of Eternity"}
+                 :sources [{:instance :unknown}]}
+                {:class :shaman
+                 :spec :restoration
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 10
+                 :slot :main-hand
+                 :item {:id 29353 :name "Shockwave Truncheon"}
+                 :sources [{:instance :unknown}]}
+                {:class :shaman
+                 :spec :restoration
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 11
+                 :slot :main-hand
+                 :item {:id 31342 :name "The Ancient Scepter of Sue-Min"}
+                 :sources [{:instance :unknown}]}
+                {:class :shaman
+                 :spec :restoration
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 12
+                 :slot :main-hand
+                 :item {:id 29175 :name "Gavel of Pure Light"}
+                 :sources [{:instance :unknown}]}
+                {:class :shaman
+                 :spec :restoration
+                 :phase 1
+                 :kind :bis
+                 :rank 4
+                 :slot :neck
+                 :item {:id 28609 :name "Emberspur Talisman"}
+                 :sources [{:instance :raid}]}
+                {:class :shaman
+                 :spec :restoration
+                 :phase 1
+                 :kind :bis
+                 :rank 5
+                 :slot :neck
+                 :item {:id 30726 :name "Archaic Charm of Presence"}
+                 :sources [{:instance :world-boss}]}
+                {:class :shaman
+                 :spec :restoration
+                 :phase 1
+                 :kind :bis
+                 :rank 6
+                 :slot :neck
+                 :item {:id 28822 :name "Teeth of Gruul"}
+                 :sources [{:instance :raid}]}
+                {:class :shaman
+                 :spec :restoration
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 7
+                 :slot :neck
+                 :item {:id 31691 :name "Natasha's Guardian Cord"}
+                 :sources [{:instance :unknown}]}
+                {:class :shaman
+                 :spec :restoration
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 8
+                 :slot :neck
+                 :item {:id 32531 :name "Gezzarak's Fang"}
+                 :sources [{:instance :unknown}]}
+                {:class :shaman
+                 :spec :restoration
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 9
+                 :slot :neck
+                 :item {:id 28233 :name "Necklace of Resplendent Hope"}
+                 :sources [{:instance :unknown}]}
+                {:class :shaman
+                 :spec :restoration
+                 :phase 1
+                 :kind :bis
+                 :rank 10
+                 :slot :neck
+                 :item {:id 29374 :name "Necklace of Eternal Hope"}
+                 :sources [{:instance :unknown}]}
+                {:class :shaman
+                 :spec :restoration
+                 :phase 1
+                 :kind :bis
+                 :rank 3
+                 :slot :off-hand
+                 :item {:id 29458 :name "Aegis of the Vindicator"}
+                 :sources [{:instance :raid}]}
+                {:class :shaman
+                 :spec :restoration
+                 :phase 1
+                 :kind :bis
+                 :rank 6
+                 :slot :off-hand
+                 :item {:id 29274 :name "Tears of Heaven"}
+                 :sources [{:instance :unknown}]}
+                {:class :shaman
+                 :spec :restoration
+                 :phase 1
+                 :kind :bis
+                 :rank 8
+                 :slot :off-hand
+                 :item {:id 28728 :name "Aran's Soothing Sapphire"}
+                 :sources [{:instance :raid}]}
+                {:class :shaman
+                 :spec :restoration
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 9
+                 :slot :off-hand
+                 :item {:id 28754 :name "Triptych Shield of the Ancients"}
+                 :sources [{:instance :unknown}]}
+                {:class :shaman
+                 :spec :restoration
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 10
+                 :slot :off-hand
+                 :item {:id 22819 :name "Shield of Condemnation"}
+                 :sources [{:instance :unknown}]}
+                {:class :shaman
+                 :spec :restoration
+                 :phase 1
+                 :kind :bis
+                 :rank 11
+                 :slot :off-hand
+                 :item {:id 29267 :name "Light-Bearer's Faith Shield"}
+                 :sources [{:instance :unknown}]}
+                {:class :shaman
+                 :spec :restoration
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 12
+                 :slot :off-hand
+                 :item {:id 27477 :name "Faol's Signet of Cleansing"}
+                 :sources [{:instance :unknown}]}
+                {:class :shaman
+                 :spec :restoration
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 13
+                 :slot :off-hand
+                 :item {:id 27772 :name "Stormshield of Renewal"}
+                 :sources [{:instance :unknown}]}
+                {:class :shaman
+                 :spec :restoration
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 14
+                 :slot :off-hand
+                 :item {:id 31292 :name "Crystal Pulse Shield"}
+                 :sources [{:instance :unknown}]}
+                {:class :shaman
+                 :spec :restoration
+                 :phase 1
+                 :kind :bis
+                 :rank 1
                  :slot :ranged
                  :item {:id 28523 :name "Totem of Healing Rains"}
                  :sources [{:instance :raid}]}
                 {:class :shaman
                  :spec :restoration
                  :phase 1
+                 :kind :pre-raid
+                 :rank 2
                  :slot :ranged
                  :item {:id 27544 :name "Totem of Spontaneous Regrowth"}
                  :sources [{:instance :unknown}]}
                 {:class :shaman
                  :spec :restoration
                  :phase 1
+                 :kind :pre-raid
+                 :rank 3
+                 :slot :ranged
+                 :item {:id 22396 :name "Totem of Life"}
+                 :sources [{:instance :unknown}]}
+                {:class :shaman
+                 :spec :restoration
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 4
+                 :slot :ranged
+                 :item {:id 25645 :name "Totem of the Plains"}
+                 :sources [{:instance :unknown}]}
+                {:class :shaman
+                 :spec :restoration
+                 :phase 1
+                 :kind :bis
+                 :rank 5
+                 :slot :ring1
+                 :item {:id 28790 :name "Naaru Lightwarden's Band"}
+                 :sources [{:instance :raid}]}
+                {:class :shaman
+                 :spec :restoration
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 8
+                 :slot :ring1
+                 :item {:id 28259 :name "Cosmic Lifeband"}
+                 :sources [{:instance :unknown}]}
+                {:class :shaman
+                 :spec :restoration
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 10
+                 :slot :ring1
+                 :item {:id 31923 :name "Band of the Crystalline Void"}
+                 :sources [{:instance :unknown}]}
+                {:class :shaman
+                 :spec :restoration
+                 :phase 1
+                 :kind :bis
+                 :rank 13
+                 :slot :ring1
+                 :item {:id 29373 :name "Band of Halos"}
+                 :sources [{:instance :unknown}]}
+                {:class :shaman
+                 :spec :restoration
+                 :phase 1
+                 :kind :bis
+                 :rank 6
+                 :slot :ring2
+                 :item {:id 28763 :name "Jade Ring of the Everliving"}
+                 :sources [{:instance :raid}]}
+                {:class :shaman
+                 :spec :restoration
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 9
+                 :slot :ring2
+                 :item {:id 29814 :name "Celestial Jewel Ring"}
+                 :sources [{:instance :unknown}]}
+                {:class :shaman
+                 :spec :restoration
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 12
+                 :slot :ring2
+                 :item {:id 32535 :name "Gift of the Talonpriests"}
+                 :sources [{:instance :unknown}]}
+                {:class :shaman
+                 :spec :restoration
+                 :phase 1
+                 :kind :bis
+                 :rank 5
+                 :slot :shoulder
+                 :item {:id 29031 :name "Cyclone Shoulderpads"}
+                 :sources [{:instance :raid}]}
+                {:class :shaman
+                 :spec :restoration
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 6
+                 :slot :shoulder
+                 :item {:id 21874 :name "Primal Mooncloth Shoulders"}
+                 :sources [{:instance :unknown}]}
+                {:class :shaman
+                 :spec :restoration
+                 :phase 1
+                 :kind :bis
+                 :rank 7
+                 :slot :shoulder
+                 :item {:id 28631 :name "Dragon-Quake Shoulderguards"}
+                 :sources [{:instance :raid}]}
+                {:class :shaman
+                 :spec :restoration
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 8
+                 :slot :shoulder
+                 :item {:id 27826 :name "Mantle of the Sea Wolf"}
+                 :sources [{:instance :unknown}]}
+                {:class :shaman
+                 :spec :restoration
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 9
+                 :slot :shoulder
+                 :item {:id 27775 :name "Hallowed Pauldrons"}
+                 :sources [{:instance :unknown}]}
+                {:class :shaman
+                 :spec :restoration
+                 :phase 1
+                 :kind :bis
+                 :rank 2
                  :slot :trinket1
                  :item {:id 29376 :name "Essence of the Martyr"}
                  :sources [{:instance :unknown}]}
                 {:class :shaman
                  :spec :restoration
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 4
+                 :slot :trinket1
+                 :item {:id 28190 :name "Scarab of the Infinite Cycle"}
+                 :sources [{:instance :unknown}]}
+                {:class :shaman
+                 :spec :restoration
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 6
+                 :slot :trinket1
+                 :item {:id 30841 :name "Lower City Prayerbook"}
+                 :sources [{:instance :unknown}]}
+                {:class :shaman
+                 :spec :restoration
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 8
+                 :slot :trinket1
+                 :item {:id 23047 :name "Eye of the Dead"}
+                 :sources [{:instance :unknown}]}
+                {:class :shaman
+                 :spec :restoration
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 10
+                 :slot :trinket1
+                 :item {:id 24390 :name "Auslese's Light Channeler"}
+                 :sources [{:instance :unknown}]}
+                {:class :shaman
+                 :spec :restoration
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 3
+                 :slot :trinket2
+                 :item {:id 38288 :name "Direbrew Hops"}
+                 :sources [{:instance :unknown}]}
+                {:class :shaman
+                 :spec :restoration
+                 :phase 1
+                 :kind :bis
+                 :rank 5
+                 :slot :trinket2
+                 :item {:id 28590 :name "Ribbon of Sacrifice"}
+                 :sources [{:instance :raid}]}
+                {:class :shaman
+                 :spec :restoration
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 7
+                 :slot :trinket2
+                 :item {:id 21625 :name "Scarab Brooch"}
+                 :sources [{:instance :unknown}]}
+                {:class :shaman
+                 :spec :restoration
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 9
+                 :slot :trinket2
+                 :item {:id 19395 :name "Rejuvenating Gem"}
+                 :sources [{:instance :unknown}]}
+                {:class :shaman
+                 :spec :restoration
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 11
+                 :slot :trinket2
+                 :item {:id 25634 :name "Oshu'gun Relic"}
+                 :sources [{:instance :unknown}]}
+                {:class :shaman
+                 :spec :restoration
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 5
+                 :slot :waist
+                 :item {:id 29524 :name "Windhawk Belt"}
+                 :sources [{:instance :unknown}]}
+                {:class :shaman
+                 :spec :restoration
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 6
+                 :slot :waist
+                 :item {:id 21873 :name "Primal Mooncloth Belt"}
+                 :sources [{:instance :unknown}]}
+                {:class :shaman
+                 :spec :restoration
+                 :phase 1
+                 :kind :bis
+                 :rank 7
+                 :slot :waist
+                 :item {:id 28567 :name "Belt of Gale Force"}
+                 :sources [{:instance :raid}]}
+                {:class :shaman
+                 :spec :restoration
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 8
+                 :slot :waist
+                 :item {:id 29250 :name "Cord of Sanctification"}
+                 :sources [{:instance :unknown}]}
+                {:class :shaman
+                 :spec :restoration
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 7
+                 :slot :wrist
+                 :item {:id 29523 :name "Windhawk Bracers"}
+                 :sources [{:instance :unknown}]}
+                {:class :shaman
+                 :spec :restoration
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 8
+                 :slot :wrist
+                 :item {:id 29183 :name "Bindings of the Timewalker"}
+                 :sources [{:instance :unknown}]}
+                {:class :shaman
+                 :spec :restoration
+                 :phase 1
+                 :kind :bis
+                 :rank 9
+                 :slot :wrist
+                 :item {:id 28503 :name "Whirlwind Bracers"}
+                 :sources [{:instance :raid}]}
+                {:class :shaman
+                 :spec :restoration
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 10
+                 :slot :wrist
+                 :item {:id 28194 :name "Primal Surge Bracers"}
+                 :sources [{:instance :unknown}]}
+                {:class :shaman
+                 :spec :restoration
                  :phase 2
+                 :kind :bis
+                 :rank 3
+                 :slot :back
+                 :item {:id 29989 :name "Sunshower Light Cloak"}
+                 :sources [{:instance :raid}]}
+                {:class :shaman
+                 :spec :restoration
+                 :phase 2
+                 :kind :bis
+                 :rank 2
                  :slot :chest
                  :item {:id 30164 :name "Cataclysm Chestguard"}
                  :sources [{:instance :raid}]}
                 {:class :shaman
                  :spec :restoration
                  :phase 2
+                 :kind :bis
+                 :rank 4
+                 :slot :chest
+                 :item {:id 29921 :name "Fire Crest Breastplate"}
+                 :sources [{:instance :raid}]}
+                {:class :shaman
+                 :spec :restoration
+                 :phase 2
+                 :kind :bis
+                 :rank 4
+                 :slot :feet
+                 :item {:id 30092 :name "Orca-Hide Boots"}
+                 :sources [{:instance :raid}]}
+                {:class :shaman
+                 :spec :restoration
+                 :phase 2
+                 :kind :bis
+                 :rank 6
+                 :slot :feet
+                 :item {:id 30066 :name "Tempest-Strider Boots"}
+                 :sources [{:instance :raid}]}
+                {:class :shaman
+                 :spec :restoration
+                 :phase 2
+                 :kind :bis
+                 :rank 3
+                 :slot :hands
+                 :item {:id 29976 :name "Worldstorm Gauntlets"}
+                 :sources [{:instance :raid}]}
+                {:class :shaman
+                 :spec :restoration
+                 :phase 2
+                 :kind :bis
+                 :rank 5
+                 :slot :hands
+                 :item {:id 30165 :name "Cataclysm Gloves"}
+                 :sources [{:instance :raid}]}
+                {:class :shaman
+                 :spec :restoration
+                 :phase 2
+                 :kind :bis
+                 :rank 3
+                 :slot :head
+                 :item {:id 30166 :name "Cataclysm Headguard"}
+                 :sources [{:instance :raid}]}
+                {:class :shaman
+                 :spec :restoration
+                 :phase 2
+                 :kind :pre-raid
+                 :rank 4
+                 :slot :head
+                 :item {:id 32475 :name "Living Replicator Specs"}
+                 :sources [{:instance :unknown}]}
+                {:class :shaman
+                 :spec :restoration
+                 :phase 2
+                 :kind :bis
+                 :rank 5
+                 :slot :legs
+                 :item {:id 29991 :name "Sunhawk Leggings"}
+                 :sources [{:instance :raid}]}
+                {:class :shaman
+                 :spec :restoration
+                 :phase 2
+                 :kind :bis
+                 :rank 6
+                 :slot :legs
+                 :item {:id 30167 :name "Cataclysm Legguards"}
+                 :sources [{:instance :raid}]}
+                {:class :shaman
+                 :spec :restoration
+                 :phase 2
+                 :kind :bis
+                 :rank 4
+                 :slot :main-hand
+                 :item {:id 30108 :name "Lightfathom Scepter"}
+                 :sources [{:instance :raid}]}
+                {:class :shaman
+                 :spec :restoration
+                 :phase 2
+                 :kind :pre-raid
+                 :rank 5
+                 :slot :main-hand
+                 :item {:id 32964 :name "Merciless Gladiator's Salvation"}
+                 :sources [{:instance :unknown}]}
+                {:class :shaman
+                 :spec :restoration
+                 :phase 2
+                 :kind :bis
+                 :rank 2
                  :slot :neck
                  :item {:id 30018 :name "Lord Sanguinar's Claim"}
                  :sources [{:instance :raid}]}
                 {:class :shaman
                  :spec :restoration
+                 :phase 2
+                 :kind :pre-raid
+                 :rank 5
+                 :slot :off-hand
+                 :item {:id 33309 :name "Merciless Gladiator's Redoubt"}
+                 :sources [{:instance :unknown}]}
+                {:class :shaman
+                 :spec :restoration
+                 :phase 2
+                 :kind :bis
+                 :rank 7
+                 :slot :off-hand
+                 :item {:id 29923 :name "Talisman of the Sun King"}
+                 :sources [{:instance :raid}]}
+                {:class :shaman
+                 :spec :restoration
+                 :phase 2
+                 :kind :bis
+                 :rank 4
+                 :slot :ring1
+                 :item {:id 29920 :name "Phoenix-Ring of Rebirth"}
+                 :sources [{:instance :raid}]}
+                {:class :shaman
+                 :spec :restoration
+                 :phase 2
+                 :kind :pre-raid
+                 :rank 11
+                 :slot :ring1
+                 :item {:id 29307 :name "Band of Eternity"}
+                 :sources [{:instance :unknown}]}
+                {:class :shaman
+                 :spec :restoration
+                 :phase 2
+                 :kind :bis
+                 :rank 7
+                 :slot :ring2
+                 :item {:id 30110 :name "Coral Band of the Revived"}
+                 :sources [{:instance :raid}]}
+                {:class :shaman
+                 :spec :restoration
+                 :phase 2
+                 :kind :bis
+                 :rank 3
+                 :slot :shoulder
+                 :item {:id 30168 :name "Cataclysm Shoulderguards"}
+                 :sources [{:instance :raid}]}
+                {:class :shaman
+                 :spec :restoration
+                 :phase 2
+                 :kind :bis
+                 :rank 4
+                 :slot :shoulder
+                 :item {:id 30097 :name "Coral-Barbed Shoulderpads"}
+                 :sources [{:instance :raid}]}
+                {:class :shaman
+                 :spec :restoration
+                 :phase 2
+                 :kind :bis
+                 :rank 4
+                 :slot :waist
+                 :item {:id 30030 :name "Girdle of Fallen Stars"}
+                 :sources [{:instance :raid}]}
+                {:class :shaman
+                 :spec :restoration
+                 :phase 2
+                 :kind :bis
+                 :rank 5
+                 :slot :wrist
+                 :item {:id 30047 :name "Blackfathom Warbands"}
+                 :sources [{:instance :raid}]}
+                {:class :shaman
+                 :spec :restoration
+                 :phase 2
+                 :kind :bis
+                 :rank 6
+                 :slot :wrist
+                 :item {:id 32516 :name "Wraps of Purification"}
+                 :sources [{:instance :raid}]}
+                {:class :shaman
+                 :spec :restoration
                  :phase 3
+                 :kind :bis
+                 :rank 1
                  :slot :back
                  :item {:id 32524 :name "Shroud of the Highborne"}
                  :sources [{:instance :raid}]}
                 {:class :shaman
                  :spec :restoration
                  :phase 3
+                 :kind :bis
+                 :rank 2
                  :slot :back
                  :item {:id 34012 :name "Shroud of the Final Stand"}
                  :sources [{:instance :raid}]}
                 {:class :shaman
                  :spec :restoration
                  :phase 3
+                 :kind :bis
+                 :rank 1
                  :slot :chest
                  :item {:id 31016 :name "Skyshatter Chestguard"}
                  :sources [{:instance :raid}]}
                 {:class :shaman
                  :spec :restoration
                  :phase 3
+                 :kind :bis
+                 :rank 3
+                 :slot :chest
+                 :item {:id 30887 :name "Golden Links of Restoration"}
+                 :sources [{:instance :raid}]}
+                {:class :shaman
+                 :spec :restoration
+                 :phase 3
+                 :kind :bis
+                 :rank 1
                  :slot :feet
                  :item {:id 30873 :name "Stillwater Boots"}
                  :sources [{:instance :raid}]}
                 {:class :shaman
                  :spec :restoration
                  :phase 3
+                 :kind :bis
+                 :rank 2
                  :slot :feet
                  :item {:id 32609 :name "Boots of the Divine Light"}
                  :sources [{:instance :raid}]}
                 {:class :shaman
                  :spec :restoration
                  :phase 3
+                 :kind :bis
+                 :rank 1
                  :slot :hands
                  :item {:id 32328 :name "Botanist's Gloves of Growth"}
                  :sources [{:instance :raid}]}
                 {:class :shaman
                  :spec :restoration
                  :phase 3
+                 :kind :bis
+                 :rank 2
                  :slot :hands
                  :item {:id 32275 :name "Spiritwalker Gauntlets"}
                  :sources [{:instance :raid}]}
                 {:class :shaman
                  :spec :restoration
                  :phase 3
+                 :kind :bis
+                 :rank 4
+                 :slot :hands
+                 :item {:id 31007 :name "Skyshatter Gloves"}
+                 :sources [{:instance :raid}]}
+                {:class :shaman
+                 :spec :restoration
+                 :phase 3
+                 :kind :bis
+                 :rank 1
                  :slot :head
                  :item {:id 31012 :name "Skyshatter Helmet"}
                  :sources [{:instance :raid}]}
                 {:class :shaman
                  :spec :restoration
                  :phase 3
+                 :kind :bis
+                 :rank 2
                  :slot :head
                  :item {:id 32241 :name "Helm of Soothing Currents"}
                  :sources [{:instance :raid}]}
                 {:class :shaman
                  :spec :restoration
                  :phase 3
+                 :kind :bis
+                 :rank 1
                  :slot :legs
                  :item {:id 31019 :name "Skyshatter Leggings"}
                  :sources [{:instance :raid}]}
                 {:class :shaman
                  :spec :restoration
                  :phase 3
+                 :kind :bis
+                 :rank 2
                  :slot :legs
                  :item {:id 30912 :name "Leggings of Eternity"}
                  :sources [{:instance :raid}]}
                 {:class :shaman
                  :spec :restoration
                  :phase 3
+                 :kind :bis
+                 :rank 3
+                 :slot :legs
+                 :item {:id 32271 :name "Kilt of Immortal Nature"}
+                 :sources [{:instance :raid}]}
+                {:class :shaman
+                 :spec :restoration
+                 :phase 3
+                 :kind :bis
+                 :rank 4
+                 :slot :legs
+                 :item {:id 30893 :name "Sun-touched Chain Leggings"}
+                 :sources [{:instance :raid}]}
+                {:class :shaman
+                 :spec :restoration
+                 :phase 3
+                 :kind :bis
+                 :rank 1
                  :slot :main-hand
                  :item {:id 32500 :name "Crystal Spire of Karabor"}
                  :sources [{:instance :raid}]}
                 {:class :shaman
                  :spec :restoration
                  :phase 3
+                 :kind :pre-raid
+                 :rank 2
                  :slot :main-hand
                  :item {:id 33743 :name "Vengeful Gladiator's Salvation"}
                  :sources [{:instance :unknown}]}
                 {:class :shaman
                  :spec :restoration
                  :phase 3
+                 :kind :bis
+                 :rank 3
+                 :slot :main-hand
+                 :item {:id 30918 :name "Hammer of Atonement"}
+                 :sources [{:instance :raid}]}
+                {:class :shaman
+                 :spec :restoration
+                 :phase 3
+                 :kind :bis
+                 :rank 1
                  :slot :neck
                  :item {:id 32370 :name "Nadina's Pendant of Purity"}
                  :sources [{:instance :raid}]}
                 {:class :shaman
                  :spec :restoration
                  :phase 3
+                 :kind :bis
+                 :rank 3
+                 :slot :neck
+                 :item {:id 33922 :name "Vindicator's Pendant of Salvation"}
+                 :sources [{:instance :unknown}]}
+                {:class :shaman
+                 :spec :restoration
+                 :phase 3
+                 :kind :bis
+                 :rank 1
                  :slot :off-hand
                  :item {:id 30882 :name "Bastion of Light"}
                  :sources [{:instance :raid}]}
                 {:class :shaman
                  :spec :restoration
                  :phase 3
+                 :kind :bis
+                 :rank 2
                  :slot :off-hand
                  :item {:id 32255 :name "Felstone Bulwark"}
                  :sources [{:instance :raid}]}
                 {:class :shaman
                  :spec :restoration
                  :phase 3
+                 :kind :pre-raid
+                 :rank 4
+                 :slot :off-hand
+                 :item {:id 33735 :name "Vengeful Gladiator's Redoubt"}
+                 :sources [{:instance :unknown}]}
+                {:class :shaman
+                 :spec :restoration
+                 :phase 3
+                 :kind :bis
+                 :rank 1
                  :slot :ring1
                  :item {:id 32528 :name "Blessed Band of Karabor"}
                  :sources [{:instance :raid}]}
                 {:class :shaman
                  :spec :restoration
                  :phase 3
+                 :kind :bis
+                 :rank 3
+                 :slot :ring1
+                 :item {:id 32238 :name "Ring of Calming Waves"}
+                 :sources [{:instance :raid}]}
+                {:class :shaman
+                 :spec :restoration
+                 :phase 3
+                 :kind :bis
+                 :rank 2
                  :slot :ring2
                  :item {:id 29309 :name "Band of the Eternal Restorer"}
                  :sources [{:instance :raid}]}
                 {:class :shaman
                  :spec :restoration
                  :phase 3
+                 :kind :bis
+                 :rank 1
                  :slot :shoulder
                  :item {:id 31022 :name "Skyshatter Shoulderpads"}
                  :sources [{:instance :raid}]}
                 {:class :shaman
                  :spec :restoration
                  :phase 3
+                 :kind :pre-raid
+                 :rank 2
                  :slot :shoulder
                  :item {:id 32579 :name "Living Earth Shoulders"}
                  :sources [{:instance :unknown}]}
                 {:class :shaman
                  :spec :restoration
                  :phase 3
+                 :kind :bis
+                 :rank 1
                  :slot :trinket1
                  :item {:id 32496 :name "Memento of Tyrande"}
                  :sources [{:instance :raid}]}
                 {:class :shaman
                  :spec :restoration
                  :phase 3
+                 :kind :bis
+                 :rank 1
                  :slot :waist
                  :item {:id 32258 :name "Naturalist's Preserving Cinch"}
                  :sources [{:instance :raid}]}
                 {:class :shaman
                  :spec :restoration
                  :phase 3
+                 :kind :bis
+                 :rank 2
                  :slot :waist
                  :item {:id 32339 :name "Belt of Primal Majesty"}
                  :sources [{:instance :raid}]}
                 {:class :shaman
                  :spec :restoration
                  :phase 3
+                 :kind :bis
+                 :rank 3
+                 :slot :waist
+                 :item {:id 30895 :name "Angelista's Sash"}
+                 :sources [{:instance :raid}]}
+                {:class :shaman
+                 :spec :restoration
+                 :phase 3
+                 :kind :pre-raid
+                 :rank 1
                  :slot :wrist
                  :item {:id 32577 :name "Living Earth Bindings"}
                  :sources [{:instance :unknown}]}
                 {:class :shaman
                  :spec :restoration
                  :phase 3
+                 :kind :pre-raid
+                 :rank 2
                  :slot :wrist
                  :item {:id 32584 :name "Swiftheal Wraps"}
-                 :sources [{:instance :unknown}]}])
+                 :sources [{:instance :unknown}]}
+                {:class :shaman
+                 :spec :restoration
+                 :phase 3
+                 :kind :pre-raid
+                 :rank 3
+                 :slot :wrist
+                 :item {:id 32582 :name "Bracers of Renewed Life"}
+                 :sources [{:instance :unknown}]}
+                {:class :shaman
+                 :spec :restoration
+                 :phase 3
+                 :kind :bis
+                 :rank 4
+                 :slot :wrist
+                 :item {:id 30869 :name "Howling Wind Bracers"}
+                 :sources [{:instance :raid}]}])
 
 (tset by-spec :shaman-restoration entries)
 

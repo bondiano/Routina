@@ -14,183 +14,1259 @@
 (local entries [{:class :rogue
                  :spec :any
                  :phase 1
+                 :kind :bis
+                 :rank 3
+                 :slot :back
+                 :item {:id 28672 :name "Drape of the Dark Reavers"}
+                 :sources [{:instance :raid}]}
+                {:class :rogue
+                 :spec :any
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 4
+                 :slot :back
+                 :item {:id 24259 :name "Vengeance Wrap"}
+                 :sources [{:instance :unknown}]}
+                {:class :rogue
+                 :spec :any
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 5
+                 :slot :back
+                 :item {:id 27878 :name "Auchenai Death Shroud"}
+                 :sources [{:instance :unknown}]}
+                {:class :rogue
+                 :spec :any
+                 :phase 1
+                 :kind :bis
+                 :rank 6
+                 :slot :back
+                 :item {:id 28777 :name "Cloak of the Pit Stalker"}
+                 :sources [{:instance :raid}]}
+                {:class :rogue
+                 :spec :any
+                 :phase 1
+                 :kind :bis
+                 :rank 7
+                 :slot :back
+                 :item {:id 29382 :name "Blood Knight War Cloak"}
+                 :sources [{:instance :unknown}]}
+                {:class :rogue
+                 :spec :any
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 8
+                 :slot :back
+                 :item {:id 28032 :name "Delicate Green Poncho"}
+                 :sources [{:instance :unknown}]}
+                {:class :rogue
+                 :spec :any
+                 :phase 1
+                 :kind :bis
+                 :rank 6
+                 :slot :chest
+                 :item {:id 30730 :name "Terrorweave Tunic"}
+                 :sources [{:instance :world-boss}]}
+                {:class :rogue
+                 :spec :any
+                 :phase 1
+                 :kind :bis
+                 :rank 7
+                 :slot :chest
+                 :item {:id 29045 :name "Netherblade Chestpiece"}
+                 :sources [{:instance :raid}]}
+                {:class :rogue
+                 :spec :any
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 8
+                 :slot :chest
+                 :item {:id 28264 :name "Wastewalker Tunic"}
+                 :sources [{:instance :unknown}]}
+                {:class :rogue
+                 :spec :any
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 9
+                 :slot :chest
+                 :item {:id 29525 :name "Primalstrike Vest"}
+                 :sources [{:instance :unknown}]}
+                {:class :rogue
+                 :spec :any
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 10
+                 :slot :chest
+                 :item {:id 30933 :name "Hauberk of Karabor"}
+                 :sources [{:instance :unknown}]}
+                {:class :rogue
+                 :spec :any
+                 :phase 1
+                 :kind :bis
+                 :rank 2
                  :slot :feet
                  :item {:id 28545 :name "Edgewalker Longboots"}
                  :sources [{:instance :raid}]}
                 {:class :rogue
                  :spec :any
                  :phase 1
+                 :kind :pre-raid
+                 :rank 4
+                 :slot :feet
+                 :item {:id 25686 :name "Fel Leather Boots"}
+                 :sources [{:instance :unknown}]}
+                {:class :rogue
+                 :spec :any
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 5
+                 :slot :feet
+                 :item {:id 30939 :name "Felboar Hide Shoes"}
+                 :sources [{:instance :unknown}]}
+                {:class :rogue
+                 :spec :any
+                 :phase 1
+                 :kind :bis
+                 :rank 5
+                 :slot :hands
+                 :item {:id 30644 :name "Grips of Deftness"}
+                 :sources [{:instance :raid}]}
+                {:class :rogue
+                 :spec :any
+                 :phase 1
+                 :kind :bis
+                 :rank 6
+                 :slot :hands
+                 :item {:id 29048 :name "Netherblade Gloves"}
+                 :sources [{:instance :raid}]}
+                {:class :rogue
+                 :spec :any
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 7
+                 :slot :hands
+                 :item {:id 27531 :name "Wastewalker Gloves"}
+                 :sources [{:instance :unknown}]}
+                {:class :rogue
+                 :spec :any
+                 :phase 1
+                 :kind :bis
+                 :rank 8
+                 :slot :hands
+                 :item {:id 28506 :name "Gloves of Dexterous Manipulation"}
+                 :sources [{:instance :raid}]}
+                {:class :rogue
+                 :spec :any
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 9
+                 :slot :hands
+                 :item {:id 25685 :name "Fel Leather Gloves"}
+                 :sources [{:instance :unknown}]}
+                {:class :rogue
+                 :spec :any
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 10
+                 :slot :hands
+                 :item {:id 30003 :name "Gloves of the Nether-Stalker"}
+                 :sources [{:instance :unknown}]}
+                {:class :rogue
+                 :spec :any
+                 :phase 1
+                 :kind :bis
+                 :rank 5
+                 :slot :head
+                 :item {:id 29044 :name "Netherblade Facemask"}
+                 :sources [{:instance :raid}]}
+                {:class :rogue
+                 :spec :any
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 6
+                 :slot :head
+                 :item {:id 28224 :name "Wastewalker Helm"}
+                 :sources [{:instance :unknown}]}
+                {:class :rogue
+                 :spec :any
+                 :phase 1
+                 :kind :bis
+                 :rank 7
+                 :slot :head
+                 :item {:id 28732 :name "Cowl of Defiance"}
+                 :sources [{:instance :raid}]}
+                {:class :rogue
+                 :spec :any
+                 :phase 1
+                 :kind :bis
+                 :rank 8
+                 :slot :head
+                 :item {:id 28796 :name "Malefic Mask of the Shadows"}
+                 :sources [{:instance :raid}]}
+                {:class :rogue
+                 :spec :any
+                 :phase 1
+                 :kind :bis
+                 :rank 9
+                 :slot :head
+                 :item {:id 32087 :name "Mask of the Deceiver"}
+                 :sources [{:instance :unknown}]}
+                {:class :rogue
+                 :spec :any
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 10
+                 :slot :head
+                 :item {:id 28182 :name "Helm of the Claw"}
+                 :sources [{:instance :unknown}]}
+                {:class :rogue
+                 :spec :any
+                 :phase 1
+                 :kind :bis
+                 :rank 3
+                 :slot :legs
+                 :item {:id 28741 :name "Skulker's Greaves"}
+                 :sources [{:instance :raid}]}
+                {:class :rogue
+                 :spec :any
+                 :phase 1
+                 :kind :bis
+                 :rank 6
+                 :slot :legs
+                 :item {:id 29046 :name "Netherblade Breeches"}
+                 :sources [{:instance :raid}]}
+                {:class :rogue
+                 :spec :any
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 7
+                 :slot :legs
+                 :item {:id 27837 :name "Wastewalker Leggings"}
+                 :sources [{:instance :unknown}]}
+                {:class :rogue
+                 :spec :any
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 8
+                 :slot :legs
+                 :item {:id 25687 :name "Fel Leather Leggings"}
+                 :sources [{:instance :unknown}]}
+                {:class :rogue
+                 :spec :any
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 9
+                 :slot :legs
+                 :item {:id 31544 :name "Clefthoof Hide Leggings"}
+                 :sources [{:instance :unknown}]}
+                {:class :rogue
+                 :spec :any
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 5
+                 :slot :main-hand
+                 :item {:id 28439 :name :Dragonstrike}
+                 :sources [{:instance :unknown}]}
+                {:class :rogue
+                 :spec :any
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 8
+                 :slot :main-hand
+                 :item {:id 28189 :name "Latro's Shifting Sword"}
+                 :sources [{:instance :unknown}]}
+                {:class :rogue
+                 :spec :any
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 11
+                 :slot :main-hand
+                 :item {:id 28438 :name :Dragonmaw}
+                 :sources [{:instance :unknown}]}
+                {:class :rogue
+                 :spec :any
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 12
+                 :slot :main-hand
+                 :item {:id 28295 :name "Gladiator's Slicer"}
+                 :sources [{:instance :unknown}]}
+                {:class :rogue
+                 :spec :any
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 15
+                 :slot :main-hand
+                 :item {:id 31332 :name :Blinkstrike}
+                 :sources [{:instance :unknown}]}
+                {:class :rogue
+                 :spec :any
+                 :phase 1
+                 :kind :bis
+                 :rank 16
+                 :slot :main-hand
+                 :item {:id 28729 :name :Spiteblade}
+                 :sources [{:instance :raid}]}
+                {:class :rogue
+                 :spec :any
+                 :phase 1
+                 :kind :bis
+                 :rank 17
+                 :slot :main-hand
+                 :item {:id 30733 :name "Hope Ender"}
+                 :sources [{:instance :world-boss}]}
+                {:class :rogue
+                 :spec :any
+                 :phase 1
+                 :kind :bis
+                 :rank 18
+                 :slot :main-hand
+                 :item {:id 28768 :name :Malchazeen}
+                 :sources [{:instance :raid}]}
+                {:class :rogue
+                 :spec :any
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 19
+                 :slot :main-hand
+                 :item {:id 28312 :name "Gladiator's Shanker"}
+                 :sources [{:instance :unknown}]}
+                {:class :rogue
+                 :spec :any
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 20
+                 :slot :main-hand
+                 :item {:id 29124 :name "Vindicator's Brand"}
+                 :sources [{:instance :unknown}]}
+                {:class :rogue
+                 :spec :any
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 21
+                 :slot :main-hand
+                 :item {:id 31331 :name "The Night Blade"}
+                 :sources [{:instance :unknown}]}
+                {:class :rogue
+                 :spec :any
+                 :phase 1
+                 :kind :bis
+                 :rank 3
+                 :slot :neck
+                 :item {:id 29381 :name "Choker of Vile Intent"}
+                 :sources [{:instance :unknown}]}
+                {:class :rogue
+                 :spec :any
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 4
+                 :slot :neck
+                 :item {:id 24114 :name "Braided Eternium Chain"}
+                 :sources [{:instance :unknown}]}
+                {:class :rogue
+                 :spec :any
+                 :phase 1
+                 :kind :bis
+                 :rank 6
+                 :slot :neck
+                 :item {:id 28509 :name "Worgen Claw Necklace"}
+                 :sources [{:instance :raid}]}
+                {:class :rogue
+                 :spec :any
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 7
+                 :slot :neck
+                 :item {:id 25562 :name "Earthen Mark of Razing"}
+                 :sources [{:instance :unknown}]}
+                {:class :rogue
+                 :spec :any
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 8
+                 :slot :neck
+                 :item {:id 19377 :name "Prestor's Talisman of Connivery"}
+                 :sources [{:instance :unknown}]}
+                {:class :rogue
+                 :spec :any
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 7
+                 :slot :off-hand
+                 :item {:id 28307 :name "Gladiator's Quickblade"}
+                 :sources [{:instance :unknown}]}
+                {:class :rogue
+                 :spec :any
+                 :phase 1
+                 :kind :bis
+                 :rank 10
+                 :slot :off-hand
+                 :item {:id 29275 :name "Searing Sunblade"}
+                 :sources [{:instance :unknown}]}
+                {:class :rogue
+                 :spec :any
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 11
+                 :slot :off-hand
+                 :item {:id 28310 :name "Gladiator's Shiv"}
+                 :sources [{:instance :unknown}]}
+                {:class :rogue
+                 :spec :any
+                 :phase 1
+                 :kind :bis
+                 :rank 3
+                 :slot :ranged
+                 :item {:id 30724 :name "Barrel-Blade Longrifle"}
+                 :sources [{:instance :world-boss}]}
+                {:class :rogue
+                 :spec :any
+                 :phase 1
+                 :kind :bis
+                 :rank 4
+                 :slot :ranged
+                 :item {:id 28772 :name "Sunfury Bow of the Phoenix"}
+                 :sources [{:instance :raid}]}
+                {:class :rogue
+                 :spec :any
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 5
+                 :slot :ranged
+                 :item {:id 30279 :name "Mama's Insurance"}
+                 :sources [{:instance :unknown}]}
+                {:class :rogue
+                 :spec :any
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 6
+                 :slot :ranged
+                 :item {:id 30227 :name "Mark V's Throwing Star"}
+                 :sources [{:instance :unknown}]}
+                {:class :rogue
+                 :spec :any
+                 :phase 1
+                 :kind :bis
+                 :rank 6
+                 :slot :ring1
+                 :item {:id 30738 :name "Ring of Reciprocity"}
+                 :sources [{:instance :world-boss}]}
+                {:class :rogue
+                 :spec :any
+                 :phase 1
+                 :kind :bis
+                 :rank 8
+                 :slot :ring1
+                 :item {:id 28649 :name "Garona's Signet Ring"}
+                 :sources [{:instance :raid}]}
+                {:class :rogue
+                 :spec :any
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 10
+                 :slot :ring1
+                 :item {:id 29283 :name "Violet Signet of the Master Assassin"}
+                 :sources [{:instance :unknown}]}
+                {:class :rogue
+                 :spec :any
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 12
+                 :slot :ring1
+                 :item {:id 30834 :name "Shapeshifter's Signet"}
+                 :sources [{:instance :unknown}]}
+                {:class :rogue
+                 :spec :any
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 14
+                 :slot :ring1
+                 :item {:id 30860 :name "Kaylaan's Signet"}
+                 :sources [{:instance :unknown}]}
+                {:class :rogue
+                 :spec :any
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 16
+                 :slot :ring1
+                 :item {:id 27925 :name "Ravenclaw Band"}
+                 :sources [{:instance :unknown}]}
+                {:class :rogue
+                 :spec :any
+                 :phase 1
+                 :kind :bis
+                 :rank 7
+                 :slot :ring2
+                 :item {:id 28757 :name "Ring of a Thousand Marks"}
+                 :sources [{:instance :raid}]}
+                {:class :rogue
+                 :spec :any
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 9
+                 :slot :ring2
+                 :item {:id 31920 :name "Shaffar's Band of Brutality"}
+                 :sources [{:instance :unknown}]}
+                {:class :rogue
+                 :spec :any
+                 :phase 1
+                 :kind :bis
+                 :rank 11
+                 :slot :ring2
+                 :item {:id 28791 :name "Ring of the Recalcitrant"}
+                 :sources [{:instance :raid}]}
+                {:class :rogue
+                 :spec :any
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 13
+                 :slot :ring2
+                 :item {:id 31077 :name "Slayer's Mark of the Redemption"}
+                 :sources [{:instance :unknown}]}
+                {:class :rogue
+                 :spec :any
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 15
+                 :slot :ring2
+                 :item {:id 30973 :name "Band of Anguish"}
+                 :sources [{:instance :unknown}]}
+                {:class :rogue
+                 :spec :any
+                 :phase 1
+                 :kind :bis
+                 :rank 7
+                 :slot :shoulder
+                 :item {:id 29047 :name "Netherblade Shoulderpads"}
+                 :sources [{:instance :raid}]}
+                {:class :rogue
+                 :spec :any
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 8
+                 :slot :shoulder
+                 :item {:id 27797 :name "Wastewalker Shoulderpads"}
+                 :sources [{:instance :unknown}]}
+                {:class :rogue
+                 :spec :any
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 9
+                 :slot :shoulder
+                 :item {:id 28755 :name "Bladed Shoulderpads of the Merciless"}
+                 :sources [{:instance :unknown}]}
+                {:class :rogue
+                 :spec :any
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 10
+                 :slot :shoulder
+                 :item {:id 25790 :name "Expedition Scout's Epaulets"}
+                 :sources [{:instance :unknown}]}
+                {:class :rogue
+                 :spec :any
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 11
+                 :slot :shoulder
+                 :item {:id 29148 :name "Blackened Leather Spaulders"}
+                 :sources [{:instance :unknown}]}
+                {:class :rogue
+                 :spec :any
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 12
+                 :slot :shoulder
+                 :item {:id 29147 :name "Talbuk Hide Spaulders"}
+                 :sources [{:instance :unknown}]}
+                {:class :rogue
+                 :spec :any
+                 :phase 1
+                 :kind :bis
+                 :rank 1
                  :slot :trinket1
                  :item {:id 28830 :name "Dragonspine Trophy"}
                  :sources [{:instance :raid}]}
                 {:class :rogue
                  :spec :any
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 6
+                 :slot :trinket1
+                 :item {:id 21670 :name "Badge of the Swarmguard"}
+                 :sources [{:instance :unknown}]}
+                {:class :rogue
+                 :spec :any
+                 :phase 1
+                 :kind :bis
+                 :rank 9
+                 :slot :trinket1
+                 :item {:id 28579 :name "Romulo's Poison Vial"}
+                 :sources [{:instance :raid}]}
+                {:class :rogue
+                 :spec :any
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 11
+                 :slot :trinket1
+                 :item {:id 22954 :name "Kiss of the Spider"}
+                 :sources [{:instance :unknown}]}
+                {:class :rogue
+                 :spec :any
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 13
+                 :slot :trinket1
+                 :item {:id 28034 :name "Hourglass of the Unraveller"}
+                 :sources [{:instance :unknown}]}
+                {:class :rogue
+                 :spec :any
+                 :phase 1
+                 :kind :bis
+                 :rank 5
+                 :slot :trinket2
+                 :item {:id 29383 :name "Bloodlust Brooch"}
+                 :sources [{:instance :unknown}]}
+                {:class :rogue
+                 :spec :any
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 8
+                 :slot :trinket2
+                 :item {:id 28288 :name "Abacus of Violent Odds"}
+                 :sources [{:instance :unknown}]}
+                {:class :rogue
+                 :spec :any
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 10
+                 :slot :trinket2
+                 :item {:id 23206 :name "Mark of the Champion"}
+                 :sources [{:instance :unknown}]}
+                {:class :rogue
+                 :spec :any
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 12
+                 :slot :trinket2
+                 :item {:id 23041 :name "Slayer's Crest"}
+                 :sources [{:instance :unknown}]}
+                {:class :rogue
+                 :spec :any
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 5
+                 :slot :waist
+                 :item {:id 29247 :name "Girdle of the Deathdealer"}
+                 :sources [{:instance :unknown}]}
+                {:class :rogue
+                 :spec :any
+                 :phase 1
+                 :kind :bis
+                 :rank 6
+                 :slot :waist
+                 :item {:id 28828 :name "Gronn-Stitched Girdle"}
+                 :sources [{:instance :raid}]}
+                {:class :rogue
+                 :spec :any
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 7
+                 :slot :waist
+                 :item {:id 28750 :name "Girdle of Treachery"}
+                 :sources [{:instance :unknown}]}
+                {:class :rogue
+                 :spec :any
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 8
+                 :slot :waist
+                 :item {:id 29526 :name "Primalstrike Belt"}
+                 :sources [{:instance :unknown}]}
+                {:class :rogue
+                 :spec :any
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 9
+                 :slot :waist
+                 :item {:id 30372 :name "Socrethar's Girdle"}
+                 :sources [{:instance :unknown}]}
+                {:class :rogue
+                 :spec :any
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 10
+                 :slot :waist
+                 :item {:id 31464 :name "Naaru Belt of Precision"}
+                 :sources [{:instance :unknown}]}
+                {:class :rogue
+                 :spec :any
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 6
+                 :slot :wrist
+                 :item {:id 29246 :name "Nightfall Wristguards"}
+                 :sources [{:instance :unknown}]}
+                {:class :rogue
+                 :spec :any
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 7
+                 :slot :wrist
+                 :item {:id 28171 :name "Spymistress's Wristguards"}
+                 :sources [{:instance :unknown}]}
+                {:class :rogue
+                 :spec :any
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 8
+                 :slot :wrist
+                 :item {:id 29527 :name "Primalstrike Bracers"}
+                 :sources [{:instance :unknown}]}
+                {:class :rogue
+                 :spec :any
                  :phase 2
+                 :kind :bis
+                 :rank 2
                  :slot :back
                  :item {:id 29994 :name "Thalassian Wildercloak"}
                  :sources [{:instance :raid}]}
                 {:class :rogue
                  :spec :any
                  :phase 2
+                 :kind :bis
+                 :rank 4
+                 :slot :chest
+                 :item {:id 30101 :name "Bloodsea Brigand's Vest"}
+                 :sources [{:instance :raid}]}
+                {:class :rogue
+                 :spec :any
+                 :phase 2
+                 :kind :bis
+                 :rank 5
+                 :slot :chest
+                 :item {:id 30144 :name "Deathmantle Chestguard"}
+                 :sources [{:instance :raid}]}
+                {:class :rogue
+                 :spec :any
+                 :phase 2
+                 :kind :pre-raid
+                 :rank 3
+                 :slot :feet
+                 :item {:id 30039 :name "Boots of Utter Darkness"}
+                 :sources [{:instance :unknown}]}
+                {:class :rogue
+                 :spec :any
+                 :phase 2
+                 :kind :bis
+                 :rank 3
+                 :slot :hands
+                 :item {:id 30145 :name "Deathmantle Handguards"}
+                 :sources [{:instance :raid}]}
+                {:class :rogue
+                 :spec :any
+                 :phase 2
+                 :kind :bis
+                 :rank 4
+                 :slot :hands
+                 :item {:id 29947 :name "Gloves of the Searing Grip"}
+                 :sources [{:instance :raid}]}
+                {:class :rogue
+                 :spec :any
+                 :phase 2
+                 :kind :bis
+                 :rank 3
+                 :slot :head
+                 :item {:id 30146 :name "Deathmantle Helm"}
+                 :sources [{:instance :raid}]}
+                {:class :rogue
+                 :spec :any
+                 :phase 2
+                 :kind :pre-raid
+                 :rank 4
+                 :slot :head
+                 :item {:id 32478 :name "Deathblow X11 Goggles"}
+                 :sources [{:instance :unknown}]}
+                {:class :rogue
+                 :spec :any
+                 :phase 2
+                 :kind :bis
+                 :rank 4
+                 :slot :legs
+                 :item {:id 30148 :name "Deathmantle Legguards"}
+                 :sources [{:instance :raid}]}
+                {:class :rogue
+                 :spec :any
+                 :phase 2
+                 :kind :bis
+                 :rank 5
+                 :slot :legs
+                 :item {:id 29995 :name "Leggings of Murderous Intent"}
+                 :sources [{:instance :raid}]}
+                {:class :rogue
+                 :spec :any
+                 :phase 2
+                 :kind :bis
+                 :rank 4
+                 :slot :main-hand
+                 :item {:id 30082 :name "Talon of Azshara"}
+                 :sources [{:instance :raid}]}
+                {:class :rogue
+                 :spec :any
+                 :phase 2
+                 :kind :pre-raid
+                 :rank 6
+                 :slot :main-hand
+                 :item {:id 32052 :name "Merciless Gladiator's Slicer"}
+                 :sources [{:instance :unknown}]}
+                {:class :rogue
+                 :spec :any
+                 :phase 2
+                 :kind :bis
+                 :rank 9
+                 :slot :main-hand
+                 :item {:id 32944 :name "Talon of the Phoenix"}
+                 :sources [{:instance :raid}]}
+                {:class :rogue
+                 :spec :any
+                 :phase 2
+                 :kind :bis
+                 :rank 10
+                 :slot :main-hand
+                 :item {:id 29996 :name "Rod of the Sun King"}
+                 :sources [{:instance :raid}]}
+                {:class :rogue
+                 :spec :any
+                 :phase 2
+                 :kind :bis
+                 :rank 13
+                 :slot :main-hand
+                 :item {:id 30103 :name "Fang of Vashj"}
+                 :sources [{:instance :raid}]}
+                {:class :rogue
+                 :spec :any
+                 :phase 2
+                 :kind :bis
+                 :rank 14
+                 :slot :main-hand
+                 :item {:id 29962 :name :Heartrazor}
+                 :sources [{:instance :raid}]}
+                {:class :rogue
+                 :spec :any
+                 :phase 2
+                 :kind :bis
+                 :rank 5
+                 :slot :neck
+                 :item {:id 30017 :name "Telonicus's Pendant of Mayhem"}
+                 :sources [{:instance :raid}]}
+                {:class :rogue
+                 :spec :any
+                 :phase 2
+                 :kind :pre-raid
+                 :rank 4
+                 :slot :off-hand
+                 :item {:id 32027 :name "Merciless Gladiator's Quickblade"}
+                 :sources [{:instance :unknown}]}
+                {:class :rogue
+                 :spec :any
+                 :phase 2
+                 :kind :pre-raid
+                 :rank 9
+                 :slot :off-hand
+                 :item {:id 32046 :name "Merciless Gladiator's Shiv"}
+                 :sources [{:instance :unknown}]}
+                {:class :rogue
+                 :spec :any
+                 :phase 2
+                 :kind :bis
+                 :rank 1
                  :slot :ranged
                  :item {:id 29949 :name "Arcanite Steam-Pistol"}
                  :sources [{:instance :raid}]}
                 {:class :rogue
                  :spec :any
                  :phase 2
+                 :kind :bis
+                 :rank 4
+                 :slot :ring1
+                 :item {:id 30052 :name "Ring of Lethality"}
+                 :sources [{:instance :raid}]}
+                {:class :rogue
+                 :spec :any
+                 :phase 2
+                 :kind :bis
+                 :rank 5
+                 :slot :ring2
+                 :item {:id 29997 :name "Band of the Ranger-General"}
+                 :sources [{:instance :raid}]}
+                {:class :rogue
+                 :spec :any
+                 :phase 2
+                 :kind :bis
+                 :rank 4
+                 :slot :shoulder
+                 :item {:id 30149 :name "Deathmantle Shoulderpads"}
+                 :sources [{:instance :raid}]}
+                {:class :rogue
+                 :spec :any
+                 :phase 2
+                 :kind :bis
+                 :rank 5
+                 :slot :shoulder
+                 :item {:id 30055 :name "Shoulderpads of the Stranger"}
+                 :sources [{:instance :raid}]}
+                {:class :rogue
+                 :spec :any
+                 :phase 2
+                 :kind :bis
+                 :rank 2
                  :slot :trinket1
                  :item {:id 30450 :name "Warp-Spring Coil"}
                  :sources [{:instance :raid}]}
                 {:class :rogue
                  :spec :any
                  :phase 2
+                 :kind :bis
+                 :rank 7
+                 :slot :trinket2
+                 :item {:id 30627 :name "Tsunami Talisman"}
+                 :sources [{:instance :raid}]}
+                {:class :rogue
+                 :spec :any
+                 :phase 2
+                 :kind :bis
+                 :rank 1
                  :slot :waist
                  :item {:id 30106 :name "Belt of One-Hundred Deaths"}
                  :sources [{:instance :raid}]}
                 {:class :rogue
                  :spec :any
+                 :phase 2
+                 :kind :pre-raid
+                 :rank 3
+                 :slot :waist
+                 :item {:id 30040 :name "Belt of Deep Shadow"}
+                 :sources [{:instance :unknown}]}
+                {:class :rogue
+                 :spec :any
+                 :phase 2
+                 :kind :bis
+                 :rank 4
+                 :slot :wrist
+                 :item {:id 29966 :name "Vambraces of Ending"}
+                 :sources [{:instance :raid}]}
+                {:class :rogue
+                 :spec :any
+                 :phase 2
+                 :kind :bis
+                 :rank 5
+                 :slot :wrist
+                 :item {:id 32647 :name "Shard-bound Bracers"}
+                 :sources [{:instance :unknown}]}
+                {:class :rogue
+                 :spec :any
                  :phase 3
+                 :kind :bis
+                 :rank 1
                  :slot :back
                  :item {:id 32323 :name "Shadowmoon Destroyer's Drape"}
                  :sources [{:instance :raid}]}
                 {:class :rogue
                  :spec :any
                  :phase 3
+                 :kind :bis
+                 :rank 1
                  :slot :chest
                  :item {:id 31028 :name "Slayer's Chestguard"}
                  :sources [{:instance :raid}]}
                 {:class :rogue
                  :spec :any
                  :phase 3
+                 :kind :bis
+                 :rank 2
                  :slot :chest
                  :item {:id 30905 :name "Midnight Chestguard"}
                  :sources [{:instance :raid}]}
                 {:class :rogue
                  :spec :any
                  :phase 3
+                 :kind :bis
+                 :rank 3
+                 :slot :chest
+                 :item {:id 32252 :name "Nether Shadow Tunic"}
+                 :sources [{:instance :raid}]}
+                {:class :rogue
+                 :spec :any
+                 :phase 3
+                 :kind :bis
+                 :rank 1
                  :slot :feet
                  :item {:id 32366 :name "Shadowmaster's Boots"}
                  :sources [{:instance :raid}]}
                 {:class :rogue
                  :spec :any
                  :phase 3
+                 :kind :bis
+                 :rank 1
                  :slot :hands
                  :item {:id 31026 :name "Slayer's Handguards"}
                  :sources [{:instance :raid}]}
                 {:class :rogue
                  :spec :any
                  :phase 3
+                 :kind :bis
+                 :rank 2
                  :slot :hands
                  :item {:id 32347 :name "Grips of Damnation"}
                  :sources [{:instance :raid}]}
                 {:class :rogue
                  :spec :any
                  :phase 3
+                 :kind :bis
+                 :rank 1
                  :slot :head
                  :item {:id 32235 :name "Cursed Vision of Sargeras"}
                  :sources [{:instance :raid}]}
                 {:class :rogue
                  :spec :any
                  :phase 3
+                 :kind :bis
+                 :rank 2
                  :slot :head
                  :item {:id 31027 :name "Slayer's Helm"}
                  :sources [{:instance :raid}]}
                 {:class :rogue
                  :spec :any
                  :phase 3
+                 :kind :bis
+                 :rank 1
                  :slot :legs
                  :item {:id 31029 :name "Slayer's Legguards"}
                  :sources [{:instance :raid}]}
                 {:class :rogue
                  :spec :any
                  :phase 3
+                 :kind :bis
+                 :rank 2
                  :slot :legs
                  :item {:id 30898 :name "Shady Dealer's Pantaloons"}
                  :sources [{:instance :raid}]}
                 {:class :rogue
                  :spec :any
                  :phase 3
+                 :kind :bis
+                 :rank 1
                  :slot :main-hand
                  :item {:id 32837 :name "Warglaive of Azzinoth"}
                  :sources [{:instance :raid}]}
                 {:class :rogue
                  :spec :any
                  :phase 3
+                 :kind :bis
+                 :rank 2
                  :slot :main-hand
                  :item {:id 32369 :name "Blade of Savagery"}
                  :sources [{:instance :raid}]}
                 {:class :rogue
                  :spec :any
                  :phase 3
+                 :kind :pre-raid
+                 :rank 2
                  :slot :main-hand
                  :item {:id 33762 :name "Vengeful Gladiator's Slicer"}
                  :sources [{:instance :unknown}]}
                 {:class :rogue
                  :spec :any
                  :phase 3
+                 :kind :bis
+                 :rank 3
+                 :slot :main-hand
+                 :item {:id 30881 :name "Blade of Infamy"}
+                 :sources [{:instance :raid}]}
+                {:class :rogue
+                 :spec :any
+                 :phase 3
+                 :kind :bis
+                 :rank 6
+                 :slot :main-hand
+                 :item {:id 30865 :name "Tracker's Blade"}
+                 :sources [{:instance :raid}]}
+                {:class :rogue
+                 :spec :any
+                 :phase 3
+                 :kind :bis
+                 :rank 7
+                 :slot :main-hand
+                 :item {:id 32471 :name "Shard of Azzinoth"}
+                 :sources [{:instance :raid}]}
+                {:class :rogue
+                 :spec :any
+                 :phase 3
+                 :kind :pre-raid
+                 :rank 8
+                 :slot :main-hand
+                 :item {:id 33754 :name "Vengeful Gladiator's Shanker"}
+                 :sources [{:instance :unknown}]}
+                {:class :rogue
+                 :spec :any
+                 :phase 3
+                 :kind :bis
+                 :rank 1
                  :slot :neck
                  :item {:id 32260 :name "Choker of Endless Nightmares"}
                  :sources [{:instance :raid}]}
                 {:class :rogue
                  :spec :any
                  :phase 3
+                 :kind :bis
+                 :rank 2
                  :slot :neck
                  :item {:id 32591 :name "Choker of Serrated Blades"}
                  :sources [{:instance :raid}]}
                 {:class :rogue
                  :spec :any
                  :phase 3
+                 :kind :bis
+                 :rank 1
                  :slot :off-hand
                  :item {:id 32838 :name "Warglaive of Azzinoth"}
                  :sources [{:instance :raid}]}
                 {:class :rogue
                  :spec :any
                  :phase 3
+                 :kind :pre-raid
+                 :rank 3
+                 :slot :off-hand
+                 :item {:id 33734 :name "Vengeful Gladiator's Quickblade"}
+                 :sources [{:instance :unknown}]}
+                {:class :rogue
+                 :spec :any
+                 :phase 3
+                 :kind :pre-raid
+                 :rank 5
+                 :slot :off-hand
+                 :item {:id 33756 :name "Vengeful Gladiator's Shiv"}
+                 :sources [{:instance :unknown}]}
+                {:class :rogue
+                 :spec :any
+                 :phase 3
+                 :kind :bis
+                 :rank 2
                  :slot :ranged
                  :item {:id 32326 :name "Twisted Blades of Zarak"}
                  :sources [{:instance :raid}]}
                 {:class :rogue
                  :spec :any
                  :phase 3
+                 :kind :bis
+                 :rank 1
                  :slot :ring1
                  :item {:id 32497 :name "Stormrage Signet Ring"}
                  :sources [{:instance :raid}]}
                 {:class :rogue
                  :spec :any
                  :phase 3
+                 :kind :bis
+                 :rank 3
+                 :slot :ring1
+                 :item {:id 32266 :name "Ring of Deceitful Intent"}
+                 :sources [{:instance :raid}]}
+                {:class :rogue
+                 :spec :any
+                 :phase 3
+                 :kind :bis
+                 :rank 2
                  :slot :ring2
                  :item {:id 29301 :name "Band of the Eternal Champion"}
                  :sources [{:instance :raid}]}
                 {:class :rogue
                  :spec :any
                  :phase 3
+                 :kind :bis
+                 :rank 1
                  :slot :shoulder
                  :item {:id 31030 :name "Slayer's Shoulderpads"}
                  :sources [{:instance :raid}]}
                 {:class :rogue
                  :spec :any
                  :phase 3
+                 :kind :pre-raid
+                 :rank 2
                  :slot :shoulder
                  :item {:id 32581 :name "Swiftstrike Shoulders"}
                  :sources [{:instance :unknown}]}
                 {:class :rogue
                  :spec :any
                  :phase 3
+                 :kind :bis
+                 :rank 3
+                 :slot :shoulder
+                 :item {:id 32377 :name "Mantle of Darkness"}
+                 :sources [{:instance :raid}]}
+                {:class :rogue
+                 :spec :any
+                 :phase 3
+                 :kind :bis
+                 :rank 6
+                 :slot :shoulder
+                 :item {:id 30917 :name "Razorfury Mantle"}
+                 :sources [{:instance :raid}]}
+                {:class :rogue
+                 :spec :any
+                 :phase 3
+                 :kind :bis
+                 :rank 3
+                 :slot :trinket1
+                 :item {:id 32505 :name "Madness of the Betrayer"}
+                 :sources [{:instance :raid}]}
+                {:class :rogue
+                 :spec :any
+                 :phase 3
+                 :kind :pre-raid
+                 :rank 4
+                 :slot :trinket2
+                 :item {:id 32492 :name "Ashtongue Talisman of Lethality"}
+                 :sources [{:instance :unknown}]}
+                {:class :rogue
+                 :spec :any
+                 :phase 3
+                 :kind :bis
+                 :rank 2
                  :slot :waist
                  :item {:id 32265 :name "Shadow-walker's Cord"}
                  :sources [{:instance :raid}]}
                 {:class :rogue
                  :spec :any
                  :phase 3
+                 :kind :bis
+                 :rank 4
+                 :slot :waist
+                 :item {:id 30879 :name "Don Alejandro's Money Belt"}
+                 :sources [{:instance :raid}]}
+                {:class :rogue
+                 :spec :any
+                 :phase 3
+                 :kind :bis
+                 :rank 1
                  :slot :wrist
                  :item {:id 32324 :name "Insidious Bands"}
                  :sources [{:instance :raid}]}
                 {:class :rogue
                  :spec :any
                  :phase 3
+                 :kind :pre-raid
+                 :rank 2
                  :slot :wrist
                  :item {:id 32580 :name "Swiftstrike Bracers"}
-                 :sources [{:instance :unknown}]}])
+                 :sources [{:instance :unknown}]}
+                {:class :rogue
+                 :spec :any
+                 :phase 3
+                 :kind :bis
+                 :rank 3
+                 :slot :wrist
+                 :item {:id 30863 :name "Deadly Cuffs"}
+                 :sources [{:instance :raid}]}])
 
 (tset by-spec :rogue-any entries)
 

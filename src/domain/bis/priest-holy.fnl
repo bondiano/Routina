@@ -14,183 +14,1667 @@
 (local entries [{:class :priest
                  :spec :holy
                  :phase 1
+                 :kind :bis
+                 :rank 5
+                 :slot :back
+                 :item {:id 28765 :name "Stainless Cloak of the Pure Hearted"}
+                 :sources [{:instance :raid}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 6
+                 :slot :back
+                 :item {:id 29354 :name "Light-Touched Stole of Altruism"}
+                 :sources [{:instance :unknown}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 7
+                 :slot :back
+                 :item {:id 31329 :name "Lifegiving Cloak"}
+                 :sources [{:instance :unknown}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 1
+                 :kind :bis
+                 :rank 8
+                 :slot :back
+                 :item {:id 28582 :name "Red Riding Hood's Cloak"}
+                 :sources [{:instance :raid}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 1
+                 :kind :bis
+                 :rank 9
+                 :slot :back
+                 :item {:id 29375 :name "Bishop's Cloak"}
+                 :sources [{:instance :unknown}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 10
+                 :slot :back
+                 :item {:id 22960 :name "Cloak of Suturing"}
+                 :sources [{:instance :unknown}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 11
+                 :slot :back
+                 :item {:id 21583 :name "Cloak of Clarity"}
+                 :sources [{:instance :unknown}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 12
+                 :slot :back
+                 :item {:id 27448 :name "Cloak of the Everliving"}
+                 :sources [{:instance :unknown}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 13
+                 :slot :back
+                 :item {:id 24254 :name "White Remedy Cape"}
+                 :sources [{:instance :unknown}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 14
+                 :slot :back
+                 :item {:id 28373 :name "Cloak of Scintillating Auras"}
+                 :sources [{:instance :unknown}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 15
+                 :slot :back
+                 :item {:id 27789 :name "Cloak of Whispering Shells"}
+                 :sources [{:instance :unknown}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 16
+                 :slot :back
+                 :item {:id 27946 :name "Avian Cloak of Feathers"}
+                 :sources [{:instance :unknown}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 17
+                 :slot :back
+                 :item {:id 25945 :name "Cloak of Revival"}
+                 :sources [{:instance :unknown}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 18
+                 :slot :back
+                 :item {:id 31465 :name "Sha'tari Anchorite's Cloak"}
+                 :sources [{:instance :unknown}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 3
+                 :slot :chest
+                 :item {:id 21875 :name "Primal Mooncloth Robe"}
+                 :sources [{:instance :unknown}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 1
+                 :kind :bis
+                 :rank 4
+                 :slot :chest
+                 :item {:id 29050 :name "Robes of the Incarnate"}
+                 :sources [{:instance :raid}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 1
+                 :kind :bis
+                 :rank 6
+                 :slot :chest
+                 :item {:id 28578 :name "Masquerade Gown"}
+                 :sources [{:instance :raid}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 7
+                 :slot :chest
+                 :item {:id 28230 :name "Hallowed Garments"}
+                 :sources [{:instance :unknown}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 8
+                 :slot :chest
+                 :item {:id 31413 :name "Gladiator's Mooncloth Robe"}
+                 :sources [{:instance :unknown}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 9
+                 :slot :chest
+                 :item {:id 24397 :name "Raiments of Divine Authority"}
+                 :sources [{:instance :unknown}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 10
+                 :slot :chest
+                 :item {:id 27506 :name "Robe of Effervescent Light"}
+                 :sources [{:instance :unknown}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 1
+                 :kind :bis
+                 :rank 11
+                 :slot :chest
+                 :item {:id 22512 :name "Robe of Faith"}
+                 :sources [{:instance :raid}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 1
+                 :kind :bis
+                 :rank 5
+                 :slot :feet
+                 :item {:id 28663 :name "Boots of the Incorrupt"}
+                 :sources [{:instance :raid}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 6
+                 :slot :feet
+                 :item {:id 29251 :name "Boots of the Pious"}
+                 :sources [{:instance :unknown}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 7
+                 :slot :feet
+                 :item {:id 27411 :name "Slippers of Serenity"}
+                 :sources [{:instance :unknown}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 8
+                 :slot :feet
+                 :item {:id 28179 :name "Shattrath Jumpers"}
+                 :sources [{:instance :unknown}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 1
+                 :kind :bis
+                 :rank 9
+                 :slot :feet
+                 :item {:id 22516 :name "Sandals of Faith"}
+                 :sources [{:instance :raid}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 10
+                 :slot :feet
+                 :item {:id 19437 :name "Boots of Pure Thought"}
+                 :sources [{:instance :unknown}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 1
+                 :kind :bis
+                 :rank 4
+                 :slot :hands
+                 :item {:id 28508 :name "Gloves of Saintly Blessings"}
+                 :sources [{:instance :raid}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 1
+                 :kind :bis
+                 :rank 5
+                 :slot :hands
+                 :item {:id 29055 :name "Handwraps of the Incarnate"}
+                 :sources [{:instance :raid}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 6
+                 :slot :hands
+                 :item {:id 24393 :name "Bloody Surgeon's Mitts"}
+                 :sources [{:instance :unknown}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 7
+                 :slot :hands
+                 :item {:id 27536 :name "Hallowed Handwraps"}
+                 :sources [{:instance :unknown}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 1
+                 :kind :bis
+                 :rank 8
+                 :slot :hands
+                 :item {:id 22517 :name "Gloves of Faith"}
+                 :sources [{:instance :raid}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 9
+                 :slot :hands
+                 :item {:id 29317 :name "Tempest's Touch"}
+                 :sources [{:instance :unknown}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 10
+                 :slot :hands
+                 :item {:id 28304 :name "Prismatic Mittens of Mending"}
+                 :sources [{:instance :unknown}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 11
+                 :slot :hands
+                 :item {:id 29315 :name "Gloves of Penitence"}
+                 :sources [{:instance :unknown}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 1
+                 :kind :bis
+                 :rank 5
+                 :slot :head
+                 :item {:id 29049 :name "Light-Collar of the Incarnate"}
+                 :sources [{:instance :raid}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 7
+                 :slot :head
+                 :item {:id 24264 :name "Whitemend Hood"}
+                 :sources [{:instance :unknown}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 1
+                 :kind :bis
+                 :rank 8
+                 :slot :head
+                 :item {:id 32090 :name "Cowl of Naaru Blessings"}
+                 :sources [{:instance :unknown}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 9
+                 :slot :head
+                 :item {:id 28756 :name "Headdress of the High Potentate"}
+                 :sources [{:instance :unknown}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 10
+                 :slot :head
+                 :item {:id 29174 :name "Watcher's Cowl"}
+                 :sources [{:instance :unknown}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 11
+                 :slot :head
+                 :item {:id 28413 :name "Hallowed Crown"}
+                 :sources [{:instance :unknown}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 1
+                 :kind :bis
+                 :rank 12
+                 :slot :head
+                 :item {:id 22514 :name "Circlet of Faith"}
+                 :sources [{:instance :raid}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 13
+                 :slot :head
+                 :item {:id 19132 :name "Crystal Adorned Crown"}
+                 :sources [{:instance :unknown}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 15
+                 :slot :head
+                 :item {:id 31410 :name "Gladiator's Mooncloth Hood"}
+                 :sources [{:instance :unknown}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 16
+                 :slot :head
+                 :item {:id 31104 :name "Evoker's Helmet of Second Sight"}
+                 :sources [{:instance :unknown}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 1
+                 :kind :bis
+                 :rank 4
+                 :slot :legs
+                 :item {:id 30727 :name "Gilded Trousers of Benediction"}
+                 :sources [{:instance :world-boss}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 1
+                 :kind :bis
+                 :rank 5
+                 :slot :legs
+                 :item {:id 28742 :name "Pantaloons of Repentance"}
+                 :sources [{:instance :raid}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 7
+                 :slot :legs
+                 :item {:id 30543 :name "Pontifex Kilt"}
+                 :sources [{:instance :unknown}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 8
+                 :slot :legs
+                 :item {:id 24261 :name "Whitemend Pants"}
+                 :sources [{:instance :unknown}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 1
+                 :kind :bis
+                 :rank 9
+                 :slot :legs
+                 :item {:id 29053 :name "Trousers of the Incarnate"}
+                 :sources [{:instance :raid}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 10
+                 :slot :legs
+                 :item {:id 31343 :name "Kamaei's Cerulean Skirt"}
+                 :sources [{:instance :unknown}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 11
+                 :slot :legs
+                 :item {:id 28218 :name "Pontiff's Pantaloons of Prophecy"}
+                 :sources [{:instance :unknown}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 1
+                 :kind :bis
+                 :rank 12
+                 :slot :legs
+                 :item {:id 22513 :name "Leggings of Faith"}
+                 :sources [{:instance :raid}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 13
+                 :slot :legs
+                 :item {:id 28185 :name "Khadgar's Kilt of Abjuration"}
+                 :sources [{:instance :unknown}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 14
+                 :slot :legs
+                 :item {:id 30256 :name "Pants of the Naaru"}
+                 :sources [{:instance :unknown}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 15
+                 :slot :legs
+                 :item {:id 19385 :name "Empowered Leggings"}
+                 :sources [{:instance :unknown}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 1
+                 :kind :bis
+                 :rank 9
+                 :slot :main-hand
+                 :item {:id 28771 :name "Light's Justice"}
+                 :sources [{:instance :raid}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 1
+                 :kind :bis
+                 :rank 10
+                 :slot :main-hand
+                 :item {:id 30732 :name "Exodar Life-Staff"}
+                 :sources [{:instance :world-boss}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 1
+                 :kind :bis
+                 :rank 11
+                 :slot :main-hand
+                 :item {:id 28782 :name "Crystalheart Pulse-Staff"}
+                 :sources [{:instance :raid}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 1
+                 :kind :bis
+                 :rank 12
+                 :slot :main-hand
+                 :item {:id 28522 :name "Shard of the Virtuous"}
+                 :sources [{:instance :raid}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 13
+                 :slot :main-hand
+                 :item {:id 23556 :name "Hand of Eternity"}
+                 :sources [{:instance :unknown}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 14
+                 :slot :main-hand
+                 :item {:id 29353 :name "Shockwave Truncheon"}
+                 :sources [{:instance :unknown}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 15
+                 :slot :main-hand
+                 :item {:id 31342 :name "The Ancient Scepter of Sue-Min"}
+                 :sources [{:instance :unknown}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 16
+                 :slot :main-hand
+                 :item {:id 29175 :name "Gavel of Pure Light"}
+                 :sources [{:instance :unknown}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 17
+                 :slot :main-hand
+                 :item {:id 28257 :name "Hammer of the Penitent"}
+                 :sources [{:instance :unknown}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 18
+                 :slot :main-hand
+                 :item {:id 23056 :name "Hammer of the Twisting Nether"}
+                 :sources [{:instance :unknown}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 19
+                 :slot :main-hand
+                 :item {:id 31304 :name "The Essence Focuser"}
+                 :sources [{:instance :unknown}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 20
+                 :slot :main-hand
+                 :item {:id 27538 :name "Lightsworn Hammer"}
+                 :sources [{:instance :unknown}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 21
+                 :slot :main-hand
+                 :item {:id 28216 :name "Dathrohan's Ceremonial Hammer"}
+                 :sources [{:instance :unknown}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 22
+                 :slot :main-hand
+                 :item {:id 27791 :name "Serpentcrest Life-Staff"}
+                 :sources [{:instance :unknown}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 23
+                 :slot :main-hand
+                 :item {:id 28033 :name :Epoch-Mender}
+                 :sources [{:instance :unknown}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 24
+                 :slot :main-hand
+                 :item {:id 29133 :name "Seer's Cane"}
+                 :sources [{:instance :unknown}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 1
+                 :kind :bis
+                 :rank 4
+                 :slot :neck
+                 :item {:id 30726 :name "Archaic Charm of Presence"}
+                 :sources [{:instance :world-boss}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 1
+                 :kind :bis
+                 :rank 5
+                 :slot :neck
+                 :item {:id 28609 :name "Emberspur Talisman"}
+                 :sources [{:instance :raid}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 1
+                 :kind :bis
+                 :rank 6
+                 :slot :neck
+                 :item {:id 28822 :name "Teeth of Gruul"}
+                 :sources [{:instance :raid}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 1
+                 :kind :bis
+                 :rank 7
+                 :slot :neck
+                 :item {:id 28731 :name "Shining Chain of the Afterworld"}
+                 :sources [{:instance :raid}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 8
+                 :slot :neck
+                 :item {:id 30377 :name "Karja's Medallion"}
+                 :sources [{:instance :unknown}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 1
+                 :kind :bis
+                 :rank 9
+                 :slot :neck
+                 :item {:id 29374 :name "Necklace of Eternal Hope"}
+                 :sources [{:instance :unknown}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 10
+                 :slot :neck
+                 :item {:id 28233 :name "Necklace of Resplendent Hope"}
+                 :sources [{:instance :unknown}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 11
+                 :slot :neck
+                 :item {:id 31691 :name "Natasha's Guardian Cord"}
+                 :sources [{:instance :unknown}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 12
+                 :slot :neck
+                 :item {:id 23036 :name "Necklace of Necropsy"}
+                 :sources [{:instance :unknown}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 13
+                 :slot :neck
+                 :item {:id 21712 :name "Amulet of the Fallen God"}
+                 :sources [{:instance :unknown}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 14
+                 :slot :neck
+                 :item {:id 27766 :name "Swampstone Necklace"}
+                 :sources [{:instance :unknown}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 15
+                 :slot :neck
+                 :item {:id 28419 :name "Choker of Fluid Thought"}
+                 :sources [{:instance :unknown}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 16
+                 :slot :neck
+                 :item {:id 29334 :name "Sethekk Oracle's Focus"}
+                 :sources [{:instance :unknown}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 4
+                 :slot :off-hand
+                 :item {:id 29170 :name "Windcaller's Orb"}
+                 :sources [{:instance :unknown}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 1
+                 :kind :bis
+                 :rank 5
+                 :slot :off-hand
+                 :item {:id 29274 :name "Tears of Heaven"}
+                 :sources [{:instance :unknown}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 1
+                 :kind :bis
+                 :rank 6
+                 :slot :off-hand
+                 :item {:id 28728 :name "Aran's Soothing Sapphire"}
+                 :sources [{:instance :raid}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 1
+                 :kind :bis
+                 :rank 7
+                 :slot :off-hand
+                 :item {:id 28525 :name "Signet of Unshakable Faith"}
+                 :sources [{:instance :raid}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 8
+                 :slot :off-hand
+                 :item {:id 23048 :name "Sapphiron's Right Eye"}
+                 :sources [{:instance :unknown}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 9
+                 :slot :off-hand
+                 :item {:id 27477 :name "Faol's Signet of Cleansing"}
+                 :sources [{:instance :unknown}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 10
+                 :slot :off-hand
+                 :item {:id 28213 :name "Lordaeron Medical Guide"}
+                 :sources [{:instance :unknown}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 11
+                 :slot :off-hand
+                 :item {:id 23029 :name "Noth's Frigid Heart"}
+                 :sources [{:instance :unknown}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 12
+                 :slot :off-hand
+                 :item {:id 27714 :name "Swamplight Lantern"}
+                 :sources [{:instance :unknown}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 13
+                 :slot :off-hand
+                 :item {:id 28387 :name "Lamp of Peaceful Repose"}
+                 :sources [{:instance :unknown}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 1
+                 :kind :bis
+                 :rank 3
+                 :slot :ranged
+                 :item {:id 28588 :name "Blue Diamond Witchwand"}
+                 :sources [{:instance :raid}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 4
+                 :slot :ranged
+                 :item {:id 29779 :name "Rejuvenating Scepter"}
+                 :sources [{:instance :unknown}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 5
+                 :slot :ranged
+                 :item {:id 27885 :name "Soul-Wand of the Aldor"}
+                 :sources [{:instance :unknown}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 6
+                 :slot :ranged
+                 :item {:id 23009 :name "Wand of the Whispering Dead"}
+                 :sources [{:instance :unknown}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 4
+                 :slot :ring1
+                 :item {:id 29290 :name "Violet Signet of the Grand Restorer"}
+                 :sources [{:instance :unknown}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 1
+                 :kind :bis
+                 :rank 7
+                 :slot :ring1
+                 :item {:id 28763 :name "Jade Ring of the Everliving"}
+                 :sources [{:instance :raid}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 1
+                 :kind :bis
+                 :rank 11
+                 :slot :ring1
+                 :item {:id 28790 :name "Naaru Lightwarden's Band"}
+                 :sources [{:instance :raid}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 13
+                 :slot :ring1
+                 :item {:id 23061 :name "Ring of Faith"}
+                 :sources [{:instance :unknown}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 15
+                 :slot :ring1
+                 :item {:id 19382 :name "Pure Elementium Band"}
+                 :sources [{:instance :unknown}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 17
+                 :slot :ring1
+                 :item {:id 31923 :name "Band of the Crystalline Void"}
+                 :sources [{:instance :unknown}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 19
+                 :slot :ring1
+                 :item {:id 29322 :name "Keeper's Ring of Piety"}
+                 :sources [{:instance :unknown}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 21
+                 :slot :ring1
+                 :item {:id 27780 :name "Ring of Fabled Hope"}
+                 :sources [{:instance :unknown}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 1
+                 :kind :bis
+                 :rank 6
+                 :slot :ring2
+                 :item {:id 30736 :name "Ring of Flowing Light"}
+                 :sources [{:instance :world-boss}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 1
+                 :kind :bis
+                 :rank 10
+                 :slot :ring2
+                 :item {:id 28661 :name "Mender's Heart-Ring"}
+                 :sources [{:instance :raid}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 1
+                 :kind :bis
+                 :rank 12
+                 :slot :ring2
+                 :item {:id 29373 :name "Band of Halos"}
+                 :sources [{:instance :unknown}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 14
+                 :slot :ring2
+                 :item {:id 22939 :name "Band of Unanswered Prayers"}
+                 :sources [{:instance :unknown}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 16
+                 :slot :ring2
+                 :item {:id 21620 :name "Ring of the Martyr"}
+                 :sources [{:instance :unknown}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 18
+                 :slot :ring2
+                 :item {:id 31383 :name "Spiritualist's Mark of the Sha'tar"}
+                 :sources [{:instance :unknown}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 20
+                 :slot :ring2
+                 :item {:id 28259 :name "Cosmic Lifeband"}
+                 :sources [{:instance :unknown}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 22
+                 :slot :ring2
+                 :item {:id 29814 :name "Celestial Jewel Ring"}
+                 :sources [{:instance :unknown}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 4
+                 :slot :shoulder
+                 :item {:id 21874 :name "Primal Mooncloth Shoulders"}
+                 :sources [{:instance :unknown}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 1
+                 :kind :bis
+                 :rank 5
+                 :slot :shoulder
+                 :item {:id 29054 :name "Light-Mantle of the Incarnate"}
+                 :sources [{:instance :raid}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 6
+                 :slot :shoulder
+                 :item {:id 27775 :name "Hallowed Pauldrons"}
+                 :sources [{:instance :unknown}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 1
+                 :kind :bis
+                 :rank 7
+                 :slot :shoulder
+                 :item {:id 28612 :name "Pauldrons of the Solace-Giver"}
+                 :sources [{:instance :raid}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 8
+                 :slot :shoulder
+                 :item {:id 31412 :name "Gladiator's Mooncloth Mantle"}
+                 :sources [{:instance :unknown}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 9
+                 :slot :shoulder
+                 :item {:id 27433 :name "Pauldrons of Sufferance"}
+                 :sources [{:instance :unknown}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 1
+                 :kind :bis
+                 :rank 10
+                 :slot :shoulder
+                 :item {:id 22515 :name "Shoulderpads of Faith"}
+                 :sources [{:instance :raid}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 11
+                 :slot :shoulder
+                 :item {:id 28250 :name "Vestia's Pauldrons of Inner Grace"}
+                 :sources [{:instance :unknown}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 1
+                 :kind :bis
+                 :rank 1
                  :slot :trinket1
                  :item {:id 29376 :name "Essence of the Martyr"}
                  :sources [{:instance :unknown}]}
                 {:class :priest
                  :spec :holy
                  :phase 1
+                 :kind :bis
+                 :rank 4
+                 :slot :trinket1
+                 :item {:id 28823 :name "Eye of Gruul"}
+                 :sources [{:instance :raid}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 8
+                 :slot :trinket1
+                 :item {:id 23047 :name "Eye of the Dead"}
+                 :sources [{:instance :unknown}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 10
+                 :slot :trinket1
+                 :item {:id 28190 :name "Scarab of the Infinite Cycle"}
+                 :sources [{:instance :unknown}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 12
+                 :slot :trinket1
+                 :item {:id 28370 :name "Bangle of Endless Blessings"}
+                 :sources [{:instance :unknown}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 14
+                 :slot :trinket1
+                 :item {:id 19395 :name "Rejuvenating Gem"}
+                 :sources [{:instance :unknown}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 2
                  :slot :trinket2
                  :item {:id 38288 :name "Direbrew Hops"}
                  :sources [{:instance :unknown}]}
                 {:class :priest
                  :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 5
+                 :slot :trinket2
+                 :item {:id 19288 :name "Darkmoon Card: Blue Dragon"}
+                 :sources [{:instance :unknown}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 1
+                 :kind :bis
+                 :rank 9
+                 :slot :trinket2
+                 :item {:id 28590 :name "Ribbon of Sacrifice"}
+                 :sources [{:instance :raid}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 11
+                 :slot :trinket2
+                 :item {:id 30841 :name "Lower City Prayerbook"}
+                 :sources [{:instance :unknown}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 13
+                 :slot :trinket2
+                 :item {:id 21625 :name "Scarab Brooch"}
+                 :sources [{:instance :unknown}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 15
+                 :slot :trinket2
+                 :item {:id 25634 :name "Oshu'gun Relic"}
+                 :sources [{:instance :unknown}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 1
+                 :kind :bis
+                 :rank 4
+                 :slot :waist
+                 :item {:id 28652 :name "Cincture of Will"}
+                 :sources [{:instance :raid}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 5
+                 :slot :waist
+                 :item {:id 29250 :name "Cord of Sanctification"}
+                 :sources [{:instance :unknown}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 6
+                 :slot :waist
+                 :item {:id 27542 :name "Cord of Belief"}
+                 :sources [{:instance :unknown}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 7
+                 :slot :waist
+                 :item {:id 21582 :name "Grasp of the Old God"}
+                 :sources [{:instance :unknown}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 1
+                 :kind :bis
+                 :rank 8
+                 :slot :waist
+                 :item {:id 22518 :name "Belt of Faith"}
+                 :sources [{:instance :raid}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 9
+                 :slot :waist
+                 :item {:id 27843 :name "Glyph-Lined Sash"}
+                 :sources [{:instance :unknown}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 5
+                 :slot :wrist
+                 :item {:id 29183 :name "Bindings of the Timewalker"}
+                 :sources [{:instance :unknown}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 1
+                 :kind :bis
+                 :rank 7
+                 :slot :wrist
+                 :item {:id 28511 :name "Bands of Indwelling"}
+                 :sources [{:instance :raid}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 9
+                 :slot :wrist
+                 :item {:id 29249 :name "Bands of the Benevolent"}
+                 :sources [{:instance :unknown}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 10
+                 :slot :wrist
+                 :item {:id 21604 :name "Bracelets of Royal Redemption"}
+                 :sources [{:instance :unknown}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 1
+                 :kind :bis
+                 :rank 11
+                 :slot :wrist
+                 :item {:id 22519 :name "Bindings of Faith"}
+                 :sources [{:instance :raid}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 12
+                 :slot :wrist
+                 :item {:id 28174 :name "Shattrath Wraps"}
+                 :sources [{:instance :unknown}]}
+                {:class :priest
+                 :spec :holy
                  :phase 2
+                 :kind :bis
+                 :rank 2
                  :slot :back
                  :item {:id 29989 :name "Sunshower Light Cloak"}
                  :sources [{:instance :raid}]}
                 {:class :priest
                  :spec :holy
                  :phase 2
+                 :kind :bis
+                 :rank 2
                  :slot :chest
                  :item {:id 30150 :name "Vestments of the Avatar"}
                  :sources [{:instance :raid}]}
                 {:class :priest
                  :spec :holy
                  :phase 2
+                 :kind :bis
+                 :rank 2
                  :slot :feet
                  :item {:id 30100 :name "Soul-Strider Boots"}
                  :sources [{:instance :raid}]}
                 {:class :priest
                  :spec :holy
                  :phase 2
+                 :kind :pre-raid
+                 :rank 4
+                 :slot :feet
+                 :item {:id 30035 :name "Boots of the Long Road"}
+                 :sources [{:instance :unknown}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 2
+                 :kind :bis
+                 :rank 2
                  :slot :hands
                  :item {:id 30151 :name "Gloves of the Avatar"}
                  :sources [{:instance :raid}]}
                 {:class :priest
                  :spec :holy
                  :phase 2
+                 :kind :bis
+                 :rank 2
                  :slot :head
                  :item {:id 30152 :name "Cowl of the Avatar"}
                  :sources [{:instance :raid}]}
                 {:class :priest
                  :spec :holy
                  :phase 2
+                 :kind :pre-raid
+                 :rank 4
+                 :slot :head
+                 :item {:id 32495 :name "Powerheal 4000 Lens"}
+                 :sources [{:instance :unknown}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 2
+                 :kind :bis
+                 :rank 6
+                 :slot :head
+                 :item {:id 29990 :name "Crown of the Sun"}
+                 :sources [{:instance :raid}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 2
+                 :kind :pre-raid
+                 :rank 14
+                 :slot :head
+                 :item {:id 32016 :name "Merciless Gladiator's Mooncloth Hood"}
+                 :sources [{:instance :unknown}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 2
+                 :kind :bis
+                 :rank 3
+                 :slot :legs
+                 :item {:id 30153 :name "Breeches of the Avatar"}
+                 :sources [{:instance :raid}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 2
+                 :kind :bis
+                 :rank 6
+                 :slot :legs
+                 :item {:id 29977 :name "Star-Soul Breeches"}
+                 :sources [{:instance :raid}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 2
+                 :kind :bis
+                 :rank 4
+                 :slot :main-hand
+                 :item {:id 30108 :name "Lightfathom Scepter"}
+                 :sources [{:instance :raid}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 2
+                 :kind :pre-raid
+                 :rank 6
+                 :slot :main-hand
+                 :item {:id 32964 :name "Merciless Gladiator's Salvation"}
+                 :sources [{:instance :unknown}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 2
+                 :kind :bis
+                 :rank 2
                  :slot :neck
                  :item {:id 30018 :name "Lord Sanguinar's Claim"}
                  :sources [{:instance :raid}]}
                 {:class :priest
                  :spec :holy
                  :phase 2
+                 :kind :bis
+                 :rank 3
+                 :slot :off-hand
+                 :item {:id 29923 :name "Talisman of the Sun King"}
+                 :sources [{:instance :raid}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 2
+                 :kind :bis
+                 :rank 2
                  :slot :ranged
                  :item {:id 30080 :name "Luminescent Rod of the Naaru"}
                  :sources [{:instance :raid}]}
                 {:class :priest
                  :spec :holy
                  :phase 2
+                 :kind :bis
+                 :rank 3
+                 :slot :ring1
+                 :item {:id 30110 :name "Coral Band of the Revived"}
+                 :sources [{:instance :raid}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 2
+                 :kind :bis
+                 :rank 9
+                 :slot :ring1
+                 :item {:id 29920 :name "Phoenix-Ring of Rebirth"}
+                 :sources [{:instance :raid}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 2
+                 :kind :pre-raid
+                 :rank 8
+                 :slot :ring2
+                 :item {:id 29307 :name "Band of Eternity"}
+                 :sources [{:instance :unknown}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 2
+                 :kind :bis
+                 :rank 2
                  :slot :shoulder
                  :item {:id 30154 :name "Mantle of the Avatar"}
                  :sources [{:instance :raid}]}
                 {:class :priest
                  :spec :holy
+                 :phase 2
+                 :kind :bis
+                 :rank 6
+                 :slot :trinket1
+                 :item {:id 30665 :name "Earring of Soulful Meditation"}
+                 :sources [{:instance :raid}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 2
+                 :kind :pre-raid
+                 :rank 3
+                 :slot :waist
+                 :item {:id 30036 :name "Belt of the Long Road"}
+                 :sources [{:instance :unknown}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 2
+                 :kind :bis
+                 :rank 6
+                 :slot :wrist
+                 :item {:id 32516 :name "Wraps of Purification"}
+                 :sources [{:instance :raid}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 2
+                 :kind :pre-raid
+                 :rank 8
+                 :slot :wrist
+                 :item {:id 32980 :name "Veteran's Mooncloth Cuffs"}
+                 :sources [{:instance :unknown}]}
+                {:class :priest
+                 :spec :holy
                  :phase 3
+                 :kind :bis
+                 :rank 1
                  :slot :back
                  :item {:id 32524 :name "Shroud of the Highborne"}
                  :sources [{:instance :raid}]}
                 {:class :priest
                  :spec :holy
                  :phase 3
+                 :kind :bis
+                 :rank 3
+                 :slot :back
+                 :item {:id 32337 :name "Shroud of Forgiveness"}
+                 :sources [{:instance :raid}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 3
+                 :kind :bis
+                 :rank 4
+                 :slot :back
+                 :item {:id 34012 :name "Shroud of the Final Stand"}
+                 :sources [{:instance :raid}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 3
+                 :kind :bis
+                 :rank 1
                  :slot :chest
                  :item {:id 31066 :name "Vestments of Absolution"}
                  :sources [{:instance :raid}]}
                 {:class :priest
                  :spec :holy
                  :phase 3
+                 :kind :bis
+                 :rank 5
+                 :slot :chest
+                 :item {:id 32340 :name "Garments of Temperance"}
+                 :sources [{:instance :raid}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 3
+                 :kind :bis
+                 :rank 1
                  :slot :feet
                  :item {:id 32609 :name "Boots of the Divine Light"}
                  :sources [{:instance :raid}]}
                 {:class :priest
                  :spec :holy
                  :phase 3
+                 :kind :bis
+                 :rank 3
+                 :slot :feet
+                 :item {:id 30885 :name "Archbishop's Slippers"}
+                 :sources [{:instance :raid}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 3
+                 :kind :bis
+                 :rank 1
                  :slot :hands
                  :item {:id 31060 :name "Gloves of Absolution"}
                  :sources [{:instance :raid}]}
                 {:class :priest
                  :spec :holy
                  :phase 3
+                 :kind :bis
+                 :rank 3
+                 :slot :hands
+                 :item {:id 32353 :name "Gloves of Unfailing Faith"}
+                 :sources [{:instance :raid}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 3
+                 :kind :bis
+                 :rank 1
                  :slot :head
                  :item {:id 31063 :name "Cowl of Absolution"}
                  :sources [{:instance :raid}]}
                 {:class :priest
                  :spec :holy
                  :phase 3
+                 :kind :bis
+                 :rank 3
+                 :slot :head
+                 :item {:id 32329 :name "Cowl of Benevolence"}
+                 :sources [{:instance :raid}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 3
+                 :kind :bis
+                 :rank 1
                  :slot :legs
                  :item {:id 30912 :name "Leggings of Eternity"}
                  :sources [{:instance :raid}]}
                 {:class :priest
                  :spec :holy
                  :phase 3
+                 :kind :bis
+                 :rank 2
                  :slot :legs
                  :item {:id 31068 :name "Breeches of Absolution"}
                  :sources [{:instance :raid}]}
                 {:class :priest
                  :spec :holy
                  :phase 3
+                 :kind :bis
+                 :rank 1
                  :slot :main-hand
                  :item {:id 32500 :name "Crystal Spire of Karabor"}
                  :sources [{:instance :raid}]}
                 {:class :priest
                  :spec :holy
                  :phase 3
+                 :kind :pre-raid
+                 :rank 2
                  :slot :main-hand
                  :item {:id 33743 :name "Vengeful Gladiator's Salvation"}
                  :sources [{:instance :unknown}]}
                 {:class :priest
                  :spec :holy
                  :phase 3
+                 :kind :bis
+                 :rank 3
+                 :slot :main-hand
+                 :item {:id 30918 :name "Hammer of Atonement"}
+                 :sources [{:instance :raid}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 3
+                 :kind :bis
+                 :rank 5
+                 :slot :main-hand
+                 :item {:id 30908 :name "Apostle of Argus"}
+                 :sources [{:instance :raid}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 3
+                 :kind :bis
+                 :rank 7
+                 :slot :main-hand
+                 :item {:id 32344 :name "Staff of Immaculate Recovery"}
+                 :sources [{:instance :raid}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 3
+                 :kind :bis
+                 :rank 1
                  :slot :neck
                  :item {:id 32370 :name "Nadina's Pendant of Purity"}
                  :sources [{:instance :raid}]}
                 {:class :priest
                  :spec :holy
                  :phase 3
+                 :kind :bis
+                 :rank 3
+                 :slot :neck
+                 :item {:id 33922 :name "Vindicator's Pendant of Salvation"}
+                 :sources [{:instance :unknown}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 3
+                 :kind :bis
+                 :rank 1
                  :slot :off-hand
                  :item {:id 30911 :name "Scepter of Purification"}
                  :sources [{:instance :raid}]}
                 {:class :priest
                  :spec :holy
                  :phase 3
+                 :kind :bis
+                 :rank 2
                  :slot :off-hand
                  :item {:id 32350 :name "Touch of Inspiration"}
                  :sources [{:instance :raid}]}
                 {:class :priest
                  :spec :holy
                  :phase 3
+                 :kind :bis
+                 :rank 1
                  :slot :ranged
                  :item {:id 32363 :name "Naaru-Blessed Life Rod"}
                  :sources [{:instance :raid}]}
                 {:class :priest
                  :spec :holy
                  :phase 3
+                 :kind :bis
+                 :rank 1
                  :slot :ring1
                  :item {:id 32528 :name "Blessed Band of Karabor"}
                  :sources [{:instance :raid}]}
                 {:class :priest
                  :spec :holy
                  :phase 3
+                 :kind :bis
+                 :rank 5
+                 :slot :ring1
+                 :item {:id 32238 :name "Ring of Calming Waves"}
+                 :sources [{:instance :raid}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 3
+                 :kind :bis
+                 :rank 2
                  :slot :ring2
                  :item {:id 29309 :name "Band of the Eternal Restorer"}
                  :sources [{:instance :raid}]}
                 {:class :priest
                  :spec :holy
                  :phase 3
+                 :kind :bis
+                 :rank 1
                  :slot :shoulder
                  :item {:id 31069 :name "Mantle of Absolution"}
                  :sources [{:instance :raid}]}
                 {:class :priest
                  :spec :holy
                  :phase 3
+                 :kind :pre-raid
+                 :rank 3
+                 :slot :shoulder
+                 :item {:id 32585 :name "Swiftheal Mantle"}
+                 :sources [{:instance :unknown}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 3
+                 :kind :bis
+                 :rank 3
+                 :slot :trinket1
+                 :item {:id 32496 :name "Memento of Tyrande"}
+                 :sources [{:instance :raid}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 3
+                 :kind :pre-raid
+                 :rank 7
+                 :slot :trinket2
+                 :item {:id 32490 :name "Ashtongue Talisman of Acumen"}
+                 :sources [{:instance :unknown}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 3
+                 :kind :bis
+                 :rank 1
                  :slot :waist
                  :item {:id 30895 :name "Angelista's Sash"}
                  :sources [{:instance :raid}]}
                 {:class :priest
                  :spec :holy
                  :phase 3
+                 :kind :bis
+                 :rank 2
                  :slot :waist
                  :item {:id 32519 :name "Belt of Divine Guidance"}
                  :sources [{:instance :raid}]}
                 {:class :priest
                  :spec :holy
                  :phase 3
+                 :kind :pre-raid
+                 :rank 1
                  :slot :wrist
                  :item {:id 32584 :name "Swiftheal Wraps"}
                  :sources [{:instance :unknown}]}
                 {:class :priest
                  :spec :holy
                  :phase 3
+                 :kind :bis
+                 :rank 2
                  :slot :wrist
                  :item {:id 30871 :name "Bracers of Martyrdom"}
-                 :sources [{:instance :raid}]}])
+                 :sources [{:instance :raid}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 3
+                 :kind :bis
+                 :rank 3
+                 :slot :wrist
+                 :item {:id 32513 :name "Wristbands of Divine Influence"}
+                 :sources [{:instance :raid}]}
+                {:class :priest
+                 :spec :holy
+                 :phase 3
+                 :kind :bis
+                 :rank 4
+                 :slot :wrist
+                 :item {:id 33901 :name "Vindicator's Mooncloth Cuffs"}
+                 :sources [{:instance :unknown}]}])
 
 (tset by-spec :priest-holy entries)
 

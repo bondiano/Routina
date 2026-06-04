@@ -17,12 +17,14 @@
 local SRC = "vendor/bis-source"
 local OUT = "src/domain/bis"
 
--- Keep the primary BiS plus one ranked alternative. Priority 1 is the canonical
--- best-in-slot per (spec, slot); Priority 2 backs it up and fills the second of
--- each paired slot (rings/trinkets) when the source ranks them 1 then 2. Deeper
--- alternatives (Priority 3..12) are catch-up gear, omitted to keep the catalog
--- planner-focused and the generated files reviewable. Raise to import more.
-local MAX_PRIORITY = 2
+-- Import EVERY source rank (ROADMAP Phase 4b decision). Priority 1 is the
+-- canonical best-in-slot per (spec, slot); deeper Priorities are the ranked
+-- alternatives and the pre-raid / catch-up long tail the BiS tab now surfaces.
+-- The source's Priority runs to ~30; full import is ~5100 entries (vs ~820 at
+-- Priority 1-2), biggest spec file ~250 entries -- generated data, exempt from
+-- the 300-line guideline. The downstream UI / route scoring cap the tail
+-- (OQ-9), the catalog itself stays complete. 99 = effectively uncapped.
+local MAX_PRIORITY = 99
 
 -- ClassId -> Routina class keyword (matches schemas.BisItem :class enum).
 local CLASS = {
@@ -86,6 +88,21 @@ local function instance_of(meta)
   return "unknown"
 end
 
+-- :kind derivation (ROADMAP Phase 4b / OQ-8). The source has NO explicit
+-- pre-raid list (items.lua Phase is 1-5, never 0), so kind is synthesised from
+-- provenance flags: a raid drop, world-boss drop, or tier-set token purchase is
+-- the endgame target (:bis); everything else at the slot's entry phase
+-- (dungeon / heroic / crafted / reputation / quest / vendor / PvP / BoE) is the
+-- catch-up gear worn toward it (:pre-raid). Refining the :pre-raid bucket via
+-- item-sources.lua `category` is possible later (OQ-8) but not needed for the
+-- bis/pre-raid split itself.
+local function kind_of(meta)
+  if meta.Raid or meta.WorldBoss or (meta.TokenId or 0) > 0 then
+    return "bis"
+  end
+  return "pre-raid"
+end
+
 local function item_name(id)
   return BIS_ITEM_NAMES[id] or string.format("Item #%d", id)
 end
@@ -147,6 +164,7 @@ for _, link in ipairs(BIS_LINKS) do
           phase = phase, paired = PAIRED[meta.Slot], slot = SLOT[meta.Slot],
           slotbase = meta.Slot, id = link.ItemId, name = item_name(link.ItemId),
           priority = link.Priority or 99, instance = instance_of(meta),
+          kind = kind_of(meta),
         })
       end
     end
@@ -179,10 +197,10 @@ end
 -- ---- emit ------------------------------------------------------------------
 local function entry_fennel(e)
   return string.format(
-    "   {:class %s :spec %s :phase %d :slot %s\n"
+    "   {:class %s :spec %s :phase %d :kind %s :rank %d :slot %s\n"
     .. "    :item {:id %d :name %s}\n"
     .. "    :sources [{:instance %s}]}",
-    kw(e.class), kw(e.spec), e.phase, kw(e.slot),
+    kw(e.class), kw(e.spec), e.phase, kw(e.kind), e.priority, kw(e.slot),
     e.id, str(e.name), kw(e.instance))
 end
 

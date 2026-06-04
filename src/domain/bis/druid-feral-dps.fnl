@@ -14,170 +14,1286 @@
 (local entries [{:class :druid
                  :spec :feral-dps
                  :phase 1
+                 :kind :bis
+                 :rank 3
+                 :slot :back
+                 :item {:id 28672 :name "Drape of the Dark Reavers"}
+                 :sources [{:instance :raid}]}
+                {:class :druid
+                 :spec :feral-dps
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 5
+                 :slot :back
+                 :item {:id 31255 :name "Cloak of the Craft"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-dps
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 6
+                 :slot :back
+                 :item {:id 33122 :name "Cloak of Darkness"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-dps
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 7
+                 :slot :back
+                 :item {:id 24259 :name "Vengeance Wrap"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-dps
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 8
+                 :slot :back
+                 :item {:id 27878 :name "Auchenai Death Shroud"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-dps
+                 :phase 1
+                 :kind :bis
+                 :rank 9
+                 :slot :back
+                 :item {:id 29382 :name "Blood Knight War Cloak"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-dps
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 10
+                 :slot :back
+                 :item {:id 28031 :name "Nomad's Woven Cloak"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-dps
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 11
+                 :slot :back
+                 :item {:id 28032 :name "Delicate Green Poncho"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-dps
+                 :phase 1
+                 :kind :bis
+                 :rank 3
+                 :slot :chest
+                 :item {:id 29096 :name "Breastplate of Malorne"}
+                 :sources [{:instance :raid}]}
+                {:class :druid
+                 :spec :feral-dps
+                 :phase 1
+                 :kind :bis
+                 :rank 8
+                 :slot :chest
+                 :item {:id 30730 :name "Terrorweave Tunic"}
+                 :sources [{:instance :world-boss}]}
+                {:class :druid
+                 :spec :feral-dps
+                 :phase 1
+                 :kind :bis
+                 :rank 9
+                 :slot :chest
+                 :item {:id 28601 :name "Chestguard of the Conniver"}
+                 :sources [{:instance :raid}]}
+                {:class :druid
+                 :spec :feral-dps
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 10
+                 :slot :chest
+                 :item {:id 29525 :name "Primalstrike Vest"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-dps
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 11
+                 :slot :chest
+                 :item {:id 24396 :name "Vest of Vengeance"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-dps
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 12
+                 :slot :chest
+                 :item {:id 28204 :name "Tunic of Assassination"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-dps
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 14
+                 :slot :chest
+                 :item {:id 28264 :name "Wastewalker Tunic"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-dps
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 15
+                 :slot :chest
+                 :item {:id 29340 :name "Auchenai Monk's Tunic"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-dps
+                 :phase 1
+                 :kind :bis
+                 :rank 2
                  :slot :feet
                  :item {:id 28545 :name "Edgewalker Longboots"}
                  :sources [{:instance :raid}]}
                 {:class :druid
                  :spec :feral-dps
                  :phase 1
+                 :kind :pre-raid
+                 :rank 3
+                 :slot :feet
+                 :item {:id 25686 :name "Fel Leather Boots"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-dps
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 8
+                 :slot :feet
+                 :item {:id 31288 :name "The Master's Treads"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-dps
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 9
+                 :slot :feet
+                 :item {:id 29248 :name "Shadowstep Striders"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-dps
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 10
+                 :slot :feet
+                 :item {:id 30939 :name "Felboar Hide Shoes"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-dps
+                 :phase 1
+                 :kind :bis
+                 :rank 3
+                 :slot :hands
+                 :item {:id 28506 :name "Gloves of Dexterous Manipulation"}
+                 :sources [{:instance :raid}]}
+                {:class :druid
+                 :spec :feral-dps
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 6
+                 :slot :hands
+                 :item {:id 25685 :name "Fel Leather Gloves"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-dps
+                 :phase 1
+                 :kind :bis
+                 :rank 7
+                 :slot :hands
+                 :item {:id 30644 :name "Grips of Deftness"}
+                 :sources [{:instance :raid}]}
+                {:class :druid
+                 :spec :feral-dps
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 8
+                 :slot :hands
+                 :item {:id 29507 :name "Windslayer Wraps"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-dps
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 9
+                 :slot :hands
+                 :item {:id 27509 :name "Handgrips of Assassination"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-dps
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 10
+                 :slot :hands
+                 :item {:id 28396 :name "Gloves of the Unbound"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-dps
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 11
+                 :slot :hands
+                 :item {:id 27531 :name "Wastewalker Gloves"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-dps
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 1
                  :slot :head
                  :item {:id 8345 :name "Wolfshead Helm"}
                  :sources [{:instance :unknown}]}
                 {:class :druid
                  :spec :feral-dps
                  :phase 1
+                 :kind :bis
+                 :rank 2
                  :slot :legs
                  :item {:id 28741 :name "Skulker's Greaves"}
                  :sources [{:instance :raid}]}
                 {:class :druid
                  :spec :feral-dps
                  :phase 1
+                 :kind :pre-raid
+                 :rank 7
+                 :slot :legs
+                 :item {:id 31544 :name "Clefthoof Hide Leggings"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-dps
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 8
+                 :slot :legs
+                 :item {:id 27837 :name "Wastewalker Leggings"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-dps
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 9
+                 :slot :legs
+                 :item {:id 25687 :name "Fel Leather Leggings"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-dps
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 10
+                 :slot :legs
+                 :item {:id 30538 :name "Midnight Legguards"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-dps
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 11
+                 :slot :legs
+                 :item {:id 27908 :name "Leggings of Assassination"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-dps
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 12
+                 :slot :legs
+                 :item {:id 30535 :name "Forestwalker Kilt"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-dps
+                 :phase 1
+                 :kind :bis
+                 :rank 4
+                 :slot :main-hand
+                 :item {:id 28658 :name "Terestian's Stranglestaff"}
+                 :sources [{:instance :raid}]}
+                {:class :druid
+                 :spec :feral-dps
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 5
+                 :slot :main-hand
+                 :item {:id 28476 :name "Gladiator's Maul"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-dps
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 7
+                 :slot :main-hand
+                 :item {:id 29359 :name "Feral Staff of Lashing"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-dps
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 8
+                 :slot :main-hand
+                 :item {:id 31334 :name "Staff of Natural Fury"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-dps
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 9
+                 :slot :main-hand
+                 :item {:id 29171 :name :Earthwarden}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-dps
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 10
+                 :slot :main-hand
+                 :item {:id 27877 :name "Draenic Wildstaff"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-dps
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 11
+                 :slot :main-hand
+                 :item {:id 28325 :name "Dreamer's Dragonstaff"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-dps
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 12
+                 :slot :main-hand
+                 :item {:id 30010 :name "Fleshling Simulation Staff"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-dps
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 4
+                 :slot :neck
+                 :item {:id 24114 :name "Braided Eternium Chain"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-dps
+                 :phase 1
+                 :kind :bis
+                 :rank 5
+                 :slot :neck
+                 :item {:id 29381 :name "Choker of Vile Intent"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-dps
+                 :phase 1
+                 :kind :bis
+                 :rank 6
+                 :slot :neck
+                 :item {:id 28509 :name "Worgen Claw Necklace"}
+                 :sources [{:instance :raid}]}
+                {:class :druid
+                 :spec :feral-dps
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 7
+                 :slot :neck
+                 :item {:id 31275 :name "Necklace of Trophies"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-dps
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 8
+                 :slot :neck
+                 :item {:id 29119 :name "Haramad's Bargain"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-dps
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 9
+                 :slot :neck
+                 :item {:id 27779 :name "Bone Chain Necklace"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-dps
+                 :phase 1
+                 :kind :bis
+                 :rank 10
+                 :slot :neck
+                 :item {:id 28745 :name "Mithril Chain of Heroism"}
+                 :sources [{:instance :raid}]}
+                {:class :druid
+                 :spec :feral-dps
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 11
+                 :slot :neck
+                 :item {:id 19377 :name "Prestor's Talisman of Connivery"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-dps
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 12
+                 :slot :neck
+                 :item {:id 25562 :name "Earthen Mark of Razing"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-dps
+                 :phase 1
+                 :kind :bis
+                 :rank 1
                  :slot :ranged
                  :item {:id 29390 :name "Everbloom Idol"}
                  :sources [{:instance :unknown}]}
                 {:class :druid
                  :spec :feral-dps
                  :phase 1
+                 :kind :pre-raid
+                 :rank 4
+                 :slot :ranged
+                 :item {:id 28372 :name "Idol of Feral Shadows"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-dps
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 5
+                 :slot :ranged
+                 :item {:id 28064 :name "Idol of the Wild"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-dps
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 5
+                 :slot :ring1
+                 :item {:id 30834 :name "Shapeshifter's Signet"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-dps
+                 :phase 1
+                 :kind :bis
+                 :rank 10
+                 :slot :ring1
+                 :item {:id 28757 :name "Ring of a Thousand Marks"}
+                 :sources [{:instance :raid}]}
+                {:class :druid
+                 :spec :feral-dps
+                 :phase 1
+                 :kind :bis
+                 :rank 12
+                 :slot :ring1
+                 :item {:id 28791 :name "Ring of the Recalcitrant"}
+                 :sources [{:instance :raid}]}
+                {:class :druid
+                 :spec :feral-dps
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 14
+                 :slot :ring1
+                 :item {:id 29283 :name "Violet Signet of the Master Assassin"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-dps
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 16
+                 :slot :ring1
+                 :item {:id 31920 :name "Shaffar's Band of Brutality"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-dps
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 18
+                 :slot :ring1
+                 :item {:id 31077 :name "Slayer's Mark of the Redemption"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-dps
+                 :phase 1
+                 :kind :bis
+                 :rank 9
+                 :slot :ring2
+                 :item {:id 28649 :name "Garona's Signet Ring"}
+                 :sources [{:instance :raid}]}
+                {:class :druid
+                 :spec :feral-dps
+                 :phase 1
+                 :kind :bis
+                 :rank 11
+                 :slot :ring2
+                 :item {:id 30738 :name "Ring of Reciprocity"}
+                 :sources [{:instance :world-boss}]}
+                {:class :druid
+                 :spec :feral-dps
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 13
+                 :slot :ring2
+                 :item {:id 30365 :name "Overseer's Signet"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-dps
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 15
+                 :slot :ring2
+                 :item {:id 27925 :name "Ravenclaw Band"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-dps
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 17
+                 :slot :ring2
+                 :item {:id 30860 :name "Kaylaan's Signet"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-dps
+                 :phase 1
+                 :kind :bis
+                 :rank 2
                  :slot :shoulder
                  :item {:id 29100 :name "Mantle of Malorne"}
                  :sources [{:instance :raid}]}
                 {:class :druid
                  :spec :feral-dps
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 6
+                 :slot :shoulder
+                 :item {:id 27797 :name "Wastewalker Shoulderpads"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-dps
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 7
+                 :slot :shoulder
+                 :item {:id 25790 :name "Expedition Scout's Epaulets"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-dps
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 8
+                 :slot :shoulder
+                 :item {:id 28755 :name "Bladed Shoulderpads of the Merciless"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-dps
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 9
+                 :slot :shoulder
+                 :item {:id 27434 :name "Mantle of Perenolde"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-dps
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 10
+                 :slot :shoulder
+                 :item {:id 27776 :name "Shoulderpads of Assassination"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-dps
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 11
+                 :slot :shoulder
+                 :item {:id 27995 :name "Sun-Gilded Shouldercaps"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-dps
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 3
+                 :slot :trinket1
+                 :item {:id 23206 :name "Mark of the Champion"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-dps
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 5
+                 :slot :trinket1
+                 :item {:id 38287 :name "Empty Mug of Direbrew"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-dps
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 7
+                 :slot :trinket1
+                 :item {:id 28121 :name "Icon of Unyielding Courage"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-dps
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 9
+                 :slot :trinket1
+                 :item {:id 28034 :name "Hourglass of the Unraveller"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-dps
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 13
+                 :slot :trinket1
+                 :item {:id 29776 :name "Core of Ar'kelos"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-dps
+                 :phase 1
+                 :kind :bis
+                 :rank 4
+                 :slot :trinket2
+                 :item {:id 29383 :name "Bloodlust Brooch"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-dps
+                 :phase 1
+                 :kind :bis
+                 :rank 6
+                 :slot :trinket2
+                 :item {:id 28830 :name "Dragonspine Trophy"}
+                 :sources [{:instance :raid}]}
+                {:class :druid
+                 :spec :feral-dps
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 8
+                 :slot :trinket2
+                 :item {:id 19406 :name "Drake Fang Talisman"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-dps
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 12
+                 :slot :trinket2
+                 :item {:id 23041 :name "Slayer's Crest"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-dps
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 14
+                 :slot :trinket2
+                 :item {:id 28288 :name "Abacus of Violent Odds"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-dps
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 6
+                 :slot :waist
+                 :item {:id 29247 :name "Girdle of the Deathdealer"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-dps
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 7
+                 :slot :waist
+                 :item {:id 30372 :name "Socrethar's Girdle"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-dps
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 9
+                 :slot :waist
+                 :item {:id 28750 :name "Girdle of Treachery"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-dps
+                 :phase 1
+                 :kind :bis
+                 :rank 10
+                 :slot :waist
+                 :item {:id 28828 :name "Gronn-Stitched Girdle"}
+                 :sources [{:instance :raid}]}
+                {:class :druid
+                 :spec :feral-dps
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 11
+                 :slot :waist
+                 :item {:id 27911 :name "Epoch's Whispering Cinch"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-dps
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 12
+                 :slot :waist
+                 :item {:id 31464 :name "Naaru Belt of Precision"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-dps
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 13
+                 :slot :waist
+                 :item {:id 27760 :name "Dunewind Sash"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-dps
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 7
+                 :slot :wrist
+                 :item {:id 28171 :name "Spymistress's Wristguards"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-dps
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 10
+                 :slot :wrist
+                 :item {:id 29246 :name "Nightfall Wristguards"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-dps
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 11
+                 :slot :wrist
+                 :item {:id 21602 :name "Qiraji Execution Bracers"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-dps
                  :phase 2
+                 :kind :bis
+                 :rank 2
                  :slot :back
                  :item {:id 29994 :name "Thalassian Wildercloak"}
                  :sources [{:instance :raid}]}
                 {:class :druid
                  :spec :feral-dps
                  :phase 2
+                 :kind :bis
+                 :rank 4
+                 :slot :back
+                 :item {:id 30098 :name "Razor-Scale Battlecloak"}
+                 :sources [{:instance :raid}]}
+                {:class :druid
+                 :spec :feral-dps
+                 :phase 2
+                 :kind :bis
+                 :rank 4
+                 :slot :chest
+                 :item {:id 30222 :name "Nordrassil Chestplate"}
+                 :sources [{:instance :raid}]}
+                {:class :druid
+                 :spec :feral-dps
+                 :phase 2
+                 :kind :bis
+                 :rank 7
+                 :slot :chest
+                 :item {:id 30101 :name "Bloodsea Brigand's Vest"}
+                 :sources [{:instance :raid}]}
+                {:class :druid
+                 :spec :feral-dps
+                 :phase 2
+                 :kind :pre-raid
+                 :rank 13
+                 :slot :chest
+                 :item {:id 31972
+                        :name "Merciless Gladiator's Dragonhide Tunic"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-dps
+                 :phase 2
+                 :kind :pre-raid
+                 :rank 5
+                 :slot :feet
+                 :item {:id 30039 :name "Boots of Utter Darkness"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-dps
+                 :phase 2
+                 :kind :bis
+                 :rank 6
+                 :slot :feet
+                 :item {:id 30041 :name "Boots of Natural Grace"}
+                 :sources [{:instance :raid}]}
+                {:class :druid
+                 :spec :feral-dps
+                 :phase 2
+                 :kind :bis
+                 :rank 7
+                 :slot :feet
+                 :item {:id 30060 :name "Boots of Effortless Striking"}
+                 :sources [{:instance :raid}]}
+                {:class :druid
+                 :spec :feral-dps
+                 :phase 2
+                 :kind :pre-raid
+                 :rank 11
+                 :slot :feet
+                 :item {:id 32790 :name "Veteran's Leather Boots"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-dps
+                 :phase 2
+                 :kind :bis
+                 :rank 1
                  :slot :hands
                  :item {:id 29947 :name "Gloves of the Searing Grip"}
                  :sources [{:instance :raid}]}
                 {:class :druid
                  :spec :feral-dps
                  :phase 2
+                 :kind :bis
+                 :rank 4
+                 :slot :hands
+                 :item {:id 30223 :name "Nordrassil Handgrips"}
+                 :sources [{:instance :raid}]}
+                {:class :druid
+                 :spec :feral-dps
+                 :phase 2
+                 :kind :bis
+                 :rank 4
+                 :slot :legs
+                 :item {:id 29995 :name "Leggings of Murderous Intent"}
+                 :sources [{:instance :raid}]}
+                {:class :druid
+                 :spec :feral-dps
+                 :phase 2
+                 :kind :bis
+                 :rank 5
+                 :slot :legs
+                 :item {:id 30229 :name "Nordrassil Feral-Kilt"}
+                 :sources [{:instance :raid}]}
+                {:class :druid
+                 :spec :feral-dps
+                 :phase 2
+                 :kind :pre-raid
+                 :rank 2
                  :slot :main-hand
                  :item {:id 32014 :name "Merciless Gladiator's Maul"}
                  :sources [{:instance :unknown}]}
                 {:class :druid
                  :spec :feral-dps
                  :phase 2
+                 :kind :bis
+                 :rank 6
+                 :slot :main-hand
+                 :item {:id 30021 :name "Wildfury Greatstaff"}
+                 :sources [{:instance :raid}]}
+                {:class :druid
+                 :spec :feral-dps
+                 :phase 2
+                 :kind :bis
+                 :rank 2
                  :slot :neck
                  :item {:id 30017 :name "Telonicus's Pendant of Mayhem"}
                  :sources [{:instance :raid}]}
                 {:class :druid
                  :spec :feral-dps
                  :phase 2
+                 :kind :bis
+                 :rank 3
+                 :slot :ring1
+                 :item {:id 30052 :name "Ring of Lethality"}
+                 :sources [{:instance :raid}]}
+                {:class :druid
+                 :spec :feral-dps
+                 :phase 2
+                 :kind :bis
+                 :rank 8
+                 :slot :ring1
+                 :item {:id 29997 :name "Band of the Ranger-General"}
+                 :sources [{:instance :raid}]}
+                {:class :druid
+                 :spec :feral-dps
+                 :phase 2
+                 :kind :bis
+                 :rank 7
+                 :slot :ring2
+                 :item {:id 30061 :name "Ancestral Ring of Conquest"}
+                 :sources [{:instance :raid}]}
+                {:class :druid
+                 :spec :feral-dps
+                 :phase 2
+                 :kind :bis
+                 :rank 3
+                 :slot :shoulder
+                 :item {:id 30230 :name "Nordrassil Feral-Mantle"}
+                 :sources [{:instance :raid}]}
+                {:class :druid
+                 :spec :feral-dps
+                 :phase 2
+                 :kind :bis
+                 :rank 4
+                 :slot :shoulder
+                 :item {:id 30055 :name "Shoulderpads of the Stranger"}
+                 :sources [{:instance :raid}]}
+                {:class :druid
+                 :spec :feral-dps
+                 :phase 2
+                 :kind :bis
+                 :rank 1
                  :slot :trinket1
                  :item {:id 30627 :name "Tsunami Talisman"}
                  :sources [{:instance :raid}]}
                 {:class :druid
                  :spec :feral-dps
                  :phase 2
+                 :kind :bis
+                 :rank 11
+                 :slot :trinket1
+                 :item {:id 32654 :name "Crystalforged Trinket"}
+                 :sources [{:instance :raid}]}
+                {:class :druid
+                 :spec :feral-dps
+                 :phase 2
+                 :kind :bis
+                 :rank 10
+                 :slot :trinket2
+                 :item {:id 32658 :name "Badge of Tenacity"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-dps
+                 :phase 2
+                 :kind :bis
+                 :rank 1
                  :slot :waist
                  :item {:id 30106 :name "Belt of One-Hundred Deaths"}
                  :sources [{:instance :raid}]}
                 {:class :druid
                  :spec :feral-dps
                  :phase 2
+                 :kind :pre-raid
+                 :rank 2
                  :slot :waist
                  :item {:id 30040 :name "Belt of Deep Shadow"}
                  :sources [{:instance :unknown}]}
                 {:class :druid
                  :spec :feral-dps
+                 :phase 2
+                 :kind :pre-raid
+                 :rank 8
+                 :slot :waist
+                 :item {:id 30042 :name "Belt of Natural Power"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-dps
+                 :phase 2
+                 :kind :bis
+                 :rank 5
+                 :slot :wrist
+                 :item {:id 29966 :name "Vambraces of Ending"}
+                 :sources [{:instance :raid}]}
+                {:class :druid
+                 :spec :feral-dps
+                 :phase 2
+                 :kind :bis
+                 :rank 8
+                 :slot :wrist
+                 :item {:id 32647 :name "Shard-bound Bracers"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-dps
+                 :phase 2
+                 :kind :pre-raid
+                 :rank 9
+                 :slot :wrist
+                 :item {:id 32814 :name "Veteran's Leather Bracers"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-dps
+                 :phase 2
+                 :kind :pre-raid
+                 :rank 12
+                 :slot :wrist
+                 :item {:id 32810 :name "Veteran's Dragonhide Bracers"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-dps
                  :phase 3
+                 :kind :bis
+                 :rank 1
                  :slot :back
                  :item {:id 32323 :name "Shadowmoon Destroyer's Drape"}
                  :sources [{:instance :raid}]}
                 {:class :druid
                  :spec :feral-dps
                  :phase 3
+                 :kind :bis
+                 :rank 1
                  :slot :chest
                  :item {:id 32252 :name "Nether Shadow Tunic"}
                  :sources [{:instance :raid}]}
                 {:class :druid
                  :spec :feral-dps
                  :phase 3
+                 :kind :bis
+                 :rank 2
                  :slot :chest
                  :item {:id 31042 :name "Thunderheart Chestguard"}
                  :sources [{:instance :raid}]}
                 {:class :druid
                  :spec :feral-dps
                  :phase 3
+                 :kind :bis
+                 :rank 5
+                 :slot :chest
+                 :item {:id 30905 :name "Midnight Chestguard"}
+                 :sources [{:instance :raid}]}
+                {:class :druid
+                 :spec :feral-dps
+                 :phase 3
+                 :kind :pre-raid
+                 :rank 6
+                 :slot :chest
+                 :item {:id 33675
+                        :name "Vengeful Gladiator's Dragonhide Tunic"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-dps
+                 :phase 3
+                 :kind :bis
+                 :rank 1
                  :slot :feet
                  :item {:id 32366 :name "Shadowmaster's Boots"}
                  :sources [{:instance :raid}]}
                 {:class :druid
                  :spec :feral-dps
                  :phase 3
+                 :kind :bis
+                 :rank 4
+                 :slot :feet
+                 :item {:id 33880 :name "Vindicator's Dragonhide Boots"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-dps
+                 :phase 3
+                 :kind :bis
+                 :rank 2
                  :slot :hands
                  :item {:id 31034 :name "Thunderheart Gauntlets"}
                  :sources [{:instance :raid}]}
                 {:class :druid
                  :spec :feral-dps
                  :phase 3
+                 :kind :bis
+                 :rank 5
+                 :slot :hands
+                 :item {:id 32347 :name "Grips of Damnation"}
+                 :sources [{:instance :raid}]}
+                {:class :druid
+                 :spec :feral-dps
+                 :phase 3
+                 :kind :bis
+                 :rank 2
                  :slot :head
                  :item {:id 32235 :name "Cursed Vision of Sargeras"}
                  :sources [{:instance :raid}]}
                 {:class :druid
                  :spec :feral-dps
                  :phase 3
+                 :kind :pre-raid
+                 :rank 3
+                 :slot :head
+                 :item {:id 33672 :name "Vengeful Gladiator's Dragonhide Helm"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-dps
+                 :phase 3
+                 :kind :bis
+                 :rank 1
                  :slot :legs
                  :item {:id 31044 :name "Thunderheart Leggings"}
                  :sources [{:instance :raid}]}
                 {:class :druid
                  :spec :feral-dps
                  :phase 3
+                 :kind :bis
+                 :rank 3
+                 :slot :legs
+                 :item {:id 30898 :name "Shady Dealer's Pantaloons"}
+                 :sources [{:instance :raid}]}
+                {:class :druid
+                 :spec :feral-dps
+                 :phase 3
+                 :kind :pre-raid
+                 :rank 6
+                 :slot :legs
+                 :item {:id 33673
+                        :name "Vengeful Gladiator's Dragonhide Legguards"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-dps
+                 :phase 3
+                 :kind :pre-raid
+                 :rank 1
                  :slot :main-hand
                  :item {:id 33716 :name "Vengeful Gladiator's Staff"}
                  :sources [{:instance :unknown}]}
                 {:class :druid
                  :spec :feral-dps
                  :phase 3
+                 :kind :bis
+                 :rank 3
+                 :slot :main-hand
+                 :item {:id 30883 :name "Pillar of Ferocity"}
+                 :sources [{:instance :raid}]}
+                {:class :druid
+                 :spec :feral-dps
+                 :phase 3
+                 :kind :bis
+                 :rank 1
                  :slot :neck
                  :item {:id 32260 :name "Choker of Endless Nightmares"}
                  :sources [{:instance :raid}]}
                 {:class :druid
                  :spec :feral-dps
                  :phase 3
+                 :kind :bis
+                 :rank 3
+                 :slot :neck
+                 :item {:id 32591 :name "Choker of Serrated Blades"}
+                 :sources [{:instance :raid}]}
+                {:class :druid
+                 :spec :feral-dps
+                 :phase 3
+                 :kind :pre-raid
+                 :rank 2
                  :slot :ranged
                  :item {:id 32387 :name "Idol of the Raven Goddess"}
                  :sources [{:instance :unknown}]}
                 {:class :druid
                  :spec :feral-dps
                  :phase 3
+                 :kind :bis
+                 :rank 3
+                 :slot :ranged
+                 :item {:id 32257 :name "Idol of the White Stag"}
+                 :sources [{:instance :raid}]}
+                {:class :druid
+                 :spec :feral-dps
+                 :phase 3
+                 :kind :bis
+                 :rank 1
                  :slot :ring1
                  :item {:id 32497 :name "Stormrage Signet Ring"}
                  :sources [{:instance :raid}]}
                 {:class :druid
                  :spec :feral-dps
                  :phase 3
+                 :kind :bis
+                 :rank 4
+                 :slot :ring1
+                 :item {:id 32335 :name "Unstoppable Aggressor's Ring"}
+                 :sources [{:instance :raid}]}
+                {:class :druid
+                 :spec :feral-dps
+                 :phase 3
+                 :kind :bis
+                 :rank 2
                  :slot :ring2
                  :item {:id 29301 :name "Band of the Eternal Champion"}
                  :sources [{:instance :raid}]}
                 {:class :druid
                  :spec :feral-dps
                  :phase 3
+                 :kind :bis
+                 :rank 6
+                 :slot :ring2
+                 :item {:id 32266 :name "Ring of Deceitful Intent"}
+                 :sources [{:instance :raid}]}
+                {:class :druid
+                 :spec :feral-dps
+                 :phase 3
+                 :kind :bis
+                 :rank 1
                  :slot :shoulder
                  :item {:id 31048 :name "Thunderheart Pauldrons"}
                  :sources [{:instance :raid}]}
                 {:class :druid
                  :spec :feral-dps
                  :phase 3
+                 :kind :pre-raid
+                 :rank 5
+                 :slot :shoulder
+                 :item {:id 33674
+                        :name "Vengeful Gladiator's Dragonhide Spaulders"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-dps
+                 :phase 3
+                 :kind :bis
+                 :rank 2
                  :slot :trinket1
                  :item {:id 32505 :name "Madness of the Betrayer"}
                  :sources [{:instance :raid}]}
                 {:class :druid
                  :spec :feral-dps
                  :phase 3
+                 :kind :bis
+                 :rank 3
+                 :slot :waist
+                 :item {:id 30879 :name "Don Alejandro's Money Belt"}
+                 :sources [{:instance :raid}]}
+                {:class :druid
+                 :spec :feral-dps
+                 :phase 3
+                 :kind :bis
+                 :rank 4
+                 :slot :waist
+                 :item {:id 32265 :name "Shadow-walker's Cord"}
+                 :sources [{:instance :raid}]}
+                {:class :druid
+                 :spec :feral-dps
+                 :phase 3
+                 :kind :bis
+                 :rank 5
+                 :slot :waist
+                 :item {:id 33879 :name "Vindicator's Dragonhide Belt"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-dps
+                 :phase 3
+                 :kind :bis
+                 :rank 1
                  :slot :wrist
                  :item {:id 32324 :name "Insidious Bands"}
                  :sources [{:instance :raid}]}
                 {:class :druid
                  :spec :feral-dps
                  :phase 3
+                 :kind :bis
+                 :rank 2
                  :slot :wrist
                  :item {:id 33881 :name "Vindicator's Dragonhide Bracers"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-dps
+                 :phase 3
+                 :kind :bis
+                 :rank 3
+                 :slot :wrist
+                 :item {:id 30863 :name "Deadly Cuffs"}
+                 :sources [{:instance :raid}]}
+                {:class :druid
+                 :spec :feral-dps
+                 :phase 3
+                 :kind :bis
+                 :rank 4
+                 :slot :wrist
+                 :item {:id 33893 :name "Vindicator's Leather Bracers"}
+                 :sources [{:instance :unknown}]}
+                {:class :druid
+                 :spec :feral-dps
+                 :phase 3
+                 :kind :pre-raid
+                 :rank 6
+                 :slot :wrist
+                 :item {:id 32580 :name "Swiftstrike Bracers"}
                  :sources [{:instance :unknown}]}])
 
 (tset by-spec :druid-feral-dps entries)

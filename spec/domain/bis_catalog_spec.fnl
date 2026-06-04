@@ -124,6 +124,51 @@
                                 (assert.is_true (. present
                                                    :feral-tank-mitigation))
                                 (assert.is_true (. present :balance)))))))
+            (describe "kind / rank"
+                      (fn []
+                        (it "tags every entry with a :kind and integer :rank"
+                            (fn []
+                              (each [_ e (ipairs (catalog.all))]
+                                (assert.is_true (or (= e.kind :bis)
+                                                    (= e.kind :pre-raid))
+                                                (.. "bad kind "
+                                                    (tostring e.kind)))
+                                (assert.are.equal (math.floor e.rank) e.rank))))
+                        (it "by-class-spec-phase filters by kind when given"
+                            (fn []
+                              (each [_ e (ipairs (catalog.by-class-spec-phase :priest
+                                                                              :shadow
+                                                                              1
+                                                                              :pre-raid))]
+                                (assert.are.equal 1 e.phase)
+                                (assert.are.equal :pre-raid e.kind))))
+                        (it "ranked-for-slot returns :bis candidates best-first"
+                            (fn []
+                              (let [rows (catalog.ranked-for-slot :priest
+                                                                  :shadow 3
+                                                                  :head)]
+                                (assert.is_true (> (count rows) 1)
+                                                "expected ranked alternatives")
+                                (each [_ e (ipairs rows)]
+                                  (assert.are.equal :head e.slot)
+                                  (assert.are.equal :bis e.kind)
+                                  (assert.is_true (<= e.phase 3)))
+                                ;; sorted phase desc, then rank asc
+                                (for [i 2 (count rows)]
+                                  (let [a (. rows (- i 1))
+                                        b (. rows i)]
+                                    (assert.is_true (or (> a.phase b.phase)
+                                                        (and (= a.phase b.phase)
+                                                             (<= a.rank b.rank)))
+                                                    "ranked-for-slot mis-sorted"))))))
+                        (it "pre-raid-for-slot yields only pre-raid gear"
+                            (fn []
+                              (each [_ e (ipairs (catalog.pre-raid-for-slot :priest
+                                                                            :shadow
+                                                                            3
+                                                                            :head))]
+                                (assert.are.equal :pre-raid e.kind)
+                                (assert.are.equal :head e.slot))))))
             (describe :purity
                       (fn []
                         (it "all returns a fresh sequence each call"

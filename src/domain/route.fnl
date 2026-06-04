@@ -102,6 +102,30 @@
   (and (not (. excluded-item-ids item-id))
        (or ctx.include-classic? (>= item-id classic-item-id-cutoff))))
 
+;; Gearing-up threshold (ROADMAP Phase 4b): below this fraction of endgame :bis
+;; slots filled, the player is still "on the road" and pre-raid catch-up gear is
+;; worth surfacing in the weekly plan alongside raid BiS. At or above it, the
+;; pre-raid tail is dropped -- a near-BiS player has no use for dungeon blues.
+(local gearing-up-bis-fraction 0.5)
+
+(fn gearing-up? [ctx]
+  "True when the player still lacks most of their endgame BiS for this phase, so
+   the plan should also point at the dungeons / heroics / rep that move a
+   fresh-70 forward. Derived from owned-set, not a manual toggle (UX §9)."
+  (let [bis (bis-catalog.by-class-spec ctx.class ctx.spec)
+        counts (accumulate [acc {:total 0 :owned 0} _ e (ipairs bis)]
+                 (if (and (= e.kind :bis) (<= e.phase ctx.phase))
+                     {:total (+ acc.total 1)
+                      :owned (+ acc.owned (if (owned? ctx e.item.id) 1 0))}
+                     acc))]
+    (or (= counts.total 0)
+        (< counts.owned (* gearing-up-bis-fraction counts.total)))))
+
+(fn want-kind? [gearing? kind]
+  "Whether a BiS entry of this provenance belongs in the plan's candidate set:
+   endgame :bis always; :pre-raid catch-up only while gearing up."
+  (or (= kind :bis) (and gearing? (= kind :pre-raid))))
+
 (fn target-item [ctx adef bis-entry]
   "A scored TargetItem for one BiS entry IF its item drops from this activity.
    Returns nil when the item is untracked or sourced elsewhere, so the activity
@@ -117,24 +141,28 @@
        :p (chance.effective-rate entry.base-drop-p
                                  (competitors-for ctx adef.id))})))
 
-(fn gap-items [ctx adef]
-  "TargetItems for the player's UNOWNED BiS items (phase <= ctx.phase) that drop
-   from this activity, in catalog order. Untracked / owned / off-source items
-   fall away, so an empty result means 'nothing here for this player'."
+(fn gap-items [ctx adef gearing?]
+  "TargetItems for the player's UNOWNED, wanted BiS items (phase <= ctx.phase)
+   that drop from this activity, in catalog order. Untracked / owned / off-source
+   / off-kind items fall away, so an empty result means 'nothing here for this
+   player'. :pre-raid catch-up gear is admitted only while `gearing?` (see
+   gearing-up?); endgame :bis always. Multiple ranked items may share a slot --
+   make-scorer combines them so alternatives back each other up without
+   double-counting the slot."
   (let [bis (bis-catalog.by-class-spec ctx.class ctx.spec)]
     (icollect [_ e (ipairs bis)]
-      (when (and (<= e.phase ctx.phase) (not (owned? ctx e.item.id))
-                 (show-item? ctx e.item.id))
+      (when (and (<= e.phase ctx.phase) (want-kind? gearing? e.kind)
+                 (not (owned? ctx e.item.id)) (show-item? ctx e.item.id))
         (target-item ctx adef e)))))
 
-(fn candidate-activity [player ctx adef]
+(fn candidate-activity [player ctx adef gearing?]
   "A plan-ready Activity for one content def, or nil to drop it from the plan.
    Kept only when the player can run it this week (activities.available?) AND it
    drops at least one wanted item."
   (when (activities.available? adef player
                                (and ctx.lockouts (. ctx.lockouts adef.id))
                                ctx.now)
-    (let [items (gap-items ctx adef)]
+    (let [items (gap-items ctx adef gearing?)]
       (when (> (length items) 0)
         {:id adef.id
          :name adef.name
@@ -146,12 +174,21 @@
 
 (fn make-scorer [ctx]
   "A slot-weighted composite scorer to inject into plan.plan-week.
-   score(activity) = Σ weight(slot) · at-least-one(p, runs); reduces to the
-   plan default when every weight is 1."
+   score(activity) = Σ_slot weight(slot) · P(any candidate for that slot drops
+   this week). Ranked alternatives sharing a slot combine via the complement
+   product (slot filled if ANY of its items drops), so a slot is worth at most
+   its single weighted contribution -- alternatives back each other up without
+   double-counting the slot. Reduces to the per-item sum when every slot is
+   unique and every weight is 1."
   (fn [activity]
-    (accumulate [total 0 _ item (ipairs activity.items)]
-      (+ total (* (weight-for ctx item.slot)
-                  (chance.at-least-one item.p item.runs))))))
+    (let [by-slot {}]
+      (each [_ item (ipairs activity.items)]
+        (let [slot (or item.slot :_noslot)
+              p-week (chance.at-least-one item.p item.runs)
+              prior (or (. by-slot slot) 0)]
+          (tset by-slot slot (- 1 (* (- 1 prior) (- 1 p-week))))))
+      (accumulate [total 0 slot p (pairs by-slot)]
+        (+ total (* (weight-for ctx slot) p))))))
 
 (fn slot-fill-probs [steps]
   "Map gear-slot -> P(at least one upgrade for that slot by reset), folding every
@@ -210,8 +247,9 @@
    Errors:  if player or ctx fails its schema at the boundary."
   (validate.assert! schemas.Player player :route/player)
   (validate.assert! schemas.RouteContext ctx :route/ctx)
-  (let [catalog (icollect [_ adef (ipairs (activities.all))]
-                  (candidate-activity player ctx adef))
+  (let [gearing? (gearing-up? ctx)
+        catalog (icollect [_ adef (ipairs (activities.all))]
+                  (candidate-activity player ctx adef gearing?))
         attune-by-id (collect [_ a (ipairs catalog)]
                        (values a.id a.attunement))
         steps (plan.plan-week catalog (make-scorer ctx))

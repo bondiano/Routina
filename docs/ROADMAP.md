@@ -22,7 +22,7 @@
 5. **Small, sharp surface.** It is better to ship a tight weekly planner with
    trustworthy probabilities than a sprawling assistant that approximates.
 
-## Status snapshot (2026-06-04)
+## Status snapshot (2026-06-05)
 
 | Area | State |
 |---|---|
@@ -39,7 +39,7 @@
 | WoW API wrapper | **Done** -- `src/core/wow.fnl` |
 | UI shell (custom CreateFrame, journal theme) | **Done** -- `root` + `theme` + `dom`/`format`/`frames`, three tab pills |
 | Vertical slice (Plan tab) | **Done** -- `domain/plan.fnl` scores a `sample-catalog` scaffold, rendered by `tabs/weekly.fnl` |
-| BiS catalog | `bis-catalog.fnl` + 27 generated `bis/<class>-<spec>.fnl` **done** (imported from GPL source; ~820 entries, all 9 classes) |
+| BiS catalog | `bis-catalog.fnl` + 27 generated `bis/<class>-<spec>.fnl` **done** (imported from GPL source; all 9 classes). **Phase 4b landed (pending in-game smoke):** full source ranks (~5100 entries), every entry carries `:kind` (`:bis`/`:pre-raid`) + `:rank`; queries `ranked-for-slot`/`pre-raid-for-slot`; route gearing-up mode + per-slot rank fallback; BiS tab tiers + pre-raid toggle. |
 | Lockout / activity model | `lockouts.fnl` + `activities.fnl` **done** (busted-green); next: `drop-table`, `route` |
 | License | **GPL-2.0** (inherited from imported BiS data; see `LICENSE`/`CREDITS.md`) |
 | Drop table | `drop-table.fnl` + generated `drops/data.fnl` **done** (279 entries imported from nexus-devs MIT; OQ-1 resolved) |
@@ -260,6 +260,125 @@ Exit criteria:
 - Adjusting "competitors on caster trinket" in options visibly reorders the
   weekly plan.
 - Monte Carlo runs in <50 ms for a realistic week on a mid-range laptop.
+
+## Phase 4b -- Catalog depth: pre-BiS & ranked alternatives (CODE-COMPLETE, pending in-game smoke)
+
+> All five steps below are merged and green under `task lint && task test` (339
+> specs). Flips to DONE after the BiS-tab smoke checks (toggle swaps the list,
+> alternatives render, no Lua error) pass on a live client. As shipped:
+> schema `:kind`/`:rank`; importer at full rank (~5100 entries, kind from
+> Raid/WorldBoss/TokenId); catalog `ranked-for-slot`/`pre-raid-for-slot` + `?kind`
+> on `by-class-spec-phase`; route additive gearing-up (`gearing-up?` at 50% of
+> endgame `:bis` slots) + per-slot complement-product scoring so alternatives
+> back each other up without double-counting; BiS tab primary+alternatives
+> (display capped at 3, OQ-9) with a Best-in-slot / Road-to-BiS Dropdown.
+>
+> Dependency-gated, not calendar-gated: builds on the Phase 2 catalog/route and
+> Phase 4 scoring, and may land **before** the Phase 6 release -- it directly
+> sharpens G1/G2 (what to run, with the right targets). Today the catalog is
+> **one item per slot, raid-BiS only**: `bis/<class>-<spec>.fnl` carries
+> Priority 1-2 (`MAX_PRIORITY = 2` in `scripts/import-bis.lua`) and the BiS tab's
+> `best-in` collapses each slot to the single highest-phase entry. A player
+> gearing toward BiS sees only the destination, never the road, and never a
+> second-best option when the drop won't come.
+
+Goal: model two axes the source already supports but we currently discard --
+**rank** (the tier-2/tier-N alternatives within a slot) and **kind** (pre-raid
+catch-up gear vs endgame raid BiS) -- then surface both in scoring and the BiS
+tab. Decisions locked (2026-06-05): a new orthogonal `:kind` field; import
+**all** source ranks; pre-BiS and alternatives **feed** route scoring.
+
+Order matters; later items depend on earlier.
+
+1. **Schema -- `src/domain/schemas.fnl`** (schema change; see CLAUDE.md "Ask").
+   Extend `schemas.BisItem` with two fields:
+   - `:kind [:enum :pre-raid :bis]` -- provenance class of the recommendation,
+     **orthogonal** to `:phase`. `:bis` = endgame raid/world-boss/token target;
+     `:pre-raid` = catch-up gear to wear *toward* that BiS (dungeon, heroic,
+     crafted, reputation, quest, PvP, BoE) at the slot's entry phase.
+   - `:rank :integer` (>= 1) -- within `(class, spec, phase, kind, slot)`,
+     1 = best. Maps directly to the source's `Priority`.
+   - Bump `db.version` only if a SavedVariables-resident shape changes; the
+     catalog itself is generated data, so this is a schema+validate+docgen
+     change, not a migration. Regenerate `docs/api.md` via `/docgen`.
+
+2. **Importer -- `scripts/import-bis.lua`** (regenerates all 27 data modules).
+   - **Rank:** raise `MAX_PRIORITY` to import every source rank, emitting
+     `:rank = Priority`. **Cost:** the source's `Priority` tail runs to 30
+     (~6000+ links vs today's ~820 at Priority 1-2) -- roughly a 7-8x blow-up in
+     generated data. Mitigations: (a) generated data modules are exempt from the
+     300-line rule, but reviewability still suffers -- split per-spec files by
+     phase (`bis/<class>-<spec>-p<phase>.fnl`) if any single file gets unwieldy;
+     (b) measure load time -- the catalog flattens at module load, and 6k entries
+     through `validate.check` once is fine, but confirm it stays off the frame.
+   - **Kind:** the source has **no explicit pre-raid list** (`items.lua` Phase
+     values are 1-5, never 0). Derive `:kind` from provenance: `Raid = true` or
+     `WorldBoss = true` or token/tier currency -> `:bis`; everything else at the
+     slot's entry phase (dungeon/heroic/crafted/rep/quest/vendor/PvP/BoE, joined
+     via the already-vendored `item-sources.lua` `category`) -> `:pre-raid`. The
+     exact rule is **OQ-8** (below) -- get it reviewed before regenerating.
+
+3. **Catalog queries -- `src/domain/bis-catalog.fnl`.**
+   - `by-class-spec-phase` gains an optional `?kind` (defaults to `:bis` to keep
+     callers behaving as today).
+   - New `M.ranked-for-slot [class spec phase slot ?kind]` -> `[BisItem]` sorted
+     by `:rank` (primary first, then alternatives).
+   - New `M.pre-raid-for-slot [class spec slot]` -> ranked pre-raid options.
+   - `primary-for-slot` pins to `:kind :bis`, `:rank 1`.
+   - All queries stay pure; extend `bis-catalog_spec.fnl` in the same change.
+
+4. **Route scoring -- `src/domain/route.fnl`.**
+   - **Alternatives as fallback:** a slot's "fill by reset" probability is
+     `at-least-one` over the complement product of *all* ranked drops for that
+     slot, not just rank 1 -- reusing `drop-chance.at-least-one` /
+     `effective-rate`, no new math. Dedup per slot so alternatives never count as
+     extra slots.
+   - **Gearing-up mode:** when the player owns few `:bis` slots (a tunable
+     threshold), target `:pre-raid` items so the weekly plan points at the
+     dungeons/heroics/rep that actually move a fresh-70 forward; cross over to
+     `:bis` targets as slots fill. Mode is derived from owned-set, not a manual
+     toggle, so the plan stays "one screen, no config" (UX principle §9).
+   - Property tests in `spec/helpers/gen.fnl`-backed `route_spec.fnl` for the
+     fallback complement and the mode crossover.
+
+5. **BiS tab -- `src/ui/tabs/bis.fnl` + `view-model`.**
+   - Replace `best-in` (highest-phase collapse) with a kind+rank-aware select:
+     per slot, a primary row (rank 1) plus an expandable list of alternatives
+     (rank 2..N), each flagged owned/unowned.
+   - A segmented control at the tab head: **Road to BiS (pre-raid)** vs
+     **Phase N BiS** -- switches the whole checklist's `:kind`. Built only from
+     AceGUI primitives via the `src/ui/acegui.fnl` facade (verify the widget
+     exists in `Libs/Ace3/AceGUI-3.0/`; fall back via `acegui.registered?`).
+   - Keep the pure data->view-model split (`M.list-view-model`) busted-tested;
+     building widgets stays imperative / wowUnit-tier.
+
+Exit criteria:
+
+- BiS tab shows, for a fixture spec, a primary + >= 1 ranked alternative per
+  populated slot, and the pre-raid/Phase toggle swaps the list with no Lua error.
+- For a fresh-70 fixture (few `:bis` slots owned), `route.plan-week` surfaces
+  `:pre-raid` targets; for a near-BiS fixture it surfaces `:bis` targets --
+  deterministic, no WoW API, seed-controlled.
+- Domain coverage still >= 85%; `docs/api.md` regenerated and CI-clean.
+- Catalog load (flatten + validate of the full-rank set) stays off the render
+  frame -- measured, not assumed.
+
+Open questions this phase introduced (shipped with a v1 answer; revisit if
+in-game data contradicts it -- still worth promoting to [PRD §13](PRD.md#13-open-questions)):
+
+- **OQ-8 -- pre-raid derivation.** *v1 answer (shipped):* the source has no
+  pre-raid list, so `kind_of` in `scripts/import-bis.lua` synthesises it from the
+  Warkdev item flags -- `Raid or WorldBoss or TokenId>0 -> :bis`, else
+  `:pre-raid` (~2475 `:bis` / ~2627 `:pre-raid`). The `item-sources.lua category`
+  refinement and a hand-authored overlay (the `bis-curator` path) stay open if
+  live data shows the flags lying for some specs. *Affects:* importer, catalog
+  correctness.
+- **OQ-9 -- alternatives depth.** *v1 answer (shipped):* data keeps every rank;
+  the surfaces cap. The BiS tab shows primary + 3 alternatives (`max-alts`);
+  route admits the full rank set per slot but its scorer combines them per-slot
+  (complement product), so the Priority-20+ tail can't inflate a slot's value.
+  Still open: whether to additionally drop the BoE/vendor long tail by relevance
+  rather than position. *Affects:* BiS tab, route candidate set, perf.
 
 ## Phase 5 -- Polish
 

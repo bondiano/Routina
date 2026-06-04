@@ -14,183 +14,1363 @@
 (local entries [{:class :paladin
                  :spec :holy
                  :phase 1
+                 :kind :bis
+                 :rank 5
+                 :slot :back
+                 :item {:id 28765 :name "Stainless Cloak of the Pure Hearted"}
+                 :sources [{:instance :raid}]}
+                {:class :paladin
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 6
+                 :slot :back
+                 :item {:id 31329 :name "Lifegiving Cloak"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 7
+                 :slot :back
+                 :item {:id 29354 :name "Light-Touched Stole of Altruism"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :holy
+                 :phase 1
+                 :kind :bis
+                 :rank 8
+                 :slot :back
+                 :item {:id 28582 :name "Red Riding Hood's Cloak"}
+                 :sources [{:instance :raid}]}
+                {:class :paladin
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 9
+                 :slot :back
+                 :item {:id 24254 :name "White Remedy Cape"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :holy
+                 :phase 1
+                 :kind :bis
+                 :rank 10
+                 :slot :back
+                 :item {:id 29375 :name "Bishop's Cloak"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :holy
+                 :phase 1
+                 :kind :bis
+                 :rank 4
+                 :slot :chest
+                 :item {:id 29062 :name "Justicar Chestpiece"}
+                 :sources [{:instance :raid}]}
+                {:class :paladin
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 5
+                 :slot :chest
+                 :item {:id 21875 :name "Primal Mooncloth Robe"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 6
+                 :slot :chest
+                 :item {:id 29522 :name "Windhawk Hauberk"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :holy
+                 :phase 1
+                 :kind :bis
+                 :rank 7
+                 :slot :chest
+                 :item {:id 28662 :name "Breastplate of the Lightbinder"}
+                 :sources [{:instance :raid}]}
+                {:class :paladin
+                 :spec :holy
+                 :phase 1
+                 :kind :bis
+                 :rank 8
+                 :slot :chest
+                 :item {:id 28735 :name "Earthblood Chestguard"}
+                 :sources [{:instance :raid}]}
+                {:class :paladin
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 9
+                 :slot :chest
+                 :item {:id 28230 :name "Hallowed Garments"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 10
+                 :slot :chest
+                 :item {:id 28202 :name "Moonglade Robe"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 11
+                 :slot :chest
+                 :item {:id 30298 :name "Void Slayer's Tunic"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :holy
+                 :phase 1
+                 :kind :bis
+                 :rank 4
+                 :slot :feet
+                 :item {:id 30737 :name "Gold-Leaf Wildboots"}
+                 :sources [{:instance :world-boss}]}
+                {:class :paladin
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 6
+                 :slot :feet
+                 :item {:id 28752 :name "Forestlord Striders"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :holy
+                 :phase 1
+                 :kind :bis
+                 :rank 7
+                 :slot :feet
+                 :item {:id 28569 :name "Boots of Valiance"}
+                 :sources [{:instance :raid}]}
+                {:class :paladin
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 8
+                 :slot :feet
+                 :item {:id 27411 :name "Slippers of Serenity"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 9
+                 :slot :feet
+                 :item {:id 29251 :name "Boots of the Pious"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 10
+                 :slot :feet
+                 :item {:id 28221 :name "Boots of the Watchful Heart"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 11
+                 :slot :feet
+                 :item {:id 27549 :name "Wavefury Boots"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 12
+                 :slot :feet
+                 :item {:id 25792 :name "Curate's Boots"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :holy
+                 :phase 1
+                 :kind :bis
+                 :rank 6
+                 :slot :hands
+                 :item {:id 28505 :name "Gauntlets of Renewed Hope"}
+                 :sources [{:instance :raid}]}
+                {:class :paladin
+                 :spec :holy
+                 :phase 1
+                 :kind :bis
+                 :rank 7
+                 :slot :hands
+                 :item {:id 28520 :name "Gloves of Centering"}
+                 :sources [{:instance :raid}]}
+                {:class :paladin
+                 :spec :holy
+                 :phase 1
+                 :kind :bis
+                 :rank 8
+                 :slot :hands
+                 :item {:id 28521 :name "Mitts of the Treemender"}
+                 :sources [{:instance :raid}]}
+                {:class :paladin
+                 :spec :holy
+                 :phase 1
+                 :kind :bis
+                 :rank 9
+                 :slot :hands
+                 :item {:id 29065 :name "Justicar Gloves"}
+                 :sources [{:instance :raid}]}
+                {:class :paladin
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 10
+                 :slot :hands
+                 :item {:id 29506 :name "Gloves of the Living Touch"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 11
+                 :slot :hands
+                 :item {:id 27457 :name "Life Bearer's Gauntlets"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 12
+                 :slot :hands
+                 :item {:id 28304 :name "Prismatic Mittens of Mending"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 13
+                 :slot :hands
+                 :item {:id 29327 :name :Cryo-mitts}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :holy
+                 :phase 1
+                 :kind :bis
+                 :rank 6
+                 :slot :head
+                 :item {:id 30728 :name "Fathom-Helm of the Deeps"}
+                 :sources [{:instance :world-boss}]}
+                {:class :paladin
+                 :spec :holy
+                 :phase 1
+                 :kind :bis
+                 :rank 7
+                 :slot :head
+                 :item {:id 29061 :name "Justicar Diadem"}
+                 :sources [{:instance :raid}]}
+                {:class :paladin
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 8
+                 :slot :head
+                 :item {:id 24264 :name "Whitemend Hood"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :holy
+                 :phase 1
+                 :kind :bis
+                 :rank 9
+                 :slot :head
+                 :item {:id 28803 :name "Cowl of Nature's Breath"}
+                 :sources [{:instance :raid}]}
+                {:class :paladin
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 10
+                 :slot :head
+                 :item {:id 28756 :name "Headdress of the High Potentate"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :holy
+                 :phase 1
+                 :kind :bis
+                 :rank 11
+                 :slot :head
+                 :item {:id 32084 :name "Helmet of the Steadfast Champion"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 12
+                 :slot :head
+                 :item {:id 28413 :name "Hallowed Crown"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 13
+                 :slot :head
+                 :item {:id 28348 :name "Moonglade Cowl"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 14
+                 :slot :head
+                 :item {:id 25820 :name "Metallic Headband of Simm'onz"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :holy
+                 :phase 1
+                 :kind :bis
+                 :rank 6
+                 :slot :legs
+                 :item {:id 30727 :name "Gilded Trousers of Benediction"}
+                 :sources [{:instance :world-boss}]}
+                {:class :paladin
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 8
+                 :slot :legs
+                 :item {:id 28751 :name "Heart-Flame Leggings"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :holy
+                 :phase 1
+                 :kind :bis
+                 :rank 9
+                 :slot :legs
+                 :item {:id 28748 :name "Legplates of the Innocent"}
+                 :sources [{:instance :raid}]}
+                {:class :paladin
+                 :spec :holy
+                 :phase 1
+                 :kind :bis
+                 :rank 10
+                 :slot :legs
+                 :item {:id 28591 :name "Earthsoul Leggings"}
+                 :sources [{:instance :raid}]}
+                {:class :paladin
+                 :spec :holy
+                 :phase 1
+                 :kind :bis
+                 :rank 11
+                 :slot :legs
+                 :item {:id 28742 :name "Pantaloons of Repentance"}
+                 :sources [{:instance :raid}]}
+                {:class :paladin
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 12
+                 :slot :legs
+                 :item {:id 24261 :name "Whitemend Pants"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 13
+                 :slot :legs
+                 :item {:id 30543 :name "Pontifex Kilt"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 14
+                 :slot :legs
+                 :item {:id 31343 :name "Kamaei's Cerulean Skirt"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 15
+                 :slot :legs
+                 :item {:id 30299 :name "Starcaller's Plated Legguards"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 16
+                 :slot :legs
+                 :item {:id 30256 :name "Pants of the Naaru"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :holy
+                 :phase 1
+                 :kind :bis
+                 :rank 4
+                 :slot :main-hand
+                 :item {:id 28771 :name "Light's Justice"}
+                 :sources [{:instance :raid}]}
+                {:class :paladin
+                 :spec :holy
+                 :phase 1
+                 :kind :bis
+                 :rank 5
+                 :slot :main-hand
+                 :item {:id 28522 :name "Shard of the Virtuous"}
+                 :sources [{:instance :raid}]}
+                {:class :paladin
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 6
+                 :slot :main-hand
+                 :item {:id 23556 :name "Hand of Eternity"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 7
+                 :slot :main-hand
+                 :item {:id 29353 :name "Shockwave Truncheon"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 8
+                 :slot :main-hand
+                 :item {:id 32451 :name "Gladiator's Salvation"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 9
+                 :slot :main-hand
+                 :item {:id 31342 :name "The Ancient Scepter of Sue-Min"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 10
+                 :slot :main-hand
+                 :item {:id 29175 :name "Gavel of Pure Light"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 11
+                 :slot :main-hand
+                 :item {:id 25759 :name "Mogor's Anointing Club"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :holy
+                 :phase 1
+                 :kind :bis
+                 :rank 3
+                 :slot :neck
+                 :item {:id 30726 :name "Archaic Charm of Presence"}
+                 :sources [{:instance :world-boss}]}
+                {:class :paladin
+                 :spec :holy
+                 :phase 1
+                 :kind :bis
+                 :rank 4
+                 :slot :neck
+                 :item {:id 28609 :name "Emberspur Talisman"}
+                 :sources [{:instance :raid}]}
+                {:class :paladin
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 5
+                 :slot :neck
+                 :item {:id 31691 :name "Natasha's Guardian Cord"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :holy
+                 :phase 1
+                 :kind :bis
+                 :rank 6
+                 :slot :neck
+                 :item {:id 29374 :name "Necklace of Eternal Hope"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 7
+                 :slot :neck
+                 :item {:id 21712 :name "Amulet of the Fallen God"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :holy
+                 :phase 1
+                 :kind :bis
+                 :rank 4
+                 :slot :off-hand
+                 :item {:id 29458 :name "Aegis of the Vindicator"}
+                 :sources [{:instance :raid}]}
+                {:class :paladin
+                 :spec :holy
+                 :phase 1
+                 :kind :bis
+                 :rank 6
+                 :slot :off-hand
+                 :item {:id 29274 :name "Tears of Heaven"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :holy
+                 :phase 1
+                 :kind :bis
+                 :rank 7
+                 :slot :off-hand
+                 :item {:id 29267 :name "Light-Bearer's Faith Shield"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :holy
+                 :phase 1
+                 :kind :bis
+                 :rank 8
+                 :slot :off-hand
+                 :item {:id 28728 :name "Aran's Soothing Sapphire"}
+                 :sources [{:instance :raid}]}
+                {:class :paladin
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 9
+                 :slot :off-hand
+                 :item {:id 22819 :name "Shield of Condemnation"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 10
+                 :slot :off-hand
+                 :item {:id 23048 :name "Sapphiron's Right Eye"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 11
+                 :slot :off-hand
+                 :item {:id 29170 :name "Windcaller's Orb"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 12
+                 :slot :off-hand
+                 :item {:id 27772 :name "Stormshield of Renewal"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 13
+                 :slot :off-hand
+                 :item {:id 27477 :name "Faol's Signet of Cleansing"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 14
+                 :slot :off-hand
+                 :item {:id 31493 :name "Netherwing Spiritualist's Charm"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :holy
+                 :phase 1
+                 :kind :bis
+                 :rank 1
                  :slot :ranged
                  :item {:id 28592 :name "Libram of Souls Redeemed"}
                  :sources [{:instance :raid}]}
                 {:class :paladin
                  :spec :holy
                  :phase 1
+                 :kind :pre-raid
+                 :rank 2
                  :slot :ranged
                  :item {:id 23006 :name "Libram of Light"}
                  :sources [{:instance :unknown}]}
                 {:class :paladin
                  :spec :holy
                  :phase 1
+                 :kind :pre-raid
+                 :rank 4
+                 :slot :ranged
+                 :item {:id 28296 :name "Libram of the Lightbringer"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 5
+                 :slot :ranged
+                 :item {:id 25644 :name "Blessed Book of Nagrand"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :holy
+                 :phase 1
+                 :kind :bis
+                 :rank 5
+                 :slot :ring1
+                 :item {:id 30736 :name "Ring of Flowing Light"}
+                 :sources [{:instance :world-boss}]}
+                {:class :paladin
+                 :spec :holy
+                 :phase 1
+                 :kind :bis
+                 :rank 7
+                 :slot :ring1
+                 :item {:id 28763 :name "Jade Ring of the Everliving"}
+                 :sources [{:instance :raid}]}
+                {:class :paladin
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 10
+                 :slot :ring1
+                 :item {:id 27780 :name "Ring of Fabled Hope"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 12
+                 :slot :ring1
+                 :item {:id 31383 :name "Spiritualist's Mark of the Sha'tar"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :holy
+                 :phase 1
+                 :kind :bis
+                 :rank 6
+                 :slot :ring2
+                 :item {:id 28790 :name "Naaru Lightwarden's Band"}
+                 :sources [{:instance :raid}]}
+                {:class :paladin
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 9
+                 :slot :ring2
+                 :item {:id 29290 :name "Violet Signet of the Grand Restorer"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 11
+                 :slot :ring2
+                 :item {:id 28259 :name "Cosmic Lifeband"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 13
+                 :slot :ring2
+                 :item {:id 29814 :name "Celestial Jewel Ring"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :holy
+                 :phase 1
+                 :kind :bis
+                 :rank 5
+                 :slot :shoulder
+                 :item {:id 29064 :name "Justicar Pauldrons"}
+                 :sources [{:instance :raid}]}
+                {:class :paladin
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 6
+                 :slot :shoulder
+                 :item {:id 21874 :name "Primal Mooncloth Shoulders"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :holy
+                 :phase 1
+                 :kind :bis
+                 :rank 7
+                 :slot :shoulder
+                 :item {:id 28631 :name "Dragon-Quake Shoulderguards"}
+                 :sources [{:instance :raid}]}
+                {:class :paladin
+                 :spec :holy
+                 :phase 1
+                 :kind :bis
+                 :rank 8
+                 :slot :shoulder
+                 :item {:id 28666 :name "Pauldrons of the Justice-Seeker"}
+                 :sources [{:instance :raid}]}
+                {:class :paladin
+                 :spec :holy
+                 :phase 1
+                 :kind :bis
+                 :rank 9
+                 :slot :shoulder
+                 :item {:id 28647 :name "Forest Wind Shoulderpads"}
+                 :sources [{:instance :raid}]}
+                {:class :paladin
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 10
+                 :slot :shoulder
+                 :item {:id 27775 :name "Hallowed Pauldrons"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 11
+                 :slot :shoulder
+                 :item {:id 27433 :name "Pauldrons of Sufferance"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 12
+                 :slot :shoulder
+                 :item {:id 30925 :name "Spaulders of the Torn-heart"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :holy
+                 :phase 1
+                 :kind :bis
+                 :rank 2
                  :slot :trinket1
                  :item {:id 29376 :name "Essence of the Martyr"}
                  :sources [{:instance :unknown}]}
                 {:class :paladin
                  :spec :holy
+                 :phase 1
+                 :kind :bis
+                 :rank 4
+                 :slot :trinket1
+                 :item {:id 28590 :name "Ribbon of Sacrifice"}
+                 :sources [{:instance :raid}]}
+                {:class :paladin
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 6
+                 :slot :trinket1
+                 :item {:id 30841 :name "Lower City Prayerbook"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 8
+                 :slot :trinket1
+                 :item {:id 28190 :name "Scarab of the Infinite Cycle"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 3
+                 :slot :trinket2
+                 :item {:id 38288 :name "Direbrew Hops"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 5
+                 :slot :trinket2
+                 :item {:id 23047 :name "Eye of the Dead"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 7
+                 :slot :trinket2
+                 :item {:id 19395 :name "Rejuvenating Gem"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 9
+                 :slot :trinket2
+                 :item {:id 25634 :name "Oshu'gun Relic"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 4
+                 :slot :waist
+                 :item {:id 21873 :name "Primal Mooncloth Belt"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 5
+                 :slot :waist
+                 :item {:id 29524 :name "Windhawk Belt"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :holy
+                 :phase 1
+                 :kind :bis
+                 :rank 6
+                 :slot :waist
+                 :item {:id 28733 :name "Girdle of Truth"}
+                 :sources [{:instance :raid}]}
+                {:class :paladin
+                 :spec :holy
+                 :phase 1
+                 :kind :bis
+                 :rank 7
+                 :slot :waist
+                 :item {:id 28655 :name "Cord of Nature's Sustenance"}
+                 :sources [{:instance :raid}]}
+                {:class :paladin
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 8
+                 :slot :waist
+                 :item {:id 29250 :name "Cord of Sanctification"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 9
+                 :slot :waist
+                 :item {:id 21582 :name "Grasp of the Old God"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 10
+                 :slot :waist
+                 :item {:id 30932 :name "Akama's Sash"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 5
+                 :slot :wrist
+                 :item {:id 29523 :name "Windhawk Bracers"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 6
+                 :slot :wrist
+                 :item {:id 23539 :name "Blessed Bracers"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 7
+                 :slot :wrist
+                 :item {:id 29183 :name "Bindings of the Timewalker"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :holy
+                 :phase 1
+                 :kind :bis
+                 :rank 8
+                 :slot :wrist
+                 :item {:id 28512 :name "Bracers of Justice"}
+                 :sources [{:instance :raid}]}
+                {:class :paladin
+                 :spec :holy
+                 :phase 1
+                 :kind :bis
+                 :rank 9
+                 :slot :wrist
+                 :item {:id 28503 :name "Whirlwind Bracers"}
+                 :sources [{:instance :raid}]}
+                {:class :paladin
+                 :spec :holy
+                 :phase 1
+                 :kind :bis
+                 :rank 10
+                 :slot :wrist
+                 :item {:id 28511 :name "Bands of Indwelling"}
+                 :sources [{:instance :raid}]}
+                {:class :paladin
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 11
+                 :slot :wrist
+                 :item {:id 21604 :name "Bracelets of Royal Redemption"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 12
+                 :slot :wrist
+                 :item {:id 29249 :name "Bands of the Benevolent"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :holy
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 13
+                 :slot :wrist
+                 :item {:id 28029 :name "Goldenvine Wraps"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :holy
                  :phase 2
+                 :kind :bis
+                 :rank 3
+                 :slot :back
+                 :item {:id 29989 :name "Sunshower Light Cloak"}
+                 :sources [{:instance :raid}]}
+                {:class :paladin
+                 :spec :holy
+                 :phase 2
+                 :kind :bis
+                 :rank 3
+                 :slot :chest
+                 :item {:id 30134 :name "Crystalforge Chestpiece"}
+                 :sources [{:instance :raid}]}
+                {:class :paladin
+                 :spec :holy
+                 :phase 2
+                 :kind :bis
+                 :rank 2
                  :slot :feet
                  :item {:id 30027 :name "Boots of Courage Unending"}
                  :sources [{:instance :raid}]}
                 {:class :paladin
                  :spec :holy
                  :phase 2
+                 :kind :bis
+                 :rank 5
+                 :slot :feet
+                 :item {:id 30092 :name "Orca-Hide Boots"}
+                 :sources [{:instance :raid}]}
+                {:class :paladin
+                 :spec :holy
+                 :phase 2
+                 :kind :bis
+                 :rank 1
                  :slot :hands
                  :item {:id 30112 :name "Glorious Gauntlets of Crestfall"}
                  :sources [{:instance :raid}]}
                 {:class :paladin
                  :spec :holy
                  :phase 2
+                 :kind :bis
+                 :rank 3
+                 :slot :hands
+                 :item {:id 29976 :name "Worldstorm Gauntlets"}
+                 :sources [{:instance :raid}]}
+                {:class :paladin
+                 :spec :holy
+                 :phase 2
+                 :kind :bis
+                 :rank 5
+                 :slot :hands
+                 :item {:id 30135 :name "Crystalforge Gloves"}
+                 :sources [{:instance :raid}]}
+                {:class :paladin
+                 :spec :holy
+                 :phase 2
+                 :kind :bis
+                 :rank 4
+                 :slot :head
+                 :item {:id 30136 :name "Crystalforge Greathelm"}
+                 :sources [{:instance :raid}]}
+                {:class :paladin
+                 :spec :holy
+                 :phase 2
+                 :kind :pre-raid
+                 :rank 5
+                 :slot :head
+                 :item {:id 32472 :name "Justicebringer 2000 Specs"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :holy
+                 :phase 2
+                 :kind :bis
+                 :rank 5
+                 :slot :legs
+                 :item {:id 29991 :name "Sunhawk Leggings"}
+                 :sources [{:instance :raid}]}
+                {:class :paladin
+                 :spec :holy
+                 :phase 2
+                 :kind :bis
+                 :rank 7
+                 :slot :legs
+                 :item {:id 30137 :name "Crystalforge Leggings"}
+                 :sources [{:instance :raid}]}
+                {:class :paladin
+                 :spec :holy
+                 :phase 2
+                 :kind :bis
+                 :rank 3
+                 :slot :main-hand
+                 :item {:id 30108 :name "Lightfathom Scepter"}
+                 :sources [{:instance :raid}]}
+                {:class :paladin
+                 :spec :holy
+                 :phase 2
+                 :kind :bis
+                 :rank 2
                  :slot :neck
                  :item {:id 30018 :name "Lord Sanguinar's Claim"}
                  :sources [{:instance :raid}]}
                 {:class :paladin
                  :spec :holy
                  :phase 2
+                 :kind :bis
+                 :rank 5
+                 :slot :off-hand
+                 :item {:id 29923 :name "Talisman of the Sun King"}
+                 :sources [{:instance :raid}]}
+                {:class :paladin
+                 :spec :holy
+                 :phase 2
+                 :kind :bis
+                 :rank 3
+                 :slot :ranged
+                 :item {:id 30063 :name "Libram of Absolute Truth"}
+                 :sources [{:instance :raid}]}
+                {:class :paladin
+                 :spec :holy
+                 :phase 2
+                 :kind :bis
+                 :rank 4
+                 :slot :ring1
+                 :item {:id 30110 :name "Coral Band of the Revived"}
+                 :sources [{:instance :raid}]}
+                {:class :paladin
+                 :spec :holy
+                 :phase 2
+                 :kind :bis
+                 :rank 8
+                 :slot :ring2
+                 :item {:id 29920 :name "Phoenix-Ring of Rebirth"}
+                 :sources [{:instance :raid}]}
+                {:class :paladin
+                 :spec :holy
+                 :phase 2
+                 :kind :bis
+                 :rank 3
+                 :slot :shoulder
+                 :item {:id 30138 :name "Crystalforge Pauldrons"}
+                 :sources [{:instance :raid}]}
+                {:class :paladin
+                 :spec :holy
+                 :phase 2
+                 :kind :bis
+                 :rank 4
+                 :slot :shoulder
+                 :item {:id 30097 :name "Coral-Barbed Shoulderpads"}
+                 :sources [{:instance :raid}]}
+                {:class :paladin
+                 :spec :holy
+                 :phase 2
+                 :kind :bis
+                 :rank 2
                  :slot :waist
                  :item {:id 30030 :name "Girdle of Fallen Stars"}
                  :sources [{:instance :raid}]}
                 {:class :paladin
                  :spec :holy
+                 :phase 2
+                 :kind :bis
+                 :rank 3
+                 :slot :waist
+                 :item {:id 29965 :name "Girdle of the Righteous Path"}
+                 :sources [{:instance :raid}]}
+                {:class :paladin
+                 :spec :holy
+                 :phase 2
+                 :kind :bis
+                 :rank 4
+                 :slot :wrist
+                 :item {:id 30047 :name "Blackfathom Warbands"}
+                 :sources [{:instance :raid}]}
+                {:class :paladin
+                 :spec :holy
                  :phase 3
+                 :kind :bis
+                 :rank 1
                  :slot :back
                  :item {:id 32524 :name "Shroud of the Highborne"}
                  :sources [{:instance :raid}]}
                 {:class :paladin
                  :spec :holy
                  :phase 3
+                 :kind :bis
+                 :rank 2
                  :slot :back
                  :item {:id 34012 :name "Shroud of the Final Stand"}
                  :sources [{:instance :raid}]}
                 {:class :paladin
                  :spec :holy
                  :phase 3
+                 :kind :bis
+                 :rank 4
+                 :slot :back
+                 :item {:id 32337 :name "Shroud of Forgiveness"}
+                 :sources [{:instance :raid}]}
+                {:class :paladin
+                 :spec :holy
+                 :phase 3
+                 :kind :bis
+                 :rank 1
                  :slot :chest
                  :item {:id 30992 :name "Lightbringer Chestpiece"}
                  :sources [{:instance :raid}]}
                 {:class :paladin
                  :spec :holy
                  :phase 3
+                 :kind :bis
+                 :rank 2
                  :slot :chest
                  :item {:id 30904 :name "Savior's Grasp"}
                  :sources [{:instance :raid}]}
                 {:class :paladin
                  :spec :holy
                  :phase 3
+                 :kind :bis
+                 :rank 1
                  :slot :feet
                  :item {:id 32243 :name "Pearl Inlaid Boots"}
                  :sources [{:instance :raid}]}
                 {:class :paladin
                  :spec :holy
                  :phase 3
+                 :kind :bis
+                 :rank 3
+                 :slot :feet
+                 :item {:id 32609 :name "Boots of the Divine Light"}
+                 :sources [{:instance :raid}]}
+                {:class :paladin
+                 :spec :holy
+                 :phase 3
+                 :kind :bis
+                 :rank 2
                  :slot :hands
                  :item {:id 30983 :name "Lightbringer Gloves"}
                  :sources [{:instance :raid}]}
                 {:class :paladin
                  :spec :holy
                  :phase 3
+                 :kind :bis
+                 :rank 4
+                 :slot :hands
+                 :item {:id 32328 :name "Botanist's Gloves of Growth"}
+                 :sources [{:instance :raid}]}
+                {:class :paladin
+                 :spec :holy
+                 :phase 3
+                 :kind :bis
+                 :rank 1
                  :slot :head
                  :item {:id 30988 :name "Lightbringer Greathelm"}
                  :sources [{:instance :raid}]}
                 {:class :paladin
                  :spec :holy
                  :phase 3
+                 :kind :bis
+                 :rank 2
                  :slot :head
                  :item {:id 32354 :name "Crown of Empowered Fate"}
                  :sources [{:instance :raid}]}
                 {:class :paladin
                  :spec :holy
                  :phase 3
+                 :kind :bis
+                 :rank 3
+                 :slot :head
+                 :item {:id 32241 :name "Helm of Soothing Currents"}
+                 :sources [{:instance :raid}]}
+                {:class :paladin
+                 :spec :holy
+                 :phase 3
+                 :kind :bis
+                 :rank 1
                  :slot :legs
                  :item {:id 30994 :name "Lightbringer Leggings"}
                  :sources [{:instance :raid}]}
                 {:class :paladin
                  :spec :holy
                  :phase 3
+                 :kind :bis
+                 :rank 2
                  :slot :legs
                  :item {:id 30912 :name "Leggings of Eternity"}
                  :sources [{:instance :raid}]}
                 {:class :paladin
                  :spec :holy
                  :phase 3
+                 :kind :bis
+                 :rank 3
+                 :slot :legs
+                 :item {:id 32271 :name "Kilt of Immortal Nature"}
+                 :sources [{:instance :raid}]}
+                {:class :paladin
+                 :spec :holy
+                 :phase 3
+                 :kind :bis
+                 :rank 4
+                 :slot :legs
+                 :item {:id 30893 :name "Sun-touched Chain Leggings"}
+                 :sources [{:instance :raid}]}
+                {:class :paladin
+                 :spec :holy
+                 :phase 3
+                 :kind :bis
+                 :rank 1
                  :slot :main-hand
                  :item {:id 32500 :name "Crystal Spire of Karabor"}
                  :sources [{:instance :raid}]}
                 {:class :paladin
                  :spec :holy
                  :phase 3
+                 :kind :bis
+                 :rank 2
                  :slot :main-hand
                  :item {:id 30918 :name "Hammer of Atonement"}
                  :sources [{:instance :raid}]}
                 {:class :paladin
                  :spec :holy
                  :phase 3
+                 :kind :bis
+                 :rank 1
                  :slot :neck
                  :item {:id 32370 :name "Nadina's Pendant of Purity"}
                  :sources [{:instance :raid}]}
                 {:class :paladin
                  :spec :holy
                  :phase 3
+                 :kind :bis
+                 :rank 1
                  :slot :off-hand
                  :item {:id 32255 :name "Felstone Bulwark"}
                  :sources [{:instance :raid}]}
                 {:class :paladin
                  :spec :holy
                  :phase 3
+                 :kind :bis
+                 :rank 2
                  :slot :off-hand
                  :item {:id 30882 :name "Bastion of Light"}
                  :sources [{:instance :raid}]}
                 {:class :paladin
                  :spec :holy
                  :phase 3
+                 :kind :bis
+                 :rank 3
+                 :slot :off-hand
+                 :item {:id 30911 :name "Scepter of Purification"}
+                 :sources [{:instance :raid}]}
+                {:class :paladin
+                 :spec :holy
+                 :phase 3
+                 :kind :bis
+                 :rank 1
                  :slot :ring1
                  :item {:id 32528 :name "Blessed Band of Karabor"}
                  :sources [{:instance :raid}]}
                 {:class :paladin
                  :spec :holy
                  :phase 3
+                 :kind :bis
+                 :rank 3
+                 :slot :ring1
+                 :item {:id 29309 :name "Band of the Eternal Restorer"}
+                 :sources [{:instance :raid}]}
+                {:class :paladin
+                 :spec :holy
+                 :phase 3
+                 :kind :bis
+                 :rank 2
                  :slot :ring2
                  :item {:id 32238 :name "Ring of Calming Waves"}
                  :sources [{:instance :raid}]}
                 {:class :paladin
                  :spec :holy
                  :phase 3
+                 :kind :bis
+                 :rank 1
                  :slot :shoulder
                  :item {:id 30996 :name "Lightbringer Pauldrons"}
                  :sources [{:instance :raid}]}
                 {:class :paladin
                  :spec :holy
                  :phase 3
+                 :kind :bis
+                 :rank 2
                  :slot :shoulder
                  :item {:id 30878 :name "Glimmering Steel Mantle"}
                  :sources [{:instance :raid}]}
                 {:class :paladin
                  :spec :holy
                  :phase 3
+                 :kind :bis
+                 :rank 1
                  :slot :trinket1
                  :item {:id 32496 :name "Memento of Tyrande"}
                  :sources [{:instance :raid}]}
                 {:class :paladin
                  :spec :holy
                  :phase 3
+                 :kind :bis
+                 :rank 1
                  :slot :waist
                  :item {:id 30897 :name "Girdle of Hope"}
                  :sources [{:instance :raid}]}
                 {:class :paladin
                  :spec :holy
                  :phase 3
+                 :kind :bis
+                 :rank 1
                  :slot :wrist
                  :item {:id 30862 :name "Blessed Adamantite Bracers"}
                  :sources [{:instance :raid}]}
                 {:class :paladin
                  :spec :holy
                  :phase 3
+                 :kind :bis
+                 :rank 2
                  :slot :wrist
                  :item {:id 30869 :name "Howling Wind Bracers"}
-                 :sources [{:instance :raid}]}])
+                 :sources [{:instance :raid}]}
+                {:class :paladin
+                 :spec :holy
+                 :phase 3
+                 :kind :pre-raid
+                 :rank 3
+                 :slot :wrist
+                 :item {:id 32571 :name "Dawnsteel Bracers"}
+                 :sources [{:instance :unknown}]}])
 
 (tset by-spec :paladin-holy entries)
 

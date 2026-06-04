@@ -14,183 +14,1419 @@
 (local entries [{:class :warrior
                  :spec :fury
                  :phase 1
+                 :kind :pre-raid
+                 :rank 2
                  :slot :back
                  :item {:id 33122 :name "Cloak of Darkness"}
                  :sources [{:instance :unknown}]}
                 {:class :warrior
                  :spec :fury
                  :phase 1
+                 :kind :pre-raid
+                 :rank 3
+                 :slot :back
+                 :item {:id 24259 :name "Vengeance Wrap"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :fury
+                 :phase 1
+                 :kind :bis
+                 :rank 6
+                 :slot :back
+                 :item {:id 30729 :name "Black-Iron Battlecloak"}
+                 :sources [{:instance :world-boss}]}
+                {:class :warrior
+                 :spec :fury
+                 :phase 1
+                 :kind :bis
+                 :rank 7
+                 :slot :back
+                 :item {:id 28672 :name "Drape of the Dark Reavers"}
+                 :sources [{:instance :raid}]}
+                {:class :warrior
+                 :spec :fury
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 8
+                 :slot :back
+                 :item {:id 27878 :name "Auchenai Death Shroud"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :fury
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 9
+                 :slot :back
+                 :item {:id 27892 :name "Cloak of the Inciter"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :fury
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 10
+                 :slot :back
+                 :item {:id 23045 :name "Shroud of Dominion"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :fury
+                 :phase 1
+                 :kind :bis
+                 :rank 6
+                 :slot :chest
+                 :item {:id 30730 :name "Terrorweave Tunic"}
+                 :sources [{:instance :world-boss}]}
+                {:class :warrior
+                 :spec :fury
+                 :phase 1
+                 :kind :bis
+                 :rank 7
+                 :slot :chest
+                 :item {:id 29019 :name "Warbringer Breastplate"}
+                 :sources [{:instance :raid}]}
+                {:class :warrior
+                 :spec :fury
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 8
+                 :slot :chest
+                 :item {:id 23522 :name "Ragesteel Breastplate"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :fury
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 9
+                 :slot :chest
+                 :item {:id 24544 :name "Gladiator's Plate Chestpiece"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :fury
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 10
+                 :slot :chest
+                 :item {:id 31548 :name "Blackened Chestplate"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :fury
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 11
+                 :slot :chest
+                 :item {:id 28403 :name "Doomplate Chestguard"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :fury
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 12
+                 :slot :chest
+                 :item {:id 30258 :name "Chestplate of A'dal"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :fury
+                 :phase 1
+                 :kind :bis
+                 :rank 3
+                 :slot :feet
+                 :item {:id 28608 :name "Ironstriders of Urgency"}
+                 :sources [{:instance :raid}]}
+                {:class :warrior
+                 :spec :fury
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 5
+                 :slot :feet
+                 :item {:id 25686 :name "Fel Leather Boots"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :fury
+                 :phase 1
+                 :kind :bis
+                 :rank 6
+                 :slot :feet
+                 :item {:id 28545 :name "Edgewalker Longboots"}
+                 :sources [{:instance :raid}]}
+                {:class :warrior
+                 :spec :fury
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 7
+                 :slot :feet
+                 :item {:id 27867 :name "Boots of the Unjust"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :fury
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 8
+                 :slot :feet
+                 :item {:id 30401 :name "Farahlite Studded Boots"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :fury
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 11
+                 :slot :feet
+                 :item {:id 28176 :name "Sha'tari Wrought Greaves"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :fury
+                 :phase 1
+                 :kind :bis
+                 :rank 4
+                 :slot :hands
+                 :item {:id 28824 :name "Gauntlets of Martial Perfection"}
+                 :sources [{:instance :raid}]}
+                {:class :warrior
+                 :spec :fury
+                 :phase 1
+                 :kind :bis
+                 :rank 7
+                 :slot :hands
+                 :item {:id 28776 :name "Liar's Tongue Gloves"}
+                 :sources [{:instance :raid}]}
+                {:class :warrior
+                 :spec :fury
+                 :phase 1
+                 :kind :bis
+                 :rank 8
+                 :slot :hands
+                 :item {:id 30644 :name "Grips of Deftness"}
+                 :sources [{:instance :raid}]}
+                {:class :warrior
+                 :spec :fury
+                 :phase 1
+                 :kind :bis
+                 :rank 9
+                 :slot :hands
+                 :item {:id 29020 :name "Warbringer Gauntlets"}
+                 :sources [{:instance :raid}]}
+                {:class :warrior
+                 :spec :fury
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 10
+                 :slot :hands
+                 :item {:id 25685 :name "Fel Leather Gloves"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :fury
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 11
+                 :slot :hands
+                 :item {:id 27497 :name "Doomplate Gauntlets"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :fury
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 12
+                 :slot :hands
+                 :item {:id 23520 :name "Ragesteel Gloves"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :fury
+                 :phase 1
+                 :kind :bis
+                 :rank 6
+                 :slot :head
+                 :item {:id 29021 :name "Warbringer Battle-Helm"}
+                 :sources [{:instance :raid}]}
+                {:class :warrior
+                 :spec :fury
+                 :phase 1
+                 :kind :bis
+                 :rank 7
+                 :slot :head
+                 :item {:id 32087 :name "Mask of the Deceiver"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :fury
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 9
+                 :slot :head
+                 :item {:id 28182 :name "Helm of the Claw"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :fury
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 10
+                 :slot :head
+                 :item {:id 31105 :name "Overlord's Helmet of Second Sight"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :fury
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 11
+                 :slot :head
+                 :item {:id 28224 :name "Wastewalker Helm"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :fury
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 8
+                 :slot :legs
+                 :item {:id 30538 :name "Midnight Legguards"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :fury
+                 :phase 1
+                 :kind :bis
+                 :rank 9
+                 :slot :legs
+                 :item {:id 30739 :name "Scaled Greaves of the Marksman"}
+                 :sources [{:instance :world-boss}]}
+                {:class :warrior
+                 :spec :fury
+                 :phase 1
+                 :kind :bis
+                 :rank 10
+                 :slot :legs
+                 :item {:id 28741 :name "Skulker's Greaves"}
+                 :sources [{:instance :raid}]}
+                {:class :warrior
+                 :spec :fury
+                 :phase 1
+                 :kind :bis
+                 :rank 11
+                 :slot :legs
+                 :item {:id 29022 :name "Warbringer Greaves"}
+                 :sources [{:instance :raid}]}
+                {:class :warrior
+                 :spec :fury
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 12
+                 :slot :legs
+                 :item {:id 25687 :name "Fel Leather Leggings"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :fury
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 13
+                 :slot :legs
+                 :item {:id 31544 :name "Clefthoof Hide Leggings"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :fury
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 14
+                 :slot :legs
+                 :item {:id 30257 :name "Shattrath Leggings"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :fury
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 5
+                 :slot :main-hand
+                 :item {:id 28439 :name :Dragonstrike}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :fury
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 6
+                 :slot :main-hand
+                 :item {:id 28438 :name :Dragonmaw}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :fury
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 9
+                 :slot :main-hand
+                 :item {:id 28437 :name "Drakefist Hammer"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :fury
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 10
+                 :slot :main-hand
+                 :item {:id 28295 :name "Gladiator's Slicer"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :fury
+                 :phase 1
+                 :kind :bis
+                 :rank 10
+                 :slot :main-hand
+                 :item {:id 28729 :name :Spiteblade}
+                 :sources [{:instance :raid}]}
+                {:class :warrior
+                 :spec :fury
+                 :phase 1
+                 :kind :bis
+                 :rank 11
+                 :slot :main-hand
+                 :item {:id 28657 :name "Fool's Bane"}
+                 :sources [{:instance :raid}]}
+                {:class :warrior
+                 :spec :fury
+                 :phase 1
+                 :kind :bis
+                 :rank 11
+                 :slot :main-hand
+                 :item {:id 30733 :name "Hope Ender"}
+                 :sources [{:instance :world-boss}]}
+                {:class :warrior
+                 :spec :fury
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 12
+                 :slot :main-hand
+                 :item {:id 23542 :name "Fel Edged Battleaxe"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :fury
+                 :phase 1
+                 :kind :bis
+                 :rank 12
+                 :slot :main-hand
+                 :item {:id 28767 :name "The Decapitator"}
+                 :sources [{:instance :raid}]}
+                {:class :warrior
+                 :spec :fury
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 13
+                 :slot :main-hand
+                 :item {:id 23054 :name "Gressil, Dawn of Ruin"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :fury
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 14
+                 :slot :main-hand
+                 :item {:id 27872 :name "The Harvester of Souls"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :fury
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 15
+                 :slot :main-hand
+                 :item {:id 29124 :name "Vindicator's Brand"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :fury
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 23
+                 :slot :main-hand
+                 :item {:id 28189 :name "Latro's Shifting Sword"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :fury
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 6
+                 :slot :neck
+                 :item {:id 29349 :name "Adamantine Chain of the Unbroken"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :fury
+                 :phase 1
+                 :kind :bis
+                 :rank 7
+                 :slot :neck
+                 :item {:id 29381 :name "Choker of Vile Intent"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :fury
+                 :phase 1
+                 :kind :bis
+                 :rank 8
+                 :slot :neck
+                 :item {:id 28509 :name "Worgen Claw Necklace"}
+                 :sources [{:instance :raid}]}
+                {:class :warrior
+                 :spec :fury
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 9
+                 :slot :neck
+                 :item {:id 31695 :name "Natasha's Choker"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :fury
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 10
+                 :slot :neck
+                 :item {:id 27546 :name "Traitor's Noose"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :fury
+                 :phase 1
+                 :kind :bis
+                 :rank 14
+                 :slot :off-hand
+                 :item {:id 28825 :name "Aldori Legacy Defender"}
+                 :sources [{:instance :raid}]}
+                {:class :warrior
+                 :spec :fury
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 15
+                 :slot :off-hand
+                 :item {:id 28358 :name "Gladiator's Shield Wall"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :fury
+                 :phase 1
+                 :kind :bis
+                 :rank 16
+                 :slot :off-hand
+                 :item {:id 28606 :name "Shield of Impenetrable Darkness"}
+                 :sources [{:instance :raid}]}
+                {:class :warrior
+                 :spec :fury
+                 :phase 1
+                 :kind :bis
+                 :rank 17
+                 :slot :off-hand
+                 :item {:id 29266 :name "Azure-Shield of Coldarra"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :fury
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 18
+                 :slot :off-hand
+                 :item {:id 29176 :name "Crest of the Sha'tar"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :fury
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 19
+                 :slot :off-hand
+                 :item {:id 28316 :name "Aegis of the Sunbird"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :fury
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 20
+                 :slot :off-hand
+                 :item {:id 27887 :name "Platinum Shield of the Valorous"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :fury
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 21
+                 :slot :off-hand
+                 :item {:id 23043 :name "The Face of Death"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :fury
+                 :phase 1
+                 :kind :bis
+                 :rank 3
+                 :slot :ranged
+                 :item {:id 30724 :name "Barrel-Blade Longrifle"}
+                 :sources [{:instance :world-boss}]}
+                {:class :warrior
+                 :spec :fury
+                 :phase 1
+                 :kind :bis
+                 :rank 4
+                 :slot :ranged
+                 :item {:id 28772 :name "Sunfury Bow of the Phoenix"}
+                 :sources [{:instance :raid}]}
+                {:class :warrior
+                 :spec :fury
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 5
+                 :slot :ranged
+                 :item {:id 29211 :name "Fitz's Throwing Axe"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :fury
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 6
+                 :slot :ranged
+                 :item {:id 22811 :name :Soulstring}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :fury
+                 :phase 1
+                 :kind :bis
+                 :rank 7
+                 :slot :ring1
+                 :item {:id 28757 :name "Ring of a Thousand Marks"}
+                 :sources [{:instance :raid}]}
+                {:class :warrior
+                 :spec :fury
+                 :phase 1
+                 :kind :bis
+                 :rank 11
+                 :slot :ring1
+                 :item {:id 28730 :name "Mithril Band of the Unscarred"}
+                 :sources [{:instance :raid}]}
+                {:class :warrior
+                 :spec :fury
+                 :phase 1
+                 :kind :bis
+                 :rank 13
+                 :slot :ring1
+                 :item {:id 29379 :name "Ring of Arathi Warlords"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :fury
+                 :phase 1
+                 :kind :bis
+                 :rank 15
+                 :slot :ring1
+                 :item {:id 28649 :name "Garona's Signet Ring"}
+                 :sources [{:instance :raid}]}
+                {:class :warrior
+                 :spec :fury
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 17
+                 :slot :ring1
+                 :item {:id 28323 :name "Ring of Umbral Doom"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :fury
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 20
+                 :slot :ring1
+                 :item {:id 31077 :name "Slayer's Mark of the Redemption"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :fury
+                 :phase 1
+                 :kind :bis
+                 :rank 10
+                 :slot :ring2
+                 :item {:id 30738 :name "Ring of Reciprocity"}
+                 :sources [{:instance :world-boss}]}
+                {:class :warrior
+                 :spec :fury
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 12
+                 :slot :ring2
+                 :item {:id 31920 :name "Shaffar's Band of Brutality"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :fury
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 14
+                 :slot :ring2
+                 :item {:id 30834 :name "Shapeshifter's Signet"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :fury
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 16
+                 :slot :ring2
+                 :item {:id 29283 :name "Violet Signet of the Master Assassin"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :fury
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 18
+                 :slot :ring2
+                 :item {:id 23038 :name "Band of Unnatural Forces"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :fury
+                 :phase 1
+                 :kind :bis
+                 :rank 6
+                 :slot :shoulder
+                 :item {:id 30740 :name "Ripfiend Shoulderplates"}
+                 :sources [{:instance :world-boss}]}
+                {:class :warrior
+                 :spec :fury
+                 :phase 1
+                 :kind :bis
+                 :rank 7
+                 :slot :shoulder
+                 :item {:id 29023 :name "Warbringer Shoulderplates"}
+                 :sources [{:instance :raid}]}
+                {:class :warrior
+                 :spec :fury
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 8
+                 :slot :shoulder
+                 :item {:id 33173 :name "Ragesteel Shoulders"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :fury
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 9
+                 :slot :shoulder
+                 :item {:id 27797 :name "Wastewalker Shoulderpads"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :fury
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 10
+                 :slot :shoulder
+                 :item {:id 27434 :name "Mantle of Perenolde"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :fury
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 11
+                 :slot :shoulder
+                 :item {:id 25790 :name "Expedition Scout's Epaulets"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :fury
+                 :phase 1
+                 :kind :bis
+                 :rank 1
                  :slot :trinket1
                  :item {:id 28830 :name "Dragonspine Trophy"}
                  :sources [{:instance :raid}]}
                 {:class :warrior
                  :spec :fury
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 5
+                 :slot :trinket1
+                 :item {:id 28034 :name "Hourglass of the Unraveller"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :fury
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 7
+                 :slot :trinket1
+                 :item {:id 28288 :name "Abacus of Violent Odds"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :fury
+                 :phase 1
+                 :kind :bis
+                 :rank 4
+                 :slot :trinket2
+                 :item {:id 29383 :name "Bloodlust Brooch"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :fury
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 6
+                 :slot :trinket2
+                 :item {:id 21670 :name "Badge of the Swarmguard"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :fury
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 8
+                 :slot :trinket2
+                 :item {:id 23041 :name "Slayer's Crest"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :fury
+                 :phase 1
+                 :kind :bis
+                 :rank 3
+                 :slot :waist
+                 :item {:id 28779 :name "Girdle of the Endless Pit"}
+                 :sources [{:instance :raid}]}
+                {:class :warrior
+                 :spec :fury
+                 :phase 1
+                 :kind :bis
+                 :rank 4
+                 :slot :waist
+                 :item {:id 28828 :name "Gronn-Stitched Girdle"}
+                 :sources [{:instance :raid}]}
+                {:class :warrior
+                 :spec :fury
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 5
+                 :slot :waist
+                 :item {:id 27985 :name "Deathforge Girdle"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :fury
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 6
+                 :slot :waist
+                 :item {:id 29247 :name "Girdle of the Deathdealer"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :fury
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 8
+                 :slot :waist
+                 :item {:id 31462 :name "Shattrath's Champion Belt"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :fury
+                 :phase 1
+                 :kind :bis
+                 :rank 5
+                 :slot :wrist
+                 :item {:id 28795 :name "Bladespire Warbands"}
+                 :sources [{:instance :raid}]}
+                {:class :warrior
+                 :spec :fury
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 8
+                 :slot :wrist
+                 :item {:id 23537 :name "Black Felsteel Bracers"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :fury
+                 :phase 1
+                 :kind :bis
+                 :rank 9
+                 :slot :wrist
+                 :item {:id 28381 :name "General's Plate Bracers"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :fury
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 10
+                 :slot :wrist
+                 :item {:id 28171 :name "Spymistress's Wristguards"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :fury
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 11
+                 :slot :wrist
+                 :item {:id 30399 :name "Nightstalker's Wristguards"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :fury
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 13
+                 :slot :wrist
+                 :item {:id 22936 :name "Wristguards of Vengeance"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :fury
                  :phase 2
+                 :kind :bis
+                 :rank 4
+                 :slot :back
+                 :item {:id 29994 :name "Thalassian Wildercloak"}
+                 :sources [{:instance :raid}]}
+                {:class :warrior
+                 :spec :fury
+                 :phase 2
+                 :kind :bis
+                 :rank 5
+                 :slot :back
+                 :item {:id 30098 :name "Razor-Scale Battlecloak"}
+                 :sources [{:instance :raid}]}
+                {:class :warrior
+                 :spec :fury
+                 :phase 2
+                 :kind :bis
+                 :rank 3
+                 :slot :chest
+                 :item {:id 30118 :name "Destroyer Breastplate"}
+                 :sources [{:instance :raid}]}
+                {:class :warrior
+                 :spec :fury
+                 :phase 2
+                 :kind :bis
+                 :rank 4
+                 :slot :chest
+                 :item {:id 30101 :name "Bloodsea Brigand's Vest"}
+                 :sources [{:instance :raid}]}
+                {:class :warrior
+                 :spec :fury
+                 :phase 2
+                 :kind :bis
+                 :rank 5
+                 :slot :chest
+                 :item {:id 30102 :name "Krakken-Heart Breastplate"}
+                 :sources [{:instance :raid}]}
+                {:class :warrior
+                 :spec :fury
+                 :phase 2
+                 :kind :bis
+                 :rank 2
                  :slot :feet
                  :item {:id 30081 :name "Warboots of Obliteration"}
                  :sources [{:instance :raid}]}
                 {:class :warrior
                  :spec :fury
                  :phase 2
+                 :kind :bis
+                 :rank 4
+                 :slot :feet
+                 :item {:id 29951 :name "Star-Strider Boots"}
+                 :sources [{:instance :raid}]}
+                {:class :warrior
+                 :spec :fury
+                 :phase 2
+                 :kind :pre-raid
+                 :rank 9
+                 :slot :feet
+                 :item {:id 32793 :name "Veteran's Plate Greaves"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :fury
+                 :phase 2
+                 :kind :bis
+                 :rank 10
+                 :slot :feet
+                 :item {:id 32648 :name "Vortex Walking Boots"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :fury
+                 :phase 2
+                 :kind :bis
+                 :rank 5
+                 :slot :hands
+                 :item {:id 29947 :name "Gloves of the Searing Grip"}
+                 :sources [{:instance :raid}]}
+                {:class :warrior
+                 :spec :fury
+                 :phase 2
+                 :kind :bis
+                 :rank 6
+                 :slot :hands
+                 :item {:id 30119 :name "Destroyer Gauntlets"}
+                 :sources [{:instance :raid}]}
+                {:class :warrior
+                 :spec :fury
+                 :phase 2
+                 :kind :bis
+                 :rank 4
+                 :slot :head
+                 :item {:id 30120 :name "Destroyer Battle-Helm"}
+                 :sources [{:instance :raid}]}
+                {:class :warrior
+                 :spec :fury
+                 :phase 2
+                 :kind :pre-raid
+                 :rank 5
+                 :slot :head
+                 :item {:id 32461 :name "Furious Gizmatic Goggles"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :fury
+                 :phase 2
+                 :kind :bis
+                 :rank 8
+                 :slot :head
+                 :item {:id 29983 :name "Fel-Steel Warhelm"}
+                 :sources [{:instance :raid}]}
+                {:class :warrior
+                 :spec :fury
+                 :phase 2
+                 :kind :bis
+                 :rank 5
+                 :slot :legs
+                 :item {:id 29995 :name "Leggings of Murderous Intent"}
+                 :sources [{:instance :raid}]}
+                {:class :warrior
+                 :spec :fury
+                 :phase 2
+                 :kind :bis
+                 :rank 6
+                 :slot :legs
+                 :item {:id 29950 :name "Greaves of the Bloodwarder"}
+                 :sources [{:instance :raid}]}
+                {:class :warrior
+                 :spec :fury
+                 :phase 2
+                 :kind :bis
+                 :rank 7
+                 :slot :legs
+                 :item {:id 30121 :name "Destroyer Greaves"}
+                 :sources [{:instance :raid}]}
+                {:class :warrior
+                 :spec :fury
+                 :phase 2
+                 :kind :bis
+                 :rank 4
+                 :slot :main-hand
+                 :item {:id 30082 :name "Talon of Azshara"}
+                 :sources [{:instance :raid}]}
+                {:class :warrior
+                 :spec :fury
+                 :phase 2
+                 :kind :bis
+                 :rank 7
+                 :slot :main-hand
+                 :item {:id 29996 :name "Rod of the Sun King"}
+                 :sources [{:instance :raid}]}
+                {:class :warrior
+                 :spec :fury
+                 :phase 2
+                 :kind :bis
+                 :rank 8
+                 :slot :main-hand
+                 :item {:id 29924 :name :Netherbane}
+                 :sources [{:instance :raid}]}
+                {:class :warrior
+                 :spec :fury
+                 :phase 2
+                 :kind :pre-raid
+                 :rank 8
+                 :slot :main-hand
+                 :item {:id 32052 :name "Merciless Gladiator's Slicer"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :fury
+                 :phase 2
+                 :kind :bis
+                 :rank 3
+                 :slot :neck
+                 :item {:id 30022 :name "Pendant of the Perilous"}
+                 :sources [{:instance :raid}]}
+                {:class :warrior
+                 :spec :fury
+                 :phase 2
+                 :kind :bis
+                 :rank 4
+                 :slot :neck
+                 :item {:id 30017 :name "Telonicus's Pendant of Mayhem"}
+                 :sources [{:instance :raid}]}
+                {:class :warrior
+                 :spec :fury
+                 :phase 2
+                 :kind :bis
+                 :rank 5
+                 :slot :neck
+                 :item {:id 30059 :name "Choker of Animalistic Fury"}
+                 :sources [{:instance :raid}]}
+                {:class :warrior
+                 :spec :fury
+                 :phase 2
+                 :kind :bis
+                 :rank 2
                  :slot :ranged
                  :item {:id 30105 :name "Serpent Spine Longbow"}
                  :sources [{:instance :raid}]}
                 {:class :warrior
                  :spec :fury
                  :phase 2
+                 :kind :bis
+                 :rank 4
+                 :slot :ring1
+                 :item {:id 29997 :name "Band of the Ranger-General"}
+                 :sources [{:instance :raid}]}
+                {:class :warrior
+                 :spec :fury
+                 :phase 2
+                 :kind :bis
+                 :rank 9
+                 :slot :ring1
+                 :item {:id 30052 :name "Ring of Lethality"}
+                 :sources [{:instance :raid}]}
+                {:class :warrior
+                 :spec :fury
+                 :phase 2
+                 :kind :bis
+                 :rank 8
+                 :slot :ring2
+                 :item {:id 30061 :name "Ancestral Ring of Conquest"}
+                 :sources [{:instance :raid}]}
+                {:class :warrior
+                 :spec :fury
+                 :phase 2
+                 :kind :pre-raid
+                 :rank 11
+                 :slot :ring2
+                 :item {:id 33057 :name "Veteran's Band of Triumph"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :fury
+                 :phase 2
+                 :kind :bis
+                 :rank 3
+                 :slot :shoulder
+                 :item {:id 30055 :name "Shoulderpads of the Stranger"}
+                 :sources [{:instance :raid}]}
+                {:class :warrior
+                 :spec :fury
+                 :phase 2
+                 :kind :bis
+                 :rank 4
+                 :slot :shoulder
+                 :item {:id 30122 :name "Destroyer Shoulderblades"}
+                 :sources [{:instance :raid}]}
+                {:class :warrior
+                 :spec :fury
+                 :phase 2
+                 :kind :bis
+                 :rank 5
+                 :slot :shoulder
+                 :item {:id 30053 :name "Pauldrons of the Wardancer"}
+                 :sources [{:instance :raid}]}
+                {:class :warrior
+                 :spec :fury
+                 :phase 2
+                 :kind :bis
+                 :rank 3
+                 :slot :trinket1
+                 :item {:id 30627 :name "Tsunami Talisman"}
+                 :sources [{:instance :raid}]}
+                {:class :warrior
+                 :spec :fury
+                 :phase 2
+                 :kind :bis
+                 :rank 1
                  :slot :waist
                  :item {:id 30106 :name "Belt of One-Hundred Deaths"}
                  :sources [{:instance :raid}]}
                 {:class :warrior
                  :spec :fury
                  :phase 2
+                 :kind :pre-raid
+                 :rank 2
                  :slot :waist
                  :item {:id 30032 :name "Red Belt of Battle"}
                  :sources [{:instance :unknown}]}
                 {:class :warrior
                  :spec :fury
+                 :phase 2
+                 :kind :pre-raid
+                 :rank 7
+                 :slot :waist
+                 :item {:id 32805 :name "Veteran's Plate Belt"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :fury
+                 :phase 2
+                 :kind :bis
+                 :rank 4
+                 :slot :wrist
+                 :item {:id 30057 :name "Bracers of Eradication"}
+                 :sources [{:instance :raid}]}
+                {:class :warrior
+                 :spec :fury
+                 :phase 2
+                 :kind :bis
+                 :rank 7
+                 :slot :wrist
+                 :item {:id 30091 :name "True-Aim Stalker Bands"}
+                 :sources [{:instance :raid}]}
+                {:class :warrior
+                 :spec :fury
+                 :phase 2
+                 :kind :pre-raid
+                 :rank 12
+                 :slot :wrist
+                 :item {:id 32818 :name "Veteran's Plate Bracers"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :fury
                  :phase 3
+                 :kind :bis
+                 :rank 1
                  :slot :back
                  :item {:id 32323 :name "Shadowmoon Destroyer's Drape"}
                  :sources [{:instance :raid}]}
                 {:class :warrior
                  :spec :fury
                  :phase 3
+                 :kind :bis
+                 :rank 1
                  :slot :chest
                  :item {:id 30975 :name "Onslaught Breastplate"}
                  :sources [{:instance :raid}]}
                 {:class :warrior
                  :spec :fury
                  :phase 3
+                 :kind :bis
+                 :rank 2
                  :slot :chest
                  :item {:id 30905 :name "Midnight Chestguard"}
                  :sources [{:instance :raid}]}
                 {:class :warrior
                  :spec :fury
                  :phase 3
+                 :kind :bis
+                 :rank 1
                  :slot :feet
                  :item {:id 32345 :name "Dreadboots of the Legion"}
                  :sources [{:instance :raid}]}
                 {:class :warrior
                  :spec :fury
                  :phase 3
+                 :kind :bis
+                 :rank 1
                  :slot :hands
                  :item {:id 32278 :name "Grips of Silent Justice"}
                  :sources [{:instance :raid}]}
                 {:class :warrior
                  :spec :fury
                  :phase 3
+                 :kind :bis
+                 :rank 2
                  :slot :hands
                  :item {:id 30969 :name "Onslaught Gauntlets"}
                  :sources [{:instance :raid}]}
                 {:class :warrior
                  :spec :fury
                  :phase 3
+                 :kind :bis
+                 :rank 3
+                 :slot :hands
+                 :item {:id 32608 :name "Pillager's Gauntlets"}
+                 :sources [{:instance :raid}]}
+                {:class :warrior
+                 :spec :fury
+                 :phase 3
+                 :kind :bis
+                 :rank 1
                  :slot :head
                  :item {:id 32235 :name "Cursed Vision of Sargeras"}
                  :sources [{:instance :raid}]}
                 {:class :warrior
                  :spec :fury
                  :phase 3
+                 :kind :bis
+                 :rank 2
                  :slot :head
                  :item {:id 32373 :name "Helm of the Illidari Shatterer"}
                  :sources [{:instance :raid}]}
                 {:class :warrior
                  :spec :fury
                  :phase 3
+                 :kind :bis
+                 :rank 3
+                 :slot :head
+                 :item {:id 30972 :name "Onslaught Battle-Helm"}
+                 :sources [{:instance :raid}]}
+                {:class :warrior
+                 :spec :fury
+                 :phase 3
+                 :kind :bis
+                 :rank 1
                  :slot :legs
                  :item {:id 32341 :name "Leggings of Divine Retribution"}
                  :sources [{:instance :raid}]}
                 {:class :warrior
                  :spec :fury
                  :phase 3
+                 :kind :bis
+                 :rank 2
                  :slot :legs
                  :item {:id 30898 :name "Shady Dealer's Pantaloons"}
                  :sources [{:instance :raid}]}
                 {:class :warrior
                  :spec :fury
                  :phase 3
+                 :kind :bis
+                 :rank 3
+                 :slot :legs
+                 :item {:id 30903 :name "Legguards of Endless Rage"}
+                 :sources [{:instance :raid}]}
+                {:class :warrior
+                 :spec :fury
+                 :phase 3
+                 :kind :bis
+                 :rank 4
+                 :slot :legs
+                 :item {:id 30977 :name "Onslaught Greaves"}
+                 :sources [{:instance :raid}]}
+                {:class :warrior
+                 :spec :fury
+                 :phase 3
+                 :kind :bis
+                 :rank 1
                  :slot :main-hand
                  :item {:id 32837 :name "Warglaive of Azzinoth"}
                  :sources [{:instance :raid}]}
                 {:class :warrior
                  :spec :fury
                  :phase 3
+                 :kind :pre-raid
+                 :rank 2
                  :slot :main-hand
                  :item {:id 33669 :name "Vengeful Gladiator's Cleaver"}
                  :sources [{:instance :unknown}]}
                 {:class :warrior
                  :spec :fury
                  :phase 3
+                 :kind :bis
+                 :rank 3
+                 :slot :main-hand
+                 :item {:id 30881 :name "Blade of Infamy"}
+                 :sources [{:instance :raid}]}
+                {:class :warrior
+                 :spec :fury
+                 :phase 3
+                 :kind :pre-raid
+                 :rank 3
                  :slot :main-hand
                  :item {:id 33762 :name "Vengeful Gladiator's Slicer"}
                  :sources [{:instance :unknown}]}
                 {:class :warrior
                  :spec :fury
                  :phase 3
+                 :kind :bis
+                 :rank 4
+                 :slot :main-hand
+                 :item {:id 32369 :name "Blade of Savagery"}
+                 :sources [{:instance :raid}]}
+                {:class :warrior
+                 :spec :fury
+                 :phase 3
+                 :kind :bis
+                 :rank 1
                  :slot :neck
                  :item {:id 32260 :name "Choker of Endless Nightmares"}
                  :sources [{:instance :raid}]}
                 {:class :warrior
                  :spec :fury
                  :phase 3
+                 :kind :bis
+                 :rank 2
                  :slot :neck
                  :item {:id 32591 :name "Choker of Serrated Blades"}
                  :sources [{:instance :raid}]}
                 {:class :warrior
                  :spec :fury
                  :phase 3
+                 :kind :bis
+                 :rank 1
                  :slot :off-hand
                  :item {:id 32838 :name "Warglaive of Azzinoth"}
                  :sources [{:instance :raid}]}
                 {:class :warrior
                  :spec :fury
                  :phase 3
+                 :kind :bis
+                 :rank 1
                  :slot :ranged
                  :item {:id 32326 :name "Twisted Blades of Zarak"}
                  :sources [{:instance :raid}]}
                 {:class :warrior
                  :spec :fury
                  :phase 3
+                 :kind :bis
+                 :rank 1
                  :slot :ring1
                  :item {:id 32497 :name "Stormrage Signet Ring"}
                  :sources [{:instance :raid}]}
                 {:class :warrior
                  :spec :fury
                  :phase 3
+                 :kind :bis
+                 :rank 3
+                 :slot :ring1
+                 :item {:id 32526 :name "Band of Devastation"}
+                 :sources [{:instance :raid}]}
+                {:class :warrior
+                 :spec :fury
+                 :phase 3
+                 :kind :bis
+                 :rank 2
                  :slot :ring2
                  :item {:id 32335 :name "Unstoppable Aggressor's Ring"}
                  :sources [{:instance :raid}]}
                 {:class :warrior
                  :spec :fury
                  :phase 3
+                 :kind :bis
+                 :rank 5
+                 :slot :ring2
+                 :item {:id 29301 :name "Band of the Eternal Champion"}
+                 :sources [{:instance :raid}]}
+                {:class :warrior
+                 :spec :fury
+                 :phase 3
+                 :kind :bis
+                 :rank 1
                  :slot :shoulder
                  :item {:id 30979 :name "Onslaught Shoulderblades"}
                  :sources [{:instance :raid}]}
                 {:class :warrior
                  :spec :fury
                  :phase 3
+                 :kind :bis
+                 :rank 2
                  :slot :shoulder
                  :item {:id 32570 :name "Swiftsteel Shoulders"}
                  :sources [{:instance :raid}]}
                 {:class :warrior
                  :spec :fury
                  :phase 3
+                 :kind :bis
+                 :rank 2
                  :slot :trinket1
                  :item {:id 32505 :name "Madness of the Betrayer"}
                  :sources [{:instance :raid}]}
                 {:class :warrior
                  :spec :fury
                  :phase 3
+                 :kind :bis
+                 :rank 1
                  :slot :wrist
                  :item {:id 30863 :name "Deadly Cuffs"}
                  :sources [{:instance :raid}]}
                 {:class :warrior
                  :spec :fury
                  :phase 3
+                 :kind :bis
+                 :rank 2
                  :slot :wrist
                  :item {:id 32324 :name "Insidious Bands"}
-                 :sources [{:instance :raid}]}])
+                 :sources [{:instance :raid}]}
+                {:class :warrior
+                 :spec :fury
+                 :phase 3
+                 :kind :pre-raid
+                 :rank 3
+                 :slot :wrist
+                 :item {:id 32574 :name "Bindings of Lightning Reflexes"}
+                 :sources [{:instance :unknown}]}
+                {:class :warrior
+                 :spec :fury
+                 :phase 3
+                 :kind :bis
+                 :rank 6
+                 :slot :wrist
+                 :item {:id 30861 :name "Furious Shackles"}
+                 :sources [{:instance :raid}]}
+                {:class :warrior
+                 :spec :fury
+                 :phase 4
+                 :kind :bis
+                 :rank 6
+                 :slot :ring1
+                 :item {:id 33919 :name "Vindicator's Band of Triumph"}
+                 :sources [{:instance :unknown}]}])
 
 (tset by-spec :warrior-fury entries)
 

@@ -14,126 +14,1874 @@
 (local entries [{:class :paladin
                  :spec :protection
                  :phase 1
+                 :kind :bis
+                 :rank 3
+                 :slot :back
+                 :item {:id 28766 :name "Ruby Drape of the Mysticant"}
+                 :sources [{:instance :raid}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 6
+                 :slot :back
+                 :item {:id 27804 :name "Devilshark Cape"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :bis
+                 :rank 7
+                 :slot :back
+                 :item {:id 28660 :name "Gilded Thorium Cloak"}
+                 :sources [{:instance :raid}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 8
+                 :slot :back
+                 :item {:id 24253 :name "Cloak of Eternity"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 9
+                 :slot :back
+                 :item {:id 27988 :name "Burnoose of Shifting Ages"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 10
+                 :slot :back
+                 :item {:id 24379 :name "Bogstrok Scale Cloak"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 11
+                 :slot :back
+                 :item {:id 29777 :name "Cloak of the Valiant Defender"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :bis
+                 :rank 12
+                 :slot :back
+                 :item {:id 30642 :name "Drape of the Righteous"}
+                 :sources [{:instance :raid}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :bis
+                 :rank 13
+                 :slot :back
+                 :item {:id 28570 :name "Shadow-Cloak of Dalaran"}
+                 :sources [{:instance :raid}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 14
+                 :slot :back
+                 :item {:id 28378 :name "Sergeant's Heavy Cape"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :bis
+                 :rank 15
+                 :slot :back
+                 :item {:id 28797 :name "Brute Cloak of the Ogre-Magi"}
+                 :sources [{:instance :raid}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 16
+                 :slot :back
+                 :item {:id 30971 :name "Torn-heart Cloak"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :bis
+                 :rank 17
+                 :slot :back
+                 :item {:id 29385 :name "Farstrider Defender's Cloak"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :bis
+                 :rank 4
+                 :slot :chest
+                 :item {:id 29066 :name "Justicar Chestguard"}
+                 :sources [{:instance :raid}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :bis
+                 :rank 6
+                 :slot :chest
+                 :item {:id 28597 :name "Panzar'Thar Breastplate"}
+                 :sources [{:instance :raid}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 7
+                 :slot :chest
+                 :item {:id 27702 :name "Gladiator's Lamellar Chestpiece"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 8
+                 :slot :chest
+                 :item {:id 28203 :name "Breastplate of the Righteous"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 9
+                 :slot :chest
+                 :item {:id 28262 :name "Jade-Skull Breastplate"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 10
+                 :slot :chest
+                 :item {:id 29127 :name "Vindicator's Hauberk"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 11
+                 :slot :chest
+                 :item {:id 23507 :name "Adamantite Breastplate"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 12
+                 :slot :chest
+                 :item {:id 25819 :name "Breastplate of the Warbringer"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 13
+                 :slot :chest
+                 :item {:id 30270 :name "Scavenged Breastplate"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 14
+                 :slot :chest
+                 :item {:id 30296 :name "Lost Chestplate of the Reverent"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 15
+                 :slot :chest
+                 :item {:id 29337 :name "The Exarch's Protector"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :bis
+                 :rank 5
+                 :slot :feet
+                 :item {:id 30641 :name "Boots of Elusion"}
+                 :sources [{:instance :raid}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 6
+                 :slot :feet
+                 :item {:id 29254 :name "Boots of the Righteous Path"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 8
+                 :slot :feet
+                 :item {:id 28747 :name "Battlescar Boots"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 9
+                 :slot :feet
+                 :item {:id 29239 :name "Eaglecrest Warboots"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 10
+                 :slot :feet
+                 :item {:id 27813 :name "Boots of the Colossus"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 11
+                 :slot :feet
+                 :item {:id 30334 :name "Starcaller's Plated Stompers"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 12
+                 :slot :feet
+                 :item {:id 29325 :name "Flesh Beast's Metal Greaves"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 13
+                 :slot :feet
+                 :item {:id 30386 :name "Bloodguard's Greaves"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 14
+                 :slot :feet
+                 :item {:id 32866 :name "Ascendant's Boots"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 15
+                 :slot :feet
+                 :item {:id 28318 :name "Obsidian Clodstompers"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :bis
+                 :rank 4
+                 :slot :hands
+                 :item {:id 29067 :name "Justicar Handguards"}
+                 :sources [{:instance :raid}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :bis
+                 :rank 5
+                 :slot :hands
+                 :item {:id 28518 :name "Iron Gauntlets of the Maiden"}
+                 :sources [{:instance :raid}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :bis
+                 :rank 6
+                 :slot :hands
+                 :item {:id 30741 :name "Topaz-Studded Battlegrips"}
+                 :sources [{:instance :world-boss}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 7
+                 :slot :hands
+                 :item {:id 27703 :name "Gladiator's Lamellar Gauntlets"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 8
+                 :slot :hands
+                 :item {:id 32072 :name "Gauntlets of Dissension"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 9
+                 :slot :hands
+                 :item {:id 27535 :name "Gauntlets of the Righteous"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 10
+                 :slot :hands
+                 :item {:id 23517 :name "Felsteel Gloves"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 11
+                 :slot :hands
+                 :item {:id 29134 :name "Gauntlets of the Chosen"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 12
+                 :slot :hands
+                 :item {:id 23532 :name "Gauntlets of the Iron Tower"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 13
+                 :slot :hands
+                 :item {:id 25788 :name "Dauntless Handguards"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 14
+                 :slot :hands
+                 :item {:id 28390 :name "Thatia's Self-Correcting Gauntlets"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 15
+                 :slot :hands
+                 :item {:id 29959 :name "Spiritualist's Gauntlets"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :bis
+                 :rank 4
+                 :slot :head
+                 :item {:id 29068 :name "Justicar Faceguard"}
+                 :sources [{:instance :raid}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :bis
+                 :rank 6
+                 :slot :head
+                 :item {:id 32083 :name "Faceguard of Determination"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :bis
+                 :rank 7
+                 :slot :head
+                 :item {:id 28593 :name "Eternium Greathelm"}
+                 :sources [{:instance :raid}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 8
+                 :slot :head
+                 :item {:id 27704 :name "Gladiator's Lamellar Helm"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 9
+                 :slot :head
+                 :item {:id 23536 :name "Oathkeeper's Helm"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 10
+                 :slot :head
+                 :item {:id 28285 :name "Helm of the Righteous"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 11
+                 :slot :head
+                 :item {:id 23519 :name "Felsteel Helm"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 12
+                 :slot :head
+                 :item {:id 28180 :name "Myrmidon's Headdress"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 13
+                 :slot :head
+                 :item {:id 23535 :name "Helm of the Stalwart Defender"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 14
+                 :slot :head
+                 :item {:id 27520 :name "Greathelm of the Unbreakable"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 15
+                 :slot :head
+                 :item {:id 30016 :name "X-52 Technician's Helm"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :bis
+                 :rank 6
+                 :slot :legs
+                 :item {:id 28621 :name "Wrynn Dynasty Greaves"}
+                 :sources [{:instance :raid}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :bis
+                 :rank 7
+                 :slot :legs
+                 :item {:id 29069 :name "Justicar Legguards"}
+                 :sources [{:instance :raid}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 8
+                 :slot :legs
+                 :item {:id 29184 :name "Timewarden's Leggings"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 9
+                 :slot :legs
+                 :item {:id 27839 :name "Legplates of the Righteous"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 10
+                 :slot :legs
+                 :item {:id 23518 :name "Felsteel Leggings"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 11
+                 :slot :legs
+                 :item {:id 29774 :name "Kirin'Var Defender's Chausses"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 12
+                 :slot :legs
+                 :item {:id 27705 :name "Gladiator's Lamellar Legguards"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 13
+                 :slot :legs
+                 :item {:id 27527 :name "Greaves of the Shatterer"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 14
+                 :slot :legs
+                 :item {:id 29783 :name "Legguards of the Resolute Defender"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :bis
+                 :rank 6
+                 :slot :main-hand
+                 :item {:id 28802 :name "Bloodmaw Magus-Blade"}
+                 :sources [{:instance :raid}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 7
+                 :slot :main-hand
+                 :item {:id 32450 :name "Gladiator's Gavel"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 8
+                 :slot :main-hand
+                 :item {:id 30832 :name "Gavel of Unearthed Secrets"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 10
+                 :slot :main-hand
+                 :item {:id 29185 :name "Continuum Blade"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 11
+                 :slot :main-hand
+                 :item {:id 27899 :name "Mana Wrath"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 12
+                 :slot :main-hand
+                 :item {:id 27905 :name "Greatsword of Horrid Dreams"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 13
+                 :slot :main-hand
+                 :item {:id 28749 :name "King's Defender"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 14
+                 :slot :main-hand
+                 :item {:id 22988 :name "The End of Dreams"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 15
+                 :slot :main-hand
+                 :item {:id 22807 :name "Wraith Blade"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 16
+                 :slot :main-hand
+                 :item {:id 19360 :name "Lok'amir il Romathis"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 17
+                 :slot :main-hand
+                 :item {:id 21622 :name "Sharpened Silithid Femur"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 18
+                 :slot :main-hand
+                 :item {:id 24361 :name "Spellfire Longsword"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 19
+                 :slot :main-hand
+                 :item {:id 24384 :name "Diamond-Core Sledgemace"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 20
+                 :slot :main-hand
+                 :item {:id 31336 :name "Blade of Wizardry"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :bis
+                 :rank 4
+                 :slot :neck
+                 :item {:id 28516 :name "Barbed Choker of Discipline"}
+                 :sources [{:instance :raid}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 5
+                 :slot :neck
+                 :item {:id 29173 :name "Strength of the Untamed"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 6
+                 :slot :neck
+                 :item {:id 27871 :name "Maladaar's Blessed Chaplet"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :bis
+                 :rank 8
+                 :slot :neck
+                 :item {:id 29386 :name "Necklace of the Juggernaut"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 9
+                 :slot :neck
+                 :item {:id 27792 :name "Steam-Hinge Chain of Valor"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 10
+                 :slot :neck
+                 :item {:id 29336 :name "Mark of the Ravenguard"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 11
+                 :slot :neck
+                 :item {:id 28321 :name "Enchanted Thorium Torque"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 12
+                 :slot :neck
+                 :item {:id 25809 :name "Maimfist's Choker"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 13
+                 :slot :neck
+                 :item {:id 25803 :name "Medallion of the Valiant Guardian"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 14
+                 :slot :neck
+                 :item {:id 24121 :name "Chain of the Twilight Owl"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :bis
+                 :rank 18
+                 :slot :neck
+                 :item {:id 28530 :name "Brooch of Unquenchable Fury"}
+                 :sources [{:instance :raid}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :bis
+                 :rank 19
+                 :slot :neck
+                 :item {:id 28245 :name "Pendant of Dominance"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 20
+                 :slot :neck
+                 :item {:id 30378 :name "Thalodien's Charm"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 21
+                 :slot :neck
+                 :item {:id 31696 :name "Natasha's Battle Chain"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :bis
+                 :rank 7
+                 :slot :off-hand
+                 :item {:id 28825 :name "Aldori Legacy Defender"}
+                 :sources [{:instance :raid}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 8
+                 :slot :off-hand
+                 :item {:id 28358 :name "Gladiator's Shield Wall"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :bis
+                 :rank 9
+                 :slot :off-hand
+                 :item {:id 28606 :name "Shield of Impenetrable Darkness"}
+                 :sources [{:instance :raid}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 10
+                 :slot :off-hand
+                 :item {:id 29176 :name "Crest of the Sha'tar"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :bis
+                 :rank 11
+                 :slot :off-hand
+                 :item {:id 29266 :name "Azure-Shield of Coldarra"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 12
+                 :slot :off-hand
+                 :item {:id 32082 :name "The Fel Barrier"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 14
+                 :slot :off-hand
+                 :item {:id 28316 :name "Aegis of the Sunbird"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 15
+                 :slot :off-hand
+                 :item {:id 27449 :name "Blood Knight Defender"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 16
+                 :slot :off-hand
+                 :item {:id 27887 :name "Platinum Shield of the Valorous"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 17
+                 :slot :off-hand
+                 :item {:id 23043 :name "The Face of Death"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 18
+                 :slot :off-hand
+                 :item {:id 28166 :name "Shield of the Void"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 19
+                 :slot :off-hand
+                 :item {:id 31200 :name "Shield of the Wayward Footman"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :bis
+                 :rank 20
+                 :slot :off-hand
+                 :item {:id 21269 :name "Blessed Qiraji Bulwark"}
+                 :sources [{:instance :raid}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :bis
+                 :rank 1
                  :slot :ranged
                  :item {:id 29388 :name "Libram of Repentance"}
                  :sources [{:instance :unknown}]}
                 {:class :paladin
                  :spec :protection
                  :phase 1
+                 :kind :pre-raid
+                 :rank 3
+                 :slot :ranged
+                 :item {:id 27917 :name "Libram of the Eternal Rest"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 4
+                 :slot :ranged
+                 :item {:id 22401 :name "Libram of Hope"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 3
+                 :slot :ring1
+                 :item {:id 29279 :name "Violet Signet of the Great Protector"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :bis
+                 :rank 7
+                 :slot :ring1
+                 :item {:id 28793 :name "Band of Crimson Fury"}
+                 :sources [{:instance :raid}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 11
+                 :slot :ring1
+                 :item {:id 28407 :name "Elementium Band of the Sentry"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :bis
+                 :rank 13
+                 :slot :ring1
+                 :item {:id 28792 :name "A'dal's Signet of Defense"}
+                 :sources [{:instance :raid}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 15
+                 :slot :ring1
+                 :item {:id 31924 :name "Yor's Revenge"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 17
+                 :slot :ring1
+                 :item {:id 27822 :name "Crystal Band of Valor"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 19
+                 :slot :ring1
+                 :item {:id 24088 :name "Delicate Eternium Ring"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 21
+                 :slot :ring1
+                 :item {:id 28265 :name "Dath'Remar's Ring of Defense"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 25
+                 :slot :ring1
+                 :item {:id 29126 :name "Seer's Signet"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 27
+                 :slot :ring1
+                 :item {:id 32774 :name "The Black Pearl"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 29
+                 :slot :ring1
+                 :item {:id 27436 :name "Iron Band of the Unbreakable"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 6
+                 :slot :ring2
+                 :item {:id 29172 :name "Ashyen's Gift"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :bis
+                 :rank 8
+                 :slot :ring2
+                 :item {:id 28555 :name "Seal of the Exorcist"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :bis
+                 :rank 12
+                 :slot :ring2
+                 :item {:id 28675 :name "Shermanar Great-Ring"}
+                 :sources [{:instance :raid}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 14
+                 :slot :ring2
+                 :item {:id 31319 :name "Band of Impenetrable Defenses"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :bis
+                 :rank 16
+                 :slot :ring2
+                 :item {:id 29384 :name "Ring of Unyielding Force"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 18
+                 :slot :ring2
+                 :item {:id 28211 :name "Lieutenant's Signet of Lordaeron"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 20
+                 :slot :ring2
+                 :item {:id 29323 :name "Andormu's Tear"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 24
+                 :slot :ring2
+                 :item {:id 29352 :name "Cobalt Band of Tyrigosa"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 26
+                 :slot :ring2
+                 :item {:id 29287 :name "Violet Signet of the Archmage"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 28
+                 :slot :ring2
+                 :item {:id 31078 :name "Protector's Mark of the Redemption"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 30
+                 :slot :ring2
+                 :item {:id 30006 :name "Wind Trader's Band"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :bis
+                 :rank 2
                  :slot :shoulder
                  :item {:id 29070 :name "Justicar Shoulderguards"}
                  :sources [{:instance :raid}]}
                 {:class :paladin
                  :spec :protection
+                 :phase 1
+                 :kind :bis
+                 :rank 5
+                 :slot :shoulder
+                 :item {:id 28743 :name "Mantle of Abrahmis"}
+                 :sources [{:instance :raid}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 6
+                 :slot :shoulder
+                 :item {:id 27706 :name "Gladiator's Lamellar Shoulders"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 7
+                 :slot :shoulder
+                 :item {:id 27739 :name "Spaulders of the Righteous"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 8
+                 :slot :shoulder
+                 :item {:id 27847 :name "Fanblade Pauldrons"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 9
+                 :slot :shoulder
+                 :item {:id 32073 :name "Spaulders of Dementia"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 10
+                 :slot :shoulder
+                 :item {:id 30381 :name "Kaylaan's Spaulders"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 11
+                 :slot :shoulder
+                 :item {:id 29316 :name "Warchief's Mantle"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 12
+                 :slot :shoulder
+                 :item {:id 24463 :name "Pauldrons of Brute Force"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 3
+                 :slot :trinket1
+                 :item {:id 23836 :name "Goblin Rocket Launcher"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 5
+                 :slot :trinket1
+                 :item {:id 32864 :name "Commander's Badge"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 8
+                 :slot :trinket1
+                 :item {:id 24125 :name "Figurine - Dawnstone Crab"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 10
+                 :slot :trinket1
+                 :item {:id 32534 :name "Brooch of the Immortal King"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 12
+                 :slot :trinket1
+                 :item {:id 23207 :name "Mark of the Champion"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 17
+                 :slot :trinket1
+                 :item {:id 27529 :name "Figurine of the Colossus"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 19
+                 :slot :trinket1
+                 :item {:id 30300 :name "Dabiri's Enigma"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 21
+                 :slot :trinket1
+                 :item {:id 28042 :name "Regal Protectorate"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 23
+                 :slot :trinket1
+                 :item {:id 27770 :name "Argussian Compass"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 25
+                 :slot :trinket1
+                 :item {:id 13503 :name "Alchemist's Stone"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 27
+                 :slot :trinket1
+                 :item {:id 19379 :name "Neltharion's Tear"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 29
+                 :slot :trinket1
+                 :item {:id 19950 :name "Zandalarian Hero Charm"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 4
+                 :slot :trinket2
+                 :item {:id 23835 :name "Gnomish Poultryizer"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :bis
+                 :rank 7
+                 :slot :trinket2
+                 :item {:id 28528 :name "Moroes' Lucky Pocket Watch"}
+                 :sources [{:instance :raid}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :bis
+                 :rank 9
+                 :slot :trinket2
+                 :item {:id 29387 :name "Gnomeregan Auto-Blocker 600"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :bis
+                 :rank 11
+                 :slot :trinket2
+                 :item {:id 29370 :name "Icon of the Silver Crescent"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :bis
+                 :rank 14
+                 :slot :trinket2
+                 :item {:id 28789 :name "Eye of Magtheridon"}
+                 :sources [{:instance :raid}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 18
+                 :slot :trinket2
+                 :item {:id 27891 :name "Adamantine Figurine"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 20
+                 :slot :trinket2
+                 :item {:id 19431 :name "Styleen's Impeding Scarab"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 22
+                 :slot :trinket2
+                 :item {:id 23040 :name "Glyph of Deflection"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 24
+                 :slot :trinket2
+                 :item {:id 24126 :name "Figurine - Living Ruby Serpent"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 26
+                 :slot :trinket2
+                 :item {:id 23046 :name "The Restrained Essence of Sapphiron"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 28
+                 :slot :trinket2
+                 :item {:id 18820 :name "Talisman of Ephemeral Power"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 6
+                 :slot :waist
+                 :item {:id 29253 :name "Girdle of Valorous Deeds"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :bis
+                 :rank 7
+                 :slot :waist
+                 :item {:id 28566 :name "Crimson Girdle of the Indomitable"}
+                 :sources [{:instance :raid}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 8
+                 :slot :waist
+                 :item {:id 27672 :name "Girdle of the Immovable"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 9
+                 :slot :waist
+                 :item {:id 31460 :name "Sha'tari Vindicator's Waistguard"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 10
+                 :slot :waist
+                 :item {:id 29238 :name "Lion's Heart Girdle"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 11
+                 :slot :waist
+                 :item {:id 30371 :name "Lightwarden's Girdle"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 12
+                 :slot :waist
+                 :item {:id 30330 :name "Starcaller's Plated Belt"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 13
+                 :slot :waist
+                 :item {:id 30380 :name "Girdle of the Lost Vindicator"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 5
+                 :slot :wrist
+                 :item {:id 29252 :name "Bracers of Dignity"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 6
+                 :slot :wrist
+                 :item {:id 23538 :name "Bracers of the Green Fortress"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :bis
+                 :rank 7
+                 :slot :wrist
+                 :item {:id 28502 :name "Vambraces of Courage"}
+                 :sources [{:instance :raid}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 8
+                 :slot :wrist
+                 :item {:id 29463 :name "Amber Bands of the Aggressor"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 9
+                 :slot :wrist
+                 :item {:id 28167 :name "Sha'tari Wrought Armguards"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 10
+                 :slot :wrist
+                 :item {:id 30400 :name "Thadell's Bracers"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 11
+                 :slot :wrist
+                 :item {:id 27459 :name "Vambraces of Daring"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 1
+                 :kind :pre-raid
+                 :rank 12
+                 :slot :wrist
+                 :item {:id 30225 :name "Junior Technician 3rd Grade Bracers"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
                  :phase 2
+                 :kind :bis
+                 :rank 2
                  :slot :back
                  :item {:id 29925 :name "Phoenix-Wing Cloak"}
                  :sources [{:instance :raid}]}
                 {:class :paladin
                  :spec :protection
                  :phase 2
+                 :kind :bis
+                 :rank 4
+                 :slot :back
+                 :item {:id 29992 :name "Royal Cloak of the Sunstriders"}
+                 :sources [{:instance :raid}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 2
+                 :kind :bis
+                 :rank 5
+                 :slot :chest
+                 :item {:id 30123 :name "Crystalforge Chestguard"}
+                 :sources [{:instance :raid}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 2
+                 :kind :bis
+                 :rank 2
                  :slot :feet
                  :item {:id 32267 :name "Boots of the Resilient"}
                  :sources [{:instance :raid}]}
                 {:class :paladin
                  :spec :protection
                  :phase 2
+                 :kind :pre-raid
+                 :rank 4
+                 :slot :feet
+                 :item {:id 30033 :name "Boots of the Protector"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 2
+                 :kind :pre-raid
+                 :rank 7
+                 :slot :feet
+                 :item {:id 30031 :name "Red Havoc Boots"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 2
+                 :kind :bis
+                 :rank 2
                  :slot :hands
                  :item {:id 29998 :name "Royal Gauntlets of Silvermoon"}
                  :sources [{:instance :raid}]}
                 {:class :paladin
                  :spec :protection
                  :phase 2
+                 :kind :bis
+                 :rank 3
+                 :slot :hands
+                 :item {:id 30124 :name "Crystalforge Handguards"}
+                 :sources [{:instance :raid}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 2
+                 :kind :bis
+                 :rank 3
+                 :slot :head
+                 :item {:id 30125 :name "Crystalforge Faceguard"}
+                 :sources [{:instance :raid}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 2
+                 :kind :pre-raid
+                 :rank 5
+                 :slot :head
+                 :item {:id 32473 :name "Tankatronic Goggles"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 2
+                 :kind :bis
+                 :rank 5
+                 :slot :legs
+                 :item {:id 30126 :name "Crystalforge Legguards"}
+                 :sources [{:instance :raid}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 2
+                 :kind :pre-raid
+                 :rank 4
+                 :slot :main-hand
+                 :item {:id 32963 :name "Merciless Gladiator's Gavel"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 2
+                 :kind :bis
+                 :rank 5
+                 :slot :main-hand
+                 :item {:id 30095 :name "Fang of the Leviathan"}
+                 :sources [{:instance :raid}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 2
+                 :kind :bis
+                 :rank 9
+                 :slot :main-hand
+                 :item {:id 32660 :name "Crystalforged Sword"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 2
+                 :kind :bis
+                 :rank 2
                  :slot :neck
                  :item {:id 30007 :name "The Darkener's Grasp"}
                  :sources [{:instance :raid}]}
                 {:class :paladin
                  :spec :protection
                  :phase 2
+                 :kind :bis
+                 :rank 7
+                 :slot :neck
+                 :item {:id 30099 :name "Frayed Tether of the Drowned"}
+                 :sources [{:instance :raid}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 2
+                 :kind :bis
+                 :rank 15
+                 :slot :neck
+                 :item {:id 30015 :name "The Sun King's Talisman"}
+                 :sources [{:instance :raid}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 2
+                 :kind :bis
+                 :rank 16
+                 :slot :neck
+                 :item {:id 30008 :name "Pendant of the Lost Ages"}
+                 :sources [{:instance :raid}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 2
+                 :kind :pre-raid
+                 :rank 17
+                 :slot :neck
+                 :item {:id 33065 :name "Veteran's Pendant of Dominance"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 2
+                 :kind :pre-raid
+                 :rank 5
+                 :slot :off-hand
+                 :item {:id 32045 :name "Merciless Gladiator's Shield Wall"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 2
+                 :kind :pre-raid
+                 :rank 6
+                 :slot :off-hand
+                 :item {:id 33313 :name "Merciless Gladiator's Barrier"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 2
+                 :kind :bis
+                 :rank 13
+                 :slot :off-hand
+                 :item {:id 32652 :name "Ogri'la Aegis"}
+                 :sources [{:instance :raid}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 2
+                 :kind :bis
+                 :rank 1
                  :slot :ring1
                  :item {:id 30083 :name "Ring of Sundered Souls"}
                  :sources [{:instance :raid}]}
                 {:class :paladin
                  :spec :protection
+                 :phase 2
+                 :kind :bis
+                 :rank 10
+                 :slot :ring1
+                 :item {:id 33054 :name "The Seal of Danzalar"}
+                 :sources [{:instance :raid}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 2
+                 :kind :bis
+                 :rank 23
+                 :slot :ring1
+                 :item {:id 30109 :name "Ring of Endless Coils"}
+                 :sources [{:instance :raid}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 2
+                 :kind :bis
+                 :rank 4
+                 :slot :ring2
+                 :item {:id 30028 :name "Seventh Ring of the Tirisfalen"}
+                 :sources [{:instance :raid}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 2
+                 :kind :bis
+                 :rank 22
+                 :slot :ring2
+                 :item {:id 29922 :name "Band of Al'ar"}
+                 :sources [{:instance :raid}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 2
+                 :kind :bis
+                 :rank 4
+                 :slot :shoulder
+                 :item {:id 30127 :name "Crystalforge Shoulderguards"}
+                 :sources [{:instance :raid}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 2
+                 :kind :bis
+                 :rank 15
+                 :slot :trinket1
+                 :item {:id 30447 :name "Tome of Fiery Redemption"}
+                 :sources [{:instance :raid}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 2
+                 :kind :bis
+                 :rank 3
+                 :slot :waist
+                 :item {:id 30096 :name "Girdle of the Invulnerable"}
+                 :sources [{:instance :raid}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 2
+                 :kind :bis
+                 :rank 4
+                 :slot :waist
+                 :item {:id 30064 :name "Cord of Screaming Terrors"}
+                 :sources [{:instance :raid}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 2
+                 :kind :pre-raid
+                 :rank 5
+                 :slot :waist
+                 :item {:id 30034 :name "Belt of the Guardian"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 2
+                 :kind :bis
+                 :rank 4
+                 :slot :wrist
+                 :item {:id 32515 :name "Wristguards of Determination"}
+                 :sources [{:instance :raid}]}
+                {:class :paladin
+                 :spec :protection
                  :phase 3
+                 :kind :bis
+                 :rank 1
                  :slot :back
                  :item {:id 34010 :name "Pepe's Shroud of Pacification"}
                  :sources [{:instance :raid}]}
                 {:class :paladin
                  :spec :protection
                  :phase 3
+                 :kind :bis
+                 :rank 5
+                 :slot :back
+                 :item {:id 32331 :name "Cloak of the Illidari Council"}
+                 :sources [{:instance :raid}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 3
+                 :kind :bis
+                 :rank 1
                  :slot :chest
                  :item {:id 30991 :name "Lightbringer Chestguard"}
                  :sources [{:instance :raid}]}
                 {:class :paladin
                  :spec :protection
                  :phase 3
+                 :kind :bis
+                 :rank 2
                  :slot :chest
                  :item {:id 30896 :name "Glory of the Defender"}
                  :sources [{:instance :raid}]}
                 {:class :paladin
                  :spec :protection
                  :phase 3
+                 :kind :pre-raid
+                 :rank 3
+                 :slot :chest
+                 :item {:id 33695
+                        :name "Vengeful Gladiator's Lamellar Chestpiece"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 3
+                 :kind :bis
+                 :rank 1
                  :slot :feet
                  :item {:id 32245 :name "Tide-stomper's Greaves"}
                  :sources [{:instance :raid}]}
                 {:class :paladin
                  :spec :protection
                  :phase 3
+                 :kind :bis
+                 :rank 3
+                 :slot :feet
+                 :item {:id 30894 :name "Blue Suede Shoes"}
+                 :sources [{:instance :raid}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 3
+                 :kind :bis
+                 :rank 1
                  :slot :hands
                  :item {:id 30985 :name "Lightbringer Handguards"}
                  :sources [{:instance :raid}]}
                 {:class :paladin
                  :spec :protection
                  :phase 3
+                 :kind :bis
+                 :rank 1
                  :slot :head
                  :item {:id 32521 :name "Faceplate of the Impenetrable"}
                  :sources [{:instance :raid}]}
                 {:class :paladin
                  :spec :protection
                  :phase 3
+                 :kind :bis
+                 :rank 2
                  :slot :head
                  :item {:id 30987 :name "Lightbringer Faceguard"}
                  :sources [{:instance :raid}]}
                 {:class :paladin
                  :spec :protection
                  :phase 3
+                 :kind :bis
+                 :rank 1
                  :slot :legs
                  :item {:id 30995 :name "Lightbringer Legguards"}
                  :sources [{:instance :raid}]}
                 {:class :paladin
                  :spec :protection
                  :phase 3
+                 :kind :bis
+                 :rank 2
                  :slot :legs
                  :item {:id 32263 :name "Praetorian's Legguards"}
                  :sources [{:instance :raid}]}
                 {:class :paladin
                  :spec :protection
                  :phase 3
+                 :kind :pre-raid
+                 :rank 3
+                 :slot :legs
+                 :item {:id 33698
+                        :name "Vengeful Gladiator's Lamellar Legguards"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 3
+                 :kind :bis
+                 :rank 4
+                 :slot :legs
+                 :item {:id 32367 :name "Leggings of Devastation"}
+                 :sources [{:instance :raid}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 3
+                 :kind :bis
+                 :rank 1
                  :slot :main-hand
                  :item {:id 30910 :name "Tempest of Chaos"}
                  :sources [{:instance :raid}]}
                 {:class :paladin
                  :spec :protection
                  :phase 3
+                 :kind :pre-raid
+                 :rank 2
                  :slot :main-hand
                  :item {:id 33687 :name "Vengeful Gladiator's Gavel"}
                  :sources [{:instance :unknown}]}
                 {:class :paladin
                  :spec :protection
                  :phase 3
+                 :kind :bis
+                 :rank 3
+                 :slot :main-hand
+                 :item {:id 34009 :name "Hammer of Judgement"}
+                 :sources [{:instance :raid}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 3
+                 :kind :bis
+                 :rank 1
                  :slot :neck
                  :item {:id 32362 :name "Pendant of Titans"}
                  :sources [{:instance :raid}]}
                 {:class :paladin
                  :spec :protection
                  :phase 3
+                 :kind :bis
+                 :rank 3
+                 :slot :neck
+                 :item {:id 33921 :name "Vindicator's Pendant of Dominance"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 3
+                 :kind :bis
+                 :rank 1
                  :slot :off-hand
                  :item {:id 32375 :name "Bulwark of Azzinoth"}
                  :sources [{:instance :raid}]}
                 {:class :paladin
                  :spec :protection
                  :phase 3
+                 :kind :bis
+                 :rank 2
                  :slot :off-hand
                  :item {:id 30909
                         :name "Antonidas's Aegis of Rapt Concentration"}
@@ -141,57 +1889,147 @@
                 {:class :paladin
                  :spec :protection
                  :phase 3
+                 :kind :bis
+                 :rank 3
+                 :slot :off-hand
+                 :item {:id 30889 :name "Kaz'rogal's Hardened Heart"}
+                 :sources [{:instance :raid}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 3
+                 :kind :bis
+                 :rank 4
+                 :slot :off-hand
+                 :item {:id 34011 :name "Illidari Runeshield"}
+                 :sources [{:instance :raid}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 3
+                 :kind :bis
+                 :rank 2
                  :slot :ranged
                  :item {:id 32368 :name "Tome of the Lightbringer"}
                  :sources [{:instance :raid}]}
                 {:class :paladin
                  :spec :protection
                  :phase 3
+                 :kind :bis
+                 :rank 2
                  :slot :ring1
                  :item {:id 32261 :name "Band of the Abyssal Lord"}
                  :sources [{:instance :raid}]}
                 {:class :paladin
                  :spec :protection
                  :phase 3
+                 :kind :bis
+                 :rank 9
+                 :slot :ring1
+                 :item {:id 29305 :name "Band of the Eternal Sage"}
+                 :sources [{:instance :raid}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 3
+                 :kind :bis
+                 :rank 5
+                 :slot :ring2
+                 :item {:id 29297 :name "Band of the Eternal Defender"}
+                 :sources [{:instance :raid}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 3
+                 :kind :bis
+                 :rank 1
                  :slot :shoulder
                  :item {:id 30998 :name "Lightbringer Shoulderguards"}
                  :sources [{:instance :raid}]}
                 {:class :paladin
                  :spec :protection
                  :phase 3
+                 :kind :bis
+                 :rank 3
+                 :slot :shoulder
+                 :item {:id 32250 :name "Pauldrons of Abyssal Fury"}
+                 :sources [{:instance :raid}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 3
+                 :kind :pre-raid
+                 :rank 1
                  :slot :trinket1
                  :item {:id 31858 :name "Darkmoon Card: Vengeance"}
                  :sources [{:instance :unknown}]}
                 {:class :paladin
                  :spec :protection
                  :phase 3
+                 :kind :bis
+                 :rank 6
+                 :slot :trinket1
+                 :item {:id 32501 :name "Shadowmoon Insignia"}
+                 :sources [{:instance :raid}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 3
+                 :kind :pre-raid
+                 :rank 2
                  :slot :trinket2
                  :item {:id 31859 :name "Darkmoon Card: Madness"}
                  :sources [{:instance :unknown}]}
                 {:class :paladin
                  :spec :protection
                  :phase 3
+                 :kind :pre-raid
+                 :rank 16
+                 :slot :trinket2
+                 :item {:id 32489 :name "Ashtongue Talisman of Zeal"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 3
+                 :kind :bis
+                 :rank 1
                  :slot :waist
                  :item {:id 32342 :name "Girdle of Mighty Resolve"}
                  :sources [{:instance :raid}]}
                 {:class :paladin
                  :spec :protection
                  :phase 3
+                 :kind :bis
+                 :rank 2
                  :slot :waist
                  :item {:id 32333 :name "Girdle of Stability"}
                  :sources [{:instance :raid}]}
                 {:class :paladin
                  :spec :protection
                  :phase 3
+                 :kind :bis
+                 :rank 1
                  :slot :wrist
                  :item {:id 32279 :name "The Seeker's Wristguards"}
                  :sources [{:instance :raid}]}
                 {:class :paladin
                  :spec :protection
                  :phase 3
+                 :kind :bis
+                 :rank 2
                  :slot :wrist
                  :item {:id 32232 :name "Eternium Shell Bracers"}
-                 :sources [{:instance :raid}]}])
+                 :sources [{:instance :raid}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 3
+                 :kind :bis
+                 :rank 3
+                 :slot :wrist
+                 :item {:id 33889 :name "Vindicator's Lamellar Bracers"}
+                 :sources [{:instance :unknown}]}
+                {:class :paladin
+                 :spec :protection
+                 :phase 4
+                 :kind :bis
+                 :rank 13
+                 :slot :trinket1
+                 :item {:id 34579 :name "Battlemaster's Audacity"}
+                 :sources [{:instance :unknown}]}])
 
 (tset by-spec :paladin-protection entries)
 
