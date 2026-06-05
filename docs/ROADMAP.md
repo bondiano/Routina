@@ -29,7 +29,7 @@
 | Build pipeline (`task build/test/lint/package`) | Working |
 | Fennel compiler vendored | `vendor/fennel.lua` pinned |
 | Domain module: `drop-chance` | Shipped, used as canonical example |
-| Tests: busted + Fennel searcher | Wired, 115 passing across core/domain/ui |
+| Tests: busted + Fennel searcher | Wired, 339 passing across core/domain/ui |
 | WoW API mocks | Stub harness in `spec/mocks/wow-api.fnl` + `spec/mocks/ace3.fnl` |
 | Ace3 wiring | **Done** -- `src/core/ace.fnl` (AceAddon entry, wires root + events) |
 | Event dispatcher | **Done** -- `src/core/events.fnl` (`case` dispatch; `RAID_INSTANCE_WELCOME`/`PLAYER_LOGOUT` drive `weekly-state`) |
@@ -37,13 +37,15 @@
 | SavedVariables / AceDB | **Done** -- `src/core/saved-vars.fnl` (versioned, migration list) |
 | Schemas + runtime validation | **Done** -- `src/domain/{schemas,validate}.fnl` |
 | WoW API wrapper | **Done** -- `src/core/wow.fnl` |
-| UI shell (custom CreateFrame, journal theme) | **Done** -- `root` + `theme` + `dom`/`format`/`frames`, three tab pills |
-| Vertical slice (Plan tab) | **Done** -- `domain/plan.fnl` scores a `sample-catalog` scaffold, rendered by `tabs/weekly.fnl` |
+| UI shell | **Done** -- rebuilt on **AceGUI-3.0 + SFX-Widgets** via the `src/ui/acegui.fnl` facade (parchment/custom stack retired); tinted `Frame` + `TabGroup` root, theme tokens bridged |
+| UI widgets (custom `CreateFrame` exceptions) | **Done** -- `chance-meter`, `lockout-timer` (only `OnUpdate`), `why-drawer` (singleton); everything else is AceGUI + pure view-models |
+| Vertical slice (Plan tab) | **Done** -- `tabs/weekly.fnl` renders real `route.plan-week` steps + `project-week` tail card via `src/core/planner.fnl` |
+| Options panel | **Done** -- AceConfig, split into Blizzard sub-panels (General / Slot weights / Attunement gating / Profiles, `childGroups :tree`) |
 | BiS catalog | `bis-catalog.fnl` + 27 generated `bis/<class>-<spec>.fnl` **done** (imported from GPL source; all 9 classes). **Phase 4b landed (pending in-game smoke):** full source ranks (~5100 entries), every entry carries `:kind` (`:bis`/`:pre-raid`) + `:rank`; queries `ranked-for-slot`/`pre-raid-for-slot`; route gearing-up mode + per-slot rank fallback; BiS tab tiers + pre-raid toggle. |
 | Lockout / activity model | `lockouts.fnl` + `activities.fnl` **done** (busted-green); next: `drop-table`, `route` |
 | License | **GPL-2.0** (inherited from imported BiS data; see `LICENSE`/`CREDITS.md`) |
 | Drop table | `drop-table.fnl` + generated `drops/data.fnl` **done** (279 entries imported from nexus-devs MIT; OQ-1 resolved) |
-| Routing engine | **Partial** -- `plan.fnl` proto scorer; real `route.plan-week` is Phase 2 (last domain piece: `route`) |
+| Routing engine | **Done** -- `route.fnl` (`plan-week` greedy scorer through `effective-rate`, gearing-up mode, `project-week` Monte Carlo) + `ctx.fnl` context builder; property-tested via `spec/helpers/gen.fnl` |
 | Localization scaffold (`Locales/`) | Empty (`.gitkeep` only) |
 | Release pipeline (BigWigs packager) | Configured, no tag yet |
 
@@ -107,7 +109,11 @@ Exit criteria:
 - `task lint && task test` green; coverage >=85% on `src/domain/`.
 - SavedVariables round-trip (write a value, `/reload`, read it back).
 
-## Phase 2 -- Domain MVP (NEXT)
+## Phase 2 -- Domain MVP (CODE-COMPLETE, pending in-game smoke)
+
+> All modules below are merged and green under `task lint && task test`. The
+> CI-level exit criteria pass; the phase flips to DONE together with Phase 1's
+> in-game smoke (the domain is exercised live through the Plan tab).
 
 Goal: enough pure modules to *describe* a weekly plan, even if the UI is
 ugly.
@@ -157,14 +163,16 @@ ugly.
      real `dropChance`; Vendor/Quest → `1.0`; crafted/token/sourceless omitted.
      279 entries → `src/domain/drops/data.fnl`. No Wowhead scraping.
    - Regenerate: `task vendor-bis-source && task import-drops`.
-5. **`src/domain/route.fnl`**
-   - `(plan-week player db) -> {:steps [...] :score number :est-minutes int}`.
-   - Greedy scoring v1: for each candidate activity, sum
-     `weight(slot) * drop-p(item, run)` over its BiS-relevant items and the
-     player's current gear.
+5. **`src/domain/route.fnl`** -- DONE
+   - `(plan-week player ctx) -> {:steps [...] :score number :est-minutes int}`.
+   - Greedy scoring v1: for each candidate activity, per-slot complement
+     product of its BiS-relevant ranked drops against the player's current
+     gear, weighted by slot (see Phase 4b §4 for the gearing-up extension).
    - Uses `drop-chance.at-least-one` / `effective-rate` -- no new math.
-6. **Property-based tests** for `route` and `drop-chance`. Generators in
-   `spec/helpers/gen.fnl`.
+   - `RouteContext` is built by the pure `src/domain/ctx.fnl` from db + player
+     and fed by the `src/core/planner.fnl` shell.
+6. **Property-based tests** for `route` and `drop-chance` -- DONE. Generators
+   in `spec/helpers/gen.fnl`.
 
 Exit criteria:
 
@@ -172,40 +180,60 @@ Exit criteria:
   with no WoW API calls and no time/random sources outside the seed.
 - Domain coverage still >=85%.
 
-## Phase 3 -- UI MVP
+## Phase 3 -- UI MVP (CODE-COMPLETE, pending wowUnit smoke)
+
+> **Decision change (shipped):** the parchment journal / bespoke
+> `CreateFrame`-widget stack this phase originally planned was replaced by
+> **AceGUI-3.0 + SFX-Widgets** through the `src/ui/acegui.fnl` facade -- the
+> parchment bitmap was un-themeable at arbitrary sizes ([UI](UI.md) has the
+> full rules). Three of the six planned widgets (`item-pill`,
+> `activity-card`, `bis-slot-row`) were **retired as widgets**: their data
+> shaping lives on as pure, busted-tested view-models rendered into AceGUI
+> containers; only what AceGUI cannot do stayed custom `CreateFrame`. The
+> phase flips to DONE after the wowUnit smoke checklist in the exit criteria
+> passes on a live client.
 
 Goal: a player can open Routina, see what they have left this week, and
-follow a recommended order. Visual language defined in [UI](UI.md):
-parchment journal, custom `CreateFrame`, six MVP widgets.
+follow a recommended order. Visual language defined in [UI](UI.md).
 
 Widgets first (order matters -- tabs compose widgets, not the reverse):
 
-1. **`src/ui/widgets/chance-meter.fnl`** -- atomic probability bar.
-   Canonical pattern in `.claude/examples/08-ui-widget.fnl`.
-2. **`src/ui/widgets/item-pill.fnl`** -- item icon + name + chance-meter
-   + tooltip. Used by `activity-card` and `bis-slot-row`.
-3. **`src/ui/widgets/activity-card.fnl`** -- the atom of the Plan tab.
-4. **`src/ui/widgets/lockout-timer.fnl`** -- throttled timer (1 Hz idle,
-   4 Hz under 60 s). The only `OnUpdate` widget in the panel body.
-5. **`src/ui/widgets/bis-slot-row.fnl`** -- the atom of the BiS tab,
-   grouped by source activity.
-6. **`src/ui/widgets/why-drawer.fnl`** -- slide-in explainer, replaces
-   modal popups. Singleton, not pooled.
+1. **`src/ui/widgets/chance-meter.fnl`** -- DONE. Atomic probability bar;
+   custom `CreateFrame` (justified: AceGUI has no proportional meter).
+2. **`src/ui/widgets/item-pill.fnl`** -- RETIRED (AceGUI migration). Item
+   rows are AceGUI labels built from the pure card/list view-models;
+   tooltips via `GameTooltip:SetItemByID`.
+3. **`src/ui/widgets/activity-card.fnl`** -- RETIRED (AceGUI migration).
+   The Plan tab's atom is the pure `card-view-model` rendered into an
+   AceGUI group per step.
+4. **`src/ui/widgets/lockout-timer.fnl`** -- DONE. Throttled timer (1 Hz
+   idle, 4 Hz under 60 s). The only `OnUpdate` widget in the panel body.
+5. **`src/ui/widgets/bis-slot-row.fnl`** -- RETIRED (AceGUI migration).
+   The BiS tab builds slot rows from its pure `list-view-model`
+   (primary + ranked alternatives, Phase 4b §5).
+6. **`src/ui/widgets/why-drawer.fnl`** -- DONE. Slide-in explainer,
+   replaces modal popups. Singleton, not pooled; pure `view-model`
+   (including the Phase 4 recommendation diff).
 
 Then the tabs that compose them:
 
-7. **`src/ui/tabs/weekly.fnl`** -- scrolling stack of `activity-card`,
-   sorted by score desc, summary row at the tail.
-8. **`src/ui/tabs/lockouts.fnl`** -- stack of `lockout-timer` rows,
+7. **`src/ui/tabs/weekly.fnl`** -- DONE. Scrolling stack of step cards,
+   sorted by score desc, `project-week` summary card at the tail.
+8. **`src/ui/tabs/lockouts.fnl`** -- DONE. Stack of `lockout-timer` rows,
    sorted by urgency (sourced from `lockouts` domain via events, never
    directly).
-9. **`src/ui/tabs/bis.fnl`** -- `bis-slot-row` grouped by source
-   activity, with a `progress-arc`-style header band.
-10. **`src/ui/options.fnl`** -- AceConfig panel (only place AceGUI is
-    allowed): spec override, ML competition assumption, weight tuning
-    (1-5 per slot), reset behaviour, font scale.
-11. **`src/ui/format.fnl`** -- pure formatters (probabilities, durations,
-    reset-in). No widget code.
+9. **`src/ui/tabs/bis.fnl`** -- DONE. Slot checklist grouped by source
+   activity, Best-in-slot / Road-to-BiS dropdown (Phase 4b §5).
+10. **`src/ui/options.fnl`** -- DONE. AceConfig panel: spec override, ML
+    competition assumption, weight tuning (1-5 per slot), attunement
+    gating, projection seed, luck tracking toggle, profiles. Split into
+    Blizzard sub-panels (General / Slot weights / Attunement gating /
+    Profiles via `childGroups :tree`) after one flat page overflowed the
+    fixed-size Blizzard options frame. The originally-planned reset-behaviour
+    and font-scale knobs did not ship here -- font scale folds into Phase 5
+    theming; reset behaviour is a follow-up once a real need shows up.
+11. **`src/ui/format.fnl`** -- DONE. Pure formatters (probabilities,
+    durations, reset-in). No widget code.
 
 Exit criteria:
 
@@ -216,9 +244,11 @@ Exit criteria:
 - No `print` calls anywhere; everything goes through `log:debug`.
 - No hex colour literals in `src/ui/widgets/` -- only theme tokens.
 
-## Phase 4 -- Probability engine v2
+## Phase 4 -- Probability engine v2 (MOSTLY CODE-COMPLETE)
 
-Once the pipeline is honest end-to-end, sharpen the math.
+Once the pipeline is honest end-to-end, sharpen the math. Items 1, 3 and 4
+are merged (pending in-game smoke); item 2 shipped a v1 and keeps the
+per-activity exposure open.
 
 1. **Bayesian luck score** -- pure model + live recording **DONE** (experimental,
    pending in-game smoke):
@@ -237,8 +267,14 @@ Once the pipeline is honest end-to-end, sharpen the math.
    - **Remaining (not a blocker):** validate that ENCOUNTER_END's `encounterName`
      matches the `drop-table` `:boss` strings (the runs key) against live data,
      and surface the luck score in the UI (why-drawer) once real history exists.
-2. **ML competition modelling** -- per-activity `competitors-by-role` map,
-   exposed in options. `effective-rate` flows through `route` scoring.
+2. **ML competition modelling** -- **Partial (v1 shipped).** A global "Loot
+   competitors (per drop)" slider in options (`db.default-competitors`) flows
+   through `ctx` into `route` scoring via `effective-rate`. `RouteContext`
+   already accepts a per-activity `:competitors` map, but it is not yet
+   surfaced in options -- the per-activity `competitors-by-role` exposure is
+   the remaining work, and the phase exit criterion ("competitors on caster
+   trinket" reorders the plan) stays open until it lands: a global slider
+   rescales every activity uniformly and cannot reorder.
 3. **Monte Carlo route projection** -- **DONE** (pending in-game smoke):
    `route.project-week` collapses each plan step's target items into a per-slot
    "any upgrade by reset" Bernoulli (`drop-chance.at-least-one` + complement
@@ -388,9 +424,11 @@ Parallelizable; pick up alongside Phase 3-4 as time allows.
   pulled from translator after string freeze.
 - **Theming** -- light/dark, font scale, colour-blind safe palette for the
   weekly tab.
-- **Profiles** -- AceDBOptions, per-character + shared profile.
-- **Slash commands** -- `/routina`, `/rt`, `/rt plan`, `/rt reset`,
-  `/rt debug`. Documented in `README.md`.
+- **Profiles** -- DONE early: AceDBOptions sub-panel shipped with the
+  Phase 3 options split (per-character + shared profile).
+- **Slash commands** -- `/routina` + `/rt` (toggle) and `... options`
+  shipped with Phase 1; still open: `/rt plan`, `/rt reset`, `/rt debug`,
+  and documenting all of them in `README.md`.
 - **`/docgen` in CI** -- `docs/api.md` stays in sync; CI fails on drift.
 - **Performance budget** -- `task profile` task: assert `route.plan-week`
   under 5 ms median over 100 fixture players.
