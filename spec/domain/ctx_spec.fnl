@@ -153,6 +153,15 @@
                                    (let [r (ctx.build (snapshot {:options {:default-competitors 4}}))]
                                      (assert.are.equal 4
                                                        r.ctx.default-competitors))))
+                             (it "carries the raid composition from options"
+                                 (fn []
+                                   (let [comp {:tank 3
+                                               :healer 6
+                                               :melee 7
+                                               :ranged 4
+                                               :caster 5}
+                                         r (ctx.build (snapshot {:options {:composition comp}}))]
+                                     (assert.are.same comp r.ctx.composition))))
                              (it "carries the projection seed from options"
                                  (fn []
                                    (let [r (ctx.build (snapshot {:options {:seed 1234}}))]

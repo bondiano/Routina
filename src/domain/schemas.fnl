@@ -116,7 +116,10 @@
 ;; --- Activity registry (consumed by src/domain/activities.fnl) -------------
 ;;
 ;; ActivityDef is the STATIC content registry: what weekly content exists, its
-;; reset cadence, and prerequisites. Distinct from the scored, plan-facing
+;; reset cadence, and prerequisites. :group-size is the instance party/raid cap
+;; (10/25/40 raids, 5 dungeons) used to scale loot competition; unset for
+;; non-instanced content (vendor/quest/daily/rep-hub), which is uncontested.
+;; Distinct from the scored, plan-facing
 ;; `Activity` above (which plan.fnl renders); the two share ids (:karazhan ...)
 ;; so a scored row can be traced back to its definition. Reputation hubs are
 ;; modelled as activities (PRD OQ-4 resolved): :rep-hub is a live type and
@@ -136,6 +139,7 @@
              :dungeon]
       :reset [:enum :weekly :daily :none]
       :length-estimate :integer
+      :group-size [:optional :integer]
       :requirements [:ref :ActivityRequirements]})
 
 (set M.ActivityRequirements
@@ -215,7 +219,10 @@
 ;; :owned-items is the set of item-ids already acquired (a gap is "unowned"),
 ;; :lockouts maps an ActivityDef :id to its planner-facing LockoutView, and the
 ;; optional :weights (slot -> 1..5) / :competitors (activity-id -> >=1) carry the
-;; player's options (defaults: weight 1, competitors 1). :seed is the optional
+;; player's options (defaults: weight 1, competitors 1). :composition is the
+;; player's usual raid makeup (role -> headcount, roles per
+;; src/domain/competition.fnl); when set, route derives per-item competitors
+;; from it instead of :default-competitors. :seed is the optional
 ;; user-controlled Monte Carlo seed for route.project-week (default applied
 ;; downstream). Validated once at the route boundary, never in the scoring loop.
 
@@ -228,6 +235,7 @@
       :lockouts [:map :string [:ref :LockoutView]]
       :weights [:optional [:map :string :number]]
       :competitors [:optional [:map :string :number]]
+      :composition [:optional [:map :string :number]]
       :default-competitors [:optional :number]
       :seed [:optional :integer]
       :include-classic? [:optional :boolean]})

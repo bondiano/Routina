@@ -75,36 +75,42 @@
                   :type :raid
                   :reset :weekly
                   :length-estimate 95
+                  :group-size 10
                   :requirements {:min-level 70 :attunement :kara-key}}
                  {:id :serpentshrine-cavern
                   :name "Serpentshrine Cavern"
                   :type :raid
                   :reset :weekly
                   :length-estimate 150
+                  :group-size 25
                   :requirements {:min-level 70 :attunement :ssc-attune}}
                  {:id :tempest-keep
                   :name "Tempest Keep: The Eye"
                   :type :raid
                   :reset :weekly
                   :length-estimate 135
+                  :group-size 25
                   :requirements {:min-level 70 :attunement :tk-attune}}
                  {:id :black-temple
                   :name "Black Temple"
                   :type :raid
                   :reset :weekly
                   :length-estimate 180
+                  :group-size 25
                   :requirements {:min-level 70 :attunement :bt-medallion}}
                  {:id :hyjal-summit
                   :name "Hyjal Summit"
                   :type :raid
                   :reset :weekly
                   :length-estimate 130
+                  :group-size 25
                   :requirements {:min-level 70 :attunement :hyjal-vials}}
                  {:id :heroic-mech
                   :name "Heroic Mechanar"
                   :type :heroic
                   :reset :daily
                   :length-estimate 35
+                  :group-size 5
                   :requirements {:min-level 70
                                  :attunement :heroic-flamewrought}}
                  {:id :heroic-slabs
@@ -112,6 +118,7 @@
                   :type :heroic
                   :reset :daily
                   :length-estimate 40
+                  :group-size 5
                   :requirements {:min-level 70 :attunement :heroic-auchindoun}}
                  {:id :skettis-daily
                   :name "Skettis Dailies"
@@ -132,18 +139,21 @@
                   :type :raid
                   :reset :weekly
                   :length-estimate 45
+                  :group-size 25
                   :requirements {:min-level 70}}
                  {:id :magtheridons-lair
                   :name "Magtheridon's Lair"
                   :type :raid
                   :reset :weekly
                   :length-estimate 30
+                  :group-size 25
                   :requirements {:min-level 70}}
                  {:id :naxxramas
                   :name :Naxxramas
                   :type :raid
                   :reset :weekly
                   :length-estimate 120
+                  :group-size 40
                   :requirements {:min-level 60}}
                  ;; Outdoor world bosses (weekly-ish respawn; modelled as a weekly clear).
                  {:id :shadowmoon-valley
@@ -151,12 +161,14 @@
                   :type :world-boss
                   :reset :weekly
                   :length-estimate 5
+                  :group-size 25
                   :requirements {:min-level 70}}
                  {:id :hellfire-peninsula
                   :name "Doom Lord Kazzak"
                   :type :world-boss
                   :reset :weekly
                   :length-estimate 5
+                  :group-size 25
                   :requirements {:min-level 70}}
                  ;; Heroic 5-mans that award tracked BiS drops (daily reset).
                  {:id :the-slave-pens
@@ -164,30 +176,35 @@
                   :type :heroic
                   :reset :daily
                   :length-estimate 30
+                  :group-size 5
                   :requirements {:min-level 70}}
                  {:id :the-shattered-halls
                   :name "Heroic Shattered Halls"
                   :type :heroic
                   :reset :daily
                   :length-estimate 45
+                  :group-size 5
                   :requirements {:min-level 70}}
                  {:id :the-blood-furnace
                   :name "Heroic Blood Furnace"
                   :type :heroic
                   :reset :daily
                   :length-estimate 30
+                  :group-size 5
                   :requirements {:min-level 70}}
                  {:id :shadow-labyrinth
                   :name "Heroic Shadow Labyrinth"
                   :type :heroic
                   :reset :daily
                   :length-estimate 40
+                  :group-size 5
                   :requirements {:min-level 70}}
                  {:id :mana-tombs
                   :name "Heroic Mana-Tombs"
                   :type :heroic
                   :reset :daily
                   :length-estimate 30
+                  :group-size 5
                   :requirements {:min-level 70}}
                  ;; Level-60 dungeons with a lingering pre-raid / quest-chain BiS item.
                  {:id :dire-maul
@@ -195,12 +212,14 @@
                   :type :dungeon
                   :reset :none
                   :length-estimate 40
+                  :group-size 5
                   :requirements {:min-level 58}}
                  {:id :blackrock-depths
                   :name "Blackrock Depths"
                   :type :dungeon
                   :reset :none
                   :length-estimate 50
+                  :group-size 5
                   :requirements {:min-level 52}}
                  ;; Token sinks: the Badge of Justice vendor and quest-reward gear. No
                  ;; lockout -- :none reset -- and their drops carry base-drop-p 1, so the

@@ -12,6 +12,7 @@
 
 (local Routina (or _G.Routina {}))
 (local root (or Routina.root (require :src.ui.root)))
+(local competition (or Routina.competition (require :src.domain.competition)))
 (local LibStub _G.LibStub)
 
 (local M {})
@@ -78,6 +79,49 @@
                            (tset (ensure-sub! db :weights) slot v)
                            (changed))}))})
 
+;; Display labels for competition.roles (the domain owns the taxonomy).
+(local role-labels {:tank :Tanks
+                    :healer :Healers
+                    :melee "Melee DPS"
+                    :ranged "Ranged (physical)"
+                    :caster :Casters})
+
+(fn seed-composition! [db]
+  "Materialize the full default composition on the first slider touch, so the
+   panel never displays headcounts that aren't actually in effect."
+  (when (= nil db.composition)
+    (set db.composition (collect [r n (pairs competition.default-composition)]
+                          (values r n)))))
+
+(fn composition-group [db changed]
+  "Group of one headcount slider per loot-competition role (own Bliz sub-panel).
+   Inert until first touched: composition stays nil (the global slider applies)
+   and the sliders show the canonical default raid until a :set stores it."
+  {:type :group
+   :name "Raid composition"
+   :order 4
+   :args (collect [i role (ipairs competition.roles)
+                   &into {:about {:type :description
+                                  :name (.. "Who you usually raid with. Routina assumes that many "
+                                            "people roll on each drop their role can use, scaled "
+                                            "down for 10-mans and heroics. Until you move a slider, "
+                                            "the global 'Loot competitors' fallback applies instead.")
+                                  :order 0}}]
+           (values (tostring role)
+                   {:type :range
+                    :name (. role-labels role)
+                    :order i
+                    :min 0
+                    :max 40
+                    :step 1
+                    :get (fn [_]
+                           (or (?. db :composition role)
+                               (. competition.default-composition role)))
+                    :set (fn [_ v]
+                           (seed-composition! db)
+                           (tset db.composition role v)
+                           (changed))}))})
+
 (fn attune-args [db changed]
   "Per-attunement gate?/advise? toggles, keyed <slug>-gate / <slug>-advise."
   (let [args {}]
@@ -128,6 +172,7 @@
                   :set (fn [_ v] (tset db :phase v) (changed))}
           :competitors {:type :range
                         :name "Loot competitors (per drop)"
+                        :desc "Global fallback used only while no Raid composition is set. Uncontested pickups (vendor, quest, dailies) always ignore competition."
                         :order 3
                         :min 1
                         :max 8
@@ -170,8 +215,8 @@
 
 (lambda M.options-table [api]
   "Build the AceConfig options spec. Top-level args are all non-inline groups
-   (general / weights / attune) so register! can map each onto its own
-   Blizzard sub-panel -- one flat page overflowed the fixed-size frame.
+   (general / weights / attune / composition) so register! can map each onto
+   its own Blizzard sub-panel -- one flat page overflowed the fixed-size frame.
    Domain:  api : {:db {route-options table, mutated by :set closures}
                    :specs [{:value keyword :text string} ...]  -- spec choices
                    :on-change (fn []) | nil  -- fired after any :set (re-plan)}
@@ -186,7 +231,8 @@
             :attune {:type :group
                      :name "Attunement gating"
                      :order 3
-                     :args (attune-args db changed)}}}))
+                     :args (attune-args db changed)}
+            :composition (composition-group db changed)}}))
 
 ;; --- Impure registration (guarded: no-op without the config libs) ----------
 
@@ -233,6 +279,8 @@
                                             :weights)
           (AceConfigDialog:AddToBlizOptions :Routina "Attunement gating"
                                             :Routina :attune)
+          (AceConfigDialog:AddToBlizOptions :Routina "Raid composition"
+                                            :Routina :composition)
           (when profiles?
             (AceConfigDialog:AddToBlizOptions :Routina :Profiles :Routina
                                               :profiles))

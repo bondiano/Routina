@@ -46,6 +46,7 @@
 | License | **GPL-2.0** (inherited from imported BiS data; see `LICENSE`/`CREDITS.md`) |
 | Drop table | `drop-table.fnl` + generated `drops/data.fnl` **done** (279 entries imported from nexus-devs MIT; OQ-1 resolved) |
 | Routing engine | **Done** -- `route.fnl` (`plan-week` greedy scorer through `effective-rate`, gearing-up mode, `project-week` Monte Carlo) + `ctx.fnl` context builder; property-tested via `spec/helpers/gen.fnl` |
+| Competition model | **Done** -- `competition.fnl` by-role model (PRD OQ-3 resolved): catalog-derived contending roles x raid composition, scaled by `ActivityDef :group-size`; "Raid composition" options sub-panel |
 | Localization scaffold (`Locales/`) | Empty (`.gitkeep` only) |
 | Release pipeline (BigWigs packager) | Configured, no tag yet |
 
@@ -244,11 +245,11 @@ Exit criteria:
 - No `print` calls anywhere; everything goes through `log:debug`.
 - No hex colour literals in `src/ui/widgets/` -- only theme tokens.
 
-## Phase 4 -- Probability engine v2 (MOSTLY CODE-COMPLETE)
+## Phase 4 -- Probability engine v2 (CODE-COMPLETE, pending in-game smoke)
 
-Once the pipeline is honest end-to-end, sharpen the math. Items 1, 3 and 4
-are merged (pending in-game smoke); item 2 shipped a v1 and keeps the
-per-activity exposure open.
+Once the pipeline is honest end-to-end, sharpen the math. All four items are
+merged and green under `task lint && task test`; the phase flips to DONE with
+the in-game smoke pass.
 
 1. **Bayesian luck score** -- pure model + live recording **DONE** (experimental,
    pending in-game smoke):
@@ -267,14 +268,22 @@ per-activity exposure open.
    - **Remaining (not a blocker):** validate that ENCOUNTER_END's `encounterName`
      matches the `drop-table` `:boss` strings (the runs key) against live data,
      and surface the luck score in the UI (why-drawer) once real history exists.
-2. **ML competition modelling** -- **Partial (v1 shipped).** A global "Loot
-   competitors (per drop)" slider in options (`db.default-competitors`) flows
-   through `ctx` into `route` scoring via `effective-rate`. `RouteContext`
-   already accepts a per-activity `:competitors` map, but it is not yet
-   surfaced in options -- the per-activity `competitors-by-role` exposure is
-   the remaining work, and the phase exit criterion ("competitors on caster
-   trinket" reorders the plan) stays open until it lands: a global slider
-   rescales every activity uniformly and cannot reorder.
+2. **ML competition modelling** -- **DONE (pending in-game smoke; resolves
+   PRD OQ-3).** Competition is modelled **by role** from a single player-
+   declared raid composition rather than the originally-sketched per-activity
+   map: the new pure `src/domain/competition.fnl` holds the 27-entry
+   spec->role table and lazily folds the BiS catalog into an item-id ->
+   contending-roles index, so "who rolls on this drop" is derived, never
+   curated. `route.competitors-for` is per-item now, with precedence:
+   explicit per-activity override > uncontested-type exemption (vendor /
+   quest / daily / rep-hub never divide their guaranteed pickups -- a
+   deliberate fix) > composition scaled to the activity's new
+   `ActivityDef :group-size` (Kara 10 / 25-mans / Naxx 40 / 5-mans) >
+   global `default-competitors` slider > 1. Options gained a "Raid
+   composition" Blizzard sub-panel (5 role sliders, first-touch opt-in, full
+   back-compat while unset). The exit criterion is now a busted regression:
+   more casters in a same-size raid lowers a caster cloak's chance and
+   reorders, while swapping non-contending roles changes nothing.
 3. **Monte Carlo route projection** -- **DONE** (pending in-game smoke):
    `route.project-week` collapses each plan step's target items into a per-slot
    "any upgrade by reset" Bernoulli (`drop-chance.at-least-one` + complement

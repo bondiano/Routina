@@ -23,6 +23,7 @@
 (local kara-feet 28545)
 (local kara-legs 28741)
 (local kara-back 28672)
+(local kara-caster-back 28766)
 (local kara-feet-p 0.1606)
 (local kara-legs-p 0.155)
 (local kara-minutes 95)
@@ -208,6 +209,105 @@
                                                    i.chance))]
                                 (assert.is_true (< (chance-of pooled)
                                                    (chance-of solo))))))
+                        ;; By-role composition (PRD OQ-3 resolved). The fixture
+                        ;; item is Ruby Drape (28766): a Kara caster cloak
+                        ;; contended by :caster specs and :tank (prot paladins
+                        ;; are spell-power tanks) -- NOT by melee/ranged/healer.
+                        (it "lowers a caster item's chance under a caster-heavy
+                             composition"
+                            (fn []
+                              (let [chance-of #(accumulate [c nil _ i (ipairs (. (kara-step $)
+                                                                                 :items))
+                                                            &until c]
+                                                 (when (= i.item-id
+                                                          kara-caster-back)
+                                                   i.chance))
+                                    solo (route.plan-week (player)
+                                                          (warlock-ctx))
+                                    pooled (route.plan-week (player)
+                                                            (warlock-ctx {:composition {:caster 10
+                                                                                        :tank 0
+                                                                                        :healer 0
+                                                                                        :melee 0
+                                                                                        :ranged 0}}))]
+                                (assert.is_true (< (chance-of pooled)
+                                                   (chance-of solo))))))
+                        (it "more casters in the same-size raid -> caster item
+                             chance drops (the Phase 4 exit criterion)"
+                            (fn []
+                              (let [chance-of #(accumulate [c nil _ i (ipairs (. (kara-step $)
+                                                                                 :items))
+                                                            &until c]
+                                                 (when (= i.item-id
+                                                          kara-caster-back)
+                                                   i.chance))
+                                    few (route.plan-week (player)
+                                                         (warlock-ctx {:composition {:caster 4
+                                                                                     :melee 11
+                                                                                     :tank 2
+                                                                                     :healer 8
+                                                                                     :ranged 0}}))
+                                    many (route.plan-week (player)
+                                                          (warlock-ctx {:composition {:caster 12
+                                                                                      :melee 3
+                                                                                      :tank 2
+                                                                                      :healer 8
+                                                                                      :ranged 0}}))]
+                                (assert.is_true (< (chance-of many)
+                                                   (chance-of few))))))
+                        (it "swapping non-contending roles at equal raid size
+                             leaves a caster item's chance unchanged"
+                            (fn []
+                              (let [chance-of #(accumulate [c nil _ i (ipairs (. (kara-step $)
+                                                                                 :items))
+                                                            &until c]
+                                                 (when (= i.item-id
+                                                          kara-caster-back)
+                                                   i.chance))
+                                    melee-heavy (route.plan-week (player)
+                                                                 (warlock-ctx {:composition {:caster 5
+                                                                                             :tank 2
+                                                                                             :healer 8
+                                                                                             :melee 10
+                                                                                             :ranged 0}}))
+                                    ranged-heavy (route.plan-week (player)
+                                                                  (warlock-ctx {:composition {:caster 5
+                                                                                              :tank 2
+                                                                                              :healer 8
+                                                                                              :melee 0
+                                                                                              :ranged 10}}))]
+                                (assert.are.equal (chance-of melee-heavy)
+                                                  (chance-of ranged-heavy)))))
+                        (it "an explicit per-activity override beats the composition"
+                            (fn []
+                              (let [chance-of #(accumulate [c nil _ i (ipairs (. (kara-step $)
+                                                                                 :items))
+                                                            &until c]
+                                                 (when (= i.item-id
+                                                          kara-caster-back)
+                                                   i.chance))
+                                    flat-only (route.plan-week (player)
+                                                               (warlock-ctx {:competitors {:karazhan 4}}))
+                                    both (route.plan-week (player)
+                                                          (warlock-ctx {:competitors {:karazhan 4}
+                                                                        :composition {:caster 25
+                                                                                      :tank 0
+                                                                                      :healer 0
+                                                                                      :melee 0
+                                                                                      :ranged 0}}))]
+                                (assert.are.equal (chance-of flat-only)
+                                                  (chance-of both)))))
+                        (it "uncontested content (vendor) ignores the global slider"
+                            (fn []
+                              (let [vendor-step #(accumulate [found nil _ s (ipairs $.steps)
+                                                              &until found]
+                                                   (when (= s.id :vendor) s))
+                                    solo (vendor-step (route.plan-week (player)
+                                                                       (ctx)))
+                                    pooled (vendor-step (route.plan-week (player)
+                                                                         (ctx {:default-competitors 4})))]
+                                (assert.is_not_nil solo)
+                                (assert.are.equal solo.score pooled.score))))
                         (it "sums est-minutes over the planned steps"
                             (fn []
                               (let [plan (route.plan-week (player) (ctx))

@@ -70,6 +70,9 @@ build\domain\bis\druid-feral-tank-threat.lua
 build\domain\bis\druid-restoration.lua
 build\domain\bis\manifest.lua
 build\domain\bis-catalog.lua
+# competition: by-role loot-competition model (PRD OQ-3). Folds the catalog
+# into an item->roles index lazily, so it only needs bis-catalog before it.
+build\domain\competition.lua
 # Drop table: generated drops\data.lua registers _G.Routina.drop-data;
 # drop-table.lua reads + validates it. See scripts/import-drops.lua.
 build\domain\drops\data.lua

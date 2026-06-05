@@ -119,4 +119,50 @@
                 (fn []
                   (let [t (build {} (fn []))]
                     (each [_ toggle (pairs t.args.attune.args)]
-                      (assert.are.equal :full (. toggle :width))))))))
+                      (assert.are.equal :full (. toggle :width))))))
+            (it "exposes a non-inline raid-composition group with a slider per role"
+                (fn []
+                  (let [t (build {} (fn []))
+                        comp (. t.args :composition)]
+                    (assert.are.equal :group (. comp :type))
+                    (assert.is_nil (. comp :inline))
+                    (each [_ role (ipairs [:tank
+                                           :healer
+                                           :melee
+                                           :ranged
+                                           :caster])]
+                      (assert.are.equal :range
+                                        (. comp.args (tostring role) :type))))))
+            (it "shows the default composition while nothing is stored"
+                (fn []
+                  (let [db {}
+                        t (build db (fn []))
+                        tank (. t.args.composition.args :tank)]
+                    (assert.are.equal 3 ((. tank :get) nil))
+                    ;; reading must not opt the player in
+                    (assert.is_nil db.composition))))
+            (it "materializes the full default composition on the first :set"
+                (fn []
+                  (let [db {}
+                        hits {:n 0}
+                        t (build db (fn [] (set hits.n (+ hits.n 1))))
+                        caster (. t.args.composition.args :caster)]
+                    ((. caster :set) nil 9)
+                    (assert.are.equal 9 (. db.composition :caster))
+                    ;; the untouched roles are stored too, so what the panel
+                    ;; shows is exactly what the planner uses
+                    (assert.are.equal 3 (. db.composition :tank))
+                    (assert.are.equal 6 (. db.composition :healer))
+                    (assert.are.equal 1 hits.n))))
+            (it "later :sets only update the touched role"
+                (fn []
+                  (let [db {:composition {:tank 1
+                                          :healer 1
+                                          :melee 1
+                                          :ranged 1
+                                          :caster 1}}
+                        t (build db (fn []))
+                        melee (. t.args.composition.args :melee)]
+                    ((. melee :set) nil 7)
+                    (assert.are.equal 7 (. db.composition :melee))
+                    (assert.are.equal 1 (. db.composition :tank)))))))

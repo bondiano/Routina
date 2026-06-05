@@ -129,7 +129,9 @@ All pure. All seedable. All testable in busted without WoW.
 AceConfig panel:
 
 - Spec override (default: detected from talent tree).
-- ML competition assumption per slot.
+- ML competition assumption: raid composition by role (per-item contention
+  derived from the BiS catalog; OQ-3 resolved), with a global fallback
+  slider and a per-activity override map.
 - Slot weight tuning (1-5).
 - Reset behaviour (e.g. "weekly luck reset on Tuesday morning").
 - Profile management (AceDBOptions).
@@ -251,11 +253,24 @@ These are unresolved and need an answer before the relevant
   genuinely useful BoEs (e.g. some Karazhan trinkets).
   *Affects:* Phase 2 / route scoring.
 
-- **OQ-3 -- Loot rules per raid.** Encode ML / SR / GDKP per saved raid,
+- ~~**OQ-3 -- Loot rules per raid.** Encode ML / SR / GDKP per saved raid,
   or expose a single global "competitors per slot" assumption? Per-raid
   is accurate but laborious to set up; global is fast but lies for
-  players raiding with mixed groups.
-  *Affects:* Phase 4 / competition modelling.
+  players raiding with mixed groups.~~ **RESOLVED (2026-06-05): neither --
+  competition is modelled by role from a single raid composition.** The player
+  declares who they usually raid with ({tank, healer, melee, ranged, caster}
+  -> headcount, one options sub-panel); an item's *contending roles* are
+  derived from the BiS catalog itself (every role whose class/spec list names
+  the item, via `src/domain/competition.fnl`); per-item competitors = the
+  contending headcount, scaled to the activity's `:group-size` (10/25/40/5)
+  and floored at 1. This is per-item accurate (a caster trinket competes only
+  against casters and the odd prot paladin) without per-raid setup. ML / SR /
+  GDKP are deliberately **not** encoded -- SR/GDKP re-weight *who* wins, not
+  *how many contend*, which is all `effective-rate` consumes. The global
+  "competitors per drop" slider and the per-activity override map remain as
+  manual escape hatches (precedence: per-activity > uncontested-type exemption
+  > composition > global > 1); non-instanced pickups (vendor / quest / daily /
+  rep-hub) are always uncontested. See [ROADMAP](ROADMAP.md) Phase 4 §2.
 
 - ~~**OQ-4 -- Reputation grinds in the weekly plan.** Treat reputations
   (Aldor / Scryer / Cenarion Expedition / ...) as weekly activities, or

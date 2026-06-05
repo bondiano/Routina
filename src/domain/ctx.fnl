@@ -210,7 +210,8 @@
                         :quest-completed? (fn [qid] -> bool)
                         :faction-standing (fn [fid] -> standingId|nil)
                         :options {:spec ?kw :phase ?int :weights ?{}
-                                  :competitors ?{} :default-competitors ?int
+                                  :competitors ?{} :composition ?{role int}
+                                  :default-competitors ?int
                                   :seed ?int :include-classic? ?bool
                                   :attune ?{slug {:gate? ?bool :advise? ?bool}}}}
    Returns: {:player schemas.Player :ctx schemas.RouteContext
@@ -229,6 +230,7 @@
              :lockouts (lockout-views snapshot.raw-lockouts snapshot.owner)
              :weights opts.weights
              :competitors opts.competitors
+             :composition opts.composition
              :default-competitors opts.default-competitors
              :seed opts.seed
              :include-classic? opts.include-classic?}]

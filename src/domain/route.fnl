@@ -17,7 +17,10 @@
 ;; Greedy scoring v1 (PRD §6.4, ROADMAP Phase 2 §5):
 ;;   score(activity) = Σ weight(slot) · at-least-one(p, planned-runs)
 ;; over the player's UNOWNED BiS items (phase <= ctx.phase) that drop from the
-;; activity, where p = effective-rate(base-drop-p, competitors). Decisions baked
+;; activity, where p = effective-rate(base-drop-p, competitors). Competitors are
+;; per-item when ctx.composition is set (PRD OQ-3 resolved: roles contending for
+;; the item per src/domain/competition.fnl, headcount from the player's raid
+;; composition scaled to the activity's group size). Decisions baked
 ;; in for v1 and revisited later: BoEs are included (OQ-2), lockout decay is flat
 ;; (OQ-7), heroics rank by this same BiS-per-week score (OQ-6). No new math.
 ;; See docs/PRD.md §13 and .claude/examples/01-pure-module/.
@@ -30,6 +33,7 @@
 (local activities (or Routina.activities (require :src.domain.activities)))
 (local bis-catalog (or Routina.bis-catalog (require :src.domain.bis-catalog)))
 (local drop-table (or Routina.drop-table (require :src.domain.drop-table)))
+(local competition (or Routina.competition (require :src.domain.competition)))
 
 (local M {})
 
@@ -86,10 +90,39 @@
   "The player's tuning weight for a gear slot (default 1 when unset)."
   (or (and ctx.weights (. ctx.weights slot)) default-slot-weight))
 
-(fn competitors-for [ctx activity-id]
-  "The competition pool for an activity's loot: a per-activity override, else the
-   context-wide :default-competitors (the options panel's global slider), else 1."
-  (or (and ctx.competitors (. ctx.competitors activity-id))
+;; Non-instanced content (guaranteed pickups: badge vendor, quest rewards,
+;; dailies, rep hubs) is uncontested -- nobody rolls against you on a vendor
+;; purchase. Exempt from the composition / global-slider paths below; only an
+;; explicit per-activity override (the user's own statement) still applies.
+(local uncontested-types {:vendor true
+                          :weekly-quest true
+                          :daily true
+                          :rep-hub true})
+
+(fn scaled-composition [composition group-size]
+  "The player's raid composition rescaled to an activity's group size, so a
+   25-man composition contests a 10-man Kara drop with ~0.4x the headcount.
+   Fractional counts are intentional (competition.competitors-for-item floors
+   the final pool at 1). nil group-size returns the composition unchanged."
+  (if (= group-size nil)
+      composition
+      (let [total (accumulate [sum 0 _ n (pairs composition)] (+ sum n))
+            factor (/ group-size (math.max 1 total))]
+        (collect [role n (pairs composition)]
+          (values role (* n factor))))))
+
+(fn competitors-for [ctx adef item-id]
+  "The competition pool for one drop. Precedence (most specific wins):
+   an explicit per-activity override; 1 for uncontested content types; the
+   by-role composition model (contending roles from the BiS catalog, headcount
+   from ctx.composition scaled to adef.group-size); the options panel's global
+   :default-competitors slider; 1."
+  (or (and ctx.competitors (. ctx.competitors adef.id))
+      (and (. uncontested-types adef.type) 1)
+      (and ctx.composition
+           (competition.competitors-for-item item-id
+                                             (scaled-composition ctx.composition
+                                                                 adef.group-size)))
       ctx.default-competitors default-competitors))
 
 (fn owned? [ctx item-id]
@@ -139,7 +172,7 @@
        :slot bis-entry.slot
        :runs (planned-runs adef)
        :p (chance.effective-rate entry.base-drop-p
-                                 (competitors-for ctx adef.id))})))
+                                 (competitors-for ctx adef item-id))})))
 
 (fn gap-items [ctx adef gearing?]
   "TargetItems for the player's UNOWNED, wanted BiS items (phase <= ctx.phase)
@@ -237,7 +270,8 @@
                      activity requirement / availability gate
             ctx    : schemas.RouteContext -- {:class :spec :phase :now
                      :owned-items :lockouts :weights? :competitors?
-                     :default-competitors? :seed? :include-classic?}
+                     :composition? :default-competitors? :seed?
+                     :include-classic?}
    Returns: {:steps [plan-row ...]  -- available, item-bearing activities,
                                        score desc (ties: minutes asc, name, id);
                                        each row carries its :attunement slug (or
