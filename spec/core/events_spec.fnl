@@ -36,6 +36,7 @@
                                                 :CHARACTER_POINTS_CHANGED
                                                 :ENCOUNTER_END
                                                 :CHAT_MSG_LOOT
+                                                :PLAYER_MONEY
                                                 :QUEST_TURNED_IN
                                                 :PLAYER_LOGOUT]
                                                events.event-list)))))
@@ -201,6 +202,109 @@
                             (fn []
                               (events.set-store! nil)
                               (assert.has_no.errors events.reset-history!)))))
+            (describe :yield-tracking
+                      (fn []
+                        (before_each (fn [] (mock.reset!)))
+                        (local badge-loot
+                               "You receive loot: |cff1eff00|Hitem:29434::::::::70:::::|h[Badge of Justice]|h|r.")
+                        (it "records a heroic visit's gold and badges on zone-out"
+                            (fn []
+                              (let [log (make-log)
+                                    char {}]
+                                (events.set-logger! log)
+                                (events.set-store! (fn [] char))
+                                (events.set-yields-tracking! true)
+                                (mock.set-money! 1000)
+                                (mock.set-instance! {:name "The Slave Pens"
+                                                     :difficulty-id 2})
+                                (events.dispatch :PLAYER_ENTERING_WORLD)
+                                ;; +5g loot coin, then a repair bill (ignored)
+                                (mock.set-money! 51000)
+                                (events.dispatch :PLAYER_MONEY)
+                                (mock.set-money! 41000)
+                                (events.dispatch :PLAYER_MONEY)
+                                (events.dispatch :CHAT_MSG_LOOT badge-loot)
+                                ;; zone out -> the visit closes and records
+                                (mock.set-instance! nil)
+                                (events.dispatch :PLAYER_ENTERING_WORLD)
+                                (events.dispatch :PLAYER_LOGOUT)
+                                (let [y (. char.history :yields :the-slave-pens)]
+                                  (assert.are.equal 1 y.runs)
+                                  (assert.are.equal 50000 y.gold)
+                                  (assert.are.equal 1 y.badges))
+                                (events.set-yields-tracking! false)
+                                (events.set-store! nil))))
+                        (it "a normal-difficulty 5-man is not a tracked visit"
+                            (fn []
+                              (let [log (make-log)
+                                    char {}]
+                                (events.set-logger! log)
+                                (events.set-store! (fn [] char))
+                                (events.set-yields-tracking! true)
+                                (mock.set-instance! {:name "The Slave Pens"
+                                                     :difficulty-id 1})
+                                (events.dispatch :PLAYER_ENTERING_WORLD)
+                                (events.dispatch :CHAT_MSG_LOOT badge-loot)
+                                (events.dispatch :PLAYER_LOGOUT)
+                                (assert.is_nil char.history)
+                                (events.set-yields-tracking! false)
+                                (events.set-store! nil))))
+                        (it "a logout mid-visit still records the run"
+                            (fn []
+                              (let [log (make-log)
+                                    char {}]
+                                (events.set-logger! log)
+                                (events.set-store! (fn [] char))
+                                (events.set-yields-tracking! true)
+                                (mock.set-instance! {:name :Karazhan
+                                                     :instance-type :raid})
+                                (events.dispatch :PLAYER_ENTERING_WORLD)
+                                (events.dispatch :PLAYER_LOGOUT)
+                                (assert.are.equal 1
+                                                  (. char.history :yields
+                                                     :karazhan :runs))
+                                (events.set-yields-tracking! false)
+                                (events.set-store! nil))))
+                        (it "ignores everything while yield tracking is off"
+                            (fn []
+                              (let [log (make-log)
+                                    char {}]
+                                (events.set-logger! log)
+                                (events.set-store! (fn [] char))
+                                (mock.set-instance! {:name "The Slave Pens"
+                                                     :difficulty-id 2})
+                                (events.dispatch :PLAYER_ENTERING_WORLD)
+                                (events.dispatch :CHAT_MSG_LOOT badge-loot)
+                                (events.dispatch :PLAYER_LOGOUT)
+                                (assert.is_nil char.history)
+                                (events.set-store! nil))))
+                        (it "yield-history reads the persisted store with tracking off"
+                            (fn []
+                              (let [log (make-log)
+                                    char {:history {:runs {}
+                                                    :drops {}
+                                                    :yields {:karazhan {:runs 2
+                                                                        :gold 100
+                                                                        :badges 0}}}}]
+                                (events.set-logger! log)
+                                (events.set-store! (fn [] char))
+                                (let [h (events.yield-history)]
+                                  (assert.are.equal 2
+                                                    (. h.yields :karazhan :runs)))
+                                (events.set-store! nil))))
+                        (it "reset-at surfaces the weekly-state's learned reset"
+                            (fn []
+                              (let [log (make-log)
+                                    char {}]
+                                (events.set-logger! log)
+                                (events.set-store! (fn [] char))
+                                (assert.is_nil (events.reset-at))
+                                (events.dispatch :RAID_INSTANCE_WELCOME
+                                                 :Karazhan 3600)
+                                (assert.are.equal (+ 1717891200 3600)
+                                                  (events.reset-at))
+                                (events.dispatch :PLAYER_LOGOUT)
+                                (events.set-store! nil))))))
             (describe :chains
                       (fn []
                         (before_each (fn [] (mock.reset!)))

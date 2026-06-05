@@ -31,7 +31,14 @@
               :faction-standings {}
               ; faction-id -> standing-id (1..8)
               :quest-completed {}
-              :item-qualities {}})
+              :item-qualities {}
+              :money 0
+              ; copper (GetMoney)
+              :item-counts {}
+              ; item-id -> count (GetItemCount)
+              :instance nil})
+
+; {:name :instance-type :difficulty-id} | nil (GetInstanceInfo)
 
 ; item-id -> quality (0..7); default epic
 
@@ -119,6 +126,21 @@
     (when sid (values :Faction :desc sid 0 1000 500))))
 
 (fn stub-RequestRaidInfo [] nil)
+
+(fn stub-GetMoney [] state.money)
+
+(fn stub-GetItemCount [item _include-bank]
+  ;; Real WoW: count across bags (+bank when flagged); the mock keeps one
+  ;; number per id and ignores the flag.
+  (let [id (if (= :number (type item)) item (tonumber item))]
+    (or (and id (. state.item-counts id)) 0)))
+
+(fn stub-GetInstanceInfo []
+  ;; Real WoW returns 9+ values; we return the three wow.instance-info reads.
+  (if state.instance
+      (values state.instance.name (or state.instance.instance-type :party)
+              (or state.instance.difficulty-id 1))
+      (values :Azeroth :none 0)))
 
 (fn stub-GetItemInfo [item]
   ;; Real WoW returns 17 values; we return the few callers read (name, link,
@@ -228,6 +250,9 @@
   (set _G.GetTalentTabInfo stub-GetTalentTabInfo)
   (set _G.GetFactionInfoByID stub-GetFactionInfoByID)
   (set _G.RequestRaidInfo stub-RequestRaidInfo)
+  (set _G.GetMoney stub-GetMoney)
+  (set _G.GetItemCount stub-GetItemCount)
+  (set _G.GetInstanceInfo stub-GetInstanceInfo)
   (set _G.GetItemInfo stub-GetItemInfo)
   (set _G.GetItemQualityColor stub-GetItemQualityColor)
   (set _G.bit bit)
@@ -256,7 +281,10 @@
   (set state.talent-points [0 0 0])
   (set state.faction-standings {})
   (set state.quest-completed {})
-  (set state.item-qualities {}))
+  (set state.item-qualities {})
+  (set state.money 0)
+  (set state.item-counts {})
+  (set state.instance nil))
 
 (fn M.set-saved-instances! [instances]
   "Set the list of saved instances. Each instance is a table:
@@ -297,6 +325,20 @@
 (fn M.set-item-quality! [item-id quality]
   "Set an item's quality (0=Poor .. 7=Heirloom); GetItemInfo defaults to epic."
   (tset state.item-qualities item-id quality))
+
+(fn M.set-money! [copper]
+  "Set the player's money (GetMoney return) in copper."
+  (set state.money copper))
+
+(fn M.set-item-count! [item-id count]
+  "Set GetItemCount's reading for one item id."
+  (tset state.item-counts item-id count))
+
+(fn M.set-instance! [?instance]
+  "Put the player inside an instance (or outside, with nil):
+   {:name string :instance-type ?string :difficulty-id ?integer} --
+   instance-type defaults :party, difficulty-id 1 (2 = heroic)."
+  (set state.instance ?instance))
 
 M
 

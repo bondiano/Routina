@@ -17,10 +17,11 @@
 ;; and is what `migrate` fast-forwards. Kept lean for Phase 1 -- options and
 ;; weekly-state grow as later phases need them.
 
-(local defaults {:global {:version 2 :options {:log-level :info}}
+(local defaults {:global {:version 3 :options {:log-level :info}}
                  :char {:weekly-state {:reset-time 0 :lockouts {}}
-                        :history {:runs {} :drops {}}
+                        :history {:runs {} :drops {} :yields {}}
                         :chains {}
+                        :goals {}
                         :preferences {}}})
 
 (set M.defaults defaults)
@@ -36,7 +37,14 @@
                    ;; load, and chains.normalize is defensive about whatever
                    ;; it finds, so no :global data moves -- the entry anchors
                    ;; the mandatory version bump for the schema change.
-                   {:to 2 :apply (fn [db] db)}])
+                   {:to 2 :apply (fn [db] db)}
+                   ;; v3 (Phase 7): db.char gains :goals ([GoalDef]) and
+                   ;; history gains :yields ({activity-id -> tally}). AceDB
+                   ;; merges the new defaults; goals.normalize and
+                   ;; history.normalize defensively coerce whatever a v2 DB
+                   ;; holds, so again no data moves -- the entry anchors the
+                   ;; version bump.
+                   {:to 3 :apply (fn [db] db)}])
 
 (set M.migrations migrations)
 

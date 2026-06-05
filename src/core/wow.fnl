@@ -38,6 +38,19 @@
 (local GetContainerItemID _G.GetContainerItemID)
 (local GetContainerNumSlots _G.GetContainerNumSlots)
 
+;; Yield-tracking reads (Phase 7). All TBC 2.5.5-verified on warcraft.wiki.gg:
+;; PLAYER_MONEY carries no payload -> GetMoney() deltas; GetItemCount counts
+;; bags (+bank with the flag); GetInstanceInfo returns name, instanceType,
+;; difficultyID (party Heroic = 2), ...
+(local GetMoney _G.GetMoney)
+(local GetItemCount _G.GetItemCount)
+(local GetInstanceInfo _G.GetInstanceInfo)
+
+;; Badge of Justice (TBC heroic/raid token currency). Exported so the loot
+;; handler and the goal-progress snapshot agree on the id.
+(local badge-of-justice-id 29434)
+(local heroic-party-difficulty-id 2)
+
 ;; Equipment slots 1..19 (head..tabard) and the containers we scan for owned
 ;; gear: backpack (0), bags (1-4), main bank (-1) and bank bags (5-11). Bank
 ;; containers report 0 slots away from a banker, so scanning them is harmless.
@@ -213,6 +226,38 @@
    Returns: nil. No-op if the API is unavailable."
   (when RequestRaidInfo (RequestRaidInfo))
   nil)
+
+(lambda M.player-money []
+  "The player's money in copper, or nil mid-load.
+   Domain:  (none)
+   Returns: integer >= 0 | nil (GetMoney)."
+  (and GetMoney (GetMoney)))
+
+(lambda M.badge-count []
+  "How many Badges of Justice the player holds (bags + bank): the live
+   progress reading for a :badges goal.
+   Domain:  (none)
+   Returns: integer >= 0 (0 when the count API is unavailable)."
+  (or (and GetItemCount (GetItemCount badge-of-justice-id true)) 0))
+
+(lambda M.badge-item-id []
+  "The Badge of Justice item id, for loot-message matching.
+   Domain:  (none)
+   Returns: integer (29434)."
+  badge-of-justice-id)
+
+(lambda M.instance-info []
+  "Where the player is standing, for yield-visit attribution: the instance
+   name and whether it is a heroic-difficulty party instance (difficultyID 2,
+   wiki-verified for 2.5.5). nil when not in an instance or mid-load.
+   Domain:  (none)
+   Returns: {:name string :heroic? boolean} | nil."
+  (when GetInstanceInfo
+    (let [(name instance-type difficulty-id) (GetInstanceInfo)]
+      (when (and name instance-type (not= instance-type :none))
+        {: name
+         :heroic? (and (= instance-type :party)
+                       (= difficulty-id heroic-party-difficulty-id))}))))
 
 (lambda M.loot-item-id [?text]
   "Extract the itemID from a CHAT_MSG_LOOT message's item hyperlink, or nil.

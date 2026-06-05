@@ -24,6 +24,11 @@
    competitors). Empty until the DB is initialized / the options UI writes it."
   (or (?. Routina :addon :db :char :preferences :route) {}))
 
+(fn char-goals []
+  "The player's persisted weekly goals (db.char.goals); ctx.build validates
+   and drops corrupt rows. Empty until the goal editor writes them."
+  (or (?. Routina :addon :db :char :goals) []))
+
 ;; --- Public API ------------------------------------------------------------
 
 (lambda M.route-input []
@@ -50,6 +55,11 @@
                         :quest-completed? wow.quest-completed?
                         :faction-standing wow.faction-standing
                         :chain-progress (events.chain-progress)
+                        :goals (char-goals)
+                        :money (wow.player-money)
+                        :badge-count (wow.badge-count)
+                        :reset-at (events.reset-at)
+                        :yield-history (events.yield-history)
                         :options (route-options)}
               (ok? built) (pcall ctx.build snapshot)]
           (if ok?

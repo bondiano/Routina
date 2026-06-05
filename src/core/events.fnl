@@ -20,6 +20,7 @@
 (local history (or Routina.history (require :src.domain.history)))
 (local drop-table (or Routina.drop-table (require :src.domain.drop-table)))
 (local chains (or Routina.chains (require :src.domain.chains)))
+(local ctx (or Routina.ctx (require :src.domain.ctx)))
 
 (local M {})
 
@@ -46,6 +47,17 @@
 
 (var history-tracking? false)
 
+;; Yield tracking (Phase 7): while `yields-tracking?` is on, an instance VISIT
+;; accumulates the player's take -- positive money deltas (PLAYER_MONEY) and
+;; Badge of Justice self-loots (CHAT_MSG_LOOT) -- and flushes one
+;; history.record-yield per visit when the player leaves (or logs out). The
+;; visit's activity comes from ctx.activity-for-instance over the live
+;; GetInstanceInfo reading. OFF by default, same experimental family as the
+;; luck history; both share `history-session`.
+(var yields-tracking? false)
+
+(var visit nil)
+
 ;; Quest/attunement chain progress (src/domain/chains.fnl): a live
 ;; {chain-id -> ChainProgress} map seeded from db.char.chains, refreshed from
 ;; the quest log on PLAYER_ENTERING_WORLD, advanced by QUEST_TURNED_IN, and
@@ -69,12 +81,42 @@
   session)
 
 (fn ensure-history []
-  "Lazily seed the in-memory luck history from the persisted DB, returning the
-   live History, or nil when tracking is off or no store is wired."
-  (when (and history-tracking? (not history-session) get-char)
+  "Lazily seed the in-memory history from the persisted DB, returning the live
+   History, or nil when no tracking (luck or yields) is on or no store is
+   wired -- the two trackers share one History record."
+  (when (and (or history-tracking? yields-tracking?) (not history-session)
+             get-char)
     (let [char (get-char)]
       (set history-session (history.normalize (and char char.history)))))
   history-session)
+
+(fn close-visit! []
+  "Flush the open instance visit -- one run plus its accumulated gold/badge
+   take -- into the yield history, then clear it. No-op without a visit."
+  (when visit
+    (M.record-yield! visit.activity-id {:gold visit.gold :badges visit.badges})
+    (set visit nil))
+  nil)
+
+(fn sync-visit! []
+  "Reconcile the visit session with where the player actually stands: leaving
+   a tracked instance closes (and records) the visit; standing in one opens a
+   fresh visit with a money baseline. Visits are only kept while yield
+   tracking is on."
+  (if (not yields-tracking?)
+      (set visit nil)
+      (let [info (wow.instance-info)
+            activity (and info
+                          (ctx.activity-for-instance info.name info.heroic?))]
+        (when (and visit (not= activity visit.activity-id))
+          (close-visit!))
+        (when (and activity (not visit))
+          (set visit
+               {:activity-id activity
+                :gold 0
+                :badges 0
+                :last-money (or (wow.player-money) 0)}))))
+  nil)
 
 (fn ensure-chains []
   "Lazily seed the in-memory chain progress from the persisted DB, returning
@@ -122,6 +164,8 @@
                    :ENCOUNTER_END
                    ;; loot received -> tally a luck-history drop (gated)
                    :CHAT_MSG_LOOT
+                   ;; money changed -> accumulate the visit's gold take (gated)
+                   :PLAYER_MONEY
                    ;; quest turned in -> advance any chain carrying it
                    :QUEST_TURNED_IN
                    ;; fires before the SavedVariables disk write -> flush state
@@ -139,6 +183,9 @@
   ;; Refresh chain progress from the quest log (idempotent union, so the
   ;; re-fires on /reload and instance transitions are harmless).
   (seed-chains-from-quest-log)
+  ;; Crossing an instance boundary fires this event -> open/close the yield
+  ;; visit against where the player now stands.
+  (sync-visit!)
   (request-refresh)
   nil)
 
@@ -190,12 +237,33 @@
 (fn on-chat-msg-loot [text]
   "CHAT_MSG_LOOT (TBC 2.5.5): the message text first. Tally a drop only for the
    player's OWN loot (wow.self-loot?) of a tracked item (one in the drop-table) --
-   group-mates' loot and untracked junk are ignored. No-op unless tracking is on."
+   group-mates' loot and untracked junk are ignored. No-op unless tracking is
+   on. A self-looted Badge of Justice additionally counts into the open yield
+   visit (Phase 7, gated separately)."
   (log:debug :CHAT_MSG_LOOT)
   (when history-tracking?
     (let [item-id (wow.loot-item-id text)]
       (when (and item-id (wow.self-loot? text) (drop-table.for-item item-id))
         (M.record-drop! item-id))))
+  (when (and yields-tracking? visit)
+    (let [item-id (wow.loot-item-id text)]
+      (when (and item-id (= item-id (wow.badge-item-id)) (wow.self-loot? text))
+        (set visit.badges (+ visit.badges 1)))))
+  nil)
+
+(fn on-player-money []
+  "PLAYER_MONEY (TBC 2.5.5): no payload -- diff GetMoney() against the visit's
+   last reading and accumulate POSITIVE deltas as the visit's gold take
+   (repairs and other spend inside the instance are cost, not negative
+   income). No-op without an open yield visit."
+  (log:debug :PLAYER_MONEY)
+  (when (and yields-tracking? visit)
+    (let [money (wow.player-money)]
+      (when money
+        (let [delta (- money visit.last-money)]
+          (set visit.last-money money)
+          (when (> delta 0)
+            (set visit.gold (+ visit.gold delta)))))))
   nil)
 
 (fn on-quest-turned-in [quest-id]
@@ -219,6 +287,9 @@
   "Fires before the SavedVariables disk write -> flush the session's accumulated
    weekly-state into db.char so this week's progress survives the logout."
   (log:debug :PLAYER_LOGOUT)
+  ;; A logout mid-instance still counts the visit -- record it into the
+  ;; history session BEFORE the flush below writes that session to disk.
+  (close-visit!)
   (when (and get-char (or session history-session chain-session))
     (let [char (get-char)]
       (when char
@@ -274,8 +345,56 @@
    Domain:  ?on : boolean | nil (nil reads as off)
    Returns: nil."
   (set history-tracking? (and ?on true))
-  (when (not history-tracking?) (set history-session nil))
+  (when (and (not history-tracking?) (not yields-tracking?))
+    (set history-session nil))
   nil)
+
+(lambda M.set-yields-tracking! [?on]
+  "Enable (or disable) per-visit yield recording (gold + badges per instance
+   clear). OFF by default (experimental, same family as the luck history):
+   when on, PLAYER_MONEY / CHAT_MSG_LOOT accumulate into the open visit and
+   leaving the instance records one run. Enabling mid-instance opens the visit
+   immediately; disabling discards it unrecorded.
+   Domain:  ?on : boolean | nil (nil reads as off)
+   Returns: nil."
+  (set yields-tracking? (and ?on true))
+  (when (and (not history-tracking?) (not yields-tracking?))
+    (set history-session nil))
+  (sync-visit!)
+  nil)
+
+(lambda M.record-yield! [activity-id outcome]
+  "Record one finished visit's take into the live yield history. No-op unless
+   yield tracking is on and a store is wired. Called when a tracked instance
+   visit closes (zone-out / logout).
+   Domain:  activity-id : string|keyword -- the ActivityDef id of the visit
+            outcome : {:gold ?number :badges ?integer}
+   Returns: nil."
+  (when yields-tracking?
+    (let [hist (ensure-history)]
+      (when hist
+        (set history-session (history.record-yield hist activity-id outcome)))))
+  nil)
+
+(lambda M.yield-history []
+  "The History record the planner snapshot blends gold bands from: the live
+   session when one exists, else a normalized read of the persisted store --
+   recorded visits keep informing the plan even with tracking now off.
+   Domain:  (none)
+   Returns: History | nil when no store is wired."
+  (or history-session
+      (when get-char
+        (let [char (get-char)]
+          (when char (history.normalize char.history))))))
+
+(lambda M.reset-at []
+  "The next weekly reset learned from this week's lockouts (weekly-state's
+   derived :reset-time), or nil while no reset is known -- the deadline the
+   goal scoring counts down against.
+   Domain:  (none)
+   Returns: integer epoch seconds | nil."
+  (let [state (ensure-session (wow.now))]
+    (when (and state (> state.reset-time 0)) state.reset-time)))
 
 (lambda M.record-run! [activity-id]
   "Record one completed run of an activity into the live luck history. No-op
@@ -288,9 +407,10 @@
   nil)
 
 (lambda M.reset-history! []
-  "Reset the cumulative luck history (/rt reset): drop the live session and
-   overwrite the persisted db.char.history with an empty record, so both the
-   running session and the next login start from zero. Safe with no store wired.
+  "Reset the cumulative history (/rt reset) -- luck counts AND recorded yields:
+   drop the live session and overwrite the persisted db.char.history with an
+   empty record, so both the running session and the next login start from
+   zero. Safe with no store wired.
    Domain:  (none)
    Returns: nil."
   (set history-session nil)
@@ -320,6 +440,7 @@
     :RAID_INSTANCE_WELCOME (on-raid-instance-welcome ...)
     :ENCOUNTER_END (on-encounter-end ...)
     :CHAT_MSG_LOOT (on-chat-msg-loot ...)
+    :PLAYER_MONEY (on-player-money)
     :QUEST_TURNED_IN (on-quest-turned-in ...)
     :PLAYER_EQUIPMENT_CHANGED (on-inputs-changed :PLAYER_EQUIPMENT_CHANGED)
     :BAG_UPDATE_DELAYED (on-inputs-changed :BAG_UPDATE_DELAYED)

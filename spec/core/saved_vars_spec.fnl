@@ -16,15 +16,20 @@
                               (assert.are.equal :info
                                                 saved-vars.defaults.global.options.log-level)
                               (assert.is_truthy saved-vars.defaults.char.weekly-state)))
-                        (it "ships the v2 chains migration and matching defaults"
+                        (it "ships the v3 goals/yields migration and matching defaults"
                             (fn []
-                              (assert.are.equal 2
+                              (assert.are.equal 3
                                                 saved-vars.defaults.global.version)
                               (assert.is_truthy saved-vars.defaults.char.chains)
-                              (assert.are.equal 1
+                              (assert.is_truthy saved-vars.defaults.char.goals)
+                              (assert.is_truthy (. saved-vars.defaults.char
+                                                   :history :yields))
+                              (assert.are.equal 2
                                                 (length saved-vars.migrations))
                               (assert.are.equal 2
-                                                (. saved-vars.migrations 1 :to))))))
+                                                (. saved-vars.migrations 1 :to))
+                              (assert.are.equal 3
+                                                (. saved-vars.migrations 2 :to))))))
             (describe :migrate
                       (fn []
                         (it "is a no-op with no migrations"
