@@ -94,6 +94,10 @@ build\domain\yields.lua
 # the per-goal projection. After yields + drop-table + drop-chance +
 # activities; before ctx/route (both consume it).
 build\domain\goals.lua
+# custom-activities: player-authored activities (Phase 8) -- persisted shape
+# + projections into ActivityDef/ActivityYield. After schemas/validate;
+# before ctx (which threads them into the RouteContext).
+build\domain\custom-activities.lua
 # ctx: pure raw-snapshot -> (player, RouteContext) assembler. Needs schemas +
 # validate + chains (attunement gates derive from chain progress) + goals +
 # yields + history; the shell (wow + planner) feeds it live client data.
@@ -131,8 +135,10 @@ build\ui\tabs\lockouts.lua
 build\ui\tabs\bis.lua
 build\ui\root.lua
 # options: AceConfig panel (the only AceGUI surface). options-goals (the Goals
-# editor sub-panel builder) first; options.lua composes it. After root (it
-# refreshes the plan on change), before ace (which registers it on init).
+# editor sub-panel builder) and options-custom (the Custom activities editor,
+# Phase 8) first; options.lua composes them. After root (it refreshes the
+# plan on change), before ace (which registers it on init).
 build\ui\options-goals.lua
+build\ui\options-custom.lua
 build\ui\options.lua
 build\core\ace.lua

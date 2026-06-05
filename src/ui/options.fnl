@@ -14,6 +14,8 @@
 (local root (or Routina.root (require :src.ui.root)))
 (local competition (or Routina.competition (require :src.domain.competition)))
 (local options-goals (or Routina.options-goals (require :src.ui.options-goals)))
+(local options-custom
+       (or Routina.options-custom (require :src.ui.options-custom)))
 
 (local LibStub _G.LibStub)
 
@@ -223,6 +225,8 @@
    Domain:  api : {:db {route-options table, mutated by :set closures}
                    :specs [{:value keyword :text string} ...]  -- spec choices
                    :goals ?[GoalDef]  -- the persisted goal list (char.goals)
+                   :custom-activities ?[CustomActivity]  -- the persisted
+                     authored list (db.profile.custom-activities)
                    :on-change (fn []) | nil  -- fired after any :set (re-plan)
                    :notify (fn []) | nil}  -- AceConfigRegistry refresh
    Returns: an AceConfig options group table."
@@ -241,7 +245,12 @@
             :goals (options-goals.goals-group {: db
                                                :goals (or api.goals [])
                                                :on-change api.on-change
-                                               :notify api.notify})}}))
+                                               :notify api.notify})
+            :custom (options-custom.custom-group {:custom-activities (or api.custom-activities
+                                                                         [])
+                                                  :goals (or api.goals [])
+                                                  :on-change api.on-change
+                                                  :notify api.notify})}}))
 
 ;; --- Impure registration (guarded: no-op without the config libs) ----------
 
@@ -259,6 +268,15 @@
     (when char
       (when (= nil char.goals) (set char.goals []))
       char.goals)))
+
+(fn custom-db [addon]
+  "addon.db.profile.custom-activities -- the persisted CustomActivity list the
+   editor mutates in place; created empty on first access."
+  (let [profile (?. addon :db :profile)]
+    (when profile
+      (when (= nil profile.custom-activities)
+        (set profile.custom-activities []))
+      profile.custom-activities)))
 
 (fn class-specs [addon]
   "Spec choices for the current class, or [] when the catalog isn't reachable."
@@ -284,6 +302,7 @@
         (let [table (M.options-table {: db
                                       :specs (class-specs addon)
                                       :goals (goals-db addon)
+                                      :custom-activities (custom-db addon)
                                       :on-change root.refresh!
                                       :notify (fn []
                                                 (when AceConfigRegistry
@@ -304,6 +323,8 @@
           (AceConfigDialog:AddToBlizOptions :Routina "Raid composition"
                                             :Routina :composition)
           (AceConfigDialog:AddToBlizOptions :Routina :Goals :Routina :goals)
+          (AceConfigDialog:AddToBlizOptions :Routina "Custom activities"
+                                            :Routina :custom)
           (when profiles?
             (AceConfigDialog:AddToBlizOptions :Routina :Profiles :Routina
                                               :profiles))

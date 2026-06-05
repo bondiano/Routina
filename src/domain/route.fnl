@@ -75,7 +75,8 @@
                    :weekly-quest :Quest
                    :rep-hub :Reputation
                    :vendor :Vendor
-                   :world-boss "World Boss"})
+                   :world-boss "World Boss"
+                   :custom :Custom})
 
 (local reset-label {:weekly "weekly reset"
                     :daily "daily reset"
@@ -194,12 +195,16 @@
   "A plan-ready Activity for one content def, or nil to drop it from the plan.
    Kept only when the player can run it this week (activities.available?) AND
    it either drops a wanted item or pays toward an active goal (Phase 7) --
-   a badge-dense heroic with no BiS left still belongs in a badge-goal week."
+   a badge-dense heroic with no BiS left still belongs in a badge-goal week.
+   A player-authored :custom entry (Phase 8) is ALWAYS kept: the author put it
+   in their routine; with no yields toward an active goal it honestly scores 0
+   and sinks to the tail."
   (when (activities.available? adef player
                                (and ctx.lockouts (. ctx.lockouts adef.id))
                                ctx.now)
     (let [items (gap-items ctx adef gearing?)]
-      (when (or (> (length items) 0) (goal-scorer.relevant? adef.id))
+      (when (or (> (length items) 0) (goal-scorer.relevant? adef.id)
+                (= adef.type :custom))
         {:id adef.id
          :name adef.name
          :type (or (. type-label adef.type) (tostring adef.type))
@@ -278,7 +283,7 @@
                      :owned-items :lockouts :weights? :competitors?
                      :composition? :default-competitors? :seed?
                      :include-classic? :goals? :goal-progress? :gold-bands?
-                     :reset-at?}
+                     :reset-at? :custom-activities? :custom-yields?}
    Returns: {:steps [plan-row ...]  -- available, item-bearing activities,
                                        score desc (ties: minutes asc, name, id);
                                        each row carries its :attunement slug (or
@@ -290,7 +295,12 @@
   (validate.assert! schemas.RouteContext ctx :route/ctx)
   (let [gearing? (gearing-up? ctx)
         goal-scorer (goals.make-goal-scorer ctx.goals ctx)
-        catalog (icollect [_ adef (ipairs (activities.all))]
+        ;; The candidate universe: the static registry plus the player's
+        ;; custom entries (Phase 8), competing as equals.
+        adefs (activities.all)
+        _ (each [_ adef (ipairs (or ctx.custom-activities []))]
+            (table.insert adefs adef))
+        catalog (icollect [_ adef (ipairs adefs)]
                   (candidate-activity player ctx adef gearing? goal-scorer))
         attune-by-id (collect [_ a (ipairs catalog)]
                        (values a.id a.attunement))

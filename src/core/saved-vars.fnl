@@ -13,11 +13,13 @@
 
 ;; --- DB defaults -----------------------------------------------------------
 ;;
-;; :global is account-wide, :char is per-character. `version` lives in :global
-;; and is what `migrate` fast-forwards. Kept lean for Phase 1 -- options and
-;; weekly-state grow as later phases need them.
+;; :global is account-wide, :char is per-character, :profile follows the
+;; player's AceDB profile (the Profiles options sub-panel). `version` lives in
+;; :global and is what `migrate` fast-forwards. Kept lean for Phase 1 --
+;; options and weekly-state grow as later phases need them.
 
-(local defaults {:global {:version 3 :options {:log-level :info}}
+(local defaults {:global {:version 4 :options {:log-level :info}}
+                 :profile {:custom-activities []}
                  :char {:weekly-state {:reset-time 0 :lockouts {}}
                         :history {:runs {} :drops {} :yields {}}
                         :chains {}
@@ -44,7 +46,13 @@
                    ;; history.normalize defensively coerce whatever a v2 DB
                    ;; holds, so again no data moves -- the entry anchors the
                    ;; version bump.
-                   {:to 3 :apply (fn [db] db)}])
+                   {:to 3 :apply (fn [db] db)}
+                   ;; v4 (Phase 8): db.profile gains :custom-activities
+                   ;; ([CustomActivity]). AceDB merges the new :profile
+                   ;; default; custom-activities.normalize defensively coerces
+                   ;; whatever a v3 DB holds, so no data moves -- the entry
+                   ;; anchors the version bump.
+                   {:to 4 :apply (fn [db] db)}])
 
 (set M.migrations migrations)
 

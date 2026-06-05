@@ -61,7 +61,7 @@
 | Release pipeline (BigWigs packager) | Configured, no tag yet |
 | Quest / chain engine | **Phase 6 CODE-COMPLETE (pending in-game smoke)** -- schemas + generated Attune data (23 TBC chains, 415 steps) + pure `chains.fnl` + QUEST_TURNED_IN wiring + derived attunement gates + plan advisory + Chains tab; relicensed GPL-3.0 |
 | Goal targets (badges / gold / rep) | **Phase 7 CODE-COMPLETE (pending in-game smoke)** -- yields data (badges + honest gold bands, OQ-12) + pure `goals.fnl` (deadline-aware urgency, OQ-11; resolves OQ-6) + route/ctx integration + per-visit yield tracking (PLAYER_MONEY/badge loot, db v3) + TSM/Auctionator price facade + Plan-tab goal cards & Goals options sub-panel |
-| Player-authored plans | **Not started** (Phase 8) |
+| Player-authored plans | **Phase 8 §1 CODE-COMPLETE (pending in-game smoke)** -- custom activities: `schemas.CustomActivity` + pure `custom-activities.fnl` (normalize/to-db + ActivityDef/ActivityYield projections), threaded via `RouteContext :custom-activities/:custom-yields`, always-candidate in `route.plan-week`, yields feed goal scoring/projection; persisted at `db.profile.custom-activities` (db v4) with a "Custom activities" options sub-panel. §2-4 (pin/skip, constructor, card actions) not started |
 | Waypoints / TomTom | **Not started** (Phase 9); no coordinate model in domain yet |
 
 ## Phase 0 -- Scaffolding (DONE)
@@ -637,11 +637,24 @@ text in [PRD §13](PRD.md#13-open-questions)):
 Goal: the player can add what the catalog doesn't know, and edit what the
 planner proposes -- without breaking determinism or the pure core.
 
-1. **Custom activities.** Authored in UI: name, est-minutes, reset
-   (`:weekly | :daily | :none`), optional yields and goal link. Stored in
-   `db.profile.custom-activities`, validated against `schemas.ActivityDef`
-   at the boundary, competing in scoring as equals. `db.version` bump +
-   migration.
+1. **Custom activities.** -- **CODE-COMPLETE (pending in-game smoke).**
+   Authored in UI: name, est-minutes, reset (`:weekly | :daily | :none`),
+   optional yields (badges / honest gold band / rep) and goal link. Stored in
+   `db.profile.custom-activities` (db v3 -> v4 + migration anchor). As
+   shipped: a persisted `schemas.CustomActivity` shape with a pure
+   `src/domain/custom-activities.fnl` (goals.normalize-style defensive load;
+   projections `to-activity-def` -> `ActivityDef :type :custom` /
+   `to-yield` -> `ActivityYield`); `ctx.build` threads them through
+   `RouteContext :custom-activities/:custom-yields` and merges authored gold
+   bands into `:gold-bands`, so the domain never reads the DB. Decisions
+   locked with the owner (2026-06-06): custom entries are **always plan
+   candidates** (score honestly 0 with no yields/goals -> they sink to the
+   tail as a routine reminder); the goal link is informational UI metadata,
+   never a scoring channel. Yields pay through the existing goal scorer
+   (registry + custom merged in `goals`/`route`), so a strong custom gold
+   source outranks a weak catalog one under a gold goal -- busted-asserted.
+   Editor is a sixth "Custom activities" options sub-panel
+   (`src/ui/options-custom.fnl`, validate-before-persist).
 2. **Plan edits -- pin / skip / reorder.** Persisted per character;
    expressed as *constraints* in `RouteContext` (pins ordered first, skips
    excluded) so `route.plan-week` stays pure and deterministic given the
@@ -656,7 +669,7 @@ planner proposes -- without breaking determinism or the pure core.
 Exit criteria:
 
 - A fixture custom activity with a strong yield outranks a weak catalog one
-  -- busted, no WoW API.
+  -- busted, no WoW API. **(busted-green)**
 - Pin/skip constraints round-trip SavedVariables and survive `/reload`
   (smoke); plan respects them deterministically (busted).
 - A custom chain advances through the constructor checklist identically to

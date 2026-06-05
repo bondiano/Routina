@@ -262,4 +262,85 @@
                                                          :chain-id :x}]
                                                        steps ctx)]
                                 (assert.are.equal 0.5 p.p10)
-                                (assert.are.equal 0.5 p.p90))))))))
+                                (assert.are.equal 0.5 p.p90))))))
+            (describe :custom-activities
+                      (fn []
+                        ;; Phase 8: a player-authored daily entry, threaded
+                        ;; through RouteContext as ctx.build would.
+                        (local custom-def
+                               {:id :custom-1
+                                :name "Primal farm lap"
+                                :type :custom
+                                :reset :daily
+                                :length-estimate 45
+                                :requirements {:min-level 1}})
+
+                        (fn custom-ctx [yield over]
+                          (ctx-of (let [base {:custom-activities [custom-def]
+                                              :custom-yields {:custom-1 yield}}]
+                                    (each [k v (pairs (or over {}))]
+                                      (tset base k v))
+                                    base)))
+
+                        (it "pays authored badges through the scorer"
+                            (fn []
+                              (let [ctx (custom-ctx {:activity-id :custom-1
+                                                     :badges 4
+                                                     :gold-min 0
+                                                     :gold-max 0})
+                                    s (goals.make-goal-scorer [(badge-goal 150)]
+                                                              ctx)]
+                                (assert.is_true (s.relevant? :custom-1))
+                                (assert.is_true (> (s.score :custom-1) 0)))))
+                        (it "pays authored gold through the merged band"
+                            (fn []
+                              ;; ctx.build merges the custom band into
+                              ;; :gold-bands; goals reads it as any override.
+                              (let [ctx (custom-ctx {:activity-id :custom-1
+                                                     :badges 0
+                                                     :gold-min 200000
+                                                     :gold-max 600000}
+                                                    {:gold-bands {:custom-1 {:min 200000
+                                                                             :max 600000}}})
+                                    s (goals.make-goal-scorer [(gold-goal 5000000)]
+                                                              ctx)]
+                                (assert.is_true (s.relevant? :custom-1))
+                                (assert.is_true (> (s.score :custom-1) 0)))))
+                        (it "pays authored rep only on the matching faction"
+                            (fn []
+                              (let [yield {:activity-id :custom-1
+                                           :badges 0
+                                           :gold-min 0
+                                           :gold-max 0
+                                           :rep {:faction :ogrila :amount 500}}
+                                    rep-goal {:id :r
+                                              :kind :rep
+                                              :target 8
+                                              :faction :ogrila}
+                                    other {:id :r2
+                                           :kind :rep
+                                           :target 8
+                                           :faction :lower-city}]
+                                (assert.are.equal 500
+                                                  (goals.activity-yield rep-goal
+                                                                        :custom-1
+                                                                        nil
+                                                                        {:custom-1 yield}))
+                                (assert.are.equal 0
+                                                  (goals.activity-yield other
+                                                                        :custom-1
+                                                                        nil
+                                                                        {:custom-1 yield})))))
+                        (it "projects authored badges with deadline-aware runs"
+                            (fn []
+                              ;; 7 days -> 7 daily runs x 2 badges = 14
+                              (let [ctx (custom-ctx {:activity-id :custom-1
+                                                     :badges 2
+                                                     :gold-min 0
+                                                     :gold-max 0})
+                                    steps [{:id :custom-1
+                                            :minutes 45
+                                            :items []}]
+                                    [p] (goals.project [(badge-goal 150)] steps
+                                                       ctx)]
+                                (assert.are.equal 14 p.p50))))))))

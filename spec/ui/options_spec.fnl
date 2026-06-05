@@ -22,7 +22,8 @@
                   (let [t (build {} (fn []))]
                     (assert.are.equal :group (. t.args.general :type))
                     (assert.are.equal :group (. t.args.weights :type))
-                    (assert.are.equal :group (. t.args.attune :type)))))
+                    (assert.are.equal :group (. t.args.attune :type))
+                    (assert.are.equal :group (. t.args.custom :type)))))
             (it "keeps the sub-groups non-inline so each maps to a Bliz sub-panel"
                 (fn []
                   (let [t (build {} (fn []))]

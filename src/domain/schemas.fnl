@@ -176,7 +176,11 @@
 ;; `Activity` above (which plan.fnl renders); the two share ids (:karazhan ...)
 ;; so a scored row can be traced back to its definition. Reputation hubs are
 ;; modelled as activities (PRD OQ-4 resolved): :rep-hub is a live type and
-;; :requirements carries an optional :rep gate.
+;; :requirements carries an optional :rep gate. :custom (Phase 8) marks a
+;; player-authored entry (see CustomActivity below) -- always a plan candidate,
+;; uncontested, scored only by its yields toward active goals; :goal-id is its
+;; optional informational link to the GoalDef that motivated it (UI metadata,
+;; never a scoring channel).
 
 (set M.ActivityDef
      {:id :string
@@ -189,10 +193,12 @@
              :rep-hub
              :vendor
              :world-boss
-             :dungeon]
+             :dungeon
+             :custom]
       :reset [:enum :weekly :daily :none]
       :length-estimate :integer
       :group-size [:optional :integer]
+      :goal-id [:optional :string]
       :requirements [:ref :ActivityRequirements]})
 
 (set M.ActivityRequirements
@@ -299,6 +305,31 @@
                 :chain-id [:optional :string]
                 :created [:optional :integer]})
 
+;; CustomActivity is a player-authored activity (PRD §6.10, ROADMAP Phase 8 §1):
+;; what the catalog doesn't know -- a farm lap, a fishing hour, a weekly errand.
+;; The PERSISTED authoring shape (db.profile.custom-activities); the planner
+;; never sees it directly -- ctx.build maps it through
+;; custom-activities.to-activity-def / to-yield into a plain ActivityDef (:type
+;; :custom) plus an ActivityYield override, so route/goals score it exactly like
+;; catalog content. Flat on purpose: one field per options-form input. Yields
+;; are optional and honest -- gold is a {min, max} band in COPPER (OQ-12), rep
+;; needs both halves of the (faction, amount) pair. :goal-id is the optional
+;; informational link to the GoalDef that motivated the entry. Being
+;; user-authored data, invalid entries are dropped on load instead of erroring
+;; (custom-activities.normalize), the goals.normalize pattern.
+
+(set M.CustomActivity {:id :string
+                       :name :string
+                       :est-minutes :integer
+                       :reset [:enum :weekly :daily :none]
+                       :badges [:optional :integer]
+                       :gold-min [:optional :number]
+                       :gold-max [:optional :number]
+                       :rep-faction [:optional :string]
+                       :rep-amount [:optional :integer]
+                       :goal-id [:optional :string]
+                       :created [:optional :integer]})
+
 ;; --- Route context (consumed by src/domain/route.fnl) ----------------------
 ;;
 ;; The pure inputs route.plan-week needs beyond the schemas.Player it scores
@@ -319,25 +350,33 @@
 ;; :reset-at is the next weekly reset timestamp -- with it set, a daily
 ;; activity's remaining runs shrink as the reset approaches, which is what
 ;; makes the goal arbitration deadline-aware (OQ-11 resolved 2026-06-05).
+;; The Phase 8 custom fields travel together: :custom-activities is the
+;; player's authored entries already mapped to plain ActivityDefs (:type
+;; :custom) by ctx.build -- route/goals fold them into the registry list --
+;; and :custom-yields maps each custom id to its authored ActivityYield
+;; (badges/rep overrides; custom gold bands are merged into :gold-bands so
+;; the gold path needs no second lookup).
 ;; Validated once at the route boundary, never in the scoring loop.
 
-(set M.RouteContext {:class :string
-                     :spec :string
-                     :phase :integer
-                     :now :integer
-                     :owned-items [:map :integer :boolean]
-                     :lockouts [:map :string [:ref :LockoutView]]
-                     :weights [:optional [:map :string :number]]
-                     :competitors [:optional [:map :string :number]]
-                     :composition [:optional [:map :string :number]]
-                     :default-competitors [:optional :number]
-                     :seed [:optional :integer]
-                     :include-classic? [:optional :boolean]
-                     :goals [:optional [:list [:ref :GoalDef]]]
-                     :goal-progress [:optional [:map :string :number]]
-                     :gold-bands [:optional
-                                  [:map :string {:min :number :max :number}]]
-                     :reset-at [:optional :integer]})
+(set M.RouteContext
+     {:class :string
+      :spec :string
+      :phase :integer
+      :now :integer
+      :owned-items [:map :integer :boolean]
+      :lockouts [:map :string [:ref :LockoutView]]
+      :weights [:optional [:map :string :number]]
+      :competitors [:optional [:map :string :number]]
+      :composition [:optional [:map :string :number]]
+      :default-competitors [:optional :number]
+      :seed [:optional :integer]
+      :include-classic? [:optional :boolean]
+      :goals [:optional [:list [:ref :GoalDef]]]
+      :goal-progress [:optional [:map :string :number]]
+      :gold-bands [:optional [:map :string {:min :number :max :number}]]
+      :reset-at [:optional :integer]
+      :custom-activities [:optional [:list [:ref :ActivityDef]]]
+      :custom-yields [:optional [:map :string [:ref :ActivityYield]]]})
 
 ;; --- Register into the addon namespace -------------------------------------
 ;;

@@ -39,7 +39,8 @@
        {:New (fn [_self _name defaults _default-profile]
                ;; Materialize defaults so migrate/make-logger find real tables.
                {:global (deep-copy (or (?. defaults :global) {}))
-                :char (deep-copy (or (?. defaults :char) {}))})})
+                :char (deep-copy (or (?. defaults :char) {}))
+                :profile (deep-copy (or (?. defaults :profile) {}))})})
 
 (local AceEvent {:Embed (fn [_self target]
                           (set target.registered {})

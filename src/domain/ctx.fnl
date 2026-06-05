@@ -24,6 +24,9 @@
 (local goals (or Routina.goals (require :src.domain.goals)))
 (local yields (or Routina.yields (require :src.domain.yields)))
 (local history (or Routina.history (require :src.domain.history)))
+(local activities (or Routina.activities (require :src.domain.activities)))
+(local custom-activities
+       (or Routina.custom-activities (require :src.domain.custom-activities)))
 
 (local M {})
 
@@ -281,6 +284,28 @@
                     (yields.blended-band {:min e.gold-min :max e.gold-max}
                                          tally.gold tally.runs)))))))
 
+(fn live-customs [?persisted]
+  "Authored entries that survive normalize and don't shadow a registry id --
+   a custom named :karazhan must never replace the real raid."
+  (icollect [_ c (ipairs (custom-activities.normalize ?persisted))]
+    (when (= nil (activities.by-id c.id)) c)))
+
+(fn custom-yield-map [customs]
+  "Map {custom-id-string ActivityYield} of the authored payouts (entries that
+   claim nothing are absent -- an honest zero, not a fabricated row)."
+  (collect [_ c (ipairs customs)]
+    (let [y (custom-activities.to-yield c)]
+      (when y (values (tostring c.id) y)))))
+
+(fn merge-custom-bands! [bands custom-yields]
+  "Fold the authored custom gold bands into the (fresh) gold-band override map
+   so goals' gold path needs no second lookup. No precedence conflict: a
+   custom id never has a curated band or recorded history."
+  (each [id y (pairs custom-yields)]
+    (when (> y.gold-max 0)
+      (tset bands id {:min y.gold-min :max y.gold-max})))
+  bands)
+
 (fn killed-count [encounters]
   "How many of a lockout's encounters are already down."
   (accumulate [n 0 _ e (ipairs (or encounters []))]
@@ -317,6 +342,9 @@
                           from src/core/events.fnl; nil keeps quest-flag-only
                           attunement resolution (pre-Phase-6 behaviour)
                         :goals ?[GoalDef]      -- db.char.goals (invalid rows drop)
+                        :custom-activities ?[CustomActivity] -- db.profile
+                          .custom-activities (invalid rows and ids shadowing
+                          the registry drop)
                         :money ?int            -- GetMoney copper
                         :badge-count ?int      -- GetItemCount Badge of Justice
                         :reset-at ?int         -- next weekly reset timestamp
@@ -344,6 +372,8 @@
                      :owned-items owned
                      :standings player.reputations
                      :chain-fractions (chain-fractions snapshot.chain-progress)}
+        customs (live-customs snapshot.custom-activities)
+        custom-yields (custom-yield-map customs)
         ctx {:class snapshot.class
              :spec (detect-spec snapshot.class snapshot.talent-points opts.spec)
              :phase (or opts.phase default-phase)
@@ -359,8 +389,12 @@
              :goals goal-list
              :goal-progress (collect [_ g (ipairs goal-list)]
                               (values g.id (goals.progress g goal-inputs)))
-             :gold-bands (gold-band-overrides snapshot.yield-history)
-             :reset-at snapshot.reset-at}]
+             :gold-bands (merge-custom-bands! (gold-band-overrides snapshot.yield-history)
+                                              custom-yields)
+             :reset-at snapshot.reset-at
+             :custom-activities (icollect [_ c (ipairs customs)]
+                                  (custom-activities.to-activity-def c))
+             : custom-yields}]
     (validate.assert! schemas.Player player :ctx/player)
     (validate.assert! schemas.RouteContext ctx :ctx/ctx)
     {: player

@@ -53,9 +53,41 @@
   "A fresh shallow copy of one GoalDef."
   (collect [k v (pairs g)] k v))
 
+(fn all-adefs [ctx]
+  "The candidate universe goal arbitration reasons over: the static registry
+   plus the player's custom entries (RouteContext :custom-activities, Phase 8)."
+  (let [adefs (activities.all)]
+    (each [_ adef (ipairs (or ctx.custom-activities []))]
+      (table.insert adefs adef))
+    adefs))
+
+(fn adef-by-id [ctx id]
+  "An ActivityDef by id -- the registry first, then the custom entries."
+  (or (activities.by-id id)
+      (accumulate [found nil _ adef (ipairs (or ctx.custom-activities []))
+                   &until found]
+        (when (= adef.id id) adef))))
+
+(fn custom-yield [activity-id ?custom-yields]
+  "The authored ActivityYield override for a custom activity, or nil. A custom
+   entry fully describes its own payout, so a hit shadows the curated table."
+  (and ?custom-yields (. ?custom-yields (tostring activity-id))))
+
+(fn badges-for [activity-id ?custom-yields]
+  "Badges one clear pays: the custom override when present, else curated."
+  (let [over (custom-yield activity-id ?custom-yields)]
+    (if over over.badges (yields.badges-for activity-id))))
+
+(fn rep-for [activity-id ?custom-yields]
+  "The rep payout of one clear: the custom override when present, else curated."
+  (let [over (custom-yield activity-id ?custom-yields)]
+    (if over over.rep (yields.rep-for activity-id))))
+
 (fn band-for [activity-id ?gold-bands]
   "The gold band route scoring uses: the history-blended override from
-   RouteContext :gold-bands when present, else the curated band, else nil."
+   RouteContext :gold-bands when present, else the curated band, else nil.
+   Custom-activity bands need no third branch -- ctx.build merges them into
+   :gold-bands (a custom id never has a curated band or recorded history)."
   (or (and ?gold-bands (. ?gold-bands (tostring activity-id)))
       (yields.gold-band-for activity-id)))
 
@@ -86,7 +118,7 @@
         0
         (accumulate [p 0 _ step (ipairs steps)]
           (if (= (tostring step.id) (tostring entry.source-activity))
-              (let [adef (activities.by-id step.id)
+              (let [adef (adef-by-id ctx step.id)
                     runs (if adef (goal-runs adef ctx.now ctx.reset-at) 1)
                     p-week (chance.at-least-one entry.base-drop-p runs)]
                 (- 1 (* (- 1 p) (- 1 p-week))))
@@ -100,7 +132,7 @@
         rng (chance.make-rng seed)
         run-bands []]
     (each [_ step (ipairs steps)]
-      (let [adef (activities.by-id step.id)
+      (let [adef (adef-by-id ctx step.id)
             range (band-for step.id ctx.gold-bands)]
         (when (and adef range (> range.max 0))
           (for [_ 1 (goal-runs adef ctx.now ctx.reset-at)]
@@ -178,19 +210,23 @@
    Returns: number >= 0."
   (math.max 0 (- goal.target (or ?progress 0))))
 
-(lambda M.activity-yield [goal activity-id ?gold-bands]
+(lambda M.activity-yield [goal activity-id ?gold-bands ?custom-yields]
   "Expected per-run payout of one activity toward one goal.
    Gold uses the band midpoint (the projection keeps the full band); items pay
    their per-run drop chance (expected drops); chains never pay through
-   activities -- their path is the chain advisory, not the route.
+   activities -- their path is the chain advisory, not the route. Badges and
+   rep read the authored override first when the activity is a custom one
+   (Phase 8); custom gold rides :gold-bands, merged by ctx.build.
    Domain:  goal : GoalDef ; activity-id : keyword|string
             ?gold-bands : {activity-id {:min :max}} | nil -- blended overrides
+            ?custom-yields : {activity-id ActivityYield} | nil -- authored
+                             custom-activity payouts (RouteContext)
    Returns: number >= 0 in the goal's own unit."
   (case goal.kind
-    :badges (yields.badges-for activity-id)
+    :badges (badges-for activity-id ?custom-yields)
     :gold (let [range (band-for activity-id ?gold-bands)]
             (if range (band-mid range) 0))
-    :rep (let [rep (yields.rep-for activity-id)]
+    :rep (let [rep (rep-for activity-id ?custom-yields)]
            (if (and rep goal.faction
                     (= (tostring rep.faction) (tostring goal.faction)))
                rep.amount
@@ -209,18 +245,19 @@
    default-weight BiS slot -- and every other source earns its proportional
    share, so an urgent goal visibly reorders the plan toward its densest
    activities. Deficit, achievable-by-reset, urgency and best-source are
-   precomputed once (over the full registry -- an optimistic ceiling; lockouts
-   shave it implicitly by shaving the plan); the closures are O(goals).
+   precomputed once (over the full registry plus the player's custom entries
+   -- an optimistic ceiling; lockouts shave it implicitly by shaving the
+   plan); the closures are O(goals).
    Domain:  ?goals : [GoalDef] | nil -- RouteContext :goals
-            ctx    : RouteContext (reads :goal-progress :gold-bands :now
-                     :reset-at)
+            ctx    : RouteContext (reads :goal-progress :gold-bands
+                     :custom-activities :custom-yields :now :reset-at)
    Returns: {:active?   boolean -- any goal still has a deficit
              :relevant? (fn [activity-id] -> boolean) -- pays toward some goal
              :score     (fn [activity-id] -> number >= 0)} -- the score term,
             <= urgency per goal; a no-goal scorer is inert (active? false,
             score 0), so plans without goals are byte-identical to pre-goal
             plans."
-  (let [adefs (activities.all)
+  (let [adefs (all-adefs ctx)
         live (icollect [_ g (ipairs (or ?goals []))]
                (let [progress (or (and ctx.goal-progress
                                        (. ctx.goal-progress g.id))
@@ -228,7 +265,8 @@
                      deficit (M.deficit g progress)
                      totals (accumulate [acc {:sum 0 :best 0} _ adef (ipairs adefs)]
                               (let [take (* (M.activity-yield g adef.id
-                                                              ctx.gold-bands)
+                                                              ctx.gold-bands
+                                                              ctx.custom-yields)
                                             (goal-runs adef ctx.now
                                                        ctx.reset-at))]
                                 {:sum (+ acc.sum take)
@@ -240,13 +278,15 @@
     {:active? (> (length live) 0)
      :relevant? (fn [activity-id]
                   (accumulate [hit false _ row (ipairs live) &until hit]
-                    (> (M.activity-yield row.goal activity-id ctx.gold-bands) 0)))
+                    (> (M.activity-yield row.goal activity-id ctx.gold-bands
+                                         ctx.custom-yields)
+                       0)))
      :score (fn [activity-id]
-              (let [adef (activities.by-id activity-id)
+              (let [adef (adef-by-id ctx activity-id)
                     runs (if adef (goal-runs adef ctx.now ctx.reset-at) 1)]
                 (accumulate [total 0 _ row (ipairs live)]
                   (let [yield (M.activity-yield row.goal activity-id
-                                                ctx.gold-bands)]
+                                                ctx.gold-bands ctx.custom-yields)]
                     (+ total (* row.urgency (/ (* yield runs) row.best)))))))}))
 
 (lambda M.project [goals steps ctx ?opts]
@@ -266,9 +306,9 @@
                 {:p10 total :p50 total :p90 total})
           range (case g.kind
                   :badges (det (accumulate [total progress _ step (ipairs steps)]
-                                 (let [adef (activities.by-id step.id)]
+                                 (let [adef (adef-by-id ctx step.id)]
                                    (+ total
-                                      (* (yields.badges-for step.id)
+                                      (* (badges-for step.id ctx.custom-yields)
                                          (if adef
                                              (goal-runs adef ctx.now
                                                         ctx.reset-at)

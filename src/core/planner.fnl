@@ -29,6 +29,11 @@
    and drops corrupt rows. Empty until the goal editor writes them."
   (or (?. Routina :addon :db :char :goals) []))
 
+(fn profile-customs []
+  "The player's authored activities (db.profile.custom-activities); ctx.build
+   validates and drops corrupt rows. Empty until the editor writes them."
+  (or (?. Routina :addon :db :profile :custom-activities) []))
+
 ;; --- Public API ------------------------------------------------------------
 
 (lambda M.route-input []
@@ -56,6 +61,7 @@
                         :faction-standing wow.faction-standing
                         :chain-progress (events.chain-progress)
                         :goals (char-goals)
+                        :custom-activities (profile-customs)
                         :money (wow.player-money)
                         :badge-count (wow.badge-count)
                         :reset-at (events.reset-at)

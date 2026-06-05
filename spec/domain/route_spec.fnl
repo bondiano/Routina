@@ -423,6 +423,71 @@
                                 (assert.is_not_nil week-out)
                                 (assert.is_not_nil eve)
                                 (assert.is_true (not= week-out eve)))))))
+            (describe "custom activities (Phase 8 exit criteria)"
+                      (fn []
+                        (local gold-goal ;; 5000g in copper
+                               {:id :g-gold :kind :gold :target 50000000})
+                        ;; A player-authored daily farm lap, as ctx.build
+                        ;; threads it: the ActivityDef plus its authored yield
+                        ;; (gold band merged into :gold-bands).
+                        (local farm
+                               {:id :custom-farm
+                                :name "Primal farm lap"
+                                :type :custom
+                                :reset :daily
+                                :length-estimate 30
+                                :requirements {:min-level 1}})
+                        (local farm-yield
+                               {:activity-id :custom-farm
+                                :badges 0
+                                :gold-min 5000000
+                                :gold-max 9000000})
+
+                        (fn step-of [plan id]
+                          (accumulate [found nil _ s (ipairs plan.steps)
+                                       &until found]
+                            (when (= s.id id) s)))
+
+                        (fn ids-of [plan]
+                          (icollect [_ s (ipairs plan.steps)] s.id))
+
+                        (it "a strong custom yield outranks a weak catalog
+                             source under a gold goal"
+                            (fn []
+                              ;; ~700g/lap vs Ogri'la's ~45g/visit: the custom
+                              ;; lap is the densest gold source, so it earns
+                              ;; the goal's full urgency and outscores it.
+                              (let [plan (route.plan-week (player)
+                                                          (ctx {:goals [gold-goal]
+                                                                :goal-progress {:g-gold 0}
+                                                                :custom-activities [farm]
+                                                                :custom-yields {:custom-farm farm-yield}
+                                                                :gold-bands {:custom-farm {:min 5000000
+                                                                                           :max 9000000}}}))
+                                    custom (step-of plan :custom-farm)
+                                    ogrila (step-of plan :ogrila-dailies)]
+                                (assert.is_not_nil custom)
+                                (assert.is_not_nil ogrila)
+                                (assert.are.equal :Custom custom.type)
+                                (assert.is_true (> custom.score ogrila.score)))))
+                        (it "a yield-less custom entry stays in the plan,
+                             honestly scored 0 at the tail"
+                            (fn []
+                              (let [plan (route.plan-week (player)
+                                                          (ctx {:custom-activities [farm]}))
+                                    custom (step-of plan :custom-farm)
+                                    last-step (. plan.steps (length plan.steps))]
+                                (assert.is_not_nil custom)
+                                (assert.are.equal 0 custom.score)
+                                (assert.are.equal 30 custom.minutes)
+                                (assert.are.equal :custom-farm last-step.id))))
+                        (it "no custom entries -> the plan is byte-identical"
+                            (fn []
+                              (let [base (route.plan-week (player) (ctx))
+                                    empty (route.plan-week (player)
+                                                           (ctx {:custom-activities []}))]
+                                (assert.are.same (ids-of base) (ids-of empty))
+                                (assert.are.equal base.score empty.score))))))
             (describe "content coverage"
                       (fn []
                         ;; Regression guard for the silent-drop bug: route only
