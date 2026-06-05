@@ -258,6 +258,41 @@
                   :zone [:optional :string]
                   :ml-pool [:optional :integer]})
 
+;; --- Yields & goals (consumed by src/domain/yields.fnl / goals.fnl) --------
+;;
+;; ActivityYield is one row of the generated per-activity yield table
+;; (scripts/import-yields.lua): what a single clear of the activity pays out
+;; besides loot chances. :badges is deterministic (heroic bosses x 1 Badge of
+;; Justice; raids carry a curated override -- 0 until Anniversary rules are
+;; confirmed live). :gold-min/:gold-max is the honest curated gold band in
+;; COPPER per clear (OQ-12 resolved 2026-06-05: a range, never a point
+;; estimate), refined downstream from observed history (yields.blended-band).
+;; :rep is the optional reputation payout of one clear.
+
+(set M.ActivityYield
+     {:activity-id :string
+      :badges :integer
+      :gold-min :number
+      :gold-max :number
+      :rep [:optional {:faction :string :amount :integer}]})
+
+;; GoalDef is a player-authored weekly goal (PRD §6.9, resolves OQ-6): "150
+;; badges for the belt", "5000g for the mount", a specific item, a reputation
+;; standing (target = standing index 1..8) or a chain to finish (target = 1 =
+;; complete). The deadline is implicit -- the next weekly reset (RouteContext
+;; :reset-at). Progress is read from CURRENT HOLDINGS at plan time (money,
+;; badge count, owned items, standing, chain fraction) -- never accumulated.
+;; Persisted at db.char.goals; being user-authored data, invalid entries are
+;; dropped on load instead of erroring (goals.normalize).
+
+(set M.GoalDef {:id :string
+                :kind [:enum :badges :gold :item :rep :chain]
+                :target :number
+                :item-id [:optional :integer]
+                :faction [:optional :string]
+                :chain-id [:optional :string]
+                :created [:optional :integer]})
+
 ;; --- Route context (consumed by src/domain/route.fnl) ----------------------
 ;;
 ;; The pure inputs route.plan-week needs beyond the schemas.Player it scores
@@ -271,21 +306,32 @@
 ;; src/domain/competition.fnl); when set, route derives per-item competitors
 ;; from it instead of :default-competitors. :seed is the optional
 ;; user-controlled Monte Carlo seed for route.project-week (default applied
-;; downstream). Validated once at the route boundary, never in the scoring loop.
+;; downstream). The Phase 7 goal fields travel together: :goals is the
+;; player's active GoalDef list, :goal-progress maps goal-id -> progress at
+;; plan time (current holdings, resolved by ctx.build), :gold-bands maps
+;; activity-id -> history-blended gold band (curated band when absent), and
+;; :reset-at is the next weekly reset timestamp -- with it set, a daily
+;; activity's remaining runs shrink as the reset approaches, which is what
+;; makes the goal arbitration deadline-aware (OQ-11 resolved 2026-06-05).
+;; Validated once at the route boundary, never in the scoring loop.
 
-(set M.RouteContext
-     {:class :string
-      :spec :string
-      :phase :integer
-      :now :integer
-      :owned-items [:map :integer :boolean]
-      :lockouts [:map :string [:ref :LockoutView]]
-      :weights [:optional [:map :string :number]]
-      :competitors [:optional [:map :string :number]]
-      :composition [:optional [:map :string :number]]
-      :default-competitors [:optional :number]
-      :seed [:optional :integer]
-      :include-classic? [:optional :boolean]})
+(set M.RouteContext {:class :string
+                     :spec :string
+                     :phase :integer
+                     :now :integer
+                     :owned-items [:map :integer :boolean]
+                     :lockouts [:map :string [:ref :LockoutView]]
+                     :weights [:optional [:map :string :number]]
+                     :competitors [:optional [:map :string :number]]
+                     :composition [:optional [:map :string :number]]
+                     :default-competitors [:optional :number]
+                     :seed [:optional :integer]
+                     :include-classic? [:optional :boolean]
+                     :goals [:optional [:list [:ref :GoalDef]]]
+                     :goal-progress [:optional [:map :string :number]]
+                     :gold-bands [:optional
+                                  [:map :string {:min :number :max :number}]]
+                     :reset-at [:optional :integer]})
 
 ;; --- Register into the addon namespace -------------------------------------
 ;;
