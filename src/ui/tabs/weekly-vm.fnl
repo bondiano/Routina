@@ -65,27 +65,48 @@
 
 ;; --- Public view-models ------------------------------------------------------
 
-(lambda M.card-view-model [step rank ?advice]
+(lambda M.card-view-model [step rank ?advice ?edits]
   "Pure render spec for one activity card.
    Domain:  step   : a route.plan-week step {:name :type :detail :minutes :score
                      :attunement? :items [{:label :chance :runs :item-id} ...]}
             rank   : integer >= 1 (display rank)
             ?advice: {attune-slug text} -- soft 'not attuned' notes, or nil
-   Returns: {:title :subtitle :summary :advisory? string
+            ?edits : schemas.PlanEdits (RouteContext :plan-edits), or nil --
+                     drives the :pinned? affordance (Phase 8 §2)
+   Returns: {:title :subtitle :summary :advisory? string :pinned? boolean
              :items [{:name string :chance-text string :chance number
                       :item-id ?integer} ...<= max-rows]}"
-  {:title (.. "#" rank "  " (tostring step.name))
-   :subtitle (.. (tostring step.type) " · " (tostring step.detail))
-   :summary (.. "~" step.minutes " min · score "
-                (format.score-short step.score))
-   :advisory (let [text (and step.attunement ?advice
-                             (. ?advice step.attunement))]
-               (and text (.. "Requires " text)))
-   :items (icollect [_ it (ipairs (top-items step.items))]
-            {:name it.label
-             :chance-text (chance-text it)
-             :chance it.chance
-             :item-id it.item-id})})
+  (let [pinned? (= true
+                   (accumulate [hit false _ id (ipairs (or (?. ?edits :pins) []))
+                                &until hit]
+                     (= (tostring id) (tostring step.id))))]
+    {:title (.. "#" rank "  " (tostring step.name))
+     :subtitle (.. (tostring step.type) " · " (tostring step.detail)
+                   (if pinned? " · pinned" ""))
+     :summary (.. "~" step.minutes " min · score "
+                  (format.score-short step.score))
+     :advisory (let [text (and step.attunement ?advice
+                               (. ?advice step.attunement))]
+                 (and text (.. "Requires " text)))
+     : pinned?
+     :items (icollect [_ it (ipairs (top-items step.items))]
+              {:name it.label
+               :chance-text (chance-text it)
+               :chance it.chance
+               :item-id it.item-id})}))
+
+(lambda M.skipped-view-model [rows]
+  "Pure render spec for the skipped-activities tail row (Phase 8 §2): one
+   restore affordance per skipped activity, sorted by name for a stable
+   paint. nil when nothing is skipped -- the quiet default (UX §9).
+   Domain:  rows : [{:id string :name string} ...] -- resolved skip entries
+   Returns: {:headline string :rows [{:id string :label string} ...]} | nil"
+  (when (> (length rows) 0)
+    (let [sorted (icollect [_ r (ipairs rows)] r)]
+      (table.sort sorted (fn [a b] (< (tostring a.name) (tostring b.name))))
+      {:headline "Skipped activities"
+       :rows (icollect [_ r (ipairs sorted)]
+               {:id (tostring r.id) :label (.. "Restore " (tostring r.name))})})))
 
 (lambda M.chain-advice-view-model [?rows]
   "Pure render spec for the 'attunements in progress' advisory card at the

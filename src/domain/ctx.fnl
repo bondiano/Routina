@@ -28,6 +28,8 @@
 (local custom-activities
        (or Routina.custom-activities (require :src.domain.custom-activities)))
 
+(local plan-edits (or Routina.plan-edits (require :src.domain.plan-edits)))
+
 (local M {})
 
 ;; --- Static data (pure) ----------------------------------------------------
@@ -345,6 +347,8 @@
                         :custom-activities ?[CustomActivity] -- db.profile
                           .custom-activities (invalid rows and ids shadowing
                           the registry drop)
+                        :plan-edits ?PlanEdits -- db.char.plan-edits (pins /
+                          skips; invalid entries drop)
                         :money ?int            -- GetMoney copper
                         :badge-count ?int      -- GetItemCount Badge of Justice
                         :reset-at ?int         -- next weekly reset timestamp
@@ -394,7 +398,8 @@
              :reset-at snapshot.reset-at
              :custom-activities (icollect [_ c (ipairs customs)]
                                   (custom-activities.to-activity-def c))
-             : custom-yields}]
+             : custom-yields
+             :plan-edits (plan-edits.normalize snapshot.plan-edits)}]
     (validate.assert! schemas.Player player :ctx/player)
     (validate.assert! schemas.RouteContext ctx :ctx/ctx)
     {: player

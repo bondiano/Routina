@@ -283,8 +283,10 @@
                      :owned-items :lockouts :weights? :competitors?
                      :composition? :default-competitors? :seed?
                      :include-classic? :goals? :goal-progress? :gold-bands?
-                     :reset-at? :custom-activities? :custom-yields?}
+                     :reset-at? :custom-activities? :custom-yields?
+                     :plan-edits?}
    Returns: {:steps [plan-row ...]  -- available, item-bearing activities,
+                                       pinned ids first (pin order), then
                                        score desc (ties: minutes asc, name, id);
                                        each row carries its :attunement slug (or
                                        nil) so the UI can attach an advisory
@@ -296,15 +298,19 @@
   (let [gearing? (gearing-up? ctx)
         goal-scorer (goals.make-goal-scorer ctx.goals ctx)
         ;; The candidate universe: the static registry plus the player's
-        ;; custom entries (Phase 8), competing as equals.
+        ;; custom entries (Phase 8), competing as equals. Skipped activities
+        ;; (PlanEdits :skips, Phase 8 §2) never enter it.
         adefs (activities.all)
         _ (each [_ adef (ipairs (or ctx.custom-activities []))]
             (table.insert adefs adef))
+        skips (or (?. ctx :plan-edits :skips) {})
         catalog (icollect [_ adef (ipairs adefs)]
-                  (candidate-activity player ctx adef gearing? goal-scorer))
+                  (when (not= true (. skips (tostring adef.id)))
+                    (candidate-activity player ctx adef gearing? goal-scorer)))
         attune-by-id (collect [_ a (ipairs catalog)]
                        (values a.id a.attunement))
-        steps (plan.plan-week catalog (make-scorer ctx goal-scorer))
+        steps (plan.plan-week catalog (make-scorer ctx goal-scorer)
+                              (?. ctx :plan-edits :pins))
         score (accumulate [s 0 _ row (ipairs steps)] (+ s row.score))
         est-minutes (accumulate [m 0 _ row (ipairs steps)] (+ m row.minutes))]
     ;; plan.plan-week rebuilds rows with its own field set, so re-attach the

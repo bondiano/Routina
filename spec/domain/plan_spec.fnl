@@ -118,4 +118,50 @@
                                     catalog [a]
                                     _ (plan.plan-week catalog)]
                                 (assert.is_nil a.score)
-                                (assert.is_nil (. a.items 1 :chance)))))))))
+                                (assert.is_nil (. a.items 1 :chance)))))))
+            (describe ":plan-week pins (Phase 8 §2)"
+                      (fn []
+                        (local weak
+                               (activity :heroic :Heroic 30
+                                         [(item :badge 0.05 1)]))
+                        (local mid
+                               (activity :gruul :Gruul 45 [(item :belt 0.15 1)]))
+                        (local strong
+                               (activity :kara :Karazhan 95
+                                         [(item :sh 0.25 3) (item :rg 0.2 3)]))
+
+                        (fn ids [rows]
+                          (icollect [_ r (ipairs rows)] r.id))
+
+                        (it "orders pinned rows first, in pin order"
+                            (fn []
+                              (let [rows (plan.plan-week [weak mid strong] nil
+                                                         [:heroic :gruul])]
+                                (assert.are.same [:heroic :gruul :kara]
+                                                 (ids rows)))))
+                        (it "keeps honest scores -- pinning never re-scores"
+                            (fn []
+                              (let [plain (plan.plan-week [weak strong])
+                                    pinned (plan.plan-week [weak strong] nil
+                                                           [:heroic])]
+                                (assert.are.equal (. plain 2 :score)
+                                                  (. pinned 1 :score)))))
+                        (it "ignores pinned ids absent from the catalog"
+                            (fn []
+                              (let [rows (plan.plan-week [weak strong] nil
+                                                         [:nonesuch :heroic])]
+                                (assert.are.same [:heroic :kara] (ids rows)))))
+                        (it "tolerates duplicate pin ids without duplicating rows"
+                            (fn []
+                              (let [rows (plan.plan-week [weak strong] nil
+                                                         [:heroic :heroic])]
+                                (assert.are.same [:heroic :kara] (ids rows)))))
+                        (it "empty pins leave the score order untouched"
+                            (fn []
+                              (assert.are.same (ids (plan.plan-week [weak
+                                                                     mid
+                                                                     strong]))
+                                               (ids (plan.plan-week [weak
+                                                                     mid
+                                                                     strong]
+                                                                    nil [])))))))))

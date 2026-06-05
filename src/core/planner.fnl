@@ -34,6 +34,11 @@
    validates and drops corrupt rows. Empty until the editor writes them."
   (or (?. Routina :addon :db :profile :custom-activities) []))
 
+(fn char-plan-edits []
+  "The player's persisted pins/skips (db.char.plan-edits); ctx.build
+   normalizes and drops corrupt entries. Empty until a card action writes it."
+  (or (?. Routina :addon :db :char :plan-edits) {}))
+
 ;; --- Public API ------------------------------------------------------------
 
 (lambda M.route-input []
@@ -62,6 +67,7 @@
                         :chain-progress (events.chain-progress)
                         :goals (char-goals)
                         :custom-activities (profile-customs)
+                        :plan-edits (char-plan-edits)
                         :money (wow.player-money)
                         :badge-count (wow.badge-count)
                         :reset-at (events.reset-at)

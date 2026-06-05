@@ -68,7 +68,38 @@
                   (let [items [(item :low 0.1 1 1) (item :high 0.9 1 2)]
                         s (step {: items})
                         _ (weekly.card-view-model s 1)]
-                    (assert.are.equal 1 (. items 1 :item-id)))))))
+                    (assert.are.equal 1 (. items 1 :item-id)))))
+            (it "flags a pinned step and badges the subtitle (Phase 8 §2)"
+                (fn []
+                  (let [s (step {:id :karazhan})
+                        edits {:pins [:karazhan] :skips {}}
+                        pinned (weekly.card-view-model s 1 nil edits)
+                        plain (weekly.card-view-model s 1 nil
+                                                      {:pins [] :skips {}})
+                        bare (weekly.card-view-model s 1)]
+                    (assert.is_true pinned.pinned?)
+                    (assert.is_truthy (string.find pinned.subtitle :pinned 1
+                                                   true))
+                    (assert.is_false plain.pinned?)
+                    (assert.is_false bare.pinned?)
+                    (assert.is_nil (string.find plain.subtitle :pinned 1 true)))))))
+
+(describe :weekly-skipped-view-model
+          (fn []
+            (it "is nil when nothing is skipped"
+                (fn []
+                  (assert.is_nil (weekly.skipped-view-model []))))
+            (it "renders one restore row per skip, sorted by name"
+                (fn []
+                  (let [vm (weekly.skipped-view-model [{:id :vendor
+                                                        :name "Badge Vendor"}
+                                                       {:id :karazhan
+                                                        :name :Karazhan}])]
+                    (assert.are.equal "Skipped activities" vm.headline)
+                    (assert.are.equal 2 (length vm.rows))
+                    (assert.are.equal "Restore Badge Vendor"
+                                      (. vm.rows 1 :label))
+                    (assert.are.equal :karazhan (. vm.rows 2 :id)))))))
 
 (describe :weekly-projection-view-model
           (fn []

@@ -16,31 +16,34 @@
                               (assert.are.equal :info
                                                 saved-vars.defaults.global.options.log-level)
                               (assert.is_truthy saved-vars.defaults.char.weekly-state)))
-                        (it "ships the v4 custom-activities migration and matching defaults"
+                        (it "ships the v5 plan-edits migration and matching defaults"
                             (fn []
-                              (assert.are.equal 4
+                              (assert.are.equal 5
                                                 saved-vars.defaults.global.version)
                               (assert.is_truthy saved-vars.defaults.char.chains)
                               (assert.is_truthy saved-vars.defaults.char.goals)
                               (assert.is_truthy (. saved-vars.defaults.char
                                                    :history :yields))
                               (assert.is_truthy saved-vars.defaults.profile.custom-activities)
-                              (assert.are.equal 3
+                              (assert.is_truthy saved-vars.defaults.char.plan-edits)
+                              (assert.are.equal 4
                                                 (length saved-vars.migrations))
                               (assert.are.equal 2
                                                 (. saved-vars.migrations 1 :to))
                               (assert.are.equal 3
                                                 (. saved-vars.migrations 2 :to))
                               (assert.are.equal 4
-                                                (. saved-vars.migrations 3 :to))))
-                        (it "fast-forwards a v3 DB to v4 idempotently"
+                                                (. saved-vars.migrations 3 :to))
+                              (assert.are.equal 5
+                                                (. saved-vars.migrations 4 :to))))
+                        (it "fast-forwards a v3 DB to the latest idempotently"
                             (fn []
                               (let [out (saved-vars.migrate {:version 3}
                                                             saved-vars.migrations)
                                     again (saved-vars.migrate out
                                                               saved-vars.migrations)]
-                                (assert.are.equal 4 out.version)
-                                (assert.are.equal 4 again.version))))))
+                                (assert.are.equal 5 out.version)
+                                (assert.are.equal 5 again.version))))))
             (describe :migrate
                       (fn []
                         (it "is a no-op with no migrations"

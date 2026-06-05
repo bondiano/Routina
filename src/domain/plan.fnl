@@ -51,9 +51,10 @@
   (accumulate [total 0 _ item (ipairs activity.items)]
     (+ total (chance.at-least-one item.p item.runs))))
 
-(lambda M.plan-week [catalog ?score-fn]
+(lambda M.plan-week [catalog ?score-fn ?pins]
   "Build the ordered weekly-plan view-model from a catalog of activities.
-   Pure and deterministic -- same catalog always yields the same plan.
+   Pure and deterministic -- same catalog (and pins) always yields the same
+   plan.
    Domain:  catalog   : sequence of activities, each
              {:id keyword :name string :type string :detail string
               :minutes number
@@ -62,8 +63,13 @@
              composite scorer (M.score-activity). Lets a caller inject a
              slot-weighted score (src/domain/route.fnl) while plan retains sole
              ownership of per-item :chance annotation and deterministic ordering.
-   Returns: sequence of rows ordered by score desc (ties: minutes asc, name,
-            id), each row = the activity plus :score and per-item :chance:
+            ?pins     : optional ordered [activity-id] (PlanEdits :pins, Phase
+             8 §2): rows whose id is pinned order FIRST, in pin order; absent
+             pinned ids are ignored; everything else keeps score order. Scores
+             stay honest -- pinning reorders, never re-scores.
+   Returns: sequence of rows ordered pins-first then score desc (ties: minutes
+            asc, name, id), each row = the activity plus :score and per-item
+            :chance:
             {:id :name :type :detail :minutes :score
              :items [{:label :p :runs :item-id :slot :chance} ...]}."
   (let [score (or ?score-fn M.score-activity)
@@ -77,7 +83,22 @@
                 :items (icollect [_ item (ipairs activity.items)]
                          (item-row item))})]
     (table.sort rows by-score-then-time)
-    rows))
+    (if (or (= nil ?pins) (= 0 (length ?pins)))
+        rows
+        (let [by-id (collect [_ row (ipairs rows)]
+                      (values (tostring row.id) row))
+              pinned-set {}
+              head (icollect [_ id (ipairs ?pins)]
+                     (let [row (. by-id (tostring id))]
+                       ;; defensive: a duplicated pin id must not duplicate
+                       ;; the row (normalize dedups, but stay total here)
+                       (when (and row (= nil (. pinned-set (tostring id))))
+                         (tset pinned-set (tostring id) true)
+                         row)))]
+          (each [_ row (ipairs rows)]
+            (when (= nil (. pinned-set (tostring row.id)))
+              (table.insert head row)))
+          head))))
 
 ;; --- Register into the addon namespace -------------------------------------
 ;;

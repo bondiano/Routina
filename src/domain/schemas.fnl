@@ -330,6 +330,18 @@
                        :goal-id [:optional :string]
                        :created [:optional :integer]})
 
+;; PlanEdits is the player's persisted plan-shaping state (ROADMAP Phase 8 §2):
+;; :pins is an ORDERED list of activity ids placed at the head of the weekly
+;; plan (pin order wins over score order; everything else keeps score order);
+;; :skips is the set of activity ids excluded from the plan until restored
+;; (persistent -- a skip means "not my routine", not "not this week"; lockouts
+;; already handle the cleared-this-week case). The pin/skip conflict is
+;; resolved by src/domain/plan-edits.fnl (skipping unpins), never here.
+;; Persisted at db.char.plan-edits; user-shaped data, so invalid entries drop
+;; on load (plan-edits.normalize).
+
+(set M.PlanEdits {:pins [:list :string] :skips [:map :string :boolean]})
+
 ;; --- Route context (consumed by src/domain/route.fnl) ----------------------
 ;;
 ;; The pure inputs route.plan-week needs beyond the schemas.Player it scores
@@ -355,7 +367,10 @@
 ;; :custom) by ctx.build -- route/goals fold them into the registry list --
 ;; and :custom-yields maps each custom id to its authored ActivityYield
 ;; (badges/rep overrides; custom gold bands are merged into :gold-bands so
-;; the gold path needs no second lookup).
+;; the gold path needs no second lookup). :plan-edits (Phase 8 §2) carries the
+;; player's pins/skips as pure constraints: skipped activities never enter the
+;; candidate set, pinned ones order first (plan.fnl owns the partition) -- the
+;; plan stays deterministic given the same edits.
 ;; Validated once at the route boundary, never in the scoring loop.
 
 (set M.RouteContext
@@ -376,7 +391,8 @@
       :gold-bands [:optional [:map :string {:min :number :max :number}]]
       :reset-at [:optional :integer]
       :custom-activities [:optional [:list [:ref :ActivityDef]]]
-      :custom-yields [:optional [:map :string [:ref :ActivityYield]]]})
+      :custom-yields [:optional [:map :string [:ref :ActivityYield]]]
+      :plan-edits [:optional [:ref :PlanEdits]]})
 
 ;; --- Register into the addon namespace -------------------------------------
 ;;

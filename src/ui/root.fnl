@@ -157,12 +157,13 @@
   nil)
 
 (lambda M.refresh! []
-  "Repaint the live Plan tab in place when it's the active tab. No-op until the
-   panel is built. Driven by src/core/events.fnl on gear / talent / lockout /
-   options changes so the plan reflects current state.
+  "Repaint the ACTIVE tab in place. No-op until the panel is built. Driven by
+   src/core/events.fnl on gear / talent / lockout / quest / options changes
+   and by the Phase 8 card/checklist actions, so whatever tab is open reflects
+   current state (renders are idempotent ReleaseChildren-then-rebuild).
    Returns: nil."
-  (when (and ui (= active-tab :weekly))
-    (render-tab! ui.tabs :weekly))
+  (when (and ui active-tab)
+    (render-tab! ui.tabs active-tab))
   nil)
 
 ;; --- Register --------------------------------------------------------------

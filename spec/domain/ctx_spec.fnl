@@ -319,4 +319,22 @@
                         (it "stays valid with no custom entries at all"
                             (fn []
                               (let [r (ctx.build (snapshot {}))]
-                                (assert.are.same [] r.ctx.custom-activities))))))))
+                                (assert.are.same [] r.ctx.custom-activities))))))
+            (describe "plan edits (Phase 8 §2)"
+                      (fn []
+                        (it "threads persisted pins/skips into the context"
+                            (fn []
+                              (let [r (ctx.build (snapshot {:plan-edits {:pins [:vendor]
+                                                                         :skips {:karazhan true}}}))]
+                                (assert.are.same [:vendor]
+                                                 r.ctx.plan-edits.pins)
+                                (assert.are.same {:karazhan true}
+                                                 r.ctx.plan-edits.skips))))
+                        (it "normalizes corrupt edits to empty, never erroring"
+                            (fn []
+                              (let [garbage (ctx.build (snapshot {:plan-edits :junk}))
+                                    absent (ctx.build (snapshot {}))]
+                                (assert.are.same {:pins [] :skips {}}
+                                                 garbage.ctx.plan-edits)
+                                (assert.are.same {:pins [] :skips {}}
+                                                 absent.ctx.plan-edits))))))))

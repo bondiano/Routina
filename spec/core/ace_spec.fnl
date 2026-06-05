@@ -15,7 +15,7 @@
                               (ace:OnInitialize)
                               (assert.is_truthy ace.db)
                               (assert.is_truthy ace.db.global)
-                              (assert.are.equal 4 ace.db.global.version)
+                              (assert.are.equal 5 ace.db.global.version)
                               (assert.is_truthy ace.log)))
                         (it "registers the /routina and /rt commands"
                             (fn []
@@ -56,7 +56,7 @@
                               (let [lines (ace-mock.printed)]
                                 (assert.are.equal 3 (length lines))
                                 (assert.is_truthy (string.find (. lines 1)
-                                                               "Routina debug -- db v4"
+                                                               "Routina debug -- db v5"
                                                                1 true))
                                 (assert.is_truthy (string.find (. lines 2)
                                                                "luck tracking: off"

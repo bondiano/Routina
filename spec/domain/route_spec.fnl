@@ -488,6 +488,58 @@
                                                            (ctx {:custom-activities []}))]
                                 (assert.are.same (ids-of base) (ids-of empty))
                                 (assert.are.equal base.score empty.score))))))
+            (describe "plan edits (Phase 8 §2 exit criteria)"
+                      (fn []
+                        (fn ids-of [plan]
+                          (icollect [_ s (ipairs plan.steps)] s.id))
+
+                        (fn step-of [plan id]
+                          (accumulate [found nil _ s (ipairs plan.steps)
+                                       &until found]
+                            (when (= s.id id) s)))
+
+                        (it "a skipped activity never enters the plan"
+                            (fn []
+                              (let [plan (route.plan-week (player)
+                                                          (ctx {:plan-edits {:pins []
+                                                                             :skips {:karazhan true}}}))]
+                                (assert.is_nil (step-of plan :karazhan)))))
+                        (it "pinned activities order first, in pin order,
+                             scores untouched"
+                            (fn []
+                              (let [base (route.plan-week (player) (ctx))
+                                    pinned (route.plan-week (player)
+                                                            (ctx {:plan-edits {:pins [:vendor
+                                                                                      :karazhan]
+                                                                               :skips {}}}))]
+                                (assert.are.equal :vendor
+                                                  (. pinned.steps 1 :id))
+                                (assert.are.equal :karazhan
+                                                  (. pinned.steps 2 :id))
+                                ;; reordering, never re-scoring
+                                (assert.are.equal (. (step-of base :karazhan)
+                                                     :score)
+                                                  (. (step-of pinned :karazhan)
+                                                     :score))
+                                (assert.are.equal base.score pinned.score))))
+                        (it "is deterministic given the same edits"
+                            (fn []
+                              (let [edits {:pins [:vendor]
+                                           :skips {:karazhan true}}
+                                    a (route.plan-week (player)
+                                                       (ctx {:plan-edits edits}))
+                                    b (route.plan-week (player)
+                                                       (ctx {:plan-edits edits}))]
+                                (assert.are.same (ids-of a) (ids-of b))
+                                (assert.are.equal a.score b.score))))
+                        (it "no edits -> the plan is byte-identical"
+                            (fn []
+                              (let [base (route.plan-week (player) (ctx))
+                                    empty (route.plan-week (player)
+                                                           (ctx {:plan-edits {:pins []
+                                                                              :skips {}}}))]
+                                (assert.are.same (ids-of base) (ids-of empty))
+                                (assert.are.equal base.score empty.score))))))
             (describe "content coverage"
                       (fn []
                         ;; Regression guard for the silent-drop bug: route only

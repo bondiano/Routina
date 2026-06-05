@@ -26,6 +26,8 @@
 (local route (or Routina.route (require :src.domain.route)))
 (local goals (or Routina.goals (require :src.domain.goals)))
 (local planner (or Routina.planner (require :src.core.planner)))
+(local plan-edits (or Routina.plan-edits (require :src.domain.plan-edits)))
+(local activities (or Routina.activities (require :src.domain.activities)))
 (local chance-meter
        (or Routina.chance-meter (require :src.ui.widgets.chance-meter)))
 
@@ -58,6 +60,7 @@
 (set M.chain-advice-view-model vm.chain-advice-view-model)
 (set M.projection-view-model vm.projection-view-model)
 (set M.goals-view-model vm.goals-view-model)
+(set M.skipped-view-model vm.skipped-view-model)
 
 ;; --- Item-quality helpers (imperative, WoW API) ----------------------------
 
@@ -120,6 +123,86 @@
       (attach-meter! row item.chance))
     row))
 
+;; --- Plan edits (pin / skip / move; Phase 8 §2) ------------------------------
+;;
+;; The card buttons mutate db.char.plan-edits through the PURE plan-edits
+;; transforms (the options.fnl precedent: UI :set closures may write the DB
+;; directly), then repaint via root.refresh!. The route re-reads the edits on
+;; the next plan, so the reorder is the planner's own deterministic output --
+;; the tab never shuffles cards by hand.
+
+(fn apply-edit! [transform id]
+  "Normalize the persisted edits, apply one pure transform, persist the fresh
+   copy, and repaint."
+  (let [char (?. Routina :addon :db :char)]
+    (when char
+      (let [next (transform (plan-edits.normalize char.plan-edits) id)]
+        (set char.plan-edits (plan-edits.to-db next)))
+      (when Routina.root (Routina.root.refresh!)))))
+
+(fn add-action! [bar text width handler]
+  "One small action button on a card's action bar."
+  (let [btn (acegui.create! :Button)]
+    (when btn
+      (btn:SetText text)
+      (btn:SetWidth width)
+      (btn:SetCallback :OnClick handler)
+      (bar:AddChild btn))
+    btn))
+
+(fn build-actions! [card step pinned?]
+  "The pin/skip/move action bar of one card (SimpleGroup in Flow layout)."
+  (let [bar (acegui.create! :SimpleGroup)]
+    (when bar
+      (bar:SetFullWidth true)
+      (bar:SetLayout :Flow)
+      (if pinned?
+          (do
+            (add-action! bar :Unpin 80 #(apply-edit! plan-edits.unpin step.id))
+            (add-action! bar "^" 44
+                         #(apply-edit! (fn [e id] (plan-edits.move-pin e id -1))
+                                       step.id))
+            (add-action! bar :v 44
+                         #(apply-edit! (fn [e id] (plan-edits.move-pin e id 1))
+                                       step.id)))
+          (add-action! bar :Pin 80 #(apply-edit! plan-edits.pin step.id)))
+      (add-action! bar :Skip 80 #(apply-edit! plan-edits.skip step.id))
+      (card:AddChild bar))
+    bar))
+
+(fn resolve-skip-name [ctx id]
+  "Display name for a skipped activity id: the registry first, then the
+   player's custom entries, else the raw id."
+  (or (?. (activities.by-id id) :name)
+      (accumulate [found nil _ adef (ipairs (or (?. ctx :custom-activities) []))
+                   &until found]
+        (when (= (tostring adef.id) (tostring id)) adef.name))
+      (tostring id)))
+
+(fn build-skipped! [container ctx]
+  "Tail card listing skipped activities, one Restore button each. Quiet when
+   nothing is skipped."
+  (let [skips (or (?. ctx :plan-edits :skips) {})
+        rows (icollect [id v (pairs skips)]
+               (when (= v true) {: id :name (resolve-skip-name ctx id)}))
+        svm (vm.skipped-view-model rows)]
+    (when svm
+      (let [card (acegui.create! :InlineGroup)]
+        (when card
+          (card:SetTitle svm.headline)
+          (card:SetFullWidth true)
+          (card:SetLayout :List)
+          (each [_ row (ipairs svm.rows)]
+            (let [btn (acegui.create! :Button)]
+              (when btn
+                (btn:SetText row.label)
+                (btn:SetWidth 240)
+                (btn:SetCallback :OnClick
+                                 #(apply-edit! plan-edits.unskip row.id))
+                (card:AddChild btn))))
+          (container:AddChild card))
+        card))))
+
 ;; --- Card (AceGUI InlineGroup) ---------------------------------------------
 
 (fn build-card! [vm rank step ctx ?next]
@@ -153,6 +236,7 @@
       (each [_ item (ipairs vm.items)]
         (let [row (build-row! item)]
           (when row (card:AddChild row))))
+      (build-actions! card step vm.pinned?)
       (let [why (acegui.create! :Button)]
         (when why
           (why:SetText (.. "Why is this #" rank "?"))
@@ -263,7 +347,9 @@
               (for [rank 1 n]
                 (let [step (. steps rank)
                       next-step (. steps (+ rank 1))
-                      card (build-card! (vm.card-view-model step rank advice)
+                      card (build-card! (vm.card-view-model step rank advice
+                                                            (and ctx
+                                                                 ctx.plan-edits))
                                         rank step ctx next-step)]
                   (when card (scroll:AddChild card))
                   (add-spacer! scroll)))
@@ -272,7 +358,11 @@
               (let [projection (route.project-week plan
                                                    {:seed (and ctx ctx.seed)})
                     pvm (vm.projection-view-model projection)]
-                (when pvm (build-projection! scroll pvm))))))))
+                (when pvm (build-projection! scroll pvm)))))
+        ;; Skipped activities (Phase 8 §2): the restore affordances render
+        ;; even when the remaining plan is empty -- a skip must never strand.
+        (when ctx
+          (build-skipped! scroll ctx)))))
   nil)
 
 (set _G.Routina Routina)
