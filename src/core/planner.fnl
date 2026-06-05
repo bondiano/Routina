@@ -13,6 +13,7 @@
 (local Routina (or _G.Routina {}))
 (local wow (or Routina.wow (require :src.core.wow)))
 (local ctx (or Routina.ctx (require :src.domain.ctx)))
+(local events (or Routina.events (require :src.core.events)))
 
 (local M {})
 
@@ -31,7 +32,8 @@
    a validation miss comes back as {:ok false}).
    Domain:  (none)
    Returns: {:ok true :player schemas.Player :ctx schemas.RouteContext
-             :advice {attune-slug advice-text}} | {:ok false :err string}"
+             :advice {attune-slug advice-text}
+             :chain-advice [chain-advice-row ...]} | {:ok false :err string}"
   (let [info (wow.player-info)
         level (wow.player-level)]
     (if (or (not info) (not info.class) (= info.class :unknown) (not level))
@@ -47,13 +49,15 @@
                                    (tostring info.realm))
                         :quest-completed? wow.quest-completed?
                         :faction-standing wow.faction-standing
+                        :chain-progress (events.chain-progress)
                         :options (route-options)}
               (ok? built) (pcall ctx.build snapshot)]
           (if ok?
               {:ok true
                :player built.player
                :ctx built.ctx
-               :advice built.advice}
+               :advice built.advice
+               :chain-advice built.chain-advice}
               {:ok false :err (tostring built)})))))
 
 ;; --- Register into the addon namespace -------------------------------------

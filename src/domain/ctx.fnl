@@ -202,6 +202,35 @@
                (not (chain-attuned? slug ?chain-progress)))
       (values slug entry.advice-text))))
 
+(fn by-closest-then-name [a b]
+  (if (not= a.fraction b.fraction) (> a.fraction b.fraction)
+      (< (tostring a.name) (tostring b.name))))
+
+(fn chain-advice [?chain-progress]
+  "Plan advisories for STARTED-but-incomplete chains: one row per chain the
+   player is mid-way through, carrying its next actionable step. Unstarted
+   chains are deliberately silent (UX §9: quiet) -- the attunement advice
+   badge already nudges toward the ones worth starting. Sorted closest-to-
+   done first, then by name, so the plan stays deterministic (G5)."
+  (if (= nil ?chain-progress)
+      []
+      (let [rows (icollect [_ chain (ipairs (chains.all))]
+                   (let [p (. ?chain-progress (tostring chain.id))]
+                     (when (and (not= nil p) (not= nil (next p.completed))
+                                (not (chains.chain-complete? chain p)))
+                       (let [step (chains.current-step chain p)
+                             summary (chains.progress chain p)]
+                         (when step
+                           {:chain-id chain.id
+                            :name chain.name
+                            :next-step-label step.label
+                            :done summary.done
+                            :total summary.total
+                            :fraction summary.fraction
+                            :est-minutes (chains.est-minutes-remaining chain p)})))))]
+        (table.sort rows by-closest-then-name)
+        rows)))
+
 (fn reputation-map [faction-standing]
   "Map {faction standing-keyword} for every tracked faction the player has a
    standing with; factions the lookup can't resolve are omitted (route's
@@ -252,7 +281,9 @@
                                   :seed ?int :include-classic? ?bool
                                   :attune ?{slug {:gate? ?bool :advise? ?bool}}}}
    Returns: {:player schemas.Player :ctx schemas.RouteContext
-             :advice {attune-slug advice-text}}  -- soft 'not attuned' notes
+             :advice {attune-slug advice-text}  -- soft 'not attuned' notes
+             :chain-advice [{:chain-id :name :next-step-label :done :total
+                             :fraction :est-minutes} ...]}  -- started chains
    Errors:  if the assembled player or ctx fails its schema."
   (let [opts (or snapshot.options {})
         eff (effective-attune opts)
@@ -277,7 +308,8 @@
     {: player
      : ctx
      :advice (attunement-advice eff snapshot.quest-completed?
-                                snapshot.chain-progress)}))
+                                snapshot.chain-progress)
+     :chain-advice (chain-advice snapshot.chain-progress)}))
 
 ;; --- Register into the addon namespace -------------------------------------
 ;;

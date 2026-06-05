@@ -93,6 +93,19 @@
              :chance it.chance
              :item-id it.item-id})})
 
+(lambda M.chain-advice-view-model [?rows]
+  "Pure render spec for the 'attunements in progress' advisory card at the
+   head of the plan, or nil when no chain is mid-way (unstarted and finished
+   chains stay quiet -- UX §9).
+   Domain:  ?rows : ctx.build's :chain-advice list, or nil
+                    [{:name :next-step-label :done :total :est-minutes} ...]
+   Returns: {:headline string :lines [string]} | nil"
+  (when (and ?rows (> (length ?rows) 0))
+    {:headline "Attunements in progress"
+     :lines (icollect [_ r (ipairs ?rows)]
+              (.. (tostring r.name) "  " r.done "/" r.total " · next: "
+                  (tostring r.next-step-label) " · ~" r.est-minutes " min left"))}))
+
 (lambda M.projection-view-model [?projection]
   "Pure render spec for the weekly Monte Carlo fill projection (the tail summary
    row), or nil when there is no projection / the plan targets no slots.
@@ -229,6 +242,24 @@
       (container:AddChild card))
     card))
 
+(fn build-chain-advice! [container vm]
+  "Head advisory card listing in-progress attunement chains and their next
+   actionable step (full progress lives in the Chains tab)."
+  (let [card (acegui.create! :InlineGroup)]
+    (when card
+      (card:SetTitle vm.headline)
+      (card:SetFullWidth true)
+      (card:SetLayout :List)
+      (each [_ line (ipairs vm.lines)]
+        (let [label (acegui.create! :Label)]
+          (when label
+            (label:SetText line)
+            (label:SetFullWidth true)
+            (acegui.themed-label! label :ink :body :body)
+            (card:AddChild label))))
+      (container:AddChild card))
+    card))
+
 (fn add-spacer! [container]
   "A thin full-width blank row, so the score-ordered cards breathe instead of
    stacking flush against each other (UI.md spacing rhythm)."
@@ -271,6 +302,12 @@
             advice (and input input.advice)
             ctx (and input input.ctx)
             n (length steps)]
+        ;; Head advisory: in-progress attunement chains, before the score-
+        ;; ordered cards (renders even when the plan itself is empty).
+        (let [cvm (M.chain-advice-view-model (and input input.chain-advice))]
+          (when cvm
+            (build-chain-advice! scroll cvm)
+            (add-spacer! scroll)))
         (if (= 0 n)
             (add-empty! scroll
                         (if ok? "Nothing left to chase this week."

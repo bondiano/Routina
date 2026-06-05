@@ -95,11 +95,12 @@ build\domain\route.lua
 # above); events is pure dispatch. ace (the AceAddon entry) loads LAST -- it
 # requires root and wires everything via the Ace3 libs loaded at the top.
 build\core\wow.lua
-# planner: gathers the live client (wow) into ctx.build's snapshot -> route
-# input for the Plan tab. Loads after wow + domain/ctx, before the UI tabs.
-build\core\planner.lua
 build\core\saved-vars.lua
 build\core\events.lua
+# planner: gathers the live client (wow) + the events chain-session into
+# ctx.build's snapshot -> route input for the Plan tab. Loads after wow +
+# events + domain/ctx, before the UI tabs.
+build\core\planner.lua
 build\ui\widgets\why-drawer.lua
 # chance-meter + lockout-timer: the two sanctioned custom CreateFrame widgets
 # (AceGUI lacks a proportional fill / a ticking countdown). After core\wow

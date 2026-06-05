@@ -156,6 +156,43 @@
                                    (let [r (ctx.build (snapshot {:quest-completed? #false
                                                                  :chain-progress {:karazhan (complete-progress :karazhan)}}))]
                                      (assert.is_nil (. r.advice :kara-key)))))))
+                 (describe :chain-advice
+                           (fn []
+                             (it "lists a started, incomplete chain with its next step"
+                                 (fn []
+                                   ;; kara step "30" (quest 9824) done -> the
+                                   ;; chain is mid-way; the frontier moves on
+                                   (let [started {:karazhan {:completed {:30 true}}}
+                                         r (ctx.build (snapshot {:chain-progress started}))
+                                         rows r.chain-advice]
+                                     (assert.are.equal 1 (length rows))
+                                     (let [row (. rows 1)]
+                                       (assert.are.equal :karazhan row.chain-id)
+                                       (assert.are.equal :Karazhan row.name)
+                                       (assert.is_truthy row.next-step-label)
+                                       (assert.is_true (> row.done 0))
+                                       (assert.is_true (< row.done row.total))
+                                       (assert.is_true (> row.est-minutes 0))))))
+                             (it "stays silent for unstarted, complete and absent progress"
+                                 (fn []
+                                   (let [none (ctx.build (snapshot {}))
+                                         empty (ctx.build (snapshot {:chain-progress {}}))
+                                         finished (ctx.build (snapshot {:chain-progress {:karazhan (complete-progress :karazhan)}}))]
+                                     (assert.are.same [] none.chain-advice)
+                                     (assert.are.same [] empty.chain-advice)
+                                     (assert.are.same [] finished.chain-advice))))
+                             (it "orders multiple chains closest-to-done first (deterministic)"
+                                 (fn []
+                                   ;; shadow-labyrinth has 3 steps, so one
+                                   ;; completed step (1/3) outranks karazhan's
+                                   ;; single step out of twelve
+                                   (let [progress {:karazhan {:completed {:30 true}}
+                                                   :shadow-labyrinth {:completed {:10 true}}}
+                                         r (ctx.build (snapshot {:chain-progress progress}))
+                                         rows r.chain-advice]
+                                     (assert.are.equal 2 (length rows))
+                                     (assert.is_true (>= (. rows 1 :fraction)
+                                                         (. rows 2 :fraction))))))))
                  (describe :reputations
                            (fn []
                              (it "resolves a tracked faction's standing"

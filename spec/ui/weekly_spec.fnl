@@ -99,3 +99,28 @@
                     (assert.is_truthy (string.find vm.detail "1 target slot" 1
                                                    true))
                     (assert.is_nil (string.find vm.detail :slots 1 true)))))))
+
+(describe :weekly-chain-advice-view-model
+          (fn []
+            (it "is nil for nil or empty advice"
+                (fn []
+                  (assert.is_nil (weekly.chain-advice-view-model nil))
+                  (assert.is_nil (weekly.chain-advice-view-model []))))
+            (it "renders one line per in-progress chain"
+                (fn []
+                  (let [vm (weekly.chain-advice-view-model [{:chain-id :karazhan
+                                                             :name :Karazhan
+                                                             :next-step-label "Quest - Deadwind Pass"
+                                                             :done 4
+                                                             :total 12
+                                                             :fraction 0.33
+                                                             :est-minutes 120}])]
+                    (assert.are.equal "Attunements in progress" vm.headline)
+                    (assert.are.equal 1 (length vm.lines))
+                    (let [line (. vm.lines 1)]
+                      (assert.is_truthy (string.find line :Karazhan 1 true))
+                      (assert.is_truthy (string.find line :4/12 1 true))
+                      (assert.is_truthy (string.find line
+                                                     "Quest - Deadwind Pass" 1
+                                                     true))
+                      (assert.is_truthy (string.find line "~120 min" 1 true))))))))

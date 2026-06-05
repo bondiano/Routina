@@ -258,6 +258,14 @@
   (set chain-session nil)
   nil)
 
+(lambda M.chain-progress []
+  "The live {chain-id -> ChainProgress} map for the planner snapshot (seeding
+   it from the store first if needed), or nil when no store is wired.
+   Domain:  (none)
+   Returns: {string -> ChainProgress} | nil -- the LIVE map; callers must
+            treat it as read-only (ctx.build only reads it)."
+  (ensure-chains))
+
 (lambda M.set-history-tracking! [?on]
   "Enable (or disable) cumulative luck-history recording. OFF by default
    (experimental): when on, the always-registered ENCOUNTER_END / CHAT_MSG_LOOT
