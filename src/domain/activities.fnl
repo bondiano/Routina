@@ -69,6 +69,16 @@
 ;; you show up). Attunement keys on the original raids are PLACEHOLDER slugs
 ;; (real key items / quest chains refined later); :ogrila-dailies is gated on a
 ;; reputation purely to exercise the :rep path.
+;;
+;; :entrance (Phase 9) is the CURATED instance-portal / hub location: a
+;; Classic-client uiMapID + map-fraction x/y. uiMapIDs verified against
+;; warcraft.wiki.gg/wiki/UiMapID (Classic section, 2026-06-06): Outland zones
+;; Hellfire 1944 / Zangarmarsh 1946 / SMV 1948 / Blade's Edge 1949 / Nagrand
+;; 1951 / Terokkar 1952 / Netherstorm 1953; old world Deadwind Pass 1430 /
+;; Tanaris 1446 / Feralas 1444 / Searing Gorge 1427 / EPL 1423. The x/y are
+;; curated approximations of the entrance (a pointer, not a survey) -- refine
+;; on the in-game smoke pass. This is the ONLY coordinate table outside
+;; generated data and user persistence (Phase 9 exit criterion).
 
 (local registry [{:id :karazhan
                   :name :Karazhan
@@ -76,6 +86,7 @@
                   :reset :weekly
                   :length-estimate 95
                   :group-size 10
+                  :entrance {:map-id 1430 :x 0.47 :y 0.75}
                   :requirements {:min-level 70 :attunement :kara-key}}
                  {:id :serpentshrine-cavern
                   :name "Serpentshrine Cavern"
@@ -83,6 +94,7 @@
                   :reset :weekly
                   :length-estimate 150
                   :group-size 25
+                  :entrance {:map-id 1946 :x 0.5 :y 0.41}
                   :requirements {:min-level 70 :attunement :ssc-attune}}
                  {:id :tempest-keep
                   :name "Tempest Keep: The Eye"
@@ -90,6 +102,7 @@
                   :reset :weekly
                   :length-estimate 135
                   :group-size 25
+                  :entrance {:map-id 1953 :x 0.74 :y 0.64}
                   :requirements {:min-level 70 :attunement :tk-attune}}
                  {:id :black-temple
                   :name "Black Temple"
@@ -97,6 +110,7 @@
                   :reset :weekly
                   :length-estimate 180
                   :group-size 25
+                  :entrance {:map-id 1948 :x 0.71 :y 0.46}
                   :requirements {:min-level 70 :attunement :bt-medallion}}
                  {:id :hyjal-summit
                   :name "Hyjal Summit"
@@ -104,6 +118,7 @@
                   :reset :weekly
                   :length-estimate 130
                   :group-size 25
+                  :entrance {:map-id 1446 :x 0.65 :y 0.5}
                   :requirements {:min-level 70 :attunement :hyjal-vials}}
                  {:id :heroic-mech
                   :name "Heroic Mechanar"
@@ -111,6 +126,7 @@
                   :reset :daily
                   :length-estimate 35
                   :group-size 5
+                  :entrance {:map-id 1953 :x 0.71 :y 0.7}
                   :requirements {:min-level 70
                                  :attunement :heroic-flamewrought}}
                  {:id :heroic-slabs
@@ -119,18 +135,21 @@
                   :reset :daily
                   :length-estimate 40
                   :group-size 5
+                  :entrance {:map-id 1952 :x 0.4 :y 0.65}
                   :requirements {:min-level 70 :attunement :heroic-auchindoun}}
                  {:id :skettis-daily
                   :name "Skettis Dailies"
                   :type :daily
                   :reset :daily
                   :length-estimate 10
+                  :entrance {:map-id 1952 :x 0.64 :y 0.66}
                   :requirements {:min-level 70}}
                  {:id :ogrila-dailies
                   :name "Ogri'la Dailies"
                   :type :rep-hub
                   :reset :daily
                   :length-estimate 20
+                  :entrance {:map-id 1949 :x 0.28 :y 0.57}
                   :requirements {:min-level 70
                                  :rep {:faction :ogrila :standing :neutral}}}
                  ;; 25-man raids (T4 / T5) and the level-60 Atiesh raid.
@@ -140,6 +159,7 @@
                   :reset :weekly
                   :length-estimate 45
                   :group-size 25
+                  :entrance {:map-id 1949 :x 0.68 :y 0.24}
                   :requirements {:min-level 70}}
                  {:id :magtheridons-lair
                   :name "Magtheridon's Lair"
@@ -147,6 +167,7 @@
                   :reset :weekly
                   :length-estimate 30
                   :group-size 25
+                  :entrance {:map-id 1944 :x 0.47 :y 0.53}
                   :requirements {:min-level 70}}
                  {:id :naxxramas
                   :name :Naxxramas
@@ -154,6 +175,7 @@
                   :reset :weekly
                   :length-estimate 120
                   :group-size 40
+                  :entrance {:map-id 1423 :x 0.39 :y 0.26}
                   :requirements {:min-level 60}}
                  ;; Outdoor world bosses (weekly-ish respawn; modelled as a weekly clear).
                  {:id :shadowmoon-valley
@@ -162,6 +184,7 @@
                   :reset :weekly
                   :length-estimate 5
                   :group-size 25
+                  :entrance {:map-id 1948 :x 0.66 :y 0.45}
                   :requirements {:min-level 70}}
                  {:id :hellfire-peninsula
                   :name "Doom Lord Kazzak"
@@ -169,6 +192,7 @@
                   :reset :weekly
                   :length-estimate 5
                   :group-size 25
+                  :entrance {:map-id 1944 :x 0.58 :y 0.1}
                   :requirements {:min-level 70}}
                  ;; Heroic 5-mans that award tracked BiS drops (daily reset).
                  {:id :the-slave-pens
@@ -177,6 +201,7 @@
                   :reset :daily
                   :length-estimate 30
                   :group-size 5
+                  :entrance {:map-id 1946 :x 0.49 :y 0.36}
                   :requirements {:min-level 70}}
                  {:id :the-shattered-halls
                   :name "Heroic Shattered Halls"
@@ -184,6 +209,7 @@
                   :reset :daily
                   :length-estimate 45
                   :group-size 5
+                  :entrance {:map-id 1944 :x 0.48 :y 0.52}
                   :requirements {:min-level 70}}
                  {:id :the-blood-furnace
                   :name "Heroic Blood Furnace"
@@ -191,6 +217,7 @@
                   :reset :daily
                   :length-estimate 30
                   :group-size 5
+                  :entrance {:map-id 1944 :x 0.46 :y 0.52}
                   :requirements {:min-level 70}}
                  {:id :shadow-labyrinth
                   :name "Heroic Shadow Labyrinth"
@@ -198,6 +225,7 @@
                   :reset :daily
                   :length-estimate 40
                   :group-size 5
+                  :entrance {:map-id 1952 :x 0.4 :y 0.72}
                   :requirements {:min-level 70}}
                  {:id :mana-tombs
                   :name "Heroic Mana-Tombs"
@@ -205,6 +233,7 @@
                   :reset :daily
                   :length-estimate 30
                   :group-size 5
+                  :entrance {:map-id 1952 :x 0.4 :y 0.58}
                   :requirements {:min-level 70}}
                  ;; Level-60 dungeons with a lingering pre-raid / quest-chain BiS item.
                  {:id :dire-maul
@@ -213,6 +242,7 @@
                   :reset :none
                   :length-estimate 40
                   :group-size 5
+                  :entrance {:map-id 1444 :x 0.59 :y 0.45}
                   :requirements {:min-level 58}}
                  {:id :blackrock-depths
                   :name "Blackrock Depths"
@@ -220,6 +250,7 @@
                   :reset :none
                   :length-estimate 50
                   :group-size 5
+                  :entrance {:map-id 1427 :x 0.35 :y 0.84}
                   :requirements {:min-level 52}}
                  ;; Token sinks: the Badge of Justice vendor and quest-reward gear. No
                  ;; lockout -- :none reset -- and their drops carry base-drop-p 1, so the

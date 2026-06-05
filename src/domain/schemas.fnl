@@ -222,6 +222,11 @@
       :length-estimate :integer
       :group-size [:optional :integer]
       :goal-id [:optional :string]
+      ;; :entrance (Phase 9) -- where the activity starts: the instance portal
+      ;; / hub location as a Classic-client uiMapID + map-fraction x/y in
+      ;; [0,1] (the ChainStep :coord shape). Curated in activities.fnl; absent
+      ;; for location-free entries (vendor, quest) and player customs.
+      :entrance [:optional {:map-id :integer :x :number :y :number}]
       :requirements [:ref :ActivityRequirements]})
 
 (set M.ActivityRequirements

@@ -55,7 +55,22 @@
                         (it "hands back a fresh sequence callers can't share"
                             (fn []
                               (assert.is_false (rawequal (activities.all)
-                                                         (activities.all)))))))
+                                                         (activities.all)))))
+                        (it "carries a sane curated entrance per located entry (Phase 9)"
+                            (fn []
+                              (each [_ a (ipairs (activities.all))]
+                                ;; location-free token sinks carry none; every
+                                ;; instanced / outdoor entry points somewhere
+                                (if (or (= a.id :vendor) (= a.id :quest))
+                                    (assert.is_nil a.entrance)
+                                    (do
+                                      (assert.is_not_nil a.entrance
+                                                         (tostring a.id))
+                                      (assert.is_true (> a.entrance.map-id 0))
+                                      (assert.is_true (and (>= a.entrance.x 0)
+                                                           (<= a.entrance.x 1)))
+                                      (assert.is_true (and (>= a.entrance.y 0)
+                                                           (<= a.entrance.y 1))))))))))
             (describe ":by-id"
                       (fn []
                         (it "returns the matching ActivityDef"

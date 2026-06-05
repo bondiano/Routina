@@ -13,6 +13,7 @@
 (local vm (or Routina.tab-weekly-vm (require :src.ui.tabs.weekly-vm)))
 (local plan-edits (or Routina.plan-edits (require :src.domain.plan-edits)))
 (local activities (or Routina.activities (require :src.domain.activities)))
+(local tomtom (or Routina.tomtom (require :src.core.tomtom)))
 
 (local M {})
 
@@ -46,8 +47,10 @@
 
 (lambda M.build-actions! [card step pinned?]
   "Append the pin/skip/move action bar to one plan card (SimpleGroup in Flow
-   layout): Pin or Unpin + ^ / v reorder while pinned, and Skip.
-   Domain:  card : an AceGUI container ; step : a plan step (has :id)
+   layout): Pin or Unpin + ^ / v reorder while pinned, Skip, and -- only with
+   TomTom loaded and a curated entrance for this activity -- a Map waypoint
+   button (Phase 9; the affordance is HIDDEN without TomTom, never disabled).
+   Domain:  card : an AceGUI container ; step : a plan step (has :id :name)
             pinned? : boolean -- the card view-model's :pinned?
    Returns: the bar widget | nil (headless)."
   (let [bar (acegui.create! :SimpleGroup)]
@@ -65,6 +68,9 @@
                                        step.id)))
           (add-action! bar :Pin 80 #(apply-edit! plan-edits.pin step.id)))
       (add-action! bar :Skip 80 #(apply-edit! plan-edits.skip step.id))
+      (let [entrance (?. (activities.by-id step.id) :entrance)]
+        (when (and (tomtom.available?) entrance)
+          (add-action! bar :Map 60 #(tomtom.set-waypoint! entrance step.name))))
       (card:AddChild bar))
     bar))
 

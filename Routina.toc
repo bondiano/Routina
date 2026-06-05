@@ -7,7 +7,7 @@
 ## IconTexture: Interface\Icons\INV_Misc_Map_01
 ## X-Fennel-Version: 1.6.1
 ## X-License: GPL-3.0
-## OptionalDeps: TradeSkillMaster, Auctionator
+## OptionalDeps: TradeSkillMaster, Auctionator, TomTom
 
 # Ace3 framework. NOT committed -- fetched into Libs/ by `task libs` (or the
 # BigWigs packager at release). Ace3.xml embeds CallbackHandler-1.0, so no
@@ -121,6 +121,9 @@ build\core\saved-vars.lua
 # prices: read-only soft-dep facade over TSM / Auctionator (OptionalDeps
 # above); vendor fallback via GetItemInfo. Headless-safe -- no hard deps.
 build\core\prices.lua
+# tomtom: waypoint soft-dep facade over TomTom (OptionalDeps above); silent
+# no-op without it (Phase 9). The only module touching the TomTom API.
+build\core\tomtom.lua
 build\core\events.lua
 # planner: gathers the live client (wow) + the events chain-session into
 # ctx.build's snapshot -> route input for the Plan tab. Loads after wow +
