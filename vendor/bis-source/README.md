@@ -22,6 +22,8 @@ same Warkdev addon's `modules/manager.lua` (`BIS_dataSpecs` / `BIS_specsFileToSp
 it is encoded directly in `scripts/import-bis.lua` because that file pulls in WoW
 API globals and cannot be `dofile`-d standalone.
 
-Because Routina redistributes a work derived from the GPL-2.0 Warkdev data, the
-Routina project is licensed GPL-2.0 (see root `LICENSE`). `item-names.lua` is a
+Routina redistributes a work derived from the GPL-2.0 Warkdev data; the
+Routina project itself is licensed GPL-3.0 (see root `LICENSE`, relicensed
+from GPL-2.0 on 2026-06-05 -- the compatibility risk of a GPL-2.0-only
+upstream reading is noted and accepted in `CREDITS.md`). `item-names.lua` is a
 factual id→name map derived from the MIT-licensed nexus-devs dataset.

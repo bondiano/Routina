@@ -27,8 +27,11 @@ Routina's Best-in-Slot catalog (`src/domain/bis/*.fnl`, aggregated by
   [Warkdev / BestInSlotTBCClassic](https://github.com/Warkdev/BestInSlotTBCClassic)
   (`data/bis_data.lua`, `data/items.lua`, `data/class.lua`,
   `data/inventoryslot.lua`; spec mapping transcribed from `modules/manager.lua`).
-  That project is licensed **GPL-2.0**; because Routina redistributes a work
-  derived from it, **Routina is itself licensed GPL-2.0** (see root `LICENSE`).
+  That project is licensed **GPL-2.0**; Routina redistributes a work derived
+  from it under **GPL-3.0** (see root `LICENSE`; relicensed from GPL-2.0 on
+  2026-06-05). *Known, accepted risk:* the upstream grant does not state
+  "or any later version", so a strict GPL-2.0-only reading would conflict
+  with the GPL-3.0 aggregate -- the owner accepted this risk explicitly.
   Its license text is preserved verbatim at `vendor/bis-source/LICENSE.warkdev.txt`.
   Gratitude to Warkdev and contributors.
 - **Item names** (id → name) and **drop rates + sources** (the `drop-table`:
