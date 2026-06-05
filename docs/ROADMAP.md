@@ -59,7 +59,7 @@
 | Competition model | **Done** -- `competition.fnl` by-role model (PRD OQ-3 resolved): catalog-derived contending roles x raid composition, scaled by `ActivityDef :group-size`; "Raid composition" options sub-panel |
 | Localization scaffold (`Locales/`) | Empty (`.gitkeep` only) |
 | Release pipeline (BigWigs packager) | Configured, no tag yet |
-| Quest / chain engine | **Not started** (Phase 6) |
+| Quest / chain engine | **Phase 6 CODE-COMPLETE (pending in-game smoke)** -- schemas + generated Attune data (23 TBC chains, 415 steps) + pure `chains.fnl` + QUEST_TURNED_IN wiring + derived attunement gates + plan advisory + Chains tab; relicensed GPL-3.0 |
 | Goal targets (badges / gold / rep) | **Not started** (Phase 7); badges appear only in unresolved OQ-6 |
 | Player-authored plans | **Not started** (Phase 8) |
 | Waypoints / TomTom | **Not started** (Phase 9); no coordinate model in domain yet |
@@ -491,7 +491,13 @@ and TomTom waypoint integration. Decisions locked with the owner:
 §6.8-6.11, UX §9 (four tabs), and OQ-10..14 promoted into §13 (OQ-10 and
 OQ-13-for-chains resolved on promotion).
 
-## Phase 6 -- Quest & chain engine
+## Phase 6 -- Quest & chain engine (CODE-COMPLETE, pending in-game smoke)
+
+> All seven steps below are merged and green under `task lint && task test`
+> (423 specs; `task profile` median ~1.5 ms, still inside the M5 budget).
+> Flips to DONE after the live smoke in the exit criteria (turn in a tracked
+> quest -> chain advances, plan re-renders, no Lua errors) passes on a TBC
+> Anniversary client.
 
 Goal: chains -- attunements first -- are first-class citizens: tracked step
 by step from the quest log, surfaced in the weekly plan, and feeding the
