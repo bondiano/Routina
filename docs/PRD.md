@@ -350,8 +350,11 @@ These are unresolved and need an answer before the relevant
   (`task vendor-chain-source && task import-chains`). Attune ships **no
   license**; the owner explicitly accepted the redistribution risk, and
   Routina relicensed to **GPL-3.0** the same day (see `CREDITS.md` for both
-  risk notes). Attune data carries no coordinates -- chain-step waypoints
-  (§6.11) need a separate source, deferred to ROADMAP Phase 9.
+  risk notes). Quest-step titles are derived from the
+  [Questie](https://github.com/Questie/Questie) TBC quest DB (also
+  unlicensed, same accepted risk; only factual id → Blizzard-title pairs).
+  Attune data carries no coordinates -- chain-step waypoints (§6.11) need a
+  separate source, deferred to ROADMAP Phase 9.
 
 - **OQ-11 -- multi-goal arbitration.** Several active goals (§6.9) compete
   for the same hours: priority weights, deadline-aware ordering, or

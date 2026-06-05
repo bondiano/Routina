@@ -177,14 +177,18 @@ tasks:
       - echo "now run 'task fmt && task build && task test' to finish"
 
   vendor-chain-source:
-    desc: Re-download the pinned Attune chain data into vendor/chain-source/
+    desc: Re-download the pinned Attune chain data + derive quest names into vendor/chain-source/
     vars:
       ATTUNE_SHA: 6db364737b054be2b6bbf432a7420f62e2c84928
       ATTUNE: 'https://raw.githubusercontent.com/hippuli/Attune/{{.ATTUNE_SHA}}'
+      QUESTIE_SHA: eeb96e57e42cc142df86dcd8833c95b1d77abad1
+      QUESTIE: 'https://raw.githubusercontent.com/Questie/Questie/{{.QUESTIE_SHA}}'
     cmds:
       - mkdir -p vendor/chain-source
       - curl -fsSL "{{.ATTUNE}}/AttuneData.lua" -o vendor/chain-source/AttuneData.lua
-      - echo "vendored Attune chain source @ {{.ATTUNE_SHA}} (run 'task import-chains' next)"
+      - curl -fsSL "{{.QUESTIE}}/Database/TBC/tbcQuestDB.lua" -o /tmp/routina-questie-quests.lua
+      - luajit scripts/vendor-chain-names.lua /tmp/routina-questie-quests.lua
+      - echo "vendored Attune @ {{.ATTUNE_SHA}} + Questie quest names @ {{.QUESTIE_SHA}} (run 'task import-chains' next)"
 
   import-chains:
     desc: Regenerate src/domain/chains/data.fnl from vendor/chain-source/AttuneData.lua

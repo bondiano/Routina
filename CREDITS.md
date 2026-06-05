@@ -55,10 +55,14 @@ in `vendor/chain-source/` (see its `README.md`).
 
 - The Attune addon is by **Cixi@Remulos** -- gratitude for years of
   meticulously transcribed attunement chains.
-- Attune publishes **no license**; a strict reading makes redistribution
-  all-rights-reserved. The owner explicitly accepted this risk on 2026-06-05
-  (PRD OQ-10). If the upstream author objects, the data will be removed and
-  re-curated by hand.
+- **Quest titles** (quest-id → name, `vendor/chain-source/quest-names.lua`)
+  are derived from the [Questie](https://github.com/Questie/Questie) TBC
+  quest database -- gratitude to the Questie team. Only the factual
+  id → Blizzard-title pairs are extracted.
+- Neither Attune nor Questie publishes **a license**; a strict reading makes
+  redistribution all-rights-reserved. The owner explicitly accepted this risk
+  on 2026-06-05 (PRD OQ-10). If an upstream author objects, the derived data
+  will be removed and re-curated by hand.
 
 ## Vendored libraries
 

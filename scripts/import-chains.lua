@@ -34,6 +34,7 @@ end
 AttuneLang = setmetatable({}, {__index = function(_, k) return k end})
 Attune_Data = {}
 dofile(SRC .. "/AttuneData.lua")
+dofile(SRC .. "/quest-names.lua") -- CHAIN_QUEST_NAMES (Questie-derived)
 
 local TBC = "The Burning Crusade"
 
@@ -78,7 +79,7 @@ end
 -- Gather TBC attunes (source order preserved for stable review diffs).
 local chains, order = {}, {}
 local counts = {steps = 0, spacers = 0, version_dropped = 0,
-                duplicate_ids = 0, pruned_follows = 0}
+                duplicate_ids = 0, pruned_follows = 0, unnamed_quests = 0}
 for _, a in ipairs(Attune_Data.attunes) do
   if a.EXPAC == TBC then
     local cid = chain_id(a)
@@ -105,13 +106,23 @@ for _, s in ipairs(Attune_Data.steps) do
       c.seen[s.ID] = true
       local kw = assert(TYPE_KW[s.TYPE], "unknown step TYPE: " .. tostring(s.TYPE))
       local follows, mode = parse_follows(s.FOLLOWS)
-      local label = s.STEP
-      if not label or label == "" then
-        label = s.TYPE .. (s.LOCATION ~= "" and (" - " .. s.LOCATION) or "")
-      end
-      if s.COUNT then label = label .. " x" .. s.COUNT end
       local quest_id = QUESTISH[kw] and tonumber(s.ID_WOWHEAD) or nil
       if quest_id == 0 then quest_id = nil end
+      -- Label precedence: Attune's own STEP text > the Questie-derived quest
+      -- title (prefixed for pickup/turnin so the verb survives) > the generic
+      -- "<Type> - <Location>" fallback.
+      local label = s.STEP
+      if not label or label == "" then
+        local quest_name = quest_id and CHAIN_QUEST_NAMES[quest_id]
+        if quest_name then
+          label = (kw == "pickup" and "Pick up: " or
+                   kw == "turnin" and "Turn in: " or "") .. quest_name
+        else
+          if quest_id then counts.unnamed_quests = counts.unnamed_quests + 1 end
+          label = s.TYPE .. (s.LOCATION ~= "" and (" - " .. s.LOCATION) or "")
+        end
+      end
+      if s.COUNT then label = label .. " x" .. s.COUNT end
       counts.steps = counts.steps + 1
       c.steps[#c.steps + 1] = {
         id = s.ID, type = kw, label = label, quest_id = quest_id,
@@ -198,6 +209,6 @@ f:write(body)
 f:close()
 
 print(string.format(
-  "chains: %d chains, %d steps  skipped: spacers=%d out-of-version=%d dup-ids=%d  pruned-follows=%d",
+  "chains: %d chains, %d steps  skipped: spacers=%d out-of-version=%d dup-ids=%d  pruned-follows=%d unnamed-quests=%d",
   #order, counts.steps, counts.spacers, counts.version_dropped,
-  counts.duplicate_ids, counts.pruned_follows))
+  counts.duplicate_ids, counts.pruned_follows, counts.unnamed_quests))

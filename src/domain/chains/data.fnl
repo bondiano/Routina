@@ -36,28 +36,28 @@
                                              :follows-mode :all}
                                             {:id :40
                                              :type :quest
-                                             :label "Quest - Hellfire Peninsula"
+                                             :label "Entry Into the Citadel"
                                              :quest-id 10755
                                              :stage 40
                                              :follows [:30]
                                              :follows-mode :all}
                                             {:id :50
                                              :type :quest
-                                             :label "Quest - Hellfire Peninsula"
+                                             :label "Grand Master Rohok"
                                              :quest-id 10756
                                              :stage 50
                                              :follows [:40]
                                              :follows-mode :all}
                                             {:id :60
                                              :type :quest
-                                             :label "Quest - Hellfire Peninsula"
+                                             :label "Rohok's Request"
                                              :quest-id 10757
                                              :stage 60
                                              :follows [:50]
                                              :follows-mode :all}
                                             {:id :70
                                              :type :pickup
-                                             :label "Pick Up - Hellfire Peninsula"
+                                             :label "Pick up: Hotter than Hell"
                                              :quest-id 10758
                                              :stage 70
                                              :follows [:60]
@@ -70,7 +70,7 @@
                                              :follows-mode :all}
                                             {:id :85
                                              :type :turnin
-                                             :label "Turn In - Hellfire Peninsula"
+                                             :label "Turn in: Hotter than Hell"
                                              :quest-id 10758
                                              :stage 85
                                              :follows [:80]
@@ -106,28 +106,28 @@
                                                 :follows-mode :all}
                                                {:id :40
                                                 :type :quest
-                                                :label "Quest - Hellfire Peninsula"
+                                                :label "Entry Into the Citadel"
                                                 :quest-id 10754
                                                 :stage 40
                                                 :follows [:30]
                                                 :follows-mode :all}
                                                {:id :50
                                                 :type :quest
-                                                :label "Quest - Hellfire Peninsula"
+                                                :label "Grand Master Dumphry"
                                                 :quest-id 10762
                                                 :stage 50
                                                 :follows [:40]
                                                 :follows-mode :all}
                                                {:id :60
                                                 :type :quest
-                                                :label "Quest - Hellfire Peninsula"
+                                                :label "Dumphry's Request"
                                                 :quest-id 10763
                                                 :stage 60
                                                 :follows [:50]
                                                 :follows-mode :all}
                                                {:id :70
                                                 :type :pickup
-                                                :label "Pick Up - Hellfire Peninsula"
+                                                :label "Pick up: Hotter than Hell"
                                                 :quest-id 10764
                                                 :stage 70
                                                 :follows [:60]
@@ -140,7 +140,7 @@
                                                 :follows-mode :all}
                                                {:id :85
                                                 :type :turnin
-                                                :label "Turn In - Hellfire Peninsula"
+                                                :label "Turn in: Hotter than Hell"
                                                 :quest-id 10764
                                                 :stage 85
                                                 :follows [:80]
@@ -170,21 +170,21 @@
                                 :follows-mode :all}
                                {:id :22
                                 :type :quest
-                                :label "Quest - Netherstorm"
+                                :label "Consortium Crystal Collection"
                                 :quest-id 10265
                                 :stage 22
                                 :follows [:20]
                                 :follows-mode :all}
                                {:id :23
                                 :type :quest
-                                :label "Quest - Netherstorm"
+                                :label "A Heap of Ethereals"
                                 :quest-id 10262
                                 :stage 23
                                 :follows [:22]
                                 :follows-mode :all}
                                {:id :25
                                 :type :pickup
-                                :label "Pick Up - Netherstorm"
+                                :label "Pick up: Warp-Raider Nesaad"
                                 :quest-id 10205
                                 :stage 25
                                 :follows [:23]
@@ -197,56 +197,56 @@
                                 :follows-mode :all}
                                {:id :35
                                 :type :turnin
-                                :label "Turn In - Netherstorm"
+                                :label "Turn in: Warp-Raider Nesaad"
                                 :quest-id 10205
                                 :stage 35
                                 :follows [:30]
                                 :follows-mode :all}
                                {:id :40
                                 :type :quest
-                                :label "Quest - Netherstorm"
+                                :label "Request for Assistance"
                                 :quest-id 10266
                                 :stage 40
                                 :follows [:35]
                                 :follows-mode :all}
                                {:id :50
                                 :type :quest
-                                :label "Quest - Netherstorm"
+                                :label "Rightful Repossession"
                                 :quest-id 10267
                                 :stage 50
                                 :follows [:40]
                                 :follows-mode :all}
                                {:id :60
                                 :type :quest
-                                :label "Quest - Netherstorm"
+                                :label "An Audience with the Prince"
                                 :quest-id 10268
                                 :stage 60
                                 :follows [:50]
                                 :follows-mode :all}
                                {:id :70
                                 :type :quest
-                                :label "Quest - Netherstorm"
+                                :label "Triangulation Point One"
                                 :quest-id 10269
                                 :stage 70
                                 :follows [:60]
                                 :follows-mode :all}
                                {:id :80
                                 :type :quest
-                                :label "Quest - Netherstorm"
+                                :label "Triangulation Point Two"
                                 :quest-id 10275
                                 :stage 80
                                 :follows [:70]
                                 :follows-mode :all}
                                {:id :90
                                 :type :quest
-                                :label "Quest - Netherstorm"
+                                :label "Full Triangle"
                                 :quest-id 10276
                                 :stage 90
                                 :follows [:80]
                                 :follows-mode :all}
                                {:id :100
                                 :type :quest
-                                :label "Quest - Netherstorm"
+                                :label "Special Delivery to Shattrath City"
                                 :quest-id 10280
                                 :stage 100
                                 :follows [:90]
@@ -259,7 +259,7 @@
                                 :follows-mode :all}
                                {:id :110
                                 :type :pickup
-                                :label "Pick Up - Shattrath City"
+                                :label "Pick up: How to Break Into the Arcatraz"
                                 :quest-id 10704
                                 :stage 110
                                 :follows [:105]
@@ -290,7 +290,7 @@
                                 :follows-mode :all}
                                {:id :160
                                 :type :turnin
-                                :label "Turn In - Shattrath City"
+                                :label "Turn in: How to Break Into the Arcatraz"
                                 :quest-id 10704
                                 :stage 140
                                 :follows [:130 :150]
@@ -349,7 +349,7 @@
                                     :follows-mode :all}
                                    {:id :30
                                     :type :quest
-                                    :label "Quest - Caverns Of Time"
+                                    :label "To The Master's Lair"
                                     :quest-id 10279
                                     :stage 30
                                     :follows [:20]
@@ -362,28 +362,28 @@
                                     :follows-mode :all}
                                    {:id :40
                                     :type :quest
-                                    :label "Quest - Caverns Of Time"
+                                    :label "The Caverns of Time"
                                     :quest-id 10277
                                     :stage 40
                                     :follows [:35]
                                     :follows-mode :all}
                                    {:id :50
                                     :type :quest
-                                    :label "Quest - Caverns Of Time"
+                                    :label "Old Hillsbrad"
                                     :quest-id 10282
                                     :stage 50
                                     :follows [:40]
                                     :follows-mode :all}
                                    {:id :60
                                     :type :quest
-                                    :label "Quest - Caverns Of Time"
+                                    :label "Taretha's Diversion"
                                     :quest-id 10283
                                     :stage 60
                                     :follows [:50]
                                     :follows-mode :all}
                                    {:id :70
                                     :type :pickup
-                                    :label "Pick Up - Caverns Of Time"
+                                    :label "Pick up: Escape from Durnholde"
                                     :quest-id 10284
                                     :stage 70
                                     :follows [:60]
@@ -396,14 +396,14 @@
                                     :follows-mode :all}
                                    {:id :85
                                     :type :turnin
-                                    :label "Turn In - Caverns Of Time"
+                                    :label "Turn in: Escape from Durnholde"
                                     :quest-id 10284
                                     :stage 85
                                     :follows [:80]
                                     :follows-mode :all}
                                    {:id :90
                                     :type :quest
-                                    :label "Quest - Old Hillsbrad"
+                                    :label "Return to Andormu"
                                     :quest-id 10285
                                     :stage 90
                                     :follows [:85]
@@ -607,35 +607,35 @@
                             :follows-mode :all}
                            {:id :30
                             :type :quest
-                            :label "Quest - Deadwind Pass"
+                            :label "Arcane Disturbances"
                             :quest-id 9824
                             :stage 30
                             :follows [:20]
                             :follows-mode :all}
                            {:id :40
                             :type :quest
-                            :label "Quest - Deadwind Pass"
+                            :label "Restless Activity"
                             :quest-id 9825
                             :stage 30
                             :follows [:20]
                             :follows-mode :all}
                            {:id :50
                             :type :quest
-                            :label "Quest - Deadwind Pass"
+                            :label "Contact from Dalaran"
                             :quest-id 9826
                             :stage 50
                             :follows [:30 :40]
                             :follows-mode :all}
                            {:id :60
                             :type :quest
-                            :label "Quest - Alterac Mountains"
+                            :label :Khadgar
                             :quest-id 9829
                             :stage 60
                             :follows [:50]
                             :follows-mode :all}
                            {:id :70
                             :type :pickup
-                            :label "Pick Up - Shattrath City"
+                            :label "Pick up: Entry Into Karazhan"
                             :quest-id 9831
                             :stage 70
                             :follows [:60]
@@ -660,14 +660,14 @@
                             :follows-mode :all}
                            {:id :91
                             :type :turnin
-                            :label "Turn In - Shattrath City"
+                            :label "Turn in: Entry Into Karazhan"
                             :quest-id 9831
                             :stage 91
                             :follows [:90]
                             :follows-mode :all}
                            {:id :95
                             :type :pickup
-                            :label "Pick Up - Shattrath City"
+                            :label "Pick up: The Second and Third Fragments"
                             :quest-id 9832
                             :stage 95
                             :follows [:91]
@@ -704,14 +704,14 @@
                             :follows-mode :all}
                            {:id :135
                             :type :turnin
-                            :label "Turn In - Shattrath City"
+                            :label "Turn in: The Second and Third Fragments"
                             :quest-id 9832
                             :stage 115
                             :follows [:110 :130]
                             :follows-mode :all}
                            {:id :140
                             :type :pickup
-                            :label "Pick Up - Shattrath City"
+                            :label "Pick up: The Master's Touch"
                             :quest-id 9836
                             :stage 120
                             :follows [:135]
@@ -730,14 +730,14 @@
                             :follows-mode :all}
                            {:id :160
                             :type :turnin
-                            :label "Turn In - Shattrath City"
+                            :label "Turn in: The Master's Touch"
                             :quest-id 9836
                             :stage 150
                             :follows [:150]
                             :follows-mode :all}
                            {:id :170
                             :type :quest
-                            :label "Quest - The Black Morass"
+                            :label "Return to Khadgar"
                             :quest-id 9837
                             :stage 160
                             :follows [:160]
@@ -750,7 +750,7 @@
                             :follows-mode :all}
                            {:id :185
                             :type :quest
-                            :label "Quest - Deadwind Pass"
+                            :label "The Violet Eye"
                             :quest-id 9838
                             :stage 175
                             :follows [:180]
@@ -792,28 +792,28 @@
                                    :follows-mode :all}
                                   {:id :40
                                    :type :quest
-                                   :label "Quest - Karazhan"
+                                   :label "Medivh's Journal"
                                    :quest-id 9630
                                    :stage 30
                                    :follows [:30]
                                    :follows-mode :all}
                                   {:id :50
                                    :type :quest
-                                   :label "Quest - Karazhan"
+                                   :label "In Good Hands"
                                    :quest-id 9638
                                    :stage 40
                                    :follows [:40]
                                    :follows-mode :all}
                                   {:id :60
                                    :type :quest
-                                   :label "Quest - Karazhan"
+                                   :label :Kamsis
                                    :quest-id 9639
                                    :stage 50
                                    :follows [:50]
                                    :follows-mode :all}
                                   {:id :70
                                    :type :pickup
-                                   :label "Pick Up - Karazhan"
+                                   :label "Pick up: The Shade of Aran"
                                    :quest-id 9640
                                    :stage 60
                                    :follows [:60]
@@ -832,35 +832,35 @@
                                    :follows-mode :all}
                                   {:id :100
                                    :type :turnin
-                                   :label "Turn In - Karazhan"
+                                   :label "Turn in: The Shade of Aran"
                                    :quest-id 9640
                                    :stage 90
                                    :follows [:90]
                                    :follows-mode :all}
                                   {:id :110
                                    :type :quest
-                                   :label "Quest - Karazhan"
+                                   :label "The Master's Terrace"
                                    :quest-id 9645
                                    :stage 100
                                    :follows [:100]
                                    :follows-mode :all}
                                   {:id :120
                                    :type :quest
-                                   :label "Quest - Deadwind Pass"
+                                   :label "Digging Up the Past"
                                    :quest-id 9680
                                    :stage 110
                                    :follows [:110]
                                    :follows-mode :all}
                                   {:id :130
                                    :type :quest
-                                   :label "Quest - Deadwind Pass"
+                                   :label "A Colleague's Aid"
                                    :quest-id 9631
                                    :stage 120
                                    :follows [:120]
                                    :follows-mode :all}
                                   {:id :140
                                    :type :pickup
-                                   :label "Pick Up - Netherstorm"
+                                   :label "Pick up: Kalynna's Request"
                                    :quest-id 9637
                                    :stage 140
                                    :follows [:130]
@@ -909,7 +909,7 @@
                                    :follows-mode :all}
                                   {:id :220
                                    :type :turnin
-                                   :label "Turn In - Netherstorm"
+                                   :label "Turn in: Kalynna's Request"
                                    :quest-id 9637
                                    :stage 180
                                    :follows [:200 :210]
@@ -964,28 +964,28 @@
                                       :follows-mode :all}
                                      {:id :40
                                       :type :quest
-                                      :label "Quest - Karazhan"
+                                      :label "Medivh's Journal"
                                       :quest-id 9630
                                       :stage 30
                                       :follows [:30]
                                       :follows-mode :all}
                                      {:id :50
                                       :type :quest
-                                      :label "Quest - Karazhan"
+                                      :label "In Good Hands"
                                       :quest-id 9638
                                       :stage 40
                                       :follows [:40]
                                       :follows-mode :all}
                                      {:id :60
                                       :type :quest
-                                      :label "Quest - Karazhan"
+                                      :label :Kamsis
                                       :quest-id 9639
                                       :stage 50
                                       :follows [:50]
                                       :follows-mode :all}
                                      {:id :70
                                       :type :pickup
-                                      :label "Pick Up - Karazhan"
+                                      :label "Pick up: The Shade of Aran"
                                       :quest-id 9640
                                       :stage 60
                                       :follows [:60]
@@ -1004,35 +1004,35 @@
                                       :follows-mode :all}
                                      {:id :100
                                       :type :turnin
-                                      :label "Turn In - Karazhan"
+                                      :label "Turn in: The Shade of Aran"
                                       :quest-id 9640
                                       :stage 90
                                       :follows [:90]
                                       :follows-mode :all}
                                      {:id :110
                                       :type :quest
-                                      :label "Quest - Karazhan"
+                                      :label "The Master's Terrace"
                                       :quest-id 9645
                                       :stage 100
                                       :follows [:100]
                                       :follows-mode :all}
                                      {:id :120
                                       :type :quest
-                                      :label "Quest - Deadwind Pass"
+                                      :label "Digging Up the Past"
                                       :quest-id 9680
                                       :stage 110
                                       :follows [:110]
                                       :follows-mode :all}
                                      {:id :130
                                       :type :quest
-                                      :label "Quest - Deadwind Pass"
+                                      :label "A Colleague's Aid"
                                       :quest-id 9631
                                       :stage 120
                                       :follows [:120]
                                       :follows-mode :all}
                                      {:id :140
                                       :type :pickup
-                                      :label "Pick Up - Netherstorm"
+                                      :label "Pick up: Kalynna's Request"
                                       :quest-id 9637
                                       :stage 140
                                       :follows [:130]
@@ -1081,7 +1081,7 @@
                                       :follows-mode :all}
                                      {:id :220
                                       :type :turnin
-                                      :label "Turn In - Netherstorm"
+                                      :label "Turn in: Kalynna's Request"
                                       :quest-id 9637
                                       :stage 180
                                       :follows [:200 :210]
@@ -1130,7 +1130,7 @@
                                         :follows-mode :all}
                                        {:id :50
                                         :type :pickup
-                                        :label "Pick Up - HEROIC Slave Pens"
+                                        :label "Pick up: The Cudgel of Kar'desh"
                                         :quest-id 10901
                                         :stage 40
                                         :follows [:40]
@@ -1167,7 +1167,7 @@
                                         :follows-mode :all}
                                        {:id :95
                                         :type :turnin
-                                        :label "Turn In - HEROIC Slave Pens"
+                                        :label "Turn in: The Cudgel of Kar'desh"
                                         :quest-id 10901
                                         :stage 70
                                         :follows [:80 :90]
@@ -1197,35 +1197,35 @@
                                  :follows-mode :all}
                                 {:id :30
                                  :type :quest
-                                 :label "Quest - Shadowmoon Valley"
+                                 :label "The Hand of Gul'dan"
                                  :quest-id 10681
                                  :stage 30
                                  :follows [:20]
                                  :follows-mode :all}
                                 {:id :40
                                  :type :quest
-                                 :label "Quest - Shadowmoon Valley"
+                                 :label "Enraged Spirits of Fire and Earth"
                                  :quest-id 10458
                                  :stage 40
                                  :follows [:30]
                                  :follows-mode :all}
                                 {:id :50
                                  :type :quest
-                                 :label "Quest - Shadowmoon Valley"
+                                 :label "Enraged Spirits of Water"
                                  :quest-id 10480
                                  :stage 50
                                  :follows [:40]
                                  :follows-mode :all}
                                 {:id :60
                                  :type :quest
-                                 :label "Quest - Shadowmoon Valley"
+                                 :label "Enraged Spirits of Air"
                                  :quest-id 10481
                                  :stage 60
                                  :follows [:50]
                                  :follows-mode :all}
                                 {:id :70
                                  :type :quest
-                                 :label "Quest - Shadowmoon Valley"
+                                 :label "Oronok Torn-heart"
                                  :quest-id 10513
                                  :stage 70
                                  :follows [:60]
@@ -1238,42 +1238,42 @@
                                  :follows-mode :all}
                                 {:id :90
                                  :type :quest
-                                 :label "Quest - Shadowmoon Valley"
+                                 :label "I Was A Lot Of Things..."
                                  :quest-id 10514
                                  :stage 90
                                  :follows [:80]
                                  :follows-mode :all}
                                 {:id :100
                                  :type :quest
-                                 :label "Quest - Shadowmoon Valley"
+                                 :label "A Lesson Learned"
                                  :quest-id 10515
                                  :stage 100
                                  :follows [:90]
                                  :follows-mode :all}
                                 {:id :110
                                  :type :quest
-                                 :label "Quest - Shadowmoon Valley"
+                                 :label "The Cipher of Damnation - Truth and History"
                                  :quest-id 10519
                                  :stage 110
                                  :follows [:100]
                                  :follows-mode :all}
                                 {:id :120
                                  :type :quest
-                                 :label "Quest - Shadowmoon Valley"
+                                 :label "Grom'tor, Son of Oronok"
                                  :quest-id 10521
                                  :stage 120
                                  :follows [:110]
                                  :follows-mode :all}
                                 {:id :130
                                  :type :quest
-                                 :label "Quest - Shadowmoon Valley"
+                                 :label "Ar'tor, Son of Oronok"
                                  :quest-id 10527
                                  :stage 120
                                  :follows [:110]
                                  :follows-mode :all}
                                 {:id :140
                                  :type :quest
-                                 :label "Quest - Shadowmoon Valley"
+                                 :label "Borak, Son of Oronok"
                                  :quest-id 10546
                                  :stage 120
                                  :follows [:110]
@@ -1298,98 +1298,98 @@
                                  :follows-mode :all}
                                 {:id :180
                                  :type :quest
-                                 :label "Quest - Shadowmoon Valley"
+                                 :label "The Cipher of Damnation - Grom'tor's Charge"
                                  :quest-id 10522
                                  :stage 140
                                  :follows [:150]
                                  :follows-mode :all}
                                 {:id :190
                                  :type :quest
-                                 :label "Quest - Shadowmoon Valley"
+                                 :label "Demonic Crystal Prisons"
                                  :quest-id 10528
                                  :stage 140
                                  :follows [:160]
                                  :follows-mode :all}
                                 {:id :200
                                  :type :quest
-                                 :label "Quest - Shadowmoon Valley"
+                                 :label "Of Thistleheads and Eggs..."
                                  :quest-id 10547
                                  :stage 140
                                  :follows [:170]
                                  :follows-mode :all}
                                 {:id :220
                                  :type :quest
-                                 :label "Quest - Shadowmoon Valley"
+                                 :label "Lohn'goron, Bow of the Torn-heart"
                                  :quest-id 10537
                                  :stage 155
                                  :follows [:190]
                                  :follows-mode :all}
                                 {:id :230
                                  :type :quest
-                                 :label "Quest - Shattrath City"
+                                 :label "The Bundle of Bloodthistle"
                                  :quest-id 10550
                                  :stage 155
                                  :follows [:200]
                                  :follows-mode :all}
                                 {:id :240
                                  :type :quest
-                                 :label "Quest - Shadowmoon Valley"
+                                 :label "The Cipher of Damnation - Ar'tor's Charge"
                                  :quest-id 10540
                                  :stage 160
                                  :follows [:220]
                                  :follows-mode :all}
                                 {:id :250
                                  :type :quest
-                                 :label "Quest - Shadowmoon Valley"
+                                 :label "To Catch A Thistlehead"
                                  :quest-id 10570
                                  :stage 160
                                  :follows [:230]
                                  :follows-mode :all}
                                 {:id :270
                                  :type :quest
-                                 :label "Quest - Shadowmoon Valley"
+                                 :label "The Shadowmoon Shuffle"
                                  :quest-id 10576
                                  :stage 170
                                  :follows [:250]
                                  :follows-mode :all}
                                 {:id :280
                                  :type :quest
-                                 :label "Quest - Shadowmoon Valley"
+                                 :label "What Illidan Wants, Illidan Gets..."
                                  :quest-id 10577
                                  :stage 180
                                  :follows [:270]
                                  :follows-mode :all}
                                 {:id :290
                                  :type :quest
-                                 :label "Quest - Shadowmoon Valley"
+                                 :label "The Cipher of Damnation - Borak's Charge"
                                  :quest-id 10578
                                  :stage 190
                                  :follows [:280]
                                  :follows-mode :all}
                                 {:id :210
                                  :type :quest
-                                 :label "Quest - Shadowmoon Valley"
+                                 :label "The Cipher of Damnation - The First Fragment Recovered"
                                  :quest-id 10523
                                  :stage 200
                                  :follows [:180]
                                  :follows-mode :all}
                                 {:id :296
                                  :type :quest
-                                 :label "Quest - Shadowmoon Valley"
+                                 :label "The Cipher of Damnation - The Second Fragment Recovered"
                                  :quest-id 10541
                                  :stage 200
                                  :follows [:240]
                                  :follows-mode :all}
                                 {:id :300
                                  :type :quest
-                                 :label "Quest - Shadowmoon Valley"
+                                 :label "The Cipher of Damnation - The Third Fragment Recovered"
                                  :quest-id 10579
                                  :stage 200
                                  :follows [:290]
                                  :follows-mode :all}
                                 {:id :310
                                  :type :quest
-                                 :label "Quest - Shadowmoon Valley"
+                                 :label "The Cipher of Damnation"
                                  :quest-id 10588
                                  :stage 230
                                  :follows [:210 :296 :300]
@@ -1432,28 +1432,28 @@
                                  :follows-mode :all}
                                 {:id :335
                                  :type :quest
-                                 :label "Quest - Shattrath City"
+                                 :label "The Tempest Key"
                                  :quest-id 10883
                                  :stage 249
                                  :follows [:320 :334 :326 :331 :330 :332]
                                  :follows-mode :all}
                                 {:id :340
                                  :type :pickup
-                                 :label "Pick Up - Shattrath City"
+                                 :label "Pick up: Trial of the Naaru: Mercy"
                                  :quest-id 10884
                                  :stage 250
                                  :follows [:335]
                                  :follows-mode :all}
                                 {:id :350
                                  :type :pickup
-                                 :label "Pick Up - Shattrath City"
+                                 :label "Pick up: Trial of the Naaru: Strength"
                                  :quest-id 10885
                                  :stage 250
                                  :follows [:335]
                                  :follows-mode :all}
                                 {:id :360
                                  :type :pickup
-                                 :label "Pick Up - Shattrath City"
+                                 :label "Pick up: Trial of the Naaru: Tenacity"
                                  :quest-id 10886
                                  :stage 250
                                  :follows [:335]
@@ -1508,21 +1508,21 @@
                                  :follows-mode :all}
                                 {:id :431
                                  :type :turnin
-                                 :label "Turn In - Shattrath City"
+                                 :label "Turn in: Trial of the Naaru: Mercy"
                                  :quest-id 10884
                                  :stage 272
                                  :follows [:400]
                                  :follows-mode :all}
                                 {:id :432
                                  :type :turnin
-                                 :label "Turn In - Shattrath City"
+                                 :label "Turn in: Trial of the Naaru: Strength"
                                  :quest-id 10885
                                  :stage 272
                                  :follows [:410 :420]
                                  :follows-mode :all}
                                 {:id :434
                                  :type :turnin
-                                 :label "Turn In - Shattrath City"
+                                 :label "Turn in: Trial of the Naaru: Tenacity"
                                  :quest-id 10886
                                  :stage 272
                                  :follows [:430]
@@ -1535,7 +1535,7 @@
                                  :follows-mode :all}
                                 {:id :440
                                  :type :pickup
-                                 :label "Pick Up - Shattrath City"
+                                 :label "Pick up: Trial of the Naaru: Magtheridon"
                                  :quest-id 10888
                                  :stage 280
                                  :follows [:435]
@@ -1548,7 +1548,7 @@
                                  :follows-mode :all}
                                 {:id :460
                                  :type :turnin
-                                 :label "Turn In - Shattrath City"
+                                 :label "Turn in: Trial of the Naaru: Magtheridon"
                                  :quest-id 10888
                                  :stage 300
                                  :follows [:450]
@@ -1584,35 +1584,35 @@
                                     :follows-mode :all}
                                    {:id :30
                                     :type :quest
-                                    :label "Quest - Shadowmoon Valley"
+                                    :label "The Hand of Gul'dan"
                                     :quest-id 10680
                                     :stage 30
                                     :follows [:20]
                                     :follows-mode :all}
                                    {:id :40
                                     :type :quest
-                                    :label "Quest - Shadowmoon Valley"
+                                    :label "Enraged Spirits of Fire and Earth"
                                     :quest-id 10458
                                     :stage 40
                                     :follows [:30]
                                     :follows-mode :all}
                                    {:id :50
                                     :type :quest
-                                    :label "Quest - Shadowmoon Valley"
+                                    :label "Enraged Spirits of Water"
                                     :quest-id 10480
                                     :stage 50
                                     :follows [:40]
                                     :follows-mode :all}
                                    {:id :60
                                     :type :quest
-                                    :label "Quest - Shadowmoon Valley"
+                                    :label "Enraged Spirits of Air"
                                     :quest-id 10481
                                     :stage 60
                                     :follows [:50]
                                     :follows-mode :all}
                                    {:id :70
                                     :type :quest
-                                    :label "Quest - Shadowmoon Valley"
+                                    :label "Oronok Torn-heart"
                                     :quest-id 10513
                                     :stage 70
                                     :follows [:60]
@@ -1625,42 +1625,42 @@
                                     :follows-mode :all}
                                    {:id :90
                                     :type :quest
-                                    :label "Quest - Shadowmoon Valley"
+                                    :label "I Was A Lot Of Things..."
                                     :quest-id 10514
                                     :stage 90
                                     :follows [:80]
                                     :follows-mode :all}
                                    {:id :100
                                     :type :quest
-                                    :label "Quest - Shadowmoon Valley"
+                                    :label "A Lesson Learned"
                                     :quest-id 10515
                                     :stage 100
                                     :follows [:90]
                                     :follows-mode :all}
                                    {:id :110
                                     :type :quest
-                                    :label "Quest - Shadowmoon Valley"
+                                    :label "The Cipher of Damnation - Truth and History"
                                     :quest-id 10519
                                     :stage 110
                                     :follows [:100]
                                     :follows-mode :all}
                                    {:id :120
                                     :type :quest
-                                    :label "Quest - Shadowmoon Valley"
+                                    :label "Grom'tor, Son of Oronok"
                                     :quest-id 10521
                                     :stage 120
                                     :follows [:110]
                                     :follows-mode :all}
                                    {:id :130
                                     :type :quest
-                                    :label "Quest - Shadowmoon Valley"
+                                    :label "Ar'tor, Son of Oronok"
                                     :quest-id 10527
                                     :stage 120
                                     :follows [:110]
                                     :follows-mode :all}
                                    {:id :140
                                     :type :quest
-                                    :label "Quest - Shadowmoon Valley"
+                                    :label "Borak, Son of Oronok"
                                     :quest-id 10546
                                     :stage 120
                                     :follows [:110]
@@ -1685,98 +1685,98 @@
                                     :follows-mode :all}
                                    {:id :180
                                     :type :quest
-                                    :label "Quest - Shadowmoon Valley"
+                                    :label "The Cipher of Damnation - Grom'tor's Charge"
                                     :quest-id 10522
                                     :stage 140
                                     :follows [:150]
                                     :follows-mode :all}
                                    {:id :190
                                     :type :quest
-                                    :label "Quest - Shadowmoon Valley"
+                                    :label "Demonic Crystal Prisons"
                                     :quest-id 10528
                                     :stage 140
                                     :follows [:160]
                                     :follows-mode :all}
                                    {:id :200
                                     :type :quest
-                                    :label "Quest - Shadowmoon Valley"
+                                    :label "Of Thistleheads and Eggs..."
                                     :quest-id 10547
                                     :stage 140
                                     :follows [:170]
                                     :follows-mode :all}
                                    {:id :220
                                     :type :quest
-                                    :label "Quest - Shadowmoon Valley"
+                                    :label "Lohn'goron, Bow of the Torn-heart"
                                     :quest-id 10537
                                     :stage 155
                                     :follows [:190]
                                     :follows-mode :all}
                                    {:id :230
                                     :type :quest
-                                    :label "Quest - Shattrath City"
+                                    :label "The Bundle of Bloodthistle"
                                     :quest-id 10550
                                     :stage 155
                                     :follows [:200]
                                     :follows-mode :all}
                                    {:id :240
                                     :type :quest
-                                    :label "Quest - Shadowmoon Valley"
+                                    :label "The Cipher of Damnation - Ar'tor's Charge"
                                     :quest-id 10540
                                     :stage 160
                                     :follows [:220]
                                     :follows-mode :all}
                                    {:id :250
                                     :type :quest
-                                    :label "Quest - Shadowmoon Valley"
+                                    :label "To Catch A Thistlehead"
                                     :quest-id 10570
                                     :stage 160
                                     :follows [:230]
                                     :follows-mode :all}
                                    {:id :270
                                     :type :quest
-                                    :label "Quest - Shadowmoon Valley"
+                                    :label "The Shadowmoon Shuffle"
                                     :quest-id 10576
                                     :stage 170
                                     :follows [:250]
                                     :follows-mode :all}
                                    {:id :280
                                     :type :quest
-                                    :label "Quest - Shadowmoon Valley"
+                                    :label "What Illidan Wants, Illidan Gets..."
                                     :quest-id 10577
                                     :stage 180
                                     :follows [:270]
                                     :follows-mode :all}
                                    {:id :290
                                     :type :quest
-                                    :label "Quest - Shadowmoon Valley"
+                                    :label "The Cipher of Damnation - Borak's Charge"
                                     :quest-id 10578
                                     :stage 190
                                     :follows [:280]
                                     :follows-mode :all}
                                    {:id :210
                                     :type :quest
-                                    :label "Quest - Shadowmoon Valley"
+                                    :label "The Cipher of Damnation - The First Fragment Recovered"
                                     :quest-id 10523
                                     :stage 200
                                     :follows [:180]
                                     :follows-mode :all}
                                    {:id :296
                                     :type :quest
-                                    :label "Quest - Shadowmoon Valley"
+                                    :label "The Cipher of Damnation - The Second Fragment Recovered"
                                     :quest-id 10541
                                     :stage 200
                                     :follows [:240]
                                     :follows-mode :all}
                                    {:id :300
                                     :type :quest
-                                    :label "Quest - Shadowmoon Valley"
+                                    :label "The Cipher of Damnation - The Third Fragment Recovered"
                                     :quest-id 10579
                                     :stage 200
                                     :follows [:290]
                                     :follows-mode :all}
                                    {:id :310
                                     :type :quest
-                                    :label "Quest - Shadowmoon Valley"
+                                    :label "The Cipher of Damnation"
                                     :quest-id 10588
                                     :stage 230
                                     :follows [:210 :296 :300]
@@ -1819,28 +1819,28 @@
                                     :follows-mode :all}
                                    {:id :335
                                     :type :quest
-                                    :label "Quest - Shattrath City"
+                                    :label "The Tempest Key"
                                     :quest-id 10883
                                     :stage 249
                                     :follows [:320 :334 :326 :331 :330 :332]
                                     :follows-mode :all}
                                    {:id :340
                                     :type :pickup
-                                    :label "Pick Up - Shattrath City"
+                                    :label "Pick up: Trial of the Naaru: Mercy"
                                     :quest-id 10884
                                     :stage 250
                                     :follows [:335]
                                     :follows-mode :all}
                                    {:id :350
                                     :type :pickup
-                                    :label "Pick Up - Shattrath City"
+                                    :label "Pick up: Trial of the Naaru: Strength"
                                     :quest-id 10885
                                     :stage 250
                                     :follows [:335]
                                     :follows-mode :all}
                                    {:id :360
                                     :type :pickup
-                                    :label "Pick Up - Shattrath City"
+                                    :label "Pick up: Trial of the Naaru: Tenacity"
                                     :quest-id 10886
                                     :stage 250
                                     :follows [:335]
@@ -1895,21 +1895,21 @@
                                     :follows-mode :all}
                                    {:id :431
                                     :type :turnin
-                                    :label "Turn In - Shattrath City"
+                                    :label "Turn in: Trial of the Naaru: Mercy"
                                     :quest-id 10884
                                     :stage 272
                                     :follows [:400]
                                     :follows-mode :all}
                                    {:id :432
                                     :type :turnin
-                                    :label "Turn In - Shattrath City"
+                                    :label "Turn in: Trial of the Naaru: Strength"
                                     :quest-id 10885
                                     :stage 272
                                     :follows [:410 :420]
                                     :follows-mode :all}
                                    {:id :434
                                     :type :turnin
-                                    :label "Turn In - Shattrath City"
+                                    :label "Turn in: Trial of the Naaru: Tenacity"
                                     :quest-id 10886
                                     :stage 272
                                     :follows [:430]
@@ -1922,7 +1922,7 @@
                                     :follows-mode :all}
                                    {:id :440
                                     :type :pickup
-                                    :label "Pick Up - Shattrath City"
+                                    :label "Pick up: Trial of the Naaru: Magtheridon"
                                     :quest-id 10888
                                     :stage 280
                                     :follows [:435]
@@ -1935,7 +1935,7 @@
                                     :follows-mode :all}
                                    {:id :460
                                     :type :turnin
-                                    :label "Turn In - Shattrath City"
+                                    :label "Turn in: Trial of the Naaru: Magtheridon"
                                     :quest-id 10888
                                     :stage 300
                                     :follows [:450]
@@ -1977,7 +1977,7 @@
                                         :follows-mode :all}
                                        {:id :30
                                         :type :pickup
-                                        :label "Pick Up - Tanaris"
+                                        :label "Pick up: The Vials of Eternity"
                                         :quest-id 10445
                                         :stage 25
                                         :follows [:20]
@@ -2014,7 +2014,7 @@
                                         :follows-mode :all}
                                        {:id :80
                                         :type :turnin
-                                        :label "Turn In - Tanaris"
+                                        :label "Turn in: The Vials of Eternity"
                                         :quest-id 10445
                                         :stage 50
                                         :follows [:60 :70]
@@ -2050,7 +2050,7 @@
                                      :follows-mode :all}
                                     {:id :30
                                      :type :pickup
-                                     :label "Pick Up - Tanaris"
+                                     :label "Pick up: The Vials of Eternity"
                                      :quest-id 10445
                                      :stage 25
                                      :follows [:20]
@@ -2087,7 +2087,7 @@
                                      :follows-mode :all}
                                     {:id :80
                                      :type :turnin
-                                     :label "Turn In - Tanaris"
+                                     :label "Turn in: The Vials of Eternity"
                                      :quest-id 10445
                                      :stage 50
                                      :follows [:60 :70]
@@ -2129,77 +2129,77 @@
                                       :follows-mode :all}
                                      {:id :20
                                       :type :quest
-                                      :label "Quest - Shadowmoon Valley"
+                                      :label "Tablets of Baa'ri"
                                       :quest-id 10568
                                       :stage 20
                                       :follows [:10]
                                       :follows-mode :all}
                                      {:id :24
                                       :type :quest
-                                      :label "Quest - Shadowmoon Valley"
+                                      :label "Tablets of Baa'ri"
                                       :quest-id 10683
                                       :stage 20
                                       :follows [:14]
                                       :follows-mode :all}
                                      {:id :30
                                       :type :quest
-                                      :label "Quest - Shadowmoon Valley"
+                                      :label "Oronu the Elder"
                                       :quest-id 10571
                                       :stage 30
                                       :follows [:20]
                                       :follows-mode :all}
                                      {:id :34
                                       :type :quest
-                                      :label "Quest - Shadowmoon Valley"
+                                      :label "Oronu the Elder"
                                       :quest-id 10684
                                       :stage 30
                                       :follows [:24]
                                       :follows-mode :all}
                                      {:id :40
                                       :type :quest
-                                      :label "Quest - Shadowmoon Valley"
+                                      :label "The Ashtongue Corruptors"
                                       :quest-id 10574
                                       :stage 40
                                       :follows [:30]
                                       :follows-mode :all}
                                      {:id :44
                                       :type :quest
-                                      :label "Quest - Shadowmoon Valley"
+                                      :label "The Ashtongue Corruptors"
                                       :quest-id 10685
                                       :stage 40
                                       :follows [:34]
                                       :follows-mode :all}
                                      {:id :50
                                       :type :quest
-                                      :label "Quest - Shadowmoon Valley"
+                                      :label "The Warden's Cage"
                                       :quest-id 10575
                                       :stage 50
                                       :follows [:40]
                                       :follows-mode :all}
                                      {:id :54
                                       :type :quest
-                                      :label "Quest - Shadowmoon Valley"
+                                      :label "The Warden's Cage"
                                       :quest-id 10686
                                       :stage 50
                                       :follows [:44]
                                       :follows-mode :all}
                                      {:id :60
                                       :type :quest
-                                      :label "Quest - Shadowmoon Valley"
+                                      :label "Proof of Allegiance"
                                       :quest-id 10622
                                       :stage 60
                                       :follows [:50 :54]
                                       :follows-mode :any}
                                      {:id :70
                                       :type :quest
-                                      :label "Quest - Shadowmoon Valley"
+                                      :label :Akama
                                       :quest-id 10628
                                       :stage 70
                                       :follows [:60]
                                       :follows-mode :all}
                                      {:id :80
                                       :type :quest
-                                      :label "Quest - Shadowmoon Valley"
+                                      :label "Seer Udalo"
                                       :quest-id 10705
                                       :stage 80
                                       :follows [:70]
@@ -2212,14 +2212,14 @@
                                       :follows-mode :all}
                                      {:id :100
                                       :type :quest
-                                      :label "Quest - The Arcatraz"
+                                      :label "A Mysterious Portent"
                                       :quest-id 10706
                                       :stage 100
                                       :follows [:90]
                                       :follows-mode :all}
                                      {:id :110
                                       :type :pickup
-                                      :label "Pick Up - Shadowmoon Valley"
+                                      :label "Pick up: The Ata'mal Terrace"
                                       :quest-id 10707
                                       :stage 110
                                       :follows [:100]
@@ -2238,14 +2238,14 @@
                                       :follows-mode :all}
                                      {:id :135
                                       :type :turnin
-                                      :label "Turn In - Shadowmoon Valley"
+                                      :label "Turn in: The Ata'mal Terrace"
                                       :quest-id 10707
                                       :stage 135
                                       :follows [:130]
                                       :follows-mode :all}
                                      {:id :140
                                       :type :quest
-                                      :label "Quest - Shadowmoon Valley"
+                                      :label "Akama's Promise"
                                       :quest-id 10708
                                       :stage 140
                                       :follows [:135]
@@ -2264,7 +2264,7 @@
                                       :follows-mode :all}
                                      {:id :160
                                       :type :quest
-                                      :label "Quest - Serpentshrine Cavern"
+                                      :label "The Secret Compromised"
                                       :quest-id 10944
                                       :stage 160
                                       :follows [:150]
@@ -2277,7 +2277,7 @@
                                       :follows-mode :all}
                                      {:id :180
                                       :type :pickup
-                                      :label "Pick Up - Shadowmoon Valley"
+                                      :label "Pick up: Ruse of the Ashtongue"
                                       :quest-id 10946
                                       :stage 180
                                       :follows [:170]
@@ -2296,14 +2296,14 @@
                                       :follows-mode :all}
                                      {:id :195
                                       :type :turnin
-                                      :label "Turn In - Shadowmoon Valley"
+                                      :label "Turn in: Ruse of the Ashtongue"
                                       :quest-id 10946
                                       :stage 195
                                       :follows [:190]
                                       :follows-mode :all}
                                      {:id :200
                                       :type :pickup
-                                      :label "Pick Up - Shadowmoon Valley"
+                                      :label "Pick up: An Artifact From the Past"
                                       :quest-id 10947
                                       :stage 200
                                       :follows [:195]
@@ -2322,14 +2322,14 @@
                                       :follows-mode :all}
                                      {:id :215
                                       :type :turnin
-                                      :label "Turn In - Shadowmoon Valley"
+                                      :label "Turn in: An Artifact From the Past"
                                       :quest-id 10947
                                       :stage 215
                                       :follows [:210]
                                       :follows-mode :all}
                                      {:id :220
                                       :type :quest
-                                      :label "Quest - Shadowmoon Valley"
+                                      :label "The Hostage Soul"
                                       :quest-id 10948
                                       :stage 220
                                       :follows [:215]
@@ -2342,7 +2342,7 @@
                                       :follows-mode :all}
                                      {:id :240
                                       :type :quest
-                                      :label "Quest - Shattrath"
+                                      :label "Entry Into the Black Temple"
                                       :quest-id 10949
                                       :stage 240
                                       :follows [:230]
@@ -2355,7 +2355,7 @@
                                       :follows-mode :all}
                                      {:id :260
                                       :type :quest
-                                      :label "Quest - Shadowmoon Valley"
+                                      :label "A Distraction for Akama"
                                       :quest-id 10985
                                       :stage 260
                                       :follows [:250]
@@ -2403,77 +2403,77 @@
                                          :follows-mode :all}
                                         {:id :20
                                          :type :quest
-                                         :label "Quest - Shadowmoon Valley"
+                                         :label "Tablets of Baa'ri"
                                          :quest-id 10568
                                          :stage 20
                                          :follows [:10]
                                          :follows-mode :all}
                                         {:id :24
                                          :type :quest
-                                         :label "Quest - Shadowmoon Valley"
+                                         :label "Tablets of Baa'ri"
                                          :quest-id 10683
                                          :stage 20
                                          :follows [:14]
                                          :follows-mode :all}
                                         {:id :30
                                          :type :quest
-                                         :label "Quest - Shadowmoon Valley"
+                                         :label "Oronu the Elder"
                                          :quest-id 10571
                                          :stage 30
                                          :follows [:20]
                                          :follows-mode :all}
                                         {:id :34
                                          :type :quest
-                                         :label "Quest - Shadowmoon Valley"
+                                         :label "Oronu the Elder"
                                          :quest-id 10684
                                          :stage 30
                                          :follows [:24]
                                          :follows-mode :all}
                                         {:id :40
                                          :type :quest
-                                         :label "Quest - Shadowmoon Valley"
+                                         :label "The Ashtongue Corruptors"
                                          :quest-id 10574
                                          :stage 40
                                          :follows [:30]
                                          :follows-mode :all}
                                         {:id :44
                                          :type :quest
-                                         :label "Quest - Shadowmoon Valley"
+                                         :label "The Ashtongue Corruptors"
                                          :quest-id 10685
                                          :stage 40
                                          :follows [:34]
                                          :follows-mode :all}
                                         {:id :50
                                          :type :quest
-                                         :label "Quest - Shadowmoon Valley"
+                                         :label "The Warden's Cage"
                                          :quest-id 10575
                                          :stage 50
                                          :follows [:40]
                                          :follows-mode :all}
                                         {:id :54
                                          :type :quest
-                                         :label "Quest - Shadowmoon Valley"
+                                         :label "The Warden's Cage"
                                          :quest-id 10686
                                          :stage 50
                                          :follows [:44]
                                          :follows-mode :all}
                                         {:id :60
                                          :type :quest
-                                         :label "Quest - Shadowmoon Valley"
+                                         :label "Proof of Allegiance"
                                          :quest-id 10622
                                          :stage 60
                                          :follows [:50 :54]
                                          :follows-mode :any}
                                         {:id :70
                                          :type :quest
-                                         :label "Quest - Shadowmoon Valley"
+                                         :label :Akama
                                          :quest-id 10628
                                          :stage 70
                                          :follows [:60]
                                          :follows-mode :all}
                                         {:id :80
                                          :type :quest
-                                         :label "Quest - Shadowmoon Valley"
+                                         :label "Seer Udalo"
                                          :quest-id 10705
                                          :stage 80
                                          :follows [:70]
@@ -2486,14 +2486,14 @@
                                          :follows-mode :all}
                                         {:id :100
                                          :type :quest
-                                         :label "Quest - The Arcatraz"
+                                         :label "A Mysterious Portent"
                                          :quest-id 10706
                                          :stage 100
                                          :follows [:90]
                                          :follows-mode :all}
                                         {:id :110
                                          :type :pickup
-                                         :label "Pick Up - Shadowmoon Valley"
+                                         :label "Pick up: The Ata'mal Terrace"
                                          :quest-id 10707
                                          :stage 110
                                          :follows [:100]
@@ -2512,14 +2512,14 @@
                                          :follows-mode :all}
                                         {:id :135
                                          :type :turnin
-                                         :label "Turn In - Shadowmoon Valley"
+                                         :label "Turn in: The Ata'mal Terrace"
                                          :quest-id 10707
                                          :stage 135
                                          :follows [:130]
                                          :follows-mode :all}
                                         {:id :140
                                          :type :quest
-                                         :label "Quest - Shadowmoon Valley"
+                                         :label "Akama's Promise"
                                          :quest-id 10708
                                          :stage 140
                                          :follows [:135]
@@ -2538,7 +2538,7 @@
                                          :follows-mode :all}
                                         {:id :160
                                          :type :quest
-                                         :label "Quest - Serpentshrine Cavern"
+                                         :label "The Secret Compromised"
                                          :quest-id 10944
                                          :stage 160
                                          :follows [:150]
@@ -2551,7 +2551,7 @@
                                          :follows-mode :all}
                                         {:id :180
                                          :type :pickup
-                                         :label "Pick Up - Shadowmoon Valley"
+                                         :label "Pick up: Ruse of the Ashtongue"
                                          :quest-id 10946
                                          :stage 180
                                          :follows [:170]
@@ -2570,14 +2570,14 @@
                                          :follows-mode :all}
                                         {:id :195
                                          :type :turnin
-                                         :label "Turn In - Shadowmoon Valley"
+                                         :label "Turn in: Ruse of the Ashtongue"
                                          :quest-id 10946
                                          :stage 195
                                          :follows [:190]
                                          :follows-mode :all}
                                         {:id :200
                                          :type :pickup
-                                         :label "Pick Up - Shadowmoon Valley"
+                                         :label "Pick up: An Artifact From the Past"
                                          :quest-id 10947
                                          :stage 200
                                          :follows [:195]
@@ -2596,14 +2596,14 @@
                                          :follows-mode :all}
                                         {:id :215
                                          :type :turnin
-                                         :label "Turn In - Shadowmoon Valley"
+                                         :label "Turn in: An Artifact From the Past"
                                          :quest-id 10947
                                          :stage 215
                                          :follows [:210]
                                          :follows-mode :all}
                                         {:id :220
                                          :type :quest
-                                         :label "Quest - Shadowmoon Valley"
+                                         :label "The Hostage Soul"
                                          :quest-id 10948
                                          :stage 220
                                          :follows [:215]
@@ -2616,7 +2616,7 @@
                                          :follows-mode :all}
                                         {:id :240
                                          :type :quest
-                                         :label "Quest - Shattrath"
+                                         :label "Entry Into the Black Temple"
                                          :quest-id 10949
                                          :stage 240
                                          :follows [:230]
@@ -2629,7 +2629,7 @@
                                          :follows-mode :all}
                                         {:id :260
                                          :type :quest
-                                         :label "Quest - Shadowmoon Valley"
+                                         :label "A Distraction for Akama"
                                          :quest-id 10985
                                          :stage 260
                                          :follows [:250]
@@ -2665,63 +2665,63 @@
                                     :follows-mode :all}
                                    {:id :30
                                     :type :quest
-                                    :label "Quest - Shattrath City"
+                                    :label "Speak with the Ogre"
                                     :quest-id 10984
                                     :stage 30
                                     :follows [:20]
                                     :follows-mode :all}
                                    {:id :40
                                     :type :quest
-                                    :label "Quest - Shattrath City"
+                                    :label "Mog'dorg the Wizened"
                                     :quest-id 10983
                                     :stage 40
                                     :follows [:30]
                                     :follows-mode :all}
                                    {:id :50
                                     :type :quest
-                                    :label "Quest - Blade's Edge Mountains"
+                                    :label "Grulloc Has Two Skulls"
                                     :quest-id 10995
                                     :stage 50
                                     :follows [:40]
                                     :follows-mode :all}
                                    {:id :60
                                     :type :quest
-                                    :label "Quest - Blade's Edge Mountains"
+                                    :label "Maggoc's Treasure Chest"
                                     :quest-id 10996
                                     :stage 50
                                     :follows [:40]
                                     :follows-mode :all}
                                    {:id :70
                                     :type :quest
-                                    :label "Quest - Blade's Edge Mountains"
+                                    :label "Even Gronn Have Standards"
                                     :quest-id 10997
                                     :stage 50
                                     :follows [:40]
                                     :follows-mode :all}
                                    {:id :80
                                     :type :quest
-                                    :label "Quest - Blade's Edge Mountain"
+                                    :label "Grim(oire) Business"
                                     :quest-id 10998
                                     :stage 80
                                     :follows [:50 :60 :70]
                                     :follows-mode :all}
                                    {:id :90
                                     :type :quest
-                                    :label "Quest - Blade's Edge Mountain"
+                                    :label "Into the Soulgrinder"
                                     :quest-id 11000
                                     :stage 90
                                     :follows [:80]
                                     :follows-mode :all}
                                    {:id :100
                                     :type :quest
-                                    :label "Quest - Blade's Edge Mountain"
+                                    :label "Speak with Mog'dorg"
                                     :quest-id 11022
                                     :stage 100
                                     :follows [:90]
                                     :follows-mode :all}
                                    {:id :110
                                     :type :quest
-                                    :label "Quest - Blade's Edge Mountain"
+                                    :label "Ogre Heaven"
                                     :quest-id 11009
                                     :stage 110
                                     :follows [:100]
@@ -2751,63 +2751,63 @@
                                           :follows-mode :all}
                                          {:id :30
                                           :type :quest
-                                          :label "Quest - Shadowmoon Valley"
+                                          :label :Kindness
                                           :quest-id 10804
                                           :stage 30
                                           :follows [:20]
                                           :follows-mode :all}
                                          {:id :40
                                           :type :quest
-                                          :label "Quest - Shadowmoon Valley"
+                                          :label "Seek Out Neltharaku"
                                           :quest-id 10811
                                           :stage 40
                                           :follows [:30]
                                           :follows-mode :all}
                                          {:id :50
                                           :type :quest
-                                          :label "Quest - Shadowmoon Valley"
+                                          :label "Neltharaku's Tale"
                                           :quest-id 10814
                                           :stage 50
                                           :follows [:40]
                                           :follows-mode :all}
                                          {:id :60
                                           :type :quest
-                                          :label "Quest - Shadowmoon Valley"
+                                          :label "Infiltrating Dragonmaw Fortress"
                                           :quest-id 10836
                                           :stage 60
                                           :follows [:50]
                                           :follows-mode :all}
                                          {:id :70
                                           :type :quest
-                                          :label "Quest - Shadowmoon Valley"
+                                          :label "To Netherwing Ledge!"
                                           :quest-id 10837
                                           :stage 70
                                           :follows [:60]
                                           :follows-mode :all}
                                          {:id :80
                                           :type :quest
-                                          :label "Quest - Shadowmoon Valley"
+                                          :label "The Force of Neltharaku"
                                           :quest-id 10854
                                           :stage 80
                                           :follows [:70]
                                           :follows-mode :all}
                                          {:id :90
                                           :type :quest
-                                          :label "Quest - Shadowmoon Valley"
+                                          :label :Karynaku
                                           :quest-id 10858
                                           :stage 90
                                           :follows [:80]
                                           :follows-mode :all}
                                          {:id :100
                                           :type :quest
-                                          :label "Quest - Shadowmoon Valley"
+                                          :label "Zuluhed the Whacked"
                                           :quest-id 10866
                                           :stage 100
                                           :follows [:90]
                                           :follows-mode :all}
                                          {:id :110
                                           :type :quest
-                                          :label "Quest - Shadowmoon Valley"
+                                          :label "Ally of the Netherwing"
                                           :quest-id 10870
                                           :stage 110
                                           :follows [:100]
