@@ -3,6 +3,7 @@
 ;; init!, so this spec needs no real Ace3.
 
 (local events (require :src.core.events))
+(local mock (require :spec.mocks.wow-api))
 
 (fn make-log []
   (let [calls {:debug [] :info [] :warn [] :error []}]
@@ -35,6 +36,7 @@
                                                 :CHARACTER_POINTS_CHANGED
                                                 :ENCOUNTER_END
                                                 :CHAT_MSG_LOOT
+                                                :QUEST_TURNED_IN
                                                 :PLAYER_LOGOUT]
                                                events.event-list)))))
             (describe :dispatch
@@ -197,6 +199,87 @@
                             (fn []
                               (events.set-store! nil)
                               (assert.has_no.errors events.reset-history!)))))
+            (describe :chains
+                      (fn []
+                        (before_each (fn [] (mock.reset!)))
+                        ;; Karazhan chain (generated data): step "30" is quest
+                        ;; 9824 at stage 30; "10" (level) and "20" (interact)
+                        ;; sit below it and backfill once it completes.
+                        (it "QUEST_TURNED_IN advances the chain and flushes on logout"
+                            (fn []
+                              (let [log (make-log)
+                                    char {}
+                                    hits {:n 0}]
+                                (events.set-logger! log)
+                                (events.set-store! (fn [] char))
+                                (events.set-refresh! (fn []
+                                                       (set hits.n (+ hits.n 1))))
+                                (events.dispatch :QUEST_TURNED_IN 9824 11000 0)
+                                (events.dispatch :PLAYER_LOGOUT)
+                                (assert.is_true (. char.chains :karazhan
+                                                   :completed :30))
+                                ;; non-quest predecessors backfilled
+                                (assert.is_true (. char.chains :karazhan
+                                                   :completed :10))
+                                (assert.is_true (. char.chains :karazhan
+                                                   :completed :20))
+                                (assert.are.equal 1 hits.n)
+                                (events.set-refresh! nil)
+                                (events.set-store! nil))))
+                        (it "an untracked quest neither records nor refreshes"
+                            (fn []
+                              (let [log (make-log)
+                                    char {}
+                                    hits {:n 0}]
+                                (events.set-logger! log)
+                                (events.set-store! (fn [] char))
+                                (events.set-refresh! (fn []
+                                                       (set hits.n (+ hits.n 1))))
+                                (events.dispatch :QUEST_TURNED_IN 99999999 0 0)
+                                (events.dispatch :PLAYER_LOGOUT)
+                                (assert.is_nil char.chains)
+                                (assert.are.equal 0 hits.n)
+                                (events.set-refresh! nil)
+                                (events.set-store! nil))))
+                        (it "PLAYER_ENTERING_WORLD seeds progress from quest flags"
+                            (fn []
+                              (let [log (make-log)
+                                    char {}]
+                                (events.set-logger! log)
+                                (events.set-store! (fn [] char))
+                                (mock.set-quest-completed! 9824 true)
+                                (events.dispatch :PLAYER_ENTERING_WORLD)
+                                (events.dispatch :PLAYER_LOGOUT)
+                                (assert.is_true (. char.chains :karazhan
+                                                   :completed :30))
+                                (events.set-store! nil))))
+                        (it "login seed merges with persisted progress instead of clobbering"
+                            (fn []
+                              (let [log (make-log)
+                                    char {:chains {:karazhan {:completed {:20 true}}}}]
+                                (events.set-logger! log)
+                                (events.set-store! (fn [] char))
+                                (mock.set-quest-completed! 9824 true)
+                                (events.dispatch :PLAYER_ENTERING_WORLD)
+                                (events.dispatch :PLAYER_LOGOUT)
+                                ;; both the persisted step and the freshly
+                                ;; seeded quest step survive the merge
+                                (assert.is_true (. char.chains :karazhan
+                                                   :completed :20))
+                                (assert.is_true (. char.chains :karazhan
+                                                   :completed :30))
+                                (events.set-store! nil))))
+                        (it "no-ops when no store is wired"
+                            (fn []
+                              (let [log (make-log)]
+                                (events.set-logger! log)
+                                (events.set-store! nil)
+                                (assert.has_no.errors (fn []
+                                                        (events.dispatch :QUEST_TURNED_IN
+                                                                         9824 0
+                                                                         0)
+                                                        (events.dispatch :PLAYER_ENTERING_WORLD)
+                                                        (events.dispatch :PLAYER_LOGOUT))))))))
             (describe :init!
                       (fn []
                         (it "embeds a frame and registers every event"

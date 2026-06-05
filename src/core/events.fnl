@@ -19,6 +19,7 @@
 
 (local history (or Routina.history (require :src.domain.history)))
 (local drop-table (or Routina.drop-table (require :src.domain.drop-table)))
+(local chains (or Routina.chains (require :src.domain.chains)))
 
 (local M {})
 
@@ -45,6 +46,13 @@
 
 (var history-tracking? false)
 
+;; Quest/attunement chain progress (src/domain/chains.fnl): a live
+;; {chain-id -> ChainProgress} map seeded from db.char.chains, refreshed from
+;; the quest log on PLAYER_ENTERING_WORLD, advanced by QUEST_TURNED_IN, and
+;; flushed on PLAYER_LOGOUT. ON by default -- chains are a core feature, not
+;; an experimental opt-in like the luck history.
+(var chain-session nil)
+
 (fn request-refresh []
   "Notify the UI that the plan inputs changed (gear, talents, bags, lockouts).
    No-op until a callback is injected via set-refresh!."
@@ -68,6 +76,31 @@
       (set history-session (history.normalize (and char char.history)))))
   history-session)
 
+(fn ensure-chains []
+  "Lazily seed the in-memory chain progress from the persisted DB, returning
+   the live {chain-id -> ChainProgress} map, or nil when no store is wired."
+  (when (and (not chain-session) get-char)
+    (let [char (get-char)]
+      (set chain-session (chains.normalize (and char char.chains)))))
+  chain-session)
+
+(fn seed-chains-from-quest-log []
+  "Sweep wow.quest-completed? over every tracked quest-id and merge the result
+   into each chain's persisted progress (union + backfill, idempotent), so an
+   alt that finished steps before installing Routina starts honest. No-op when
+   no store is wired."
+  (let [progress-map (ensure-chains)]
+    (when progress-map
+      (let [flags (collect [qid (pairs (chains.tracked-quest-ids))]
+                    (if (wow.quest-completed? qid) (values qid true)
+                        (values nil nil)))]
+        (each [_ chain (ipairs (chains.all))]
+          (let [prior (or (. progress-map chain.id) (chains.empty-progress))
+                seeded (chains.seed-from-completed chain flags)]
+            (tset progress-map chain.id
+                  (chains.merge-progress chain prior seeded)))))))
+  nil)
+
 ;; --- Events we consume -----------------------------------------------------
 ;;
 ;; All TBC Classic 2.5.5 (BCC Anniversary) valid -- signatures verified against
@@ -89,6 +122,8 @@
                    :ENCOUNTER_END
                    ;; loot received -> tally a luck-history drop (gated)
                    :CHAT_MSG_LOOT
+                   ;; quest turned in -> advance any chain carrying it
+                   :QUEST_TURNED_IN
                    ;; fires before the SavedVariables disk write -> flush state
                    :PLAYER_LOGOUT])
 
@@ -101,6 +136,9 @@
   ;; Kick a saved-instance refresh; the server replies via UPDATE_INSTANCE_INFO,
   ;; after which wow.saved-instances has live data for the route planner.
   (wow.request-raid-info!)
+  ;; Refresh chain progress from the quest log (idempotent union, so the
+  ;; re-fires on /reload and instance transitions are harmless).
+  (seed-chains-from-quest-log)
   (request-refresh)
   nil)
 
@@ -160,16 +198,35 @@
         (M.record-drop! item-id))))
   nil)
 
+(fn on-quest-turned-in [quest-id]
+  "QUEST_TURNED_IN (TBC 2.5.5): questID, xpReward, moneyReward. Advance every
+   chain carrying this quest (record-quest marks the step and backfills its
+   non-quest predecessors), then re-plan -- a finished attunement step can
+   change both the Chains tab and the weekly plan's gates."
+  (log:debug :QUEST_TURNED_IN)
+  (when (= (type quest-id) :number)
+    (let [affected (chains.chains-with-quest quest-id)
+          progress-map (and (> (length affected) 0) (ensure-chains))]
+      (when progress-map
+        (each [_ chain (ipairs affected)]
+          (let [prior (or (. progress-map chain.id) (chains.empty-progress))]
+            (tset progress-map chain.id
+                  (chains.record-quest chain prior quest-id))))
+        (request-refresh))))
+  nil)
+
 (fn on-player-logout []
   "Fires before the SavedVariables disk write -> flush the session's accumulated
    weekly-state into db.char so this week's progress survives the logout."
   (log:debug :PLAYER_LOGOUT)
-  (when (and get-char (or session history-session))
+  (when (and get-char (or session history-session chain-session))
     (let [char (get-char)]
       (when char
         (when session (set char.weekly-state (weekly-state.to-db session)))
         (when history-session
-          (set char.history (history.to-db history-session))))))
+          (set char.history (history.to-db history-session)))
+        (when chain-session
+          (set char.chains (chains.to-db chain-session))))))
   nil)
 
 ;; --- Public API ------------------------------------------------------------
@@ -198,6 +255,7 @@
   (set get-char ?char-getter)
   (set session nil)
   (set history-session nil)
+  (set chain-session nil)
   nil)
 
 (lambda M.set-history-tracking! [?on]
@@ -254,6 +312,7 @@
     :RAID_INSTANCE_WELCOME (on-raid-instance-welcome ...)
     :ENCOUNTER_END (on-encounter-end ...)
     :CHAT_MSG_LOOT (on-chat-msg-loot ...)
+    :QUEST_TURNED_IN (on-quest-turned-in ...)
     :PLAYER_EQUIPMENT_CHANGED (on-inputs-changed :PLAYER_EQUIPMENT_CHANGED)
     :BAG_UPDATE_DELAYED (on-inputs-changed :BAG_UPDATE_DELAYED)
     :CHARACTER_POINTS_CHANGED (on-inputs-changed :CHARACTER_POINTS_CHANGED)

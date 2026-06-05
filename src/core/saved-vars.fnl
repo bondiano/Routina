@@ -17,9 +17,10 @@
 ;; and is what `migrate` fast-forwards. Kept lean for Phase 1 -- options and
 ;; weekly-state grow as later phases need them.
 
-(local defaults {:global {:version 1 :options {:log-level :info}}
+(local defaults {:global {:version 2 :options {:log-level :info}}
                  :char {:weekly-state {:reset-time 0 :lockouts {}}
                         :history {:runs {} :drops {}}
+                        :chains {}
                         :preferences {}}})
 
 (set M.defaults defaults)
@@ -27,10 +28,15 @@
 ;; --- Migrations ------------------------------------------------------------
 ;;
 ;; Each entry is {:to integer :apply (fn [db] db)} and runs only when
-;; :to is newer than the stored version. Empty until the first schema change;
-;; `:to` must match the `:global.version` you bump `defaults` to.
+;; :to is newer than the stored version. `:to` must match the
+;; `:global.version` you bump `defaults` to.
 
-(local migrations [])
+(local migrations [;; v2 (Phase 6): db.char gains :chains ({chain-id ->
+                   ;; ChainProgress}). AceDB merges the new :char default on
+                   ;; load, and chains.normalize is defensive about whatever
+                   ;; it finds, so no :global data moves -- the entry anchors
+                   ;; the mandatory version bump for the schema change.
+                   {:to 2 :apply (fn [db] db)}])
 
 (set M.migrations migrations)
 

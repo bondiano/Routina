@@ -140,6 +140,26 @@
   (icollect [_ c (pairs chain-data)]
     (when (= c.kind kind) c)))
 
+(lambda M.tracked-quest-ids []
+  "Every quest-id any registry chain step carries, as a fresh set. The shell
+   sweeps wow.quest-completed? over exactly this set on login.
+   Domain:  (none)
+   Returns: {integer -> true} -- fresh set, possibly empty."
+  (let [ids {}]
+    (each [_ c (pairs chain-data)]
+      (each [_ s (ipairs c.steps)]
+        (when s.quest-id (tset ids s.quest-id true))))
+    ids))
+
+(lambda M.chains-with-quest [quest-id]
+  "Every ChainDef containing a step with this quest-id, as a fresh sequence.
+   Domain:  quest-id : integer
+   Returns: [ChainDef] -- fresh sequence, possibly empty."
+  (icollect [_ c (pairs chain-data)]
+    (when (accumulate [hit false _ s (ipairs c.steps)]
+            (or hit (= s.quest-id quest-id)))
+      c)))
+
 ;; --- Progress queries (pure reads) ------------------------------------------
 
 (lambda M.empty-progress []
@@ -235,6 +255,21 @@
       (when (= s.quest-id quest-id)
         (tset marked s.id true)))
     {:completed (backfill chain marked)}))
+
+(lambda M.merge-progress [chain a b]
+  "Union two ChainProgress records for one chain (persisted progress merged
+   with a fresh quest-log seed), re-running backfill over the union so the
+   combined evidence can infer steps neither side held alone. Returns a NEW
+   ChainProgress.
+   Domain:  chain : ChainDef ; a, b : ChainProgress
+   Returns: ChainProgress"
+  (assert-chain chain)
+  (assert-progress a)
+  (assert-progress b)
+  (let [union (copy-set a.completed)]
+    (each [k v (pairs b.completed)]
+      (when (= v true) (tset union k true)))
+    {:completed (backfill chain union)}))
 
 (lambda M.seed-from-completed [chain completed-quest-ids]
   "Build a ChainProgress from WoW's completed-quest flags (a {quest-id true}

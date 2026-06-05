@@ -16,10 +16,15 @@
                               (assert.are.equal :info
                                                 saved-vars.defaults.global.options.log-level)
                               (assert.is_truthy saved-vars.defaults.char.weekly-state)))
-                        (it "ships an empty migration list at v1"
+                        (it "ships the v2 chains migration and matching defaults"
                             (fn []
-                              (assert.are.equal 0
-                                                (length saved-vars.migrations))))))
+                              (assert.are.equal 2
+                                                saved-vars.defaults.global.version)
+                              (assert.is_truthy saved-vars.defaults.char.chains)
+                              (assert.are.equal 1
+                                                (length saved-vars.migrations))
+                              (assert.are.equal 2
+                                                (. saved-vars.migrations 1 :to))))))
             (describe :migrate
                       (fn []
                         (it "is a no-op with no migrations"
