@@ -1,6 +1,8 @@
 # Routina -- Product Requirements
 
-> **Status:** Draft, pre-1.0. Last updated 2026-05-28.
+> **Status:** Draft, pre-1.0. Last updated 2026-06-05 (scope expansion:
+> chains, goals, player plans, TomTom -- see [ROADMAP](ROADMAP.md)
+> "Scope expansion").
 > **Owner:** @bondiano.
 > Engineering rules live in [ARCHITECTURE](ARCHITECTURE.md),
 > [CONVENTIONS](CONVENTIONS.md), [WOW](WOW.md), [TESTING](TESTING.md),
@@ -9,9 +11,11 @@
 
 ## 1. Vision
 
-A weekly route planner for **WoW TBC Classic Anniversary** that tells a
-player, in one screen, *which content to run this week to maximize the
-chance of finishing their BiS list before the next phase ships*.
+A weekly *routine* planner for **WoW TBC Classic Anniversary** that tells a
+player, in one screen, *which content to run this week to hit their goals
+before the next phase ships* -- finishing the BiS list first among them, but
+also attunement chains, badge targets, gold for the epic mount, and the
+plans the player writes themselves.
 
 Not another loot tracker. Not a DPS meter. A **decision support tool** for
 the 90 minutes a player can actually log in this week.
@@ -75,7 +79,10 @@ A successful Routina v1.0 lets a player:
 ## 5. Non-goals (v1.0)
 
 - Combat or rotation advice. Routina is a *planner*, not a DPS meter.
-- Auction house or gold optimization.
+- Auction house **economy play**: scanning, flipping, posting, crafting
+  margins. (Narrowed 2026-06-05: gold-*farm* routes and gold goals are in
+  scope -- §6.9; item prices may be *read* from TSM/Auctionator through an
+  optional soft-dep facade when one is installed.)
 - Retail WoW support.
 - Cloud sync. Everything lives in `SavedVariables`.
 - Any AI/LLM call from inside the addon at runtime.
@@ -148,6 +155,43 @@ AceConfig panel:
 - `enUS` ships with v1.0.
 - `ruRU` post-launch via community translation, behind AceLocale.
 
+### 6.8 Quest & attunement chains (added 2026-06-05; ROADMAP Phase 6)
+
+- Attunement chains (Karazhan key, SSC, TK, ...) tracked step by step from
+  the quest log; data imported from the Attune addon dataset.
+- A Chains tab shows per-chain progress and the next actionable step; the
+  next step of an active attunement surfaces in the weekly plan as an
+  advisory.
+- Attunement gates in the planner derive from chain progress (manual
+  override retained).
+- Quests with BiS rewards are plan activities (drop p = 1.0).
+- The same chain model carries daily circuits and player-defined chains
+  (§6.10).
+
+### 6.9 Goal targets (added 2026-06-05; ROADMAP Phase 7)
+
+- The player states weekly goals -- "150 badges for the belt", "5000g for
+  the epic mount", a rep standing, a BiS slot -- and the planner builds
+  toward the reset deadline, reporting P10/P50/P90 progress per goal.
+- Activity yields: badges (deterministic, bosses x 1), gold (curated
+  estimate refined by the player's own recorded history), reputation.
+- Resolves OQ-6: heroics rank by contribution to the *active goals*, BiS
+  by default.
+
+### 6.10 Player-authored plans (added 2026-06-05; ROADMAP Phase 8)
+
+- Custom activities (name, est-minutes, reset cadence, optional yields)
+  competing in scoring as equals.
+- Plan edits -- pin / skip / reorder -- persisted as planner constraints.
+- A route constructor: ordered step checklists, reusing the chain model.
+
+### 6.11 TomTom waypoints (added 2026-06-05; ROADMAP Phase 9)
+
+- Optional soft-dependency: with TomTom installed, every plan step gets a
+  "point me there" waypoint; daily circuits and farm routes guide around a
+  loop; chain steps point at their location. Without TomTom: silent no-op,
+  zero errors.
+
 ## 7. Success metrics
 
 Routina is a single-developer hobby project; metrics stay modest and
@@ -180,8 +224,10 @@ Hard product constraints (engineering constraints are in [WOW](WOW.md)):
 
 ## 9. UX principles
 
-- **One panel, three tabs.** Weekly, Lockouts, BiS. Options behind a gear
-  icon. No deep menus.
+- **One panel, four tabs.** Weekly, Chains, Lockouts, BiS. Options behind a
+  gear icon. No deep menus. (Was three tabs; OQ-13 resolved 2026-06-05 --
+  chains earned a tab of their own rather than crowding the Plan stack.
+  Goals UI placement re-opens this in Phase 7.)
 - **Probabilities are first-class.** Every recommendation shows the
   number behind it. No "trust me" UI.
 - **Explainable.** Right-click a recommendation or click "Why?" -> an
@@ -295,6 +341,39 @@ These are unresolved and need an answer before the relevant
   Friday as on Tuesday") or step ("full value until 24h before reset,
   then half")? Affects whether the planner urges last-minute resets.
   *Affects:* Phase 2 / `route`.
+
+- ~~**OQ-10 -- chain data source & license.** Where do attunement chain
+  steps (quest IDs, ordering) come from, and is the source license
+  compatible?~~ **RESOLVED (2026-06-05):** vendored from the
+  [Attune](https://github.com/hippuli/Attune) addon's `AttuneData.lua`
+  (author Cixi), via the same pinned-SHA import playbook as the BiS catalog
+  (`task vendor-chain-source && task import-chains`). Attune ships **no
+  license**; the owner explicitly accepted the redistribution risk, and
+  Routina relicensed to **GPL-3.0** the same day (see `CREDITS.md` for both
+  risk notes). Attune data carries no coordinates -- chain-step waypoints
+  (§6.11) need a separate source, deferred to ROADMAP Phase 9.
+
+- **OQ-11 -- multi-goal arbitration.** Several active goals (§6.9) compete
+  for the same hours: priority weights, deadline-aware ordering, or
+  proportional coverage? The default matters -- most players never open
+  options. *Affects:* ROADMAP Phase 7 / route scoring.
+
+- **OQ-12 -- gold/h estimate provenance.** Curated gold/h varies wildly by
+  class, gear, and consumable prices. One conservative number, per-armor
+  class, or a wide band rendered honestly as a range? *Affects:* ROADMAP
+  Phase 7 / yields data, trust metric M2.
+
+- ~~**OQ-13 -- surface for chains & goals.** §9 said "one panel, three
+  tabs"; chains and goals both want UI.~~ **RESOLVED for chains
+  (2026-06-05):** a fourth **Chains** tab (§9 updated); the weekly plan
+  carries only a next-step advisory. **Still open for goals** -- decide in
+  ROADMAP Phase 7 §6 whether goals live in the Plan tab head, options, or
+  re-open the tab count.
+
+- **OQ-14 -- circuit auto-advance mechanics.** TomTom's arrival callback
+  API vs polling player position (an `OnUpdate` -- needs the written
+  justification per UI rules). Resolve by reading the TomTom source before
+  building ROADMAP Phase 9 §4. *Affects:* circuit guidance, perf budget.
 
 Move an item out of §13 when it has a committed answer. Add new ones
 liberally -- this section is meant to grow before it shrinks.

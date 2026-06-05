@@ -1,7 +1,9 @@
 # Routina -- Roadmap
 
-> Weekly route planner with a BiS-aware probability engine for **WoW TBC Classic
-> Anniversary**.
+> Weekly *routine* planner for **WoW TBC Classic Anniversary**: a BiS-aware
+> probability engine plus attunement/quest chains, badge & gold goals,
+> player-authored plans, and TomTom waypoints (scope expanded 2026-06-05,
+> see "Scope expansion" below).
 >
 > This roadmap is a living document. Phases are sequential by *dependency*, not
 > calendar -- a later phase may start once its prerequisites are merged, not
@@ -21,6 +23,12 @@
    real content phase ships and has been smoke-tested.
 5. **Small, sharp surface.** It is better to ship a tight weekly planner with
    trustworthy probabilities than a sprawling assistant that approximates.
+   The 2026-06-05 scope expansion grows the surface *by whole phases*, not by
+   blur -- each phase still ships sharp, tested, and honest about its numbers.
+6. **Soft-deps degrade gracefully.** TomTom, TSM, Auctionator are optional
+   integrations behind headless-safe facades (the `src/ui/acegui.fnl`
+   pattern): present -> richer behaviour, absent -> silent no-op, never a
+   hard requirement, never a Lua error.
 
 ## Status snapshot (2026-06-05)
 
@@ -51,6 +59,10 @@
 | Competition model | **Done** -- `competition.fnl` by-role model (PRD OQ-3 resolved): catalog-derived contending roles x raid composition, scaled by `ActivityDef :group-size`; "Raid composition" options sub-panel |
 | Localization scaffold (`Locales/`) | Empty (`.gitkeep` only) |
 | Release pipeline (BigWigs packager) | Configured, no tag yet |
+| Quest / chain engine | **Not started** (Phase 6) |
+| Goal targets (badges / gold / rep) | **Not started** (Phase 7); badges appear only in unresolved OQ-6 |
+| Player-authored plans | **Not started** (Phase 8) |
+| Waypoints / TomTom | **Not started** (Phase 9); no coordinate model in domain yet |
 
 ## Phase 0 -- Scaffolding (DONE)
 
@@ -321,7 +333,7 @@ Exit criteria:
 > (display capped at 3, OQ-9) with a Best-in-slot / Road-to-BiS Dropdown.
 >
 > Dependency-gated, not calendar-gated: builds on the Phase 2 catalog/route and
-> Phase 4 scoring, and may land **before** the Phase 6 release -- it directly
+> Phase 4 scoring, and may land **before** the Phase 10 release -- it directly
 > sharpens G1/G2 (what to run, with the right targets). Today the catalog is
 > **one item per slot, raid-BiS only**: `bis/<class>-<spec>.fnl` carries
 > Priority 1-2 (`MAX_PRIORITY = 2` in `scripts/import-bis.lua`) and the BiS tab's
@@ -448,7 +460,228 @@ Parallelizable; pick up alongside Phase 3-4 as time allows.
   under 5 ms median over 100 fixture players spanning all 27 class/spec
   pairs; measured ~1.4 ms median at landing.
 
-## Phase 6 -- Release 1.0 (TBC Anniversary Phase 1)
+## Scope expansion (decided 2026-06-05)
+
+Routina grows from "BiS route planner" to **weekly routine planner**: quest
+and attunement chains, badge/gold/rep goal targets, player-authored plans,
+and TomTom waypoint integration. Decisions locked with the owner:
+
+- **All of it ships before 1.0.** The release (now Phase 10) moves out; the
+  first public impression is the full routine planner, not the BiS slice.
+- **Quests:** attunement chains (Attune-style step tracking), BiS-reward
+  quests as plan activities, daily circuits as runnable routes, and an
+  arbitrary player-defined chain tracker -- all on one chain model.
+- **Goals are targets, not modes.** The player states weekly goals ("150
+  badges for the belt", "5000g for the epic mount"); the planner builds a
+  plan toward the reset deadline and reports P10/P50/P90 progress, exactly
+  as it does today for BiS slots. Resolves OQ-6 as a side effect.
+- **Gold non-goal lifted partially.** Gold-farm routes and gold goals are in
+  scope. AH *economy play* (scanning, flipping, posting) stays out; when TSM
+  or Auctionator is installed we may *read* their price data through a
+  soft-dep facade, otherwise vendor value + curated estimates only.
+- **Data via GPL import**, same playbook as the BiS catalog: vendor a
+  GPL-compatible chain/coordinate source (candidate: Attune -- verify its
+  exact GPL version against our GPL-2.0 first, OQ-10), generate Fennel data
+  modules, keep a hand-authored curator overlay for fixes.
+- **Yield numbers (gold/h, badges/h):** curated estimates as the cold-start
+  baseline (badges are deterministic: bosses x 1), refined by the player's
+  own recorded history -- the same pattern as `bayesian-luck`.
+
+**PRD updates: DONE (2026-06-05)** -- vision §1, non-goals §5, scope
+§6.8-6.11, UX §9 (four tabs), and OQ-10..14 promoted into §13 (OQ-10 and
+OQ-13-for-chains resolved on promotion).
+
+## Phase 6 -- Quest & chain engine
+
+Goal: chains -- attunements first -- are first-class citizens: tracked step
+by step from the quest log, surfaced in the weekly plan, and feeding the
+`requirements` gates that today are static booleans.
+
+Order matters; later items depend on earlier.
+
+1. **PRD sync** -- apply the scope-expansion edits listed above; move OQ-10..14
+   into PRD §13.
+2. **Schemas -- `src/domain/schemas.fnl`** (schema change; owner-approved
+   2026-06-05). `ChainDef` (id, name, kind `:attunement | :quest-line |
+   :daily-circuit | :custom`, steps), `ChainStep` (quest-id(s), step type
+   `:quest | :kill | :item | :dungeon`, optional coord `{:map :x :y}`,
+   prerequisite), `ChainProgress` (per-character current step, completed
+   set). Coordinates enter the domain model here; Phase 9 consumes them.
+3. **Data import -- `scripts/import-chains.lua`** (`task import-chains`).
+   Vendor the chain source (OQ-10 license check first), generate
+   `src/domain/chains/data.fnl` -- TBC attunement chains (Karazhan key,
+   SSC, TK, ...) with quest IDs and step coords. Curator overlay stays
+   available for corrections, per the BiS playbook.
+4. **`src/domain/chains.fnl`** -- pure: `next-step`, `progress`,
+   `chain-complete?`, `steps-remaining`, `est-minutes-remaining`. Operates
+   identically on imported and player-authored (`:custom`, Phase 8) chains.
+5. **Quest log events -- `src/core/events.fnl` + `src/core/wow.fnl`.**
+   `QUEST_TURNED_IN` / `QUEST_LOG_UPDATE` advance `ChainProgress`; seed from
+   the completed-quests query on login. **Verify every API signature against
+   warcraft.wiki.gg for the TBC 2.5.x client -- never invent.** Persisted at
+   `db.char.chains` with a `db.version` bump + migration.
+6. **Chains feed the planner.**
+   - Quests whose reward is in the BiS catalog become `:quest` ActivityDefs
+     (drop-table already models quest sources at p=1.0).
+   - The *next step* of an active attunement chain appears as a plan step
+     ("do the next Kara key step, ~25 min") scored by what it unlocks.
+   - `requirements-met?` attunement gates become *derived* from chain
+     progress instead of manual options toggles (manual override retained
+     for alts attuned before install).
+7. **UI.** A fourth **Chains** tab (OQ-13 resolved 2026-06-05; PRD §9 is now
+   "one panel, four tabs"): per-chain progress + next-step rows; the weekly
+   plan carries a next-step advisory; why-drawer explains what an attunement
+   unlocks.
+
+Exit criteria:
+
+- Fixture chain advances deterministically in busted from a synthetic quest
+  log; no WoW API in `src/domain/chains.fnl`.
+- Attunement gate flips from chain progress (fixture), manual override still
+  wins when set.
+- Live smoke: turning in a tracked quest advances the chain and re-renders
+  the plan with no Lua error.
+- Domain coverage >= 85% holds; `/docgen` regenerated.
+
+Open questions this phase introduced (both **resolved 2026-06-05**, full
+text in [PRD §13](PRD.md#13-open-questions)):
+
+- ~~**OQ-10 -- chain data source & license.**~~ **RESOLVED:** vendored from
+  the Attune addon (author Cixi) at a pinned SHA. Attune is **unlicensed**;
+  the owner accepted the risk explicitly and Routina relicensed to
+  **GPL-3.0** (see `CREDITS.md`). Attune data has no coordinates --
+  chain-step waypoints come from a separate source in Phase 9.
+- ~~**OQ-13 -- surface for chains & goals.**~~ **RESOLVED for chains:** a
+  fourth **Chains** tab (PRD §9 updated to "one panel, four tabs"); the
+  weekly plan carries only a next-step advisory. Goals placement stays open
+  for Phase 7 §6.
+
+## Phase 7 -- Goal targets & multi-currency engine (resolves OQ-6)
+
+Goal: the player states weekly goals; the planner builds toward them with
+the same honest P10/P50/P90 it gives BiS slots today. Badges and gold become
+first-class yields next to drop probabilities.
+
+1. **Yield model -- `src/domain/schemas.fnl` + `src/domain/yields/data.fnl`.**
+   `ActivityYield` per activity: `:badges` (deterministic, bosses x 1),
+   `:gold` (curated estimate, OQ-12), `:rep` (existing gains). Curated data
+   generated/maintained like the drop table.
+2. **`src/domain/goals.fnl`** -- pure. `GoalDef` (`:kind :badges | :gold |
+   :item | :rep | :chain`, target amount, deadline = next reset), progress
+   accounting, projection: deterministic yields are arithmetic, stochastic
+   ones reuse `drop-chance` -- no new math where old math fits.
+3. **Route scoring -- `src/domain/route.fnl`.** `RouteContext` gains active
+   goals; the greedy scorer optimizes goal-completion probability across
+   *all* active goals (arbitration rule = OQ-11). `project-week` extends to
+   "P50: 130 of your 150 badges by reset".
+4. **History extension -- `src/domain/history.fnl`.** Record actual gold and
+   badge yield per run (badges are an item in TBC -- Badge of Justice 29434
+   via `CHAT_MSG_LOOT`; gold via money-delta events, verify on wiki). Blend
+   curated estimate with observed history, same shrinkage idea as
+   `bayesian-luck`. Off by default, same toggle family as luck tracking.
+5. **Price facade -- `src/core/prices.fnl`** (soft-dep, headless-safe).
+   When TSM or Auctionator is present, read item values through their API to
+   price farm yields; absent -> vendor value + curated estimates. Read-only:
+   no scanning, no posting, no flips -- AH play stays a non-goal.
+6. **UI.** Goal editor (add/edit/remove goals) + per-goal progress cards with
+   the P10/P50/P90 band; placement per OQ-13.
+
+Exit criteria:
+
+- For a fixture player with a 150-badge goal, the plan surfaces
+  badge-dense heroics and the projection reports a deterministic badge count
+  per planned run -- busted, seeded, no WoW API.
+- Adding a gold goal visibly reorders the plan toward high-gold/h
+  activities; removing it restores the BiS-first order.
+- Addon loads and prices fall back cleanly with neither TSM nor Auctionator
+  installed.
+
+New open questions (now in [PRD §13](PRD.md#13-open-questions)):
+
+- **OQ-11 -- multi-goal arbitration.** Several active goals compete for the
+  same hours: priority weights, deadline-aware ordering, or proportional
+  coverage? Default matters (most players never open options). *Affects:*
+  route scoring.
+- **OQ-12 -- gold/h estimate provenance.** Curated gold/h varies wildly by
+  class, gear, and consumable prices. Single conservative number, per-armor
+  class, or wide band rendered honestly as a range? *Affects:* yields data,
+  trust metric M2.
+
+## Phase 8 -- Player-authored plans
+
+Goal: the player can add what the catalog doesn't know, and edit what the
+planner proposes -- without breaking determinism or the pure core.
+
+1. **Custom activities.** Authored in UI: name, est-minutes, reset
+   (`:weekly | :daily | :none`), optional yields and goal link. Stored in
+   `db.profile.custom-activities`, validated against `schemas.ActivityDef`
+   at the boundary, competing in scoring as equals. `db.version` bump +
+   migration.
+2. **Plan edits -- pin / skip / reorder.** Persisted per character;
+   expressed as *constraints* in `RouteContext` (pins ordered first, skips
+   excluded) so `route.plan-week` stays pure and deterministic given the
+   same constraints.
+3. **Route constructor.** A plan as an ordered checklist of steps; steps
+   optionally carry coords (consumed by Phase 9 circuits). Custom chains
+   reuse the Phase 6 `ChainDef :custom` model -- one mechanism, two authors
+   (importer / player).
+4. **UI.** "Add activity" flow, card context actions (pin / skip / move),
+   constructor editor with step checklist. All AceGUI via the facade.
+
+Exit criteria:
+
+- A fixture custom activity with a strong yield outranks a weak catalog one
+  -- busted, no WoW API.
+- Pin/skip constraints round-trip SavedVariables and survive `/reload`
+  (smoke); plan respects them deterministically (busted).
+- A custom chain advances through the constructor checklist identically to
+  an imported chain (shared spec).
+
+## Phase 9 -- Waypoints & TomTom
+
+Goal: every plan step can point somewhere; farm and daily circuits guide the
+player around a loop. First external soft-dependency -- the addon must stay
+fully functional, error-free, and quiet without TomTom installed.
+
+1. **Coordinate consolidation.** `{:map :x :y}` entered the schemas with
+   Phase 6 chain steps; extend to ActivityDef (instance entrance,
+   questgiver) and constructor route steps. Entrance coords are a small
+   curated set; chain step coords come from the Phase 6 import.
+2. **`src/core/tomtom.fnl` facade** -- headless-safe (guard on `_G.TomTom`,
+   no-op when absent), the only module allowed to touch the TomTom API.
+   **Verify every TomTom API call against the TomTom source -- never
+   invent.** `.toc` gains `## OptionalDeps: TomTom` (+ TSM/Auctionator from
+   Phase 7); update `.pkgmeta` accordingly.
+3. **Waypoint per plan step.** A click target on each plan card -> one
+   waypoint (entrance / questgiver / current chain step). The minimal,
+   highest-value integration -- lands first.
+4. **Circuit guidance.** Daily circuits and farm routes as ordered waypoint
+   loops: arrival advances to the next point (TomTom arrival callback --
+   mechanics are OQ-14), looping for repeatable farm laps.
+5. **Chain step waypoints.** The Phase 6 "next step" row and the why-drawer
+   gain a "point me there" action using imported step coords.
+
+Exit criteria:
+
+- With TomTom absent: zero Lua errors, waypoint affordances hidden or
+  disabled -- verified by a busted-level facade test plus live smoke.
+- With TomTom present: clicking a plan card sets the arrow; a fixture daily
+  circuit advances through its loop on simulated arrivals.
+- No coordinate literals outside generated data and the curated entrance
+  table.
+
+New open question (now in [PRD §13](PRD.md#13-open-questions)):
+
+- **OQ-14 -- circuit auto-advance mechanics.** TomTom's arrival callback API
+  vs polling player position (an `OnUpdate` -- needs the written
+  justification per UI rules). Resolve by reading the TomTom source before
+  building Phase 9 §4. *Affects:* circuit guidance, perf budget.
+
+## Phase 10 -- Release 1.0 (TBC Anniversary Phase 1)
+
+> Renumbered from Phase 6 (2026-06-05): the scope expansion ships first, so
+> 1.0 is the full routine planner -- BiS engine, chains, goals, player plans,
+> waypoints.
 
 - Full wowUnit smoke suite, manually executed pre-tag.
 - BigWigs packager release run, signed against `## Interface: 20505`.
@@ -456,7 +689,7 @@ Parallelizable; pick up alongside Phase 3-4 as time allows.
 - User-facing docs: `docs/USER_GUIDE.md` (install, first-run, FAQ).
 - Tag `v1.0.0`, write release notes from the milestone.
 
-## Phase 7+ -- Post-1.0 (sketch, **[open]**)
+## Phase 11+ -- Post-1.0 (sketch, **[open]**)
 
 - TBC Classic Anniversary **Phase 2** content (`## Interface` bump only
   after smoke testing on a Phase 2 PTR client).
@@ -477,7 +710,10 @@ relevant phase above as a concrete task and strike the entry in PRD §13.
 Stated up front so we don't accidentally re-litigate them.
 
 - Combat or rotation advice. Routina is a *planner*, not a DPS meter.
-- Auction house / gold optimization.
+- Auction house **economy play**: scanning, flipping, posting, crafting
+  margins. (Narrowed 2026-06-05: gold-*farm* routes and gold goals are now
+  in scope -- Phase 7 -- and prices may be *read* from TSM/Auctionator via a
+  soft-dep facade. The AH itself stays TSM territory.)
 - Retail WoW support. Lua 5.1 + TBC Classic API only.
 - Cloud sync, account-bound storage outside SavedVariables.
 - Any AI / LLM call from inside the addon at runtime.
