@@ -13,6 +13,8 @@
 (local Routina (or _G.Routina {}))
 (local root (or Routina.root (require :src.ui.root)))
 (local competition (or Routina.competition (require :src.domain.competition)))
+(local options-goals (or Routina.options-goals (require :src.ui.options-goals)))
+
 (local LibStub _G.LibStub)
 
 (local M {})
@@ -215,11 +217,14 @@
 
 (lambda M.options-table [api]
   "Build the AceConfig options spec. Top-level args are all non-inline groups
-   (general / weights / attune / composition) so register! can map each onto
-   its own Blizzard sub-panel -- one flat page overflowed the fixed-size frame.
+   (general / weights / attune / composition / goals) so register! can map
+   each onto its own Blizzard sub-panel -- one flat page overflowed the
+   fixed-size frame.
    Domain:  api : {:db {route-options table, mutated by :set closures}
                    :specs [{:value keyword :text string} ...]  -- spec choices
-                   :on-change (fn []) | nil  -- fired after any :set (re-plan)}
+                   :goals ?[GoalDef]  -- the persisted goal list (char.goals)
+                   :on-change (fn []) | nil  -- fired after any :set (re-plan)
+                   :notify (fn []) | nil}  -- AceConfigRegistry refresh
    Returns: an AceConfig options group table."
   (let [db api.db
         changed (fn [] (when api.on-change (api.on-change)))]
@@ -232,7 +237,11 @@
                      :name "Attunement gating"
                      :order 3
                      :args (attune-args db changed)}
-            :composition (composition-group db changed)}}))
+            :composition (composition-group db changed)
+            :goals (options-goals.goals-group {: db
+                                               :goals (or api.goals [])
+                                               :on-change api.on-change
+                                               :notify api.notify})}}))
 
 ;; --- Impure registration (guarded: no-op without the config libs) ----------
 
@@ -242,6 +251,14 @@
     (when prefs
       (when (= nil prefs.route) (set prefs.route {}))
       prefs.route)))
+
+(fn goals-db [addon]
+  "addon.db.char.goals -- the persisted GoalDef list the editor mutates in
+   place; created empty on first access."
+  (let [char (?. addon :db :char)]
+    (when char
+      (when (= nil char.goals) (set char.goals []))
+      char.goals)))
 
 (fn class-specs [addon]
   "Spec choices for the current class, or [] when the catalog isn't reachable."
@@ -261,11 +278,16 @@
    Returns: true when registered, false otherwise."
   (let [AceConfig (and LibStub (LibStub :AceConfig-3.0 true))
         AceConfigDialog (and LibStub (LibStub :AceConfigDialog-3.0 true))
+        AceConfigRegistry (and LibStub (LibStub :AceConfigRegistry-3.0 true))
         db (route-db addon)]
     (if (and AceConfig AceConfigDialog db)
         (let [table (M.options-table {: db
                                       :specs (class-specs addon)
-                                      :on-change root.refresh!})
+                                      :goals (goals-db addon)
+                                      :on-change root.refresh!
+                                      :notify (fn []
+                                                (when AceConfigRegistry
+                                                  (AceConfigRegistry:NotifyChange :Routina)))})
               AceDBOptions (and LibStub (LibStub :AceDBOptions-3.0 true))
               profiles? (and AceDBOptions addon.db)]
           (when profiles?
@@ -281,6 +303,7 @@
                                             :Routina :attune)
           (AceConfigDialog:AddToBlizOptions :Routina "Raid composition"
                                             :Routina :composition)
+          (AceConfigDialog:AddToBlizOptions :Routina :Goals :Routina :goals)
           (when profiles?
             (AceConfigDialog:AddToBlizOptions :Routina :Profiles :Routina
                                               :profiles))

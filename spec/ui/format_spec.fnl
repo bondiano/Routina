@@ -62,6 +62,38 @@
                         (it "guards against nil"
                             (fn []
                               (assert.are.equal "--" (format.score-short nil))))))
+            (describe ":gold"
+                      (fn []
+                        (it "formats gold and silver, dropping copper at >= 1g"
+                            (fn []
+                              (assert.are.equal "12g 34s" (format.gold 123456))))
+                        (it "collapses to bare gold with no silver"
+                            (fn []
+                              (assert.are.equal :120g (format.gold 1200000))))
+                        (it "formats sub-gold as silver and copper"
+                            (fn []
+                              (assert.are.equal "34s 56c" (format.gold 3456))
+                              (assert.are.equal :99c (format.gold 99))))
+                        (it "renders zero and guards nil/negative"
+                            (fn []
+                              (assert.are.equal :0c (format.gold 0))
+                              (assert.are.equal "--" (format.gold nil))
+                              (assert.are.equal "--" (format.gold -5))))))
+            (describe ":gold-band"
+                      (fn []
+                        (it "renders the honest range"
+                            (fn []
+                              (assert.are.equal "10g–25g"
+                                                (format.gold-band {:min 100000
+                                                                   :max 250000}))))
+                        (it "collapses a degenerate band to one amount"
+                            (fn []
+                              (assert.are.equal :10g
+                                                (format.gold-band {:min 100000
+                                                                   :max 100000}))))
+                        (it "guards nil"
+                            (fn []
+                              (assert.are.equal "--" (format.gold-band nil))))))
             (describe ":plan-lines"
                       (fn []
                         (local plan

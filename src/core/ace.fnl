@@ -146,9 +146,11 @@
   ;; Give the dispatcher the per-character DB slot so it can seed + flush the
   ;; weekly-state across the session (RAID_INSTANCE_WELCOME -> PLAYER_LOGOUT).
   (events.set-store! (fn [] (and self.db self.db.char)))
-  ;; Apply the persisted luck-tracking opt-in (experimental; off unless set).
+  ;; Apply the persisted tracking opt-ins (experimental; off unless set).
   (events.set-history-tracking! (?. self :db :char :preferences :route
-                                    :track-luck?)))
+                                    :track-luck?))
+  (events.set-yields-tracking! (?. self :db :char :preferences :route
+                                   :track-yields?)))
 
 (fn addon.OnDisable [self]
   (self.log:info :OnDisable)

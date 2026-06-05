@@ -5,11 +5,12 @@
 ;; (player, ctx, advice) triple, src/domain/route.fnl scores it against the real
 ;; catalog, and the steps render as a score-ordered stack of InlineGroup cards.
 ;;
-;; UI.md split: the data->render-spec is a PURE view-model (M.card-view-model,
-;; busted-tested); building the AceGUI widgets from it is imperative. AceGUI
-;; pools its own widgets, so render! just ReleaseChildren-then-rebuild -- there
-;; is no bespoke frame pool any more. render! is driven by src/ui/root.fnl
-;; (OnGroupSelected + refresh!), itself fed by src/core/events.fnl.
+;; UI.md split: the data->render-spec view-models are PURE and live in
+;; tabs/weekly-vm.fnl (busted-tested; re-exported here for compatibility);
+;; building the AceGUI widgets from them is imperative. AceGUI pools its own
+;; widgets, so render! just ReleaseChildren-then-rebuild -- there is no bespoke
+;; frame pool any more. render! is driven by src/ui/root.fnl (OnGroupSelected +
+;; refresh!), itself fed by src/core/events.fnl.
 ;;
 ;; NOTE: the chance is shown as text + item-quality colour AND a proportional
 ;; chance-meter bar (src/ui/widgets/chance-meter.fnl) anchored to the right edge
@@ -21,8 +22,9 @@
 
 (local Routina (or _G.Routina {}))
 (local acegui (or Routina.acegui (require :src.ui.acegui)))
-(local format (or Routina.format (require :src.ui.format)))
+(local vm (or Routina.tab-weekly-vm (require :src.ui.tabs.weekly-vm)))
 (local route (or Routina.route (require :src.domain.route)))
+(local goals (or Routina.goals (require :src.domain.goals)))
 (local planner (or Routina.planner (require :src.core.planner)))
 (local chance-meter
        (or Routina.chance-meter (require :src.ui.widgets.chance-meter)))
@@ -36,8 +38,6 @@
 
 ;; --- Layout constants ------------------------------------------------------
 
-;; top-N target items per card (PRD §6.1 G2: "top 3 target items")
-(local max-rows 3)
 (local epic-quality 4)
 
 ;; Right inset of the chance-meter from the item row's right edge.
@@ -52,72 +52,12 @@
   (each [_ m (ipairs live-meters)] (chance-meter.release! m))
   (set live-meters []))
 
-;; --- Pure view-model (UI.md: data->spec is pure, busted-tested) ------------
+;; --- Pure view-models (tabs/weekly-vm.fnl; re-exported for compatibility) --
 
-(fn run-word [runs]
-  (if (= runs 1) " run" " runs"))
-
-(fn chance-text [item]
-  "The chance column: 'NN% · K run(s)'."
-  (.. (format.percent item.chance) " · " item.runs (run-word item.runs)))
-
-(fn by-chance-desc [a b]
-  (> a.chance b.chance))
-
-(fn top-items [items]
-  "The max-rows highest-chance items, as a fresh sorted copy (input untouched)."
-  (let [sorted (icollect [_ it (ipairs items)] it)]
-    (table.sort sorted by-chance-desc)
-    (fcollect [i 1 (math.min max-rows (length sorted))]
-      (. sorted i))))
-
-(lambda M.card-view-model [step rank ?advice]
-  "Pure render spec for one activity card.
-   Domain:  step   : a route.plan-week step {:name :type :detail :minutes :score
-                     :attunement? :items [{:label :chance :runs :item-id} ...]}
-            rank   : integer >= 1 (display rank)
-            ?advice: {attune-slug text} -- soft 'not attuned' notes, or nil
-   Returns: {:title :subtitle :summary :advisory? string
-             :items [{:name string :chance-text string :chance number
-                      :item-id ?integer} ...<= max-rows]}"
-  {:title (.. "#" rank "  " (tostring step.name))
-   :subtitle (.. (tostring step.type) " · " (tostring step.detail))
-   :summary (.. "~" step.minutes " min · score "
-                (format.score-short step.score))
-   :advisory (let [text (and step.attunement ?advice
-                             (. ?advice step.attunement))]
-               (and text (.. "Requires " text)))
-   :items (icollect [_ it (ipairs (top-items step.items))]
-            {:name it.label
-             :chance-text (chance-text it)
-             :chance it.chance
-             :item-id it.item-id})})
-
-(lambda M.chain-advice-view-model [?rows]
-  "Pure render spec for the 'attunements in progress' advisory card at the
-   head of the plan, or nil when no chain is mid-way (unstarted and finished
-   chains stay quiet -- UX §9).
-   Domain:  ?rows : ctx.build's :chain-advice list, or nil
-                    [{:name :next-step-label :done :total :est-minutes} ...]
-   Returns: {:headline string :lines [string]} | nil"
-  (when (and ?rows (> (length ?rows) 0))
-    {:headline "Attunements in progress"
-     :lines (icollect [_ r (ipairs ?rows)]
-              (.. (tostring r.name) "  " r.done "/" r.total " · next: "
-                  (tostring r.next-step-label) " · ~" r.est-minutes " min left"))}))
-
-(lambda M.projection-view-model [?projection]
-  "Pure render spec for the weekly Monte Carlo fill projection (the tail summary
-   row), or nil when there is no projection / the plan targets no slots.
-   Domain:  ?projection : a route.project-week result, or nil
-                          {:p10 :p50 :p90 number (fractions) :slots integer}
-   Returns: {:headline string :detail string} | nil"
-  (when (and ?projection (> (or ?projection.slots 0) 0))
-    {:headline "Projected fill by reset"
-     :detail (.. "P10 " (format.percent ?projection.p10) " · P50 "
-                 (format.percent ?projection.p50) " · P90 "
-                 (format.percent ?projection.p90) " of " ?projection.slots
-                 (if (= ?projection.slots 1) " target slot" " target slots"))}))
+(set M.card-view-model vm.card-view-model)
+(set M.chain-advice-view-model vm.chain-advice-view-model)
+(set M.projection-view-model vm.projection-view-model)
+(set M.goals-view-model vm.goals-view-model)
 
 ;; --- Item-quality helpers (imperative, WoW API) ----------------------------
 
@@ -242,15 +182,15 @@
       (container:AddChild card))
     card))
 
-(fn build-chain-advice! [container vm]
-  "Head advisory card listing in-progress attunement chains and their next
-   actionable step (full progress lives in the Chains tab)."
+(fn build-lines-card! [container spec]
+  "A titled card of plain text lines -- the shared shape of the weekly-goals
+   and chain-advisory head cards."
   (let [card (acegui.create! :InlineGroup)]
     (when card
-      (card:SetTitle vm.headline)
+      (card:SetTitle spec.headline)
       (card:SetFullWidth true)
       (card:SetLayout :List)
-      (each [_ line (ipairs vm.lines)]
+      (each [_ line (ipairs spec.lines)]
         (let [label (acegui.create! :Label)]
           (when label
             (label:SetText line)
@@ -302,11 +242,18 @@
             advice (and input input.advice)
             ctx (and input input.ctx)
             n (length steps)]
-        ;; Head advisory: in-progress attunement chains, before the score-
-        ;; ordered cards (renders even when the plan itself is empty).
-        (let [cvm (M.chain-advice-view-model (and input input.chain-advice))]
+        ;; Head: weekly-goals progress card (Phase 7 §6 -- goals live in the
+        ;; Plan tab), then the in-progress attunement advisory; both render
+        ;; even when the plan itself is empty.
+        (when (and ctx ctx.goals (> (length ctx.goals) 0))
+          (let [gvm (vm.goals-view-model (goals.project ctx.goals steps ctx
+                                                        {:seed ctx.seed}))]
+            (when gvm
+              (build-lines-card! scroll gvm)
+              (add-spacer! scroll))))
+        (let [cvm (vm.chain-advice-view-model (and input input.chain-advice))]
           (when cvm
-            (build-chain-advice! scroll cvm)
+            (build-lines-card! scroll cvm)
             (add-spacer! scroll)))
         (if (= 0 n)
             (add-empty! scroll
@@ -316,7 +263,7 @@
               (for [rank 1 n]
                 (let [step (. steps rank)
                       next-step (. steps (+ rank 1))
-                      card (build-card! (M.card-view-model step rank advice)
+                      card (build-card! (vm.card-view-model step rank advice)
                                         rank step ctx next-step)]
                   (when card (scroll:AddChild card))
                   (add-spacer! scroll)))
@@ -324,7 +271,7 @@
               ;; seeded from options (route.project-week defaults the seed).
               (let [projection (route.project-week plan
                                                    {:seed (and ctx ctx.seed)})
-                    pvm (M.projection-view-model projection)]
+                    pvm (vm.projection-view-model projection)]
                 (when pvm (build-projection! scroll pvm))))))))
   nil)
 

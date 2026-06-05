@@ -124,3 +124,61 @@
                                                      "Quest - Deadwind Pass" 1
                                                      true))
                       (assert.is_truthy (string.find line "~120 min" 1 true))))))))
+
+(describe :weekly-goals-view-model
+          (fn []
+            (it "is nil for nil or empty projections"
+                (fn []
+                  (assert.is_nil (weekly.goals-view-model nil))
+                  (assert.is_nil (weekly.goals-view-model []))))
+            (it "renders a deterministic badge goal as a single by-reset number"
+                (fn []
+                  (let [vm (weekly.goals-view-model [{:id :g1
+                                                      :kind :badges
+                                                      :target 150
+                                                      :progress 80
+                                                      :p10 132
+                                                      :p50 132
+                                                      :p90 132}])]
+                    (assert.are.equal "Weekly goals" vm.headline)
+                    (assert.are.equal "Badges 80 / 150 · 132 by reset"
+                                      (. vm.lines 1)))))
+            (it "renders a gold goal's band in gold with all three percentiles"
+                (fn []
+                  (let [vm (weekly.goals-view-model [{:id :g2
+                                                      :kind :gold
+                                                      :target 50000000
+                                                      :progress 12340000
+                                                      :p10 13000000
+                                                      :p50 14500000
+                                                      :p90 16000000}])
+                        line (. vm.lines 1)]
+                    (assert.is_truthy (string.find line "Gold 1234g / 5000g" 1
+                                                   true))
+                    (assert.is_truthy (string.find line "P10 1300g" 1 true))
+                    (assert.is_truthy (string.find line "P50 1450g" 1 true))
+                    (assert.is_truthy (string.find line "P90 1600g by reset" 1
+                                                   true)))))
+            (it "renders a chain goal as percent progress"
+                (fn []
+                  (let [vm (weekly.goals-view-model [{:id :g3
+                                                      :kind :chain
+                                                      :target 1
+                                                      :progress 0.5
+                                                      :p10 0.5
+                                                      :p50 0.5
+                                                      :p90 0.5}])]
+                    (assert.are.equal "Chain 50% / 100% · 50% by reset"
+                                      (. vm.lines 1)))))
+            (it "lists every goal in order"
+                (fn []
+                  (let [mk (fn [id]
+                             {: id
+                              :kind :badges
+                              :target 10
+                              :progress 0
+                              :p10 5
+                              :p50 5
+                              :p90 5})
+                        vm (weekly.goals-view-model [(mk :a) (mk :b)])]
+                    (assert.are.equal 2 (length vm.lines)))))))

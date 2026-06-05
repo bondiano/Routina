@@ -37,6 +37,31 @@
    Returns: \"0.83\"; \"--\" if nil."
   (if (not ?score) "--" (string.format "%.2f" ?score)))
 
+(lambda M.gold [?copper]
+  "Format a copper amount as compact gold/silver/copper.
+   Domain:  ?copper : number >= 0 or nil
+   Returns: \"12g 34s\" (copper dropped at >= 1g), \"34s 56c\" under a gold,
+            \"0c\" for zero; \"--\" if nil or negative."
+  (if (or (not ?copper) (< ?copper 0))
+      "--"
+      (let [total (math.floor (+ 0.5 ?copper))
+            g (math.floor (/ total 10000))
+            s (math.floor (/ (% total 10000) 100))
+            c (% total 100)]
+        (if (> g 0) (if (> s 0) (.. g "g " s :s) (.. g :g))
+            (> s 0) (if (> c 0) (.. s "s " c :c) (.. s :s))
+            (.. c :c)))))
+
+(lambda M.gold-band [?band]
+  "Format an honest gold band (OQ-12) as a range.
+   Domain:  ?band : {:min number :max number} (copper) or nil
+   Returns: \"10g–25g\"; collapses to one amount when min == max; \"--\" if nil."
+  (if (not ?band)
+      "--"
+      (if (= ?band.min ?band.max)
+          (M.gold ?band.min)
+          (.. (M.gold ?band.min) "–" (M.gold ?band.max)))))
+
 ;; --- Slash-command lines (/rt plan, /rt debug) ------------------------------
 ;;
 ;; Pure plan/diagnostics -> chat-line builders. The imperative shell

@@ -122,12 +122,17 @@ build\ui\widgets\why-drawer.lua
 # and before the tabs that compose them.
 build\ui\widgets\chance-meter.lua
 build\ui\widgets\lockout-timer.lua
+# weekly-vm: the Plan tab's pure view-models (cards, advisories, projections,
+# weekly goals). Before tabs\weekly.lua, which renders them.
+build\ui\tabs\weekly-vm.lua
 build\ui\tabs\weekly.lua
 build\ui\tabs\chains.lua
 build\ui\tabs\lockouts.lua
 build\ui\tabs\bis.lua
 build\ui\root.lua
-# options: AceConfig panel (the only AceGUI surface). After root (it refreshes
-# the plan on change), before ace (which registers it on init).
+# options: AceConfig panel (the only AceGUI surface). options-goals (the Goals
+# editor sub-panel builder) first; options.lua composes it. After root (it
+# refreshes the plan on change), before ace (which registers it on init).
+build\ui\options-goals.lua
 build\ui\options.lua
 build\core\ace.lua
