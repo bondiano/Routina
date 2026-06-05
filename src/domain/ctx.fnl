@@ -20,6 +20,7 @@
 (local Routina (or _G.Routina {}))
 (local schemas (or Routina.schemas (require :src.domain.schemas)))
 (local validate (or Routina.validate (require :src.domain.validate)))
+(local chains (or Routina.chains (require :src.domain.chains)))
 
 (local M {})
 
@@ -81,6 +82,23 @@
         :bt-medallion {:quest-id 10985 :gate? false :advise? false}
         :heroic-flamewrought {:gate? false :advise? false}
         :heroic-auchindoun {:gate? false :advise? false}})
+
+;; Attunement slug -> the chain id(s) in src/domain/chains that prove it.
+;; Faction-variant chains (the importer suffixes -horde/-alliance) both map to
+;; one slug: a character can only progress its own faction's chain, so "any
+;; listed chain complete" is the held test. Precedence when deriving "held":
+;; per-attunement options override (gate?/advise? flips, the manual escape
+;; hatch) > chain completion > the legacy single proof-quest flag -- an alt
+;; attuned before install still resolves via quest-completed?.
+(local attune-chains
+       {:kara-key [:karazhan]
+        :ssc-attune [:serpentshrine-cavern]
+        :tk-attune [:the-eye-horde :the-eye-alliance]
+        :hyjal-vials [:mount-hyjal-horde :mount-hyjal-alliance]
+        :bt-medallion [:black-temple-horde :black-temple-alliance]
+        :heroic-flamewrought [:thrallmar-heroics-horde
+                              :honor-hold-heroics-alliance]
+        :heroic-auchindoun [:lower-city-heroics]})
 
 ;; Reputation faction slug (as used by activities :rep gates) -> WoW faction id.
 ;; :ogrila = 1038 (verified: wowhead.com/tbc/faction=1038/ogrila).
@@ -149,23 +167,39 @@
                  :gate? (if (= nil o.gate?) base.gate? o.gate?)
                  :advise? (if (= nil o.advise?) base.advise? o.advise?)})))))
 
-(fn attunement-set [eff quest-completed?]
+(fn chain-attuned? [slug ?chain-progress]
+  "Whether any chain proving this attunement slug is complete in the supplied
+   {chain-id ChainProgress} map (nil map -> false, the pre-Phase-6 behaviour)."
+  (let [chain-ids (. attune-chains slug)]
+    (and (not= nil ?chain-progress) (not= nil chain-ids)
+         (accumulate [hit false _ cid (ipairs chain-ids)]
+           (or hit (let [chain (chains.by-id cid)
+                         p (. ?chain-progress (tostring cid))]
+                     (and (not= nil chain) (not= nil p)
+                          (chains.chain-complete? chain p))))))))
+
+(fn attunement-set [eff quest-completed? ?chain-progress]
   "Set {slug true} of attunements the player holds. A slug that opts into gating
-   (:gate? true with a :quest-id) is gated on (quest-completed? id); every other
-   slug is assumed held, so a removed-from-the-game attunement never hides a
-   raid (see attune-quests for the per-attunement rationale)."
+   (:gate? true) is held when its chain is complete (chain-attuned?) or, as the
+   legacy floor, when its proof quest is flagged done; every other slug is
+   assumed held, so a removed-from-the-game attunement never hides a raid (see
+   attune-quests / attune-chains for the per-attunement rationale)."
   (collect [slug entry (pairs eff)]
-    (if (and entry.gate? entry.quest-id)
-        (when (quest-completed? entry.quest-id) (values slug true))
+    (if entry.gate?
+        (when (or (chain-attuned? slug ?chain-progress)
+                  (and entry.quest-id (quest-completed? entry.quest-id)))
+          (values slug true))
         (values slug true))))
 
-(fn attunement-advice [eff quest-completed?]
+(fn attunement-advice [eff quest-completed? ?chain-progress]
   "Soft advisory {slug advice-text} for still-relevant attunements the player
-   lacks: :advise? true, a :quest-id, and the quest not completed. Used for a UI
-   badge -- it never filters, so it is safe even when gating is off."
+   lacks: :advise? true, a :quest-id, the quest not completed, and no complete
+   chain proving it. Used for a UI badge -- it never filters, so it is safe
+   even when gating is off."
   (collect [slug entry (pairs eff)]
     (when (and entry.advise? entry.quest-id
-               (not (quest-completed? entry.quest-id)))
+               (not (quest-completed? entry.quest-id))
+               (not (chain-attuned? slug ?chain-progress)))
       (values slug entry.advice-text))))
 
 (fn reputation-map [faction-standing]
@@ -209,6 +243,9 @@
                         :owner string                  -- char key for lockouts
                         :quest-completed? (fn [qid] -> bool)
                         :faction-standing (fn [fid] -> standingId|nil)
+                        :chain-progress ?{chain-id ChainProgress} -- live map
+                          from src/core/events.fnl; nil keeps quest-flag-only
+                          attunement resolution (pre-Phase-6 behaviour)
                         :options {:spec ?kw :phase ?int :weights ?{}
                                   :competitors ?{} :composition ?{role int}
                                   :default-competitors ?int
@@ -220,7 +257,8 @@
   (let [opts (or snapshot.options {})
         eff (effective-attune opts)
         player {:level snapshot.level
-                :attunements (attunement-set eff snapshot.quest-completed?)
+                :attunements (attunement-set eff snapshot.quest-completed?
+                                             snapshot.chain-progress)
                 :reputations (reputation-map snapshot.faction-standing)}
         ctx {:class snapshot.class
              :spec (detect-spec snapshot.class snapshot.talent-points opts.spec)
@@ -236,7 +274,10 @@
              :include-classic? opts.include-classic?}]
     (validate.assert! schemas.Player player :ctx/player)
     (validate.assert! schemas.RouteContext ctx :ctx/ctx)
-    {: player : ctx :advice (attunement-advice eff snapshot.quest-completed?)}))
+    {: player
+     : ctx
+     :advice (attunement-advice eff snapshot.quest-completed?
+                                snapshot.chain-progress)}))
 
 ;; --- Register into the addon namespace -------------------------------------
 ;;

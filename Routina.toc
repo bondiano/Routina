@@ -30,9 +30,6 @@ build\ui\acegui.lua
 # schemas before validate (validate reads the registry at load).
 build\domain\schemas.lua
 build\domain\validate.lua
-# ctx: pure raw-snapshot -> (player, RouteContext) assembler. Needs only
-# schemas + validate; the shell (wow + planner) feeds it live client data.
-build\domain\ctx.lua
 build\domain\lockouts.lua
 # weekly-state: pure per-character weekly-progress record. Accumulated by
 # src/core/events.fnl across a session and flushed to db.char on logout.
@@ -83,6 +80,10 @@ build\domain\drop-chance.lua
 # it. See scripts/import-chains.lua.
 build\domain\chains\data.lua
 build\domain\chains.lua
+# ctx: pure raw-snapshot -> (player, RouteContext) assembler. Needs schemas +
+# validate + chains (attunement gates derive from chain progress); the shell
+# (wow + planner) feeds it live client data.
+build\domain\ctx.lua
 # history: cumulative observation log feeding bayesian-luck. After drop-chance
 # (uses it); accumulated by src/core/events.fnl behind a default-off flag.
 build\domain\history.lua

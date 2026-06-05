@@ -6,6 +6,12 @@
 ;; with fakes and the schema-validated output is asserted directly.
 
 (local ctx (require :src.domain.ctx))
+(local chains (require :src.domain.chains))
+
+(fn complete-progress [chain-id]
+  "A ChainProgress with every step of the registry chain marked complete."
+  (let [chain (chains.by-id chain-id)]
+    {:completed (collect [_ s (ipairs chain.steps)] s.id true)}))
 
 (fn snapshot [overrides]
   "A valid raw snapshot fixture (feral druid, nothing owned), overridable."
@@ -87,7 +93,45 @@
                                      (assert.is_true (. r.player.attunements
                                                         :ssc-attune))
                                      (assert.is_true (. r.player.attunements
-                                                        :bt-medallion)))))))
+                                                        :bt-medallion)))))
+                             (it "gate flips from chain completion (quest flag never set)"
+                                 (fn []
+                                   (let [opts {:attune {:kara-key {:gate? true}}}
+                                         held (ctx.build (snapshot {:quest-completed? #false
+                                                                    :options opts
+                                                                    :chain-progress {:karazhan (complete-progress :karazhan)}}))
+                                         missing (ctx.build (snapshot {:quest-completed? #false
+                                                                       :options opts}))]
+                                     (assert.is_true (. held.player.attunements
+                                                        :kara-key))
+                                     (assert.is_nil (. missing.player.attunements
+                                                       :kara-key)))))
+                             (it "legacy proof-quest flag still attunes without chain progress"
+                                 (fn []
+                                   (let [opts {:attune {:kara-key {:gate? true}}}
+                                         r (ctx.build (snapshot {:quest-completed? #(= $
+                                                                                       9837)
+                                                                 :options opts}))]
+                                     (assert.is_true (. r.player.attunements
+                                                        :kara-key)))))
+                             (it "incomplete chain progress alone does not attune a gated slug"
+                                 (fn []
+                                   (let [opts {:attune {:kara-key {:gate? true}}}
+                                         halfway {:karazhan {:completed {:10 true}}}
+                                         r (ctx.build (snapshot {:quest-completed? #false
+                                                                 :options opts
+                                                                 :chain-progress halfway}))]
+                                     (assert.is_nil (. r.player.attunements
+                                                       :kara-key)))))
+                             (it "manual gate?-off override wins over everything"
+                                 (fn []
+                                   ;; gating disabled -> held, regardless of
+                                   ;; chain progress or quest flags
+                                   (let [r (ctx.build (snapshot {:quest-completed? #false
+                                                                 :options {:attune {:kara-key {:gate? false}}}
+                                                                 :chain-progress {}}))]
+                                     (assert.is_true (. r.player.attunements
+                                                        :kara-key)))))))
                  (describe :advice
                            (fn []
                              (it "advises the Karazhan key when not completed"
@@ -106,6 +150,11 @@
                                  (fn []
                                    (let [r (ctx.build (snapshot {:quest-completed? #false
                                                                  :options {:attune {:kara-key {:advise? false}}}}))]
+                                     (assert.is_nil (. r.advice :kara-key)))))
+                             (it "drops the advisory once the chain is complete"
+                                 (fn []
+                                   (let [r (ctx.build (snapshot {:quest-completed? #false
+                                                                 :chain-progress {:karazhan (complete-progress :karazhan)}}))]
                                      (assert.is_nil (. r.advice :kara-key)))))))
                  (describe :reputations
                            (fn []
