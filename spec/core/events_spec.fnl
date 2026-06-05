@@ -170,7 +170,33 @@
                                 (events.dispatch :PLAYER_LOGOUT)
                                 (assert.is_nil char.history)
                                 (events.set-history-tracking! false)
-                                (events.set-store! nil))))))
+                                (events.set-store! nil))))
+                        (it "reset-history! zeroes the session and the store"
+                            (fn []
+                              (let [log (make-log)
+                                    char {:history {:runs {:karazhan 5}
+                                                    :drops {:28545 2}}}]
+                                (events.set-logger! log)
+                                (events.set-store! (fn [] char))
+                                (events.set-history-tracking! true)
+                                (events.record-run! :karazhan)
+                                (events.reset-history!)
+                                ;; persisted copy is emptied immediately ...
+                                (assert.are.same {:runs {} :drops {}}
+                                                 char.history)
+                                ;; ... and the next record re-seeds from it,
+                                ;; so the pre-reset tallies are gone for good.
+                                (events.record-run! :karazhan)
+                                (events.dispatch :PLAYER_LOGOUT)
+                                (assert.are.equal 1
+                                                  (. char.history :runs
+                                                     :karazhan))
+                                (events.set-history-tracking! false)
+                                (events.set-store! nil))))
+                        (it "reset-history! is safe with no store wired"
+                            (fn []
+                              (events.set-store! nil)
+                              (assert.has_no.errors events.reset-history!)))))
             (describe :init!
                       (fn []
                         (it "embeds a frame and registers every event"

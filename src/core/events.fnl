@@ -221,6 +221,19 @@
     (when hist (set history-session (history.record-run hist activity-id))))
   nil)
 
+(lambda M.reset-history! []
+  "Reset the cumulative luck history (/rt reset): drop the live session and
+   overwrite the persisted db.char.history with an empty record, so both the
+   running session and the next login start from zero. Safe with no store wired.
+   Domain:  (none)
+   Returns: nil."
+  (set history-session nil)
+  (when get-char
+    (let [char (get-char)]
+      (when char
+        (set char.history (history.to-db (history.empty))))))
+  nil)
+
 (lambda M.record-drop! [item-id]
   "Record one observed item drop into the live luck history. No-op unless history
    tracking is on and a store is wired. Intended to be called from a confirmed

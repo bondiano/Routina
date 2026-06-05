@@ -23,6 +23,57 @@
                               (let [cmds (ace-mock.registered-commands)]
                                 (assert.is_truthy (. cmds :routina))
                                 (assert.is_truthy (. cmds :rt)))))))
+            (describe "slash subcommands"
+                      (fn []
+                        (fn rt [input]
+                          "Invoke the registered /rt handler with one input."
+                          (let [handler (. (ace-mock.registered-commands) :rt)]
+                            (handler input)))
+
+                        (before_each (fn []
+                                       (ace:OnInitialize)
+                                       (ace:OnEnable)))
+                        (after_each (fn [] (ace:OnDisable)))
+                        (it "plan prints a plan (or the input error) to chat"
+                            (fn []
+                              (rt :plan)
+                              (let [lines (ace-mock.printed)]
+                                (assert.is_true (>= (length lines) 1))
+                                (assert.is_truthy (string.find (. lines 1)
+                                                               :Routina 1 true)))))
+                        (it "reset zeroes the persisted luck history"
+                            (fn []
+                              (set ace.db.char.history
+                                   {:runs {:karazhan 5} :drops {:28545 2}})
+                              (rt :reset)
+                              (assert.are.same {:runs {} :drops {}}
+                                               ace.db.char.history)
+                              (assert.are.equal "Routina: luck history reset."
+                                                (. (ace-mock.printed) 1))))
+                        (it "debug dumps db, tracking and plan diagnostics"
+                            (fn []
+                              (rt :debug)
+                              (let [lines (ace-mock.printed)]
+                                (assert.are.equal 3 (length lines))
+                                (assert.is_truthy (string.find (. lines 1)
+                                                               "Routina debug -- db v1"
+                                                               1 true))
+                                (assert.is_truthy (string.find (. lines 2)
+                                                               "luck tracking: off"
+                                                               1 true)))))
+                        (it "is case-insensitive and trims surrounding noise"
+                            (fn []
+                              (rt " DEBUG ")
+                              (assert.are.equal 3 (length (ace-mock.printed)))))
+                        (it "unknown words print a usage line"
+                            (fn []
+                              (rt :bogus)
+                              (assert.is_truthy (string.find (. (ace-mock.printed)
+                                                                1)
+                                                             :usage 1 true))))
+                        (it "bare input still toggles without error"
+                            (fn []
+                              (assert.has_no.errors (fn [] (rt "")))))))
             (describe :OnEnable
                       (fn []
                         (it "stands up the event frame"

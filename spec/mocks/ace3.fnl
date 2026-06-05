@@ -13,7 +13,7 @@
 
 ;; --- Sinks (assertable from specs) -----------------------------------------
 
-(local state {:commands {}})
+(local state {:commands {} :printed []})
 
 (fn deep-copy [t]
   (if (= (type t) :table)
@@ -22,9 +22,11 @@
 
 ;; --- Lib stubs -------------------------------------------------------------
 
-(local AceConsole {:RegisterChatCommand (fn [_self cmd handler]
-                                          (tset state.commands cmd handler))
-                   :Print (fn [_self ...] nil)})
+(local AceConsole
+       {:RegisterChatCommand (fn [_self cmd handler]
+                               (tset state.commands cmd handler))
+        :Print (fn [_self msg]
+                 (table.insert state.printed (tostring msg)))})
 
 (local AceAddon {:NewAddon (fn [_self name ...]
                              ;; Real NewAddon embeds the named mixins; we only need
@@ -69,10 +71,15 @@
 
 (fn M.reset! []
   "Clear recorded registrations. Call in before_each when asserting sinks."
-  (set state.commands {}))
+  (set state.commands {})
+  (set state.printed []))
 
 (fn M.registered-commands []
   "Return the {command -> handler} table recorded via RegisterChatCommand."
   state.commands)
+
+(fn M.printed []
+  "Return the chat lines recorded via AceConsole Print, oldest first."
+  state.printed)
 
 M

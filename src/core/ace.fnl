@@ -16,6 +16,9 @@
 (local Routina (or _G.Routina {}))
 (local events (or Routina.events (require :src.core.events)))
 (local saved-vars (or Routina.saved-vars (require :src.core.saved-vars)))
+(local planner (or Routina.planner (require :src.core.planner)))
+(local route (or Routina.route (require :src.domain.route)))
+(local format (or Routina.format (require :src.ui.format)))
 (local root (or Routina.root (require :src.ui.root)))
 (local options (or Routina.options (require :src.ui.options)))
 
@@ -58,6 +61,65 @@
         (root.refresh!))
     nil))
 
+;; --- Slash subcommands (/rt plan | reset | debug; PRD §6.6) -----------------
+
+(fn print-lines! [self lines]
+  "Print each chat line through AceConsole (prefixed, local-only output)."
+  (each [_ line (ipairs lines)]
+    (self:Print line))
+  nil)
+
+(fn cmd-plan [self]
+  "Print this week's plan to chat. Reads the live client through the planner
+   shell; degrades to the input error during loading screens."
+  (let [input (planner.route-input)]
+    (print-lines! self
+                  (if input.ok
+                      (format.plan-lines (route.plan-week input.player
+                                                          input.ctx))
+                      [(.. "Routina: no plan -- " (tostring input.err))]))))
+
+(fn cmd-reset [self]
+  "Reset the cumulative luck history: live session + persisted record."
+  (events.reset-history!)
+  (self:Print "Routina: luck history reset."))
+
+(fn count-total [counts]
+  "Sum of a string->integer count map (luck-history totals for /rt debug)."
+  (accumulate [sum 0 _ n (pairs (or counts {}))]
+    (+ sum n)))
+
+(fn cmd-debug [self]
+  "Dump diagnostic state to chat: DB version, log level, luck tracking, and the
+   current plan aggregates (or why the route input is unavailable)."
+  (let [input (planner.route-input)
+        plan (when input.ok (route.plan-week input.player input.ctx))
+        hist (?. self :db :char :history)]
+    (print-lines! self
+                  (format.debug-lines {:version (?. self :db :global :version)
+                                       :log-level (?. self :db :global :options
+                                                      :log-level)
+                                       :tracking? (?. self :db :char
+                                                      :preferences :route
+                                                      :track-luck?)
+                                       :runs (count-total (?. hist :runs))
+                                       :drops (count-total (?. hist :drops))
+                                       :err (when (not input.ok) input.err)
+                                       :steps (when plan (length plan.steps))
+                                       :score (?. plan :score)
+                                       :est-minutes (?. plan :est-minutes)}))))
+
+(fn handle-command [self input]
+  "Route one /routina | /rt invocation by its first word; bare toggles the
+   panel. Unknown words print a usage line instead of failing silently."
+  (case (string.lower (or (and input (input:match "%S+")) ""))
+    "" (root.toggle!)
+    :options (options.open!)
+    :plan (cmd-plan self)
+    :reset (cmd-reset self)
+    :debug (cmd-debug self)
+    _ (self:Print "Routina: usage -- /rt [plan | reset | debug | options]")))
+
 (fn addon.OnInitialize [self]
   ;; SavedVariables first -- frames and events can't read the DB before this.
   (let [AceDB (LibStub :AceDB-3.0)]
@@ -69,9 +131,9 @@
     (options.register! self)
     (self.log:info "OnInitialize complete")
     ;; Slash commands registered here so /routina works even if enable fails.
-    ;; /routina is canonical; /rt is the short alias; "options" opens the panel.
-    (let [handler (fn [input]
-                    (if (= input :options) (options.open!) (root.toggle!)))]
+    ;; /routina is canonical; /rt is the short alias. Subcommands: plan / reset
+    ;; / debug / options (PRD §6.6); bare toggles the panel.
+    (let [handler (fn [input] (handle-command self input))]
       (self:RegisterChatCommand :routina handler)
       (self:RegisterChatCommand :rt handler))))
 
