@@ -7,6 +7,7 @@
 ## IconTexture: Interface\Icons\INV_Misc_Map_01
 ## X-Fennel-Version: 1.6.1
 ## X-License: GPL-3.0
+## OptionalDeps: TradeSkillMaster, Auctionator
 
 # Ace3 framework. NOT committed -- fetched into Libs/ by `task libs` (or the
 # BigWigs packager at release). Ace3.xml embeds CallbackHandler-1.0, so no
@@ -80,13 +81,23 @@ build\domain\drop-chance.lua
 # it. See scripts/import-chains.lua.
 build\domain\chains\data.lua
 build\domain\chains.lua
-# ctx: pure raw-snapshot -> (player, RouteContext) assembler. Needs schemas +
-# validate + chains (attunement gates derive from chain progress); the shell
-# (wow + planner) feeds it live client data.
-build\domain\ctx.lua
-# history: cumulative observation log feeding bayesian-luck. After drop-chance
-# (uses it); accumulated by src/core/events.fnl behind a default-off flag.
+# history: cumulative observation log feeding bayesian-luck + the yield blend.
+# After drop-chance (uses it), before ctx (which blends gold bands from it);
+# accumulated by src/core/events.fnl behind default-off flags.
 build\domain\history.lua
+# Yields: generated yields\data.lua registers _G.Routina.yields-data;
+# yields.lua reads + validates it and blends gold bands toward recorded
+# history. See scripts/import-yields.lua. Before goals (which scores from it).
+build\domain\yields\data.lua
+build\domain\yields.lua
+# goals: player-stated weekly goals -- progress, deadline-aware urgency and
+# the per-goal projection. After yields + drop-table + drop-chance +
+# activities; before ctx/route (both consume it).
+build\domain\goals.lua
+# ctx: pure raw-snapshot -> (player, RouteContext) assembler. Needs schemas +
+# validate + chains (attunement gates derive from chain progress) + goals +
+# yields + history; the shell (wow + planner) feeds it live client data.
+build\domain\ctx.lua
 build\domain\plan.lua
 # route: the orchestrator -- ties activities + bis-catalog + drop-table +
 # drop-chance together and delegates ordering to plan. Loads after all of them.
@@ -96,6 +107,9 @@ build\domain\route.lua
 # requires root and wires everything via the Ace3 libs loaded at the top.
 build\core\wow.lua
 build\core\saved-vars.lua
+# prices: read-only soft-dep facade over TSM / Auctionator (OptionalDeps
+# above); vendor fallback via GetItemInfo. Headless-safe -- no hard deps.
+build\core\prices.lua
 build\core\events.lua
 # planner: gathers the live client (wow) + the events chain-session into
 # ctx.build's snapshot -> route input for the Plan tab. Loads after wow +
