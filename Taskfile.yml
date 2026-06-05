@@ -84,6 +84,12 @@ tasks:
     cmds:
       - fennel scripts/docgen.fnl
 
+  profile:
+    desc: Performance budget -- route.plan-week <5ms median over 100 fixture players (PRD M5)
+    deps: [build]
+    cmds:
+      - luajit scripts/profile.lua
+
   package:
     desc: BigWigs packager dry run (verifies the addon ships correctly)
     deps: [build]
