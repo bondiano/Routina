@@ -55,6 +55,51 @@
                                 (assert.are.equal 1
                                                   (history.runs-for h :karazhan))
                                 (assert.are.equal 1 (history.drops-for h 28545)))))))
+            (describe ":record-yield / :yields-for"
+                      (fn []
+                        (it "tallies runs, gold and badges per activity"
+                            (fn []
+                              (let [h (-> (history.empty)
+                                          (history.record-yield :heroic-mech
+                                                                {:gold 120000
+                                                                 :badges 5})
+                                          (history.record-yield :heroic-mech
+                                                                {:gold 90000
+                                                                 :badges 4}))
+                                    y (history.yields-for h :heroic-mech)]
+                                (assert.are.equal 2 y.runs)
+                                (assert.are.equal 210000 y.gold)
+                                (assert.are.equal 9 y.badges))))
+                        (it "zeros missing outcome fields and clamps negatives"
+                            (fn []
+                              (let [h (history.record-yield (history.empty)
+                                                            :karazhan
+                                                            {:gold -50})
+                                    y (history.yields-for h :karazhan)]
+                                (assert.are.equal 1 y.runs)
+                                (assert.are.equal 0 y.gold)
+                                (assert.are.equal 0 y.badges))))
+                        (it "returns zeros for an unseen activity, fresh tables"
+                            (fn []
+                              (let [h (history.empty)
+                                    a (history.yields-for h :gruul)
+                                    b (history.yields-for h :gruul)]
+                                (assert.are.same {:runs 0 :gold 0 :badges 0} a)
+                                (assert.is_false (rawequal a b)))))
+                        (it "does not mutate the input history"
+                            (fn []
+                              (let [h0 (history.empty)]
+                                (history.record-yield h0 :karazhan {:gold 1})
+                                (assert.are.same {} h0.yields))))
+                        (it "tolerates a pre-Phase-7 history without :yields"
+                            (fn []
+                              (let [legacy {:runs {} :drops {}}
+                                    h (history.record-yield legacy :karazhan
+                                                            {:gold 5})]
+                                (assert.are.equal 1
+                                                  (. (history.yields-for h
+                                                                         :karazhan)
+                                                     :runs)))))))
             (describe ":luck"
                       (fn []
                         (it "feeds observed counts into bayesian-luck"
@@ -92,7 +137,29 @@
                                 (assert.are.equal 3 (. h.runs :karazhan))
                                 (assert.is_nil (. h.runs :bad))
                                 (assert.is_nil (. h.runs :frac))
-                                (assert.is_nil (. h.drops :28545)))))))
+                                (assert.is_nil (. h.drops :28545)))))
+                        (it "keeps valid yield tallies and drops corrupt ones"
+                            (fn []
+                              (let [h (history.normalize {:runs {}
+                                                          :drops {}
+                                                          :yields {:heroic-mech {:runs 2
+                                                                                 :gold 100
+                                                                                 :badges 9}
+                                                                   :bad {:runs -1
+                                                                         :gold 0
+                                                                         :badges 0}
+                                                                   :junk :x}})]
+                                (assert.are.equal 2
+                                                  (. (history.yields-for h
+                                                                         :heroic-mech)
+                                                     :runs))
+                                (assert.are.same {:runs 0 :gold 0 :badges 0}
+                                                 (history.yields-for h :bad)))))
+                        (it "seeds :yields {} from a pre-Phase-7 history"
+                            (fn []
+                              (let [h (history.normalize {:runs {:karazhan 3}
+                                                          :drops {}})]
+                                (assert.are.same {} h.yields))))))
             (describe ":to-db"
                       (fn []
                         (it "returns a copy that does not alias the session"

@@ -46,7 +46,7 @@
                               (set ace.db.char.history
                                    {:runs {:karazhan 5} :drops {:28545 2}})
                               (rt :reset)
-                              (assert.are.same {:runs {} :drops {}}
+                              (assert.are.same {:runs {} :drops {} :yields {}}
                                                ace.db.char.history)
                               (assert.are.equal "Routina: luck history reset."
                                                 (. (ace-mock.printed) 1))))

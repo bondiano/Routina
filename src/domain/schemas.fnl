@@ -84,8 +84,14 @@
 ;; Lifetime observation counts feeding drop-chance.bayesian-luck: how often each
 ;; activity ran and each item dropped. Keys are stringified ids (SavedVariables-
 ;; safe). Distinct from WeeklyState (which resets weekly) -- history never prunes.
+;; :yields (Phase 7) accumulates per-activity visit outcomes -- runs, total gold
+;; (copper), badges -- feeding yields.blended-band; keyed by activity id, NOT by
+;; boss name like :runs (which serves the per-boss luck denominator).
 
-(set M.History {:runs [:map :string :integer] :drops [:map :string :integer]})
+(set M.History
+     {:runs [:map :string :integer]
+      :drops [:map :string :integer]
+      :yields [:map :string {:runs :integer :gold :number :badges :integer}]})
 
 ;; --- Chains (quest/attunement chains; src/domain/chains.fnl) ----------------
 ;;

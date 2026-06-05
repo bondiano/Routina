@@ -184,7 +184,9 @@
                                 (events.record-run! :karazhan)
                                 (events.reset-history!)
                                 ;; persisted copy is emptied immediately ...
-                                (assert.are.same {:runs {} :drops {}}
+                                (assert.are.same {:runs {}
+                                                  :drops {}
+                                                  :yields {}}
                                                  char.history)
                                 ;; ... and the next record re-seeds from it,
                                 ;; so the pre-reset tallies are gone for good.
