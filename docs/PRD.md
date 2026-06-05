@@ -331,11 +331,13 @@ These are unresolved and need an answer before the relevant
   AceDB shape is hard to retrofit.
   *Affects:* Phase 5 / profiles, and §6 scope.
 
-- **OQ-6 -- Heroic dungeon ranking.** Should heroics be ranked by
-  reputation-per-hour, badges-per-hour, or BiS-per-hour? Probably the
-  player chooses, but the default matters because most players never
-  open options.
-  *Affects:* Phase 2 / `route` scoring weights.
+- ~~**OQ-6 -- Heroic dungeon ranking.** Should heroics be ranked by
+  reputation-per-hour, badges-per-hour, or BiS-per-hour?~~ **RESOLVED
+  (2026-06-05, shipped with ROADMAP Phase 7):** BiS-per-week by default;
+  stating a goal (§6.9) folds that goal's yield into the score
+  deadline-aware (OQ-11), so a badge goal surfaces badge-dense heroics and
+  removing it restores the BiS-first order. No mode toggle -- goals are
+  targets, not modes.
 
 - **OQ-7 -- Lockout decay curve.** Linear ("a clear is 50% as valuable on
   Friday as on Tuesday") or step ("full value until 24h before reset,
@@ -356,22 +358,34 @@ These are unresolved and need an answer before the relevant
   Attune data carries no coordinates -- chain-step waypoints (§6.11) need a
   separate source, deferred to ROADMAP Phase 9.
 
-- **OQ-11 -- multi-goal arbitration.** Several active goals (§6.9) compete
+- ~~**OQ-11 -- multi-goal arbitration.** Several active goals (§6.9) compete
   for the same hours: priority weights, deadline-aware ordering, or
-  proportional coverage? The default matters -- most players never open
-  options. *Affects:* ROADMAP Phase 7 / route scoring.
+  proportional coverage?~~ **RESOLVED (2026-06-05): deadline-aware.** Per
+  goal, urgency = min(1, deficit / achievable-before-reset); a daily
+  activity's remaining runs shrink to the days left before the weekly
+  reset, so a goal that is behind schedule pulls its activities up the
+  plan and a slack goal barely nudges it. The goal's densest source earns
+  the full urgency as score (one default-slot-weight equivalent), other
+  sources their proportional share; several goals simply sum. No options
+  knob -- the default IS the model (`src/domain/goals.fnl`).
 
-- **OQ-12 -- gold/h estimate provenance.** Curated gold/h varies wildly by
+- ~~**OQ-12 -- gold/h estimate provenance.** Curated gold/h varies wildly by
   class, gear, and consumable prices. One conservative number, per-armor
-  class, or a wide band rendered honestly as a range? *Affects:* ROADMAP
-  Phase 7 / yields data, trust metric M2.
+  class, or a wide band rendered honestly as a range?~~ **RESOLVED
+  (2026-06-05): an honest band.** Yields carry `{:gold-min :gold-max}` per
+  clear (scripts/yields-curated.lua), scoring uses the midpoint, the
+  projection samples uniformly inside the band, and the UI renders ranges
+  -- never a point estimate. The band tightens toward the player's own
+  recorded visits (`yields.blended-band`, n/(n+5) shrinkage), the same
+  pattern as the Bayesian luck score.
 
 - ~~**OQ-13 -- surface for chains & goals.** §9 said "one panel, three
   tabs"; chains and goals both want UI.~~ **RESOLVED for chains
   (2026-06-05):** a fourth **Chains** tab (§9 updated); the weekly plan
-  carries only a next-step advisory. **Still open for goals** -- decide in
-  ROADMAP Phase 7 §6 whether goals live in the Plan tab head, options, or
-  re-open the tab count.
+  carries only a next-step advisory. **RESOLVED for goals (2026-06-05):
+  inside the Plan tab** -- per-goal progress cards (P10/P50/P90 band) render
+  at the head of the weekly plan, above the chain advisory; the goal
+  *editor* is a Goals options sub-panel. The tab count stays at four.
 
 - **OQ-14 -- circuit auto-advance mechanics.** TomTom's arrival callback
   API vs polling player position (an `OnUpdate` -- needs the written

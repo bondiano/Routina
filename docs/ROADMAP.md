@@ -30,7 +30,7 @@
    pattern): present -> richer behaviour, absent -> silent no-op, never a
    hard requirement, never a Lua error.
 
-## Status snapshot (2026-06-05)
+## Status snapshot (2026-06-06)
 
 | Area | State |
 |---|---|
@@ -60,7 +60,7 @@
 | Localization scaffold (`Locales/`) | Empty (`.gitkeep` only) |
 | Release pipeline (BigWigs packager) | Configured, no tag yet |
 | Quest / chain engine | **Phase 6 CODE-COMPLETE (pending in-game smoke)** -- schemas + generated Attune data (23 TBC chains, 415 steps) + pure `chains.fnl` + QUEST_TURNED_IN wiring + derived attunement gates + plan advisory + Chains tab; relicensed GPL-3.0 |
-| Goal targets (badges / gold / rep) | **Not started** (Phase 7); badges appear only in unresolved OQ-6 |
+| Goal targets (badges / gold / rep) | **Phase 7 CODE-COMPLETE (pending in-game smoke)** -- yields data (badges + honest gold bands, OQ-12) + pure `goals.fnl` (deadline-aware urgency, OQ-11; resolves OQ-6) + route/ctx integration + per-visit yield tracking (PLAYER_MONEY/badge loot, db v3) + TSM/Auctionator price facade + Plan-tab goal cards & Goals options sub-panel |
 | Player-authored plans | **Not started** (Phase 8) |
 | Waypoints / TomTom | **Not started** (Phase 9); no coordinate model in domain yet |
 
@@ -562,56 +562,75 @@ text in [PRD §13](PRD.md#13-open-questions)):
   weekly plan carries only a next-step advisory. Goals placement stays open
   for Phase 7 §6.
 
-## Phase 7 -- Goal targets & multi-currency engine (resolves OQ-6)
+## Phase 7 -- Goal targets & multi-currency engine (CODE-COMPLETE, pending in-game smoke; resolves OQ-6)
+
+> All six steps below are merged and green under `task lint && task test`
+> (507 specs; `task profile` median ~1.45 ms, inside the M5 budget). Flips to
+> DONE after the live smoke in the exit criteria (add a goal in options ->
+> the Plan tab grows a goals card and reorders; a tracked heroic visit
+> records its take with the toggle on) passes on a TBC Anniversary client.
 
 Goal: the player states weekly goals; the planner builds toward them with
 the same honest P10/P50/P90 it gives BiS slots today. Badges and gold become
 first-class yields next to drop probabilities.
 
-1. **Yield model -- `src/domain/schemas.fnl` + `src/domain/yields/data.fnl`.**
-   `ActivityYield` per activity: `:badges` (deterministic, bosses x 1),
-   `:gold` (curated estimate, OQ-12), `:rep` (existing gains). Curated data
-   generated/maintained like the drop table.
-2. **`src/domain/goals.fnl`** -- pure. `GoalDef` (`:kind :badges | :gold |
-   :item | :rep | :chain`, target amount, deadline = next reset), progress
-   accounting, projection: deterministic yields are arithmetic, stochastic
-   ones reuse `drop-chance` -- no new math where old math fits.
-3. **Route scoring -- `src/domain/route.fnl`.** `RouteContext` gains active
-   goals; the greedy scorer optimizes goal-completion probability across
-   *all* active goals (arbitration rule = OQ-11). `project-week` extends to
-   "P50: 130 of your 150 badges by reset".
-4. **History extension -- `src/domain/history.fnl`.** Record actual gold and
-   badge yield per run (badges are an item in TBC -- Badge of Justice 29434
-   via `CHAT_MSG_LOOT`; gold via money-delta events, verify on wiki). Blend
-   curated estimate with observed history, same shrinkage idea as
-   `bayesian-luck`. Off by default, same toggle family as luck tracking.
-5. **Price facade -- `src/core/prices.fnl`** (soft-dep, headless-safe).
-   When TSM or Auctionator is present, read item values through their API to
-   price farm yields; absent -> vendor value + curated estimates. Read-only:
-   no scanning, no posting, no flips -- AH play stays a non-goal.
-6. **UI.** Goal editor (add/edit/remove goals) + per-goal progress cards with
-   the P10/P50/P90 band; placement per OQ-13.
+1. **Yield model** -- DONE. `schemas.ActivityYield` + generated
+   `src/domain/yields/data.fnl` (`task import-yields`: curated gold bands +
+   badge counts from `scripts/yields-curated.lua`, boss rosters derived from
+   the nexus dataset); `src/domain/yields.fnl` exposes lookups and
+   `blended-band` (n/(n+5) shrinkage toward recorded history). Badges are
+   deterministic per clear (heroic boss x 1; raids 0 until Anniversary badge
+   rules are live-confirmed -- curated override ready). Gold is an honest
+   `{:gold-min :gold-max}` band (OQ-12 resolved 2026-06-05).
+2. **`src/domain/goals.fnl`** -- DONE. Pure: `GoalDef` validation
+   (normalize/to-db), progress from plan-time holdings (money, badge count,
+   owned items, standing, chain fraction -- never week-scoped accounting),
+   deadline-aware urgency (OQ-11 resolved 2026-06-05: urgency = min(1,
+   deficit/achievable-before-reset), daily runs shrink to the days left),
+   and `project` -- per-goal P10/P50/P90 (badges arithmetic, gold seeded-MC
+   uniform inside the band, items at-least-one, rep/chain flat -- honest).
+3. **Route scoring** -- DONE. `RouteContext` gains
+   `:goals/:goal-progress/:gold-bands/:reset-at`; goal-paying activities
+   stay candidates even with no BiS left; the scorer adds the goal term (the
+   densest source earns the full urgency, others their share; zero with no
+   goals, so goal-free plans are byte-identical). `goals.project` carries
+   the "P50: 130 of your 150 badges" band into the Plan tab.
+4. **History extension** -- DONE. `History` gains per-activity `:yields`
+   (runs / gold / badges); the dispatcher tracks instance VISITS (wiki-
+   verified PLAYER_MONEY money deltas + Badge of Justice 29434 self-loots,
+   attributed via GetInstanceInfo -> `ctx.activity-for-instance`, heroic =
+   difficultyID 2) behind an off-by-default "Track yields" toggle, the same
+   family as luck tracking. db.version 2 -> 3 with migration.
+5. **Price facade -- `src/core/prices.fnl`** -- DONE. Read-only, headless-
+   safe, resolved at call time behind pcall: TSM dbmarket > Auctionator last
+   scan > GetItemInfo vendor price; `.toc` declares the OptionalDeps. No
+   scanning, no posting -- AH play stays a non-goal.
+6. **UI** -- DONE. OQ-13-for-goals resolved 2026-06-05: per-goal progress
+   cards render at the HEAD of the Plan tab (above the chain advisory); the
+   goal editor is a fifth "Goals" options sub-panel (add/remove, validated
+   before persisting; pure builders in `src/ui/options-goals.fnl`). The Plan
+   tab's pure view-models moved to `src/ui/tabs/weekly-vm.fnl`.
 
 Exit criteria:
 
 - For a fixture player with a 150-badge goal, the plan surfaces
   badge-dense heroics and the projection reports a deterministic badge count
-  per planned run -- busted, seeded, no WoW API.
+  per planned run -- busted, seeded, no WoW API. **(busted-green)**
 - Adding a gold goal visibly reorders the plan toward high-gold/h
-  activities; removing it restores the BiS-first order.
+  activities; removing it restores the BiS-first order. **(busted-green)**
 - Addon loads and prices fall back cleanly with neither TSM nor Auctionator
-  installed.
+  installed. **(busted-green; live smoke pending)**
 
-New open questions (now in [PRD §13](PRD.md#13-open-questions)):
+Open questions this phase introduced (both **resolved 2026-06-05**, full
+text in [PRD §13](PRD.md#13-open-questions)):
 
-- **OQ-11 -- multi-goal arbitration.** Several active goals compete for the
-  same hours: priority weights, deadline-aware ordering, or proportional
-  coverage? Default matters (most players never open options). *Affects:*
-  route scoring.
-- **OQ-12 -- gold/h estimate provenance.** Curated gold/h varies wildly by
-  class, gear, and consumable prices. Single conservative number, per-armor
-  class, or wide band rendered honestly as a range? *Affects:* yields data,
-  trust metric M2.
+- ~~**OQ-11 -- multi-goal arbitration.**~~ **RESOLVED: deadline-aware.**
+  Urgency grows as the reset nears relative to what is still achievable;
+  goals sum; no options knob.
+- ~~**OQ-12 -- gold/h estimate provenance.**~~ **RESOLVED: honest band.**
+  Curated `{min, max}` per clear, scored at the midpoint, projected
+  uniformly, rendered as a range, tightened by the player's own recorded
+  visits.
 
 ## Phase 8 -- Player-authored plans
 
