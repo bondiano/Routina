@@ -14,6 +14,9 @@
 (local Routina (or _G.Routina {}))
 (local goals (or Routina.goals (require :src.domain.goals)))
 (local chains (or Routina.chains (require :src.domain.chains)))
+(local custom-chains
+       (or Routina.custom-chains (require :src.domain.custom-chains)))
+
 (local format (or Routina.format (require :src.ui.format)))
 
 (local M {})
@@ -83,10 +86,17 @@
              (.. "Chain: " (tostring (if chain chain.name goal.chain-id))))
     _ (tostring goal.kind)))
 
-(fn chain-values []
-  "AceConfig select values of every registry chain (id -> name)."
-  (collect [_ chain (ipairs (chains.all))]
-    (values (tostring chain.id) (tostring chain.name))))
+(fn chain-values [?custom-list]
+  "AceConfig select values of every registry chain (id -> name), plus the
+   player's constructed chains (Phase 8 §3) so a :chain goal can target one.
+   Re-derived lazily per dropdown open -- the constructor mutates the
+   persisted list in place."
+  (let [out (collect [_ chain (ipairs (chains.all))]
+              (values (tostring chain.id) (tostring chain.name)))]
+    (each [_ c (ipairs (custom-chains.normalize ?custom-list))]
+      (when (= nil (. out (tostring c.id)))
+        (tset out (tostring c.id) (tostring c.name))))
+    out))
 
 (fn goal-lines [goal-list]
   "The current-goals description text."
@@ -102,6 +112,9 @@
    picker, and the yield-tracking toggle.
    Domain:  api : {:db    route-preferences table (the track-yields? flag)
                    :goals the persisted [GoalDef] list, mutated in place
+                   :custom-chains ?[CustomChain] -- the LIVE persisted
+                     authored-chain list (db.profile.custom-chains), for the
+                     chain-goal choices
                    :on-change (fn []) | nil  -- fired after any mutation
                    :notify (fn []) | nil} -- AceConfigRegistry refresh
    Returns: an AceConfig group table."
@@ -182,7 +195,7 @@
             :chain-id {:type :select
                        :name :Chain
                        :order 6
-                       :values chain-values
+                       :values (fn [] (chain-values api.custom-chains))
                        :hidden (fn [] (not= pending-kind :chain))
                        :get (fn [_]
                               (and pending-chain (tostring pending-chain)))

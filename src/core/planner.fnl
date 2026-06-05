@@ -39,6 +39,11 @@
    normalizes and drops corrupt entries. Empty until a card action writes it."
   (or (?. Routina :addon :db :char :plan-edits) {}))
 
+(fn profile-custom-chains []
+  "The player's authored chains (db.profile.custom-chains); ctx.build
+   validates and drops corrupt rows. Empty until the constructor writes them."
+  (or (?. Routina :addon :db :profile :custom-chains) []))
+
 ;; --- Public API ------------------------------------------------------------
 
 (lambda M.route-input []
@@ -68,6 +73,7 @@
                         :goals (char-goals)
                         :custom-activities (profile-customs)
                         :plan-edits (char-plan-edits)
+                        :custom-chains (profile-custom-chains)
                         :money (wow.player-money)
                         :badge-count (wow.badge-count)
                         :reset-at (events.reset-at)

@@ -112,6 +112,9 @@
 
 (set M.ChainStep
      {:id :string
+      ;; :manual (Phase 8 §3) is the player-authored step kind: no quest-id,
+      ;; never seeded from the quest log -- it advances only when the player
+      ;; ticks it in the Chains-tab checklist (chains.mark-step/unmark-step).
       :type [:enum
              :quest
              :kill
@@ -123,7 +126,8 @@
              :interact
              :click
              :attune
-             :end]
+             :end
+             :manual]
       :label :string
       :quest-id [:optional :integer]
       :stage [:optional :integer]
@@ -139,6 +143,25 @@
                  :steps [:list [:ref :ChainStep]]})
 
 (set M.ChainProgress {:completed [:map :string :boolean]})
+
+;; CustomChain is a player-authored chain (ROADMAP Phase 8 §3): an ordered
+;; checklist of steps -- "one mechanism, two authors", the importer and the
+;; player share the ChainDef model. This is the PERSISTED authoring shape
+;; (db.profile.custom-chains); custom-chains.to-chain-def projects it into a
+;; plain ChainDef (:kind :custom, linear :manual steps), so chain queries,
+;; progress and persistence treat both provenances identically. :coord enters
+;; the shape now (Phase 9 waypoints consume it) but has no authoring UI yet.
+;; Being user-authored data, invalid entries drop on load
+;; (custom-chains.normalize).
+
+(set M.CustomChainStep
+     {:label :string
+      :coord [:optional {:map-id :integer :x :number :y :number}]})
+
+(set M.CustomChain {:id :string
+                    :name :string
+                    :steps [:list [:ref :CustomChainStep]]
+                    :created [:optional :integer]})
 
 ;; --- Planner inputs (consumed by src/domain/plan.fnl) ----------------------
 ;;

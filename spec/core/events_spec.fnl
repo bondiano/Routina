@@ -375,6 +375,38 @@
                                 (assert.is_true (. char.chains :karazhan
                                                    :completed :30))
                                 (events.set-store! nil))))
+                        (it "mark-chain-step! ticks and unticks a manual step (Phase 8 §3)"
+                            (fn []
+                              (let [log (make-log)
+                                    char {}
+                                    hits {:n 0}]
+                                (events.set-logger! log)
+                                (events.set-store! (fn [] char))
+                                (events.set-refresh! (fn []
+                                                       (set hits.n (+ hits.n 1))))
+                                (assert.is_true (events.mark-chain-step! :chain-1
+                                                                         :s1
+                                                                         true))
+                                (assert.is_true (. (events.chain-progress)
+                                                   :chain-1 :completed :s1))
+                                (assert.is_true (events.mark-chain-step! :chain-1
+                                                                         :s1
+                                                                         false))
+                                (assert.is_nil (. (events.chain-progress)
+                                                  :chain-1 :completed :s1))
+                                (assert.are.equal 2 hits.n)
+                                ;; the toggled state flushes with the session
+                                (events.mark-chain-step! :chain-1 :s2 true)
+                                (events.dispatch :PLAYER_LOGOUT)
+                                (assert.is_true (. char.chains :chain-1
+                                                   :completed :s2))
+                                (events.set-refresh! nil)
+                                (events.set-store! nil))))
+                        (it "mark-chain-step! reports false with no store wired"
+                            (fn []
+                              (events.set-store! nil)
+                              (assert.is_false (events.mark-chain-step! :chain-1
+                                                                        :s1 true))))
                         (it "no-ops when no store is wired"
                             (fn []
                               (let [log (make-log)]

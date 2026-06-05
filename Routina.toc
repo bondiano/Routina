@@ -101,6 +101,10 @@ build\domain\custom-activities.lua
 # plan-edits: the player's pins/skips as pure route constraints (Phase 8 §2).
 # After schemas/validate; before ctx/route (both consume it).
 build\domain\plan-edits.lua
+# custom-chains: player-authored chains, the route constructor (Phase 8 §3) --
+# persisted shape + projection into ChainDef (:kind :custom). After chains;
+# before ctx (advisory + chain-goal fractions) and the Chains tab.
+build\domain\custom-chains.lua
 # ctx: pure raw-snapshot -> (player, RouteContext) assembler. Needs schemas +
 # validate + chains (attunement gates derive from chain progress) + goals +
 # yields + history; the shell (wow + planner) feeds it live client data.
@@ -130,9 +134,13 @@ build\ui\widgets\why-drawer.lua
 build\ui\widgets\chance-meter.lua
 build\ui\widgets\lockout-timer.lua
 # weekly-vm: the Plan tab's pure view-models (cards, advisories, projections,
-# weekly goals). Before tabs\weekly.lua, which renders them.
+# weekly goals). weekly-actions: the pin/skip/move affordances (Phase 8 §2).
+# Both before tabs\weekly.lua, which composes them. chains-editor: the route
+# constructor (Phase 8 §3), before tabs\chains.lua.
 build\ui\tabs\weekly-vm.lua
+build\ui\tabs\weekly-actions.lua
 build\ui\tabs\weekly.lua
+build\ui\tabs\chains-editor.lua
 build\ui\tabs\chains.lua
 build\ui\tabs\lockouts.lua
 build\ui\tabs\bis.lua

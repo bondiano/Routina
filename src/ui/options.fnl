@@ -227,6 +227,8 @@
                    :goals ?[GoalDef]  -- the persisted goal list (char.goals)
                    :custom-activities ?[CustomActivity]  -- the persisted
                      authored list (db.profile.custom-activities)
+                   :custom-chains ?[CustomChain]  -- the persisted authored
+                     chains (db.profile.custom-chains), for chain-goal choices
                    :on-change (fn []) | nil  -- fired after any :set (re-plan)
                    :notify (fn []) | nil}  -- AceConfigRegistry refresh
    Returns: an AceConfig options group table."
@@ -244,6 +246,7 @@
             :composition (composition-group db changed)
             :goals (options-goals.goals-group {: db
                                                :goals (or api.goals [])
+                                               :custom-chains api.custom-chains
                                                :on-change api.on-change
                                                :notify api.notify})
             :custom (options-custom.custom-group {:custom-activities (or api.custom-activities
@@ -278,6 +281,14 @@
         (set profile.custom-activities []))
       profile.custom-activities)))
 
+(fn custom-chains-db [addon]
+  "addon.db.profile.custom-chains -- the persisted CustomChain list the
+   Chains-tab constructor mutates in place; created empty on first access."
+  (let [profile (?. addon :db :profile)]
+    (when profile
+      (when (= nil profile.custom-chains) (set profile.custom-chains []))
+      profile.custom-chains)))
+
 (fn class-specs [addon]
   "Spec choices for the current class, or [] when the catalog isn't reachable."
   (let [bis (or Routina.bis-catalog nil)
@@ -303,6 +314,7 @@
                                       :specs (class-specs addon)
                                       :goals (goals-db addon)
                                       :custom-activities (custom-db addon)
+                                      :custom-chains (custom-chains-db addon)
                                       :on-change root.refresh!
                                       :notify (fn []
                                                 (when AceConfigRegistry

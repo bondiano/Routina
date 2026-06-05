@@ -61,7 +61,7 @@
 | Release pipeline (BigWigs packager) | Configured, no tag yet |
 | Quest / chain engine | **Phase 6 CODE-COMPLETE (pending in-game smoke)** -- schemas + generated Attune data (23 TBC chains, 415 steps) + pure `chains.fnl` + QUEST_TURNED_IN wiring + derived attunement gates + plan advisory + Chains tab; relicensed GPL-3.0 |
 | Goal targets (badges / gold / rep) | **Phase 7 CODE-COMPLETE (pending in-game smoke)** -- yields data (badges + honest gold bands, OQ-12) + pure `goals.fnl` (deadline-aware urgency, OQ-11; resolves OQ-6) + route/ctx integration + per-visit yield tracking (PLAYER_MONEY/badge loot, db v3) + TSM/Auctionator price facade + Plan-tab goal cards & Goals options sub-panel |
-| Player-authored plans | **Phase 8 §1 CODE-COMPLETE (pending in-game smoke)** -- custom activities: `schemas.CustomActivity` + pure `custom-activities.fnl` (normalize/to-db + ActivityDef/ActivityYield projections), threaded via `RouteContext :custom-activities/:custom-yields`, always-candidate in `route.plan-week`, yields feed goal scoring/projection; persisted at `db.profile.custom-activities` (db v4) with a "Custom activities" options sub-panel. §2-4 (pin/skip, constructor, card actions) not started |
+| Player-authored plans | **Phase 8 CODE-COMPLETE (pending in-game smoke)** -- §1 custom activities (`CustomActivity` -> ActivityDef/ActivityYield projections, always-candidate, yields feed goals; db v4 + options sub-panel); §2 pin/skip plan edits (`PlanEdits` -> pure RouteContext constraints, pins-first partition in `plan.fnl`, skips excluded from candidates; db v5 + card action bar / skipped-tail Restore); §3 route constructor (`CustomChain` -> linear `:manual` `ChainDef :custom`, shared advancement spec, Chains-tab inline editor + step checklist via `events.mark-chain-step!`/`chains.unmark-step`; db v6); §4 card actions + constructor UI shipped with §2/§3 |
 | Waypoints / TomTom | **Not started** (Phase 9); no coordinate model in domain yet |
 
 ## Phase 0 -- Scaffolding (DONE)
@@ -632,7 +632,12 @@ text in [PRD §13](PRD.md#13-open-questions)):
   uniformly, rendered as a range, tightened by the player's own recorded
   visits.
 
-## Phase 8 -- Player-authored plans
+## Phase 8 -- Player-authored plans (CODE-COMPLETE, pending in-game smoke)
+
+> All four steps below are merged and green under `task lint && task test`
+> (585 specs; `task profile` median ~1.4 ms, inside the M5 budget). Flips to
+> DONE after the live smoke in the exit criteria (pin/skip and the custom
+> chain checklist survive `/reload`) passes on a TBC Anniversary client.
 
 Goal: the player can add what the catalog doesn't know, and edit what the
 planner proposes -- without breaking determinism or the pure core.
@@ -655,25 +660,50 @@ planner proposes -- without breaking determinism or the pure core.
    source outranks a weak catalog one under a gold goal -- busted-asserted.
    Editor is a sixth "Custom activities" options sub-panel
    (`src/ui/options-custom.fnl`, validate-before-persist).
-2. **Plan edits -- pin / skip / reorder.** Persisted per character;
-   expressed as *constraints* in `RouteContext` (pins ordered first, skips
-   excluded) so `route.plan-week` stays pure and deterministic given the
-   same constraints.
-3. **Route constructor.** A plan as an ordered checklist of steps; steps
-   optionally carry coords (consumed by Phase 9 circuits). Custom chains
-   reuse the Phase 6 `ChainDef :custom` model -- one mechanism, two authors
-   (importer / player).
-4. **UI.** "Add activity" flow, card context actions (pin / skip / move),
-   constructor editor with step checklist. All AceGUI via the facade.
+2. **Plan edits -- pin / skip / reorder.** -- **CODE-COMPLETE (pending
+   in-game smoke).** Persisted per character at `db.char.plan-edits` (db v4
+   -> v5); expressed as *constraints* in `RouteContext :plan-edits` (pins
+   ordered first, skips excluded) so `route.plan-week` stays pure and
+   deterministic given the same constraints. As shipped: `schemas.PlanEdits`
+   + pure `src/domain/plan-edits.fnl` (normalize/to-db + pin/unpin/move-pin/
+   skip/unskip transforms; skip and pin are mutually exclusive per id);
+   `plan.plan-week` gains an optional `?pins` partition (pins-first in pin
+   order, scores untouched -- pinning reorders, never re-scores); skipped
+   ids never enter the candidate set. Decision locked (2026-06-06): a skip
+   persists until restored ("not my routine", not "not this week" --
+   lockouts already cover the cleared case), and reorder = order within the
+   pin list, not a free shuffle of scored steps.
+3. **Route constructor.** -- **CODE-COMPLETE (pending in-game smoke).** A
+   plan as an ordered checklist of steps; steps optionally carry coords in
+   the schema (consumed by Phase 9 circuits; no authoring UI for coords
+   yet). Custom chains reuse the Phase 6 `ChainDef :custom` model -- one
+   mechanism, two authors (importer / player). As shipped:
+   `schemas.CustomChain` persisted at `db.profile.custom-chains` (db v5 ->
+   v6) + pure `src/domain/custom-chains.fnl` (normalize/to-db, parse-steps
+   for the one-step-per-line editor, `to-chain-def` -> linear `:manual`
+   steps -- a new ChainStep type the quest log never seeds); ctx merges the
+   constructed defs into the chain advisory and `:chain` goal fractions;
+   `chains.unmark-step` + `events.mark-chain-step!` drive the checklist
+   toggle.
+4. **UI.** -- **CODE-COMPLETE (pending wowUnit smoke).** "Add activity" flow
+   (§1's options sub-panel), card context actions (Pin/Unpin + ^/v while
+   pinned, Skip; a skipped-activities tail card with Restore -- a skip must
+   never strand), and the Chains-tab constructor: a "New chain" inline
+   editor plus a CheckBox step checklist and Delete on each custom-chain
+   card. All AceGUI via the facade (EditBox/MultiLineEditBox/CheckBox
+   callbacks verified against the vendored source); `root.refresh!` now
+   repaints whichever tab is active, so a quest turn-in refreshes the
+   Chains tab too.
 
 Exit criteria:
 
 - A fixture custom activity with a strong yield outranks a weak catalog one
   -- busted, no WoW API. **(busted-green)**
 - Pin/skip constraints round-trip SavedVariables and survive `/reload`
-  (smoke); plan respects them deterministically (busted).
+  (smoke pending); plan respects them deterministically (busted).
+  **(busted-green)**
 - A custom chain advances through the constructor checklist identically to
-  an imported chain (shared spec).
+  an imported chain (shared spec). **(busted-green)**
 
 ## Phase 9 -- Waypoints & TomTom
 

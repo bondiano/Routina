@@ -242,6 +242,16 @@
     (tset next (tostring step-id) true)
     {:completed next}))
 
+(lambda M.unmark-step [progress step-id]
+  "Clear one step's completion, returning a NEW ChainProgress (no inference --
+   the mirror of mark-step, for the Phase 8 checklist toggle).
+   Domain:  progress : ChainProgress ; step-id : string|keyword
+   Returns: ChainProgress"
+  (assert-progress progress)
+  (let [next (copy-set progress.completed)]
+    (tset next (tostring step-id) nil)
+    {:completed next}))
+
 (lambda M.record-quest [chain progress quest-id]
   "Record a quest turn-in: every step carrying this quest-id completes, then
    non-quest predecessors backfill. Returns a NEW ChainProgress (unchanged

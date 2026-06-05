@@ -337,6 +337,25 @@
             treat it as read-only (ctx.build only reads it)."
   (ensure-chains))
 
+(lambda M.mark-chain-step! [chain-id step-id ?done?]
+  "Tick (or untick) one chain step by hand -- the Phase 8 §3 checklist entry
+   point for player-authored chains (quest chains keep advancing through
+   QUEST_TURNED_IN; this works on them too, e.g. to correct a misfire). Pure
+   transform on the live session (chains.mark-step / unmark-step), then a
+   debounced refresh; PLAYER_LOGOUT flushes the session as always.
+   Domain:  chain-id : string|keyword ; step-id : string|keyword
+            ?done? : boolean | nil -- nil reads as false (untick)
+   Returns: true when recorded, false when no store is wired."
+  (let [progress-map (ensure-chains)]
+    (if (= nil progress-map)
+        false
+        (let [key (tostring chain-id)
+              prior (or (. progress-map key) (chains.empty-progress))
+              transform (if (= ?done? true) chains.mark-step chains.unmark-step)]
+          (tset progress-map key (transform prior step-id))
+          (request-refresh)
+          true))))
+
 (lambda M.set-history-tracking! [?on]
   "Enable (or disable) cumulative luck-history recording. OFF by default
    (experimental): when on, the always-registered ENCOUNTER_END / CHAT_MSG_LOOT

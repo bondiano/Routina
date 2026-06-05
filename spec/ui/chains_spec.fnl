@@ -79,4 +79,38 @@
                                 (assert.are.equal (length a) (length b))
                                 (for [i 1 (length a)]
                                   (assert.are.equal (. a i :title)
-                                                    (. b i :title))))))))))
+                                                    (. b i :title))))))))
+            (describe "custom chains (Phase 8 §3)"
+                      (fn []
+                        (local custom-chains
+                               (require :src.domain.custom-chains))
+                        (local farm-def
+                               (custom-chains.to-chain-def {:id :chain-1
+                                                            :name "Primal farm circuit"
+                                                            :steps [{:label "Clear the camps"}
+                                                                    {:label "Sell and restock"}]}))
+                        (it "appends custom defs with checklist rows, any faction"
+                            (fn []
+                              (let [progress {:chain-1 {:completed {:s1 true}}}
+                                    vms (tab.list-view-model progress :Horde
+                                                             [farm-def])
+                                    custom (accumulate [found nil _ v (ipairs vms)
+                                                        &until found]
+                                             (when v.custom? v))]
+                                (assert.is_not_nil custom)
+                                (assert.are.equal :chain-1 custom.chain-id)
+                                (assert.are.equal "Primal farm circuit"
+                                                  custom.title)
+                                (assert.are.equal 2 (length custom.steps))
+                                (assert.is_true (. custom.steps 1 :done?))
+                                (assert.is_false (. custom.steps 2 :done?))
+                                (assert.are.equal "Sell and restock"
+                                                  (. custom.steps 2 :label)))))
+                        (it "registry rows never carry the checklist fields"
+                            (fn []
+                              (each [_ v (ipairs (tab.list-view-model nil
+                                                                      :Horde
+                                                                      [farm-def]))]
+                                (when (not v.custom?)
+                                  (assert.is_nil v.steps)
+                                  (assert.is_nil v.chain-id)))))))))

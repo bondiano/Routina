@@ -320,6 +320,48 @@
                             (fn []
                               (let [r (ctx.build (snapshot {}))]
                                 (assert.are.same [] r.ctx.custom-activities))))))
+            (describe "custom chains (Phase 8 §3)"
+                      (fn []
+                        (local farm
+                               {:id :chain-1
+                                :name "Primal farm circuit"
+                                :steps [{:label "Clear the camps"}
+                                        {:label "Sell and restock"}]})
+                        (it "advises a started, incomplete custom chain"
+                            (fn []
+                              (let [r (ctx.build (snapshot {:custom-chains [farm]
+                                                            :chain-progress {:chain-1 {:completed {:s1 true}}}}))
+                                    [row] r.chain-advice]
+                                (assert.is_not_nil row)
+                                (assert.are.equal :chain-1 row.chain-id)
+                                (assert.are.equal "Sell and restock"
+                                                  row.next-step-label)
+                                (assert.are.equal 1 row.done)
+                                (assert.are.equal 2 row.total))))
+                        (it "feeds a :chain goal's progress fraction"
+                            (fn []
+                              (let [goal {:id :g1
+                                          :kind :chain
+                                          :target 1
+                                          :chain-id :chain-1}
+                                    r (ctx.build (snapshot {:custom-chains [farm]
+                                                            :chain-progress {:chain-1 {:completed {:s1 true}}}
+                                                            :goals [goal]}))]
+                                (assert.are.equal 0.5
+                                                  (. r.ctx.goal-progress :g1)))))
+                        (it "drops corrupt rows and registry-shadowing ids"
+                            (fn []
+                              (let [r (ctx.build (snapshot {:custom-chains [{:id :karazhan
+                                                                             :name :Impostor
+                                                                             :steps [{:label :x}]}
+                                                                            {:no :fields}
+                                                                            farm]
+                                                            :chain-progress {:karazhan {:completed {:s1 true}}}}))]
+                                ;; the impostor never reaches the advisory as
+                                ;; a custom def -- the real registry chain
+                                ;; resolves instead
+                                (each [_ row (ipairs r.chain-advice)]
+                                  (assert.is_false (= row.name :Impostor))))))))
             (describe "plan edits (Phase 8 §2)"
                       (fn []
                         (it "threads persisted pins/skips into the context"

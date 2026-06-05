@@ -94,6 +94,19 @@
                                                  (icollect [_ s (ipairs (chains.next-steps c
                                                                                            p))]
                                                    s.id)))))
+                        (it "unmark-step clears exactly one id, fresh copy"
+                            (fn []
+                              (let [marked (chains.mark-step (chains.mark-step (chains.empty-progress)
+                                                                               :10)
+                                                             :20)
+                                    cleared (chains.unmark-step marked :10)]
+                                (assert.is_false (chains.step-completed? cleared
+                                                                         :10))
+                                (assert.is_true (chains.step-completed? cleared
+                                                                        :20))
+                                ;; the input progress is untouched
+                                (assert.is_true (chains.step-completed? marked
+                                                                        :10)))))
                         (it "exposes both branch arms at a branch"
                             (fn []
                               (let [c (branch-chain :all)

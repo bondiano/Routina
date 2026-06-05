@@ -18,8 +18,8 @@
 ;; :global and is what `migrate` fast-forwards. Kept lean for Phase 1 --
 ;; options and weekly-state grow as later phases need them.
 
-(local defaults {:global {:version 5 :options {:log-level :info}}
-                 :profile {:custom-activities []}
+(local defaults {:global {:version 6 :options {:log-level :info}}
+                 :profile {:custom-activities [] :custom-chains []}
                  :char {:weekly-state {:reset-time 0 :lockouts {}}
                         :history {:runs {} :drops {} :yields {}}
                         :chains {}
@@ -59,7 +59,13 @@
                    ;; plan-edits.normalize defensively coerces whatever a v4
                    ;; DB holds, so no data moves -- the entry anchors the
                    ;; version bump.
-                   {:to 5 :apply (fn [db] db)}])
+                   {:to 5 :apply (fn [db] db)}
+                   ;; v6 (Phase 8 §3): db.profile gains :custom-chains
+                   ;; ([CustomChain]). AceDB merges the new :profile default;
+                   ;; custom-chains.normalize defensively coerces whatever a
+                   ;; v5 DB holds, so no data moves -- the entry anchors the
+                   ;; version bump.
+                   {:to 6 :apply (fn [db] db)}])
 
 (set M.migrations migrations)
 

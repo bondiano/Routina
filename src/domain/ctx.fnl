@@ -30,6 +30,9 @@
 
 (local plan-edits (or Routina.plan-edits (require :src.domain.plan-edits)))
 
+(local custom-chains
+       (or Routina.custom-chains (require :src.domain.custom-chains)))
+
 (local M {})
 
 ;; --- Static data (pure) ----------------------------------------------------
@@ -231,15 +234,30 @@
   (if (not= a.fraction b.fraction) (> a.fraction b.fraction)
       (< (tostring a.name) (tostring b.name))))
 
-(fn chain-advice [?chain-progress]
+(fn all-chain-defs [custom-defs]
+  "The registry chains plus the player's constructed ones (Phase 8 §3) -- the
+   def universe advisory and goal-fraction lookups walk."
+  (let [defs (chains.all)]
+    (each [_ chain (ipairs custom-defs)]
+      (table.insert defs chain))
+    defs))
+
+(fn chain-def-by-id [cid custom-defs]
+  "A ChainDef by id -- the registry first, then the constructed ones."
+  (or (chains.by-id cid)
+      (accumulate [found nil _ chain (ipairs custom-defs) &until found]
+        (when (= (tostring chain.id) (tostring cid)) chain))))
+
+(fn chain-advice [?chain-progress custom-defs]
   "Plan advisories for STARTED-but-incomplete chains: one row per chain the
    player is mid-way through, carrying its next actionable step. Unstarted
    chains are deliberately silent (UX §9: quiet) -- the attunement advice
-   badge already nudges toward the ones worth starting. Sorted closest-to-
-   done first, then by name, so the plan stays deterministic (G5)."
+   badge already nudges toward the ones worth starting. Custom chains advise
+   exactly like imported ones. Sorted closest-to-done first, then by name, so
+   the plan stays deterministic (G5)."
   (if (= nil ?chain-progress)
       []
-      (let [rows (icollect [_ chain (ipairs (chains.all))]
+      (let [rows (icollect [_ chain (ipairs (all-chain-defs custom-defs))]
                    (let [p (. ?chain-progress (tostring chain.id))]
                      (when (and (not= nil p) (not= nil (next p.completed))
                                 (not (chains.chain-complete? chain p)))
@@ -265,12 +283,13 @@
           standing (and sid (. standing-by-id sid))]
       (when standing (values faction standing)))))
 
-(fn chain-fractions [?chain-progress]
+(fn chain-fractions [?chain-progress custom-defs]
   "Map {chain-id-string fraction} of every chain in the live progress map --
-   the :chain goal-progress source."
+   the :chain goal-progress source. Constructed chains resolve too, so a
+   :chain goal can target one."
   (if (= nil ?chain-progress) {}
       (collect [cid p (pairs ?chain-progress)]
-        (let [chain (chains.by-id cid)]
+        (let [chain (chain-def-by-id cid custom-defs)]
           (when chain
             (values (tostring cid) (. (chains.progress chain p) :fraction)))))))
 
@@ -291,6 +310,13 @@
    a custom named :karazhan must never replace the real raid."
   (icollect [_ c (ipairs (custom-activities.normalize ?persisted))]
     (when (= nil (activities.by-id c.id)) c)))
+
+(fn live-custom-chain-defs [?persisted]
+  "Constructed ChainDefs from the persisted authored chains (Phase 8 §3):
+   normalized, registry-shadowing ids dropped (a custom :karazhan must never
+   replace the real attunement chain), projected via to-chain-def."
+  (icollect [_ c (ipairs (custom-chains.normalize ?persisted))]
+    (when (= nil (chains.by-id c.id)) (custom-chains.to-chain-def c))))
 
 (fn custom-yield-map [customs]
   "Map {custom-id-string ActivityYield} of the authored payouts (entries that
@@ -349,6 +375,10 @@
                           the registry drop)
                         :plan-edits ?PlanEdits -- db.char.plan-edits (pins /
                           skips; invalid entries drop)
+                        :custom-chains ?[CustomChain] -- db.profile
+                          .custom-chains (invalid rows and ids shadowing the
+                          chain registry drop; advisory + :chain goals see
+                          the constructed defs)
                         :money ?int            -- GetMoney copper
                         :badge-count ?int      -- GetItemCount Badge of Justice
                         :reset-at ?int         -- next weekly reset timestamp
@@ -371,11 +401,13 @@
                                              snapshot.chain-progress)
                 :reputations (reputation-map snapshot.faction-standing)}
         goal-list (goals.normalize snapshot.goals)
+        custom-chain-defs (live-custom-chain-defs snapshot.custom-chains)
         goal-inputs {:money snapshot.money
                      :badge-count snapshot.badge-count
                      :owned-items owned
                      :standings player.reputations
-                     :chain-fractions (chain-fractions snapshot.chain-progress)}
+                     :chain-fractions (chain-fractions snapshot.chain-progress
+                                                       custom-chain-defs)}
         customs (live-customs snapshot.custom-activities)
         custom-yields (custom-yield-map customs)
         ctx {:class snapshot.class
@@ -406,7 +438,7 @@
      : ctx
      :advice (attunement-advice eff snapshot.quest-completed?
                                 snapshot.chain-progress)
-     :chain-advice (chain-advice snapshot.chain-progress)}))
+     :chain-advice (chain-advice snapshot.chain-progress custom-chain-defs)}))
 
 (lambda M.activity-for-instance [?name ?heroic?]
   "The tracked activity a live instance visit belongs to, for yield

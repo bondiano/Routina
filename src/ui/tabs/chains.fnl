@@ -7,6 +7,13 @@
 ;; step, complete?); this tab renders one card per chain relevant to the
 ;; player's faction, in-progress first.
 ;;
+;; Phase 8 §3: the tab also hosts the route CONSTRUCTOR -- a "New chain"
+;; inline editor (name + one-step-per-line text) writing
+;; db.profile.custom-chains, and per-custom-chain cards carrying a CheckBox
+;; step checklist (events.mark-chain-step!) plus a Delete button. Custom
+;; ChainDefs come from custom-chains.to-chain-def, so the progress queries
+;; treat both provenances identically.
+;;
 ;; UI.md split: the data->render-spec is PURE (M.chain-view-model /
 ;; M.list-view-model, busted-tested); building the AceGUI widgets from it is
 ;; imperative. render! follows the tab contract in src/ui/root.fnl: idempotent
@@ -16,6 +23,12 @@
 (local acegui (or Routina.acegui (require :src.ui.acegui)))
 (local format (or Routina.format (require :src.ui.format)))
 (local chains (or Routina.chains (require :src.domain.chains)))
+(local custom-chains
+       (or Routina.custom-chains (require :src.domain.custom-chains)))
+
+(local editor (or Routina.tab-chains-editor
+                  (require :src.ui.tabs.chains-editor)))
+
 (local events (or Routina.events (require :src.core.events)))
 
 (local UnitFactionGroup _G.UnitFactionGroup)
@@ -29,8 +42,10 @@
 
 (fn faction-match? [chain ?faction]
   "Whether a chain applies to the player's faction. A nil faction (headless,
-   loading) shows everything rather than guessing."
-  (or (= nil ?faction) (= chain.faction :Both) (= chain.faction ?faction)))
+   loading) shows everything rather than guessing; a chain WITHOUT a faction
+   (custom chains, faction-free registry entries) applies to everyone."
+  (or (= nil ?faction) (= nil chain.faction) (= chain.faction :Both)
+      (= chain.faction ?faction)))
 
 (lambda M.chain-view-model [chain progress]
   "Pure render spec for one chain card.
@@ -68,20 +83,37 @@
         (not= a.fraction b.fraction) (> a.fraction b.fraction)
         (< a.title b.title))))
 
-(lambda M.list-view-model [?progress-map ?faction]
-  "Every registry chain for the player's faction as ordered card view-models:
-   in-progress first (closest to done on top), then unstarted, complete last.
+(lambda M.list-view-model [?progress-map ?faction ?custom-defs]
+  "Every registry chain for the player's faction -- plus the player's
+   constructed chains (Phase 8 §3) -- as ordered card view-models: in-progress
+   first (closest to done on top), then unstarted, complete last. A custom
+   chain's view-model additionally carries :custom? true, its :chain-id, and
+   per-step checklist rows so the tab can render CheckBoxes.
    Domain:  ?progress-map : {chain-id ChainProgress} | nil -- live session map
             ?faction : string | nil -- UnitFactionGroup token (Horde/Alliance);
                        nil shows all factions (headless)
-   Returns: [chain-view-model ...]"
+            ?custom-defs : [ChainDef] | nil -- constructed defs
+                           (custom-chains.to-chain-def)
+   Returns: [chain-view-model ...] -- custom rows += {:custom? true :chain-id
+            string :steps [{:id :label :done? boolean} ...]}"
+  (fn progress-of [chain]
+    (or (and ?progress-map (. ?progress-map (tostring chain.id)))
+        (chains.empty-progress)))
+
   (let [rows (icollect [_ chain (ipairs (chains.all))]
                (when (faction-match? chain ?faction)
-                 (M.chain-view-model chain
-                                     (or (and ?progress-map
-                                              (. ?progress-map
-                                                 (tostring chain.id)))
-                                         (chains.empty-progress)))))]
+                 (M.chain-view-model chain (progress-of chain))))]
+    (each [_ chain (ipairs (or ?custom-defs []))]
+      (let [progress (progress-of chain)
+            vm (M.chain-view-model chain progress)]
+        (set vm.custom? true)
+        (set vm.chain-id (tostring chain.id))
+        (set vm.steps
+             (icollect [_ s (ipairs chain.steps)]
+               {:id s.id
+                :label s.label
+                :done? (chains.step-completed? progress s.id)}))
+        (table.insert rows vm)))
     (table.sort rows by-activity-then-name)
     rows))
 
@@ -96,8 +128,26 @@
       (acegui.themed-label! label (or ?color :ink) :body (or ?size :body))
       (card:AddChild label))))
 
+(fn build-checklist! [card vm]
+  "The step checklist of one custom-chain card: a CheckBox per step, toggling
+   through events.mark-chain-step! (which repaints via the debounced refresh)."
+  (each [_ step (ipairs vm.steps)]
+    (let [box (acegui.create! :CheckBox)]
+      (when box
+        (box:SetLabel step.label)
+        (box:SetValue (= true step.done?))
+        (box:SetFullWidth true)
+        ;; verified: AceGUIWidget-CheckBox fires OnValueChanged with the
+        ;; checked state
+        (box:SetCallback :OnValueChanged
+                         (fn [_ _ checked]
+                           (events.mark-chain-step! vm.chain-id step.id
+                                                    (= checked true))))
+        (card:AddChild box)))))
+
 (fn build-card! [vm]
-  "Build one chain card as an InlineGroup from a pure view-model."
+  "Build one chain card as an InlineGroup from a pure view-model. Custom
+   chains (Phase 8 §3) additionally carry their step checklist and a Delete."
   (let [card (acegui.create! :InlineGroup)]
     (when card
       (card:SetTitle vm.title)
@@ -107,7 +157,15 @@
       (add-line! card vm.status (if vm.complete? :gold
                                     vm.started? :ink
                                     :ink-faint)
-                 :caption))
+                 :caption)
+      (when vm.custom?
+        (build-checklist! card vm)
+        (let [del (acegui.create! :Button)]
+          (when del
+            (del:SetText "Delete chain")
+            (del:SetWidth 140)
+            (del:SetCallback :OnClick #(editor.delete-custom! vm.chain-id))
+            (card:AddChild del)))))
     card))
 
 ;; --- Public API ------------------------------------------------------------
@@ -122,8 +180,9 @@
 
 (lambda M.render! [container]
   "Repaint the Chains tab into an AceGUI container (the TabGroup). Reads the
-   live chain session and adds a ScrollFrame of progress cards. Idempotent --
-   the caller (src/ui/root.fnl) ReleaseChildren's the container first. No-op
+   live chain session plus the persisted custom chains and adds the New-chain
+   constructor followed by a ScrollFrame of progress cards. Idempotent -- the
+   caller (src/ui/root.fnl) ReleaseChildren's the container first. No-op
    headless (no AceGUI).
    Domain:  container : an AceGUI container widget
    Returns: nil."
@@ -134,8 +193,12 @@
       (scroll:SetFullWidth true)
       (scroll:SetFullHeight true)
       (container:AddChild scroll)
+      (editor.build-editor! scroll)
       (let [faction (and UnitFactionGroup (UnitFactionGroup :player))
-            vms (M.list-view-model (events.chain-progress) faction)]
+            custom-defs (icollect [_ c (ipairs (custom-chains.normalize (editor.custom-db)))]
+                          (when (= nil (chains.by-id c.id))
+                            (custom-chains.to-chain-def c)))
+            vms (M.list-view-model (events.chain-progress) faction custom-defs)]
         (if (= 0 (length vms))
             (add-empty! scroll "No chains tracked for this client phase.")
             (each [_ vm (ipairs vms)]
