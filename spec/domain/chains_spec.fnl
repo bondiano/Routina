@@ -94,6 +94,46 @@
                                                  (icollect [_ s (ipairs (chains.next-steps c
                                                                                            p))]
                                                    s.id)))))
+                        (it "circuit-steps keeps coord-carrying steps in stage order (Phase 9)"
+                            (fn []
+                              (let [chain {:id :lap
+                                           :name :Lap
+                                           :kind :custom
+                                           :expac "The Burning Crusade"
+                                           :steps [{:id :s2
+                                                    :type :manual
+                                                    :label :Second
+                                                    :stage 2
+                                                    :follows [:s1]
+                                                    :follows-mode :all
+                                                    :coord {:map-id 1946
+                                                            :x 0.5
+                                                            :y 0.6}}
+                                                   {:id :s1
+                                                    :type :manual
+                                                    :label :First
+                                                    :stage 1
+                                                    :follows []
+                                                    :follows-mode :all
+                                                    :coord {:map-id 1946
+                                                            :x 0.2
+                                                            :y 0.3}}
+                                                   {:id :s3
+                                                    :type :manual
+                                                    :label :Coordless
+                                                    :stage 3
+                                                    :follows [:s2]
+                                                    :follows-mode :all}]}
+                                    steps (chains.circuit-steps chain)]
+                                (assert.are.equal 2 (length steps))
+                                (assert.are.same [:s1 :s2]
+                                                 (icollect [_ s (ipairs steps)]
+                                                   s.id))
+                                (assert.are.equal 0.2 (. steps 1 :coord :x)))))
+                        (it "circuit-steps is empty for a coordless chain"
+                            (fn []
+                              (assert.are.same []
+                                               (chains.circuit-steps (linear-chain)))))
                         (it "unmark-step clears exactly one id, fresh copy"
                             (fn []
                               (let [marked (chains.mark-step (chains.mark-step (chains.empty-progress)

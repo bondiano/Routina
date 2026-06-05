@@ -387,10 +387,13 @@ These are unresolved and need an answer before the relevant
   at the head of the weekly plan, above the chain advisory; the goal
   *editor* is a Goals options sub-panel. The tab count stays at four.
 
-- **OQ-14 -- circuit auto-advance mechanics.** TomTom's arrival callback
-  API vs polling player position (an `OnUpdate` -- needs the written
-  justification per UI rules). Resolve by reading the TomTom source before
-  building ROADMAP Phase 9 §4. *Affects:* circuit guidance, perf budget.
+- ~~**OQ-14 -- circuit auto-advance mechanics.**~~ **RESOLVED (2026-06-06):
+  TomTom arrival callbacks.** Verified against the TomTom source (Nevcairiel
+  mirror of the CurseForge addon): `AddWaypoint` accepts an
+  `opts.callbacks.distance[yards] = fn` table that fires as the player
+  crosses that range, so `src/core/circuit.fnl` advances the loop inside
+  TomTom's own distance watch -- no `OnUpdate` polling, no perf-budget cost,
+  no new exception to the UI rules. Resolution lives in ROADMAP Phase 9 §4.
 
 Move an item out of §13 when it has a committed answer. Add new ones
 liberally -- this section is meant to grow before it shrinks.

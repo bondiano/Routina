@@ -73,16 +73,33 @@
    Returns: [CustomChain] (plain data)"
   (icollect [_ c (ipairs customs)] (copy-custom c)))
 
+(fn parse-coord-suffix [line]
+  "Split one editor line into (label, coord|nil). The optional waypoint tail
+   (Phase 9) is `@ <map-id> <x> <y>` with x/y in MAP PERCENT 0..100 (what the
+   in-game map shows) stored as fractions. A malformed `@ ...` tail stays
+   part of the label -- the player's text is never silently dropped."
+  (let [(head mid x y) (string.match line
+                                     "^(.-)%s*@%s*(%d+)%s+([%d%.]+)%s+([%d%.]+)%s*$")
+        map-id (tonumber mid)
+        px (tonumber x)
+        py (tonumber y)]
+    (if (and head map-id (> map-id 0) px py (>= px 0) (<= px 100) (>= py 0)
+             (<= py 100) (not= "" (trim head)))
+        (values (trim head) {: map-id :x (/ px 100) :y (/ py 100)})
+        (values (trim line) nil))))
+
 (lambda M.parse-steps [?text]
   "Steps parsed from constructor-editor text: one step per non-blank line,
-   labels trimmed. Pure -- the Chains-tab editor calls this, busted tests it.
+   labels trimmed; a line may end in the optional waypoint tail
+   `@ <map-id> <x> <y>` (x/y map-percent, Phase 9) which becomes the step's
+   :coord. Pure -- the Chains-tab editor calls this, busted tests it.
    Domain:  ?text : string | nil -- the MultiLineEditBox contents
    Returns: [CustomChainStep] -- possibly empty."
   (let [steps []]
     (each [line (string.gmatch (tostring (or ?text "")) "[^\n]+")]
-      (let [label (trim line)]
+      (let [(label coord) (parse-coord-suffix line)]
         (when (not= label "")
-          (table.insert steps {: label}))))
+          (table.insert steps {: label : coord}))))
     steps))
 
 (lambda M.next-id [customs]

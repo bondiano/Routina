@@ -53,22 +53,59 @@
                                                  (custom-chains.normalize persisted))
                                 (assert.is_false (rawequal (. live 1)
                                                            (. persisted 1))))))))
-            (describe :parse-steps (fn []
-                                     (it "parses one trimmed step per non-blank line"
-                                         (fn []
-                                           (assert.are.same [{:label "Kill the boss"}
-                                                             {:label "Loot the chest"}]
-                                                            (custom-chains.parse-steps "  Kill the boss  
+            (describe :parse-steps
+                      (fn []
+                        (it "parses one trimmed step per non-blank line" (fn []
+                                                                           (assert.are.same [{:label "Kill the boss"}
+                                                                                             {:label "Loot the chest"}]
+                                                                                            (custom-chains.parse-steps "  Kill the boss  
 
    
 Loot the chest
 "))))
-                                     (it "is empty for nil / blank text" (fn []
-                                                                           (assert.are.same []
-                                                                                            (custom-chains.parse-steps nil))
-                                                                           (assert.are.same []
-                                                                                            (custom-chains.parse-steps "  
-  "))))))
+                        (it "is empty for nil / blank text" (fn []
+                                                              (assert.are.same []
+                                                                               (custom-chains.parse-steps nil))
+                                                              (assert.are.same []
+                                                                               (custom-chains.parse-steps "
+  "))))
+                        (it "parses the optional `@ map x y` waypoint tail (Phase 9)"
+                            (fn []
+                              (let [[a b] (custom-chains.parse-steps "Lake motes @ 1946 52.5 64
+No waypoint here")]
+                                (assert.are.equal "Lake motes" a.label)
+                                (assert.are.same {:map-id 1946
+                                                  :x 0.525
+                                                  :y 0.64}
+                                                 a.coord)
+                                (assert.are.equal "No waypoint here" b.label)
+                                (assert.is_nil b.coord))))
+                        (it "accepts the 0 and 100 percent edges"
+                            (fn []
+                              (let [[s] (custom-chains.parse-steps "Corner @ 1944 0 100")]
+                                (assert.are.equal 0 s.coord.x)
+                                (assert.are.equal 1 s.coord.y))))
+                        (it "keeps a malformed @-tail as part of the label"
+                            (fn []
+                              (let [steps (custom-chains.parse-steps "Meet @ the inn
+Out of range @ 1946 250 50
+Bare tail @ 1946 12")]
+                                (assert.are.equal 3 (length steps))
+                                (each [_ s (ipairs steps)]
+                                  (assert.is_nil s.coord))
+                                (assert.are.equal "Meet @ the inn"
+                                                  (. steps 1 :label)))))
+                        (it "round-trips coords through normalize and to-chain-def"
+                            (fn []
+                              (let [draft {:id :chain-7
+                                           :name "Coord lap"
+                                           :steps (custom-chains.parse-steps "A @ 1946 20 30
+B")}
+                                    [live] (custom-chains.normalize [draft])
+                                    def (custom-chains.to-chain-def live)]
+                                (assert.are.same {:map-id 1946 :x 0.2 :y 0.3}
+                                                 (. def.steps 1 :coord))
+                                (assert.is_nil (. def.steps 2 :coord)))))))
             (describe :next-id
                       (fn []
                         (it "starts at chain-1 and climbs past the top id"

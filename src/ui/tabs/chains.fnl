@@ -30,6 +30,8 @@
                   (require :src.ui.tabs.chains-editor)))
 
 (local events (or Routina.events (require :src.core.events)))
+(local tomtom (or Routina.tomtom (require :src.core.tomtom)))
+(local circuit (or Routina.circuit (require :src.core.circuit)))
 
 (local UnitFactionGroup _G.UnitFactionGroup)
 
@@ -48,26 +50,31 @@
       (= chain.faction ?faction)))
 
 (lambda M.chain-view-model [chain progress]
-  "Pure render spec for one chain card.
+  "Pure render spec for one chain card. :next-coord/:next-label (Phase 9)
+   carry the current step's waypoint when it has one -- the unstarted chain's
+   first step counts, so 'point me there' can start a journey too.
    Domain:  chain : ChainDef ; progress : ChainProgress
    Returns: {:title string :progress-text string :status string
-             :complete? boolean :started? boolean :fraction number}"
+             :complete? boolean :started? boolean :fraction number
+             :next-coord {:map-id :x :y}|nil :next-label string|nil}"
   (let [summary (chains.progress chain progress)
         complete? (chains.chain-complete? chain progress)
         started? (not= nil (next progress.completed))
-        step (and (not complete?) started? (chains.current-step chain progress))]
+        step (if complete? nil (chains.current-step chain progress))]
     {:title (tostring chain.name)
      :progress-text (.. summary.done "/" summary.total
                         (step-word summary.total) " · "
                         (format.percent summary.fraction))
      :status (if complete?
                  :Complete
-                 step
+                 (and started? step)
                  (.. "Next: " (tostring step.label) " · ~"
                      (chains.est-minutes-remaining chain progress) " min left")
                  "Not started")
      : complete?
      : started?
+     :next-coord (?. step :coord)
+     :next-label (and step (tostring step.label))
      :fraction summary.fraction}))
 
 (fn by-activity-then-name [a b]
@@ -108,6 +115,11 @@
             vm (M.chain-view-model chain progress)]
         (set vm.custom? true)
         (set vm.chain-id (tostring chain.id))
+        ;; Phase 9: a coord-carrying custom chain is a walkable circuit; the
+        ;; def rides along so the Start-circuit button can hand it to the
+        ;; runner (plain data, still a pure spec).
+        (set vm.circuit? (> (length (chains.circuit-steps chain)) 0))
+        (set vm.def chain)
         (set vm.steps
              (icollect [_ s (ipairs chain.steps)]
                {:id s.id
@@ -145,9 +157,40 @@
                                                     (= checked true))))
         (card:AddChild box)))))
 
+(fn add-button! [card text width handler]
+  "One action button on a chain card."
+  (let [btn (acegui.create! :Button)]
+    (when btn
+      (btn:SetText text)
+      (btn:SetWidth width)
+      (btn:SetCallback :OnClick handler)
+      (card:AddChild btn))
+    btn))
+
+(fn build-waypoints! [card vm]
+  "The Phase 9 waypoint affordances of one card -- HIDDEN entirely without
+   TomTom (exit criterion): 'Point me there' when the current step carries a
+   coord, Start/Stop circuit on coord-carrying custom chains."
+  (when (tomtom.available?)
+    (when vm.next-coord
+      (add-button! card "Point me there" 140
+                   #(tomtom.set-waypoint! vm.next-coord vm.next-label)))
+    (when (and vm.custom? vm.circuit?)
+      (if (= (circuit.active-chain) vm.chain-id)
+          (add-button! card "Stop circuit" 140
+                       (fn []
+                         (circuit.stop!)
+                         (when Routina.root
+                           (Routina.root.refresh!))))
+          (add-button! card "Start circuit" 140
+                       (fn []
+                         (circuit.start! vm.def)
+                         (when Routina.root (Routina.root.refresh!))))))))
+
 (fn build-card! [vm]
   "Build one chain card as an InlineGroup from a pure view-model. Custom
-   chains (Phase 8 §3) additionally carry their step checklist and a Delete."
+   chains (Phase 8 §3) additionally carry their step checklist and a Delete;
+   waypoint affordances (Phase 9) render only with TomTom loaded."
   (let [card (acegui.create! :InlineGroup)]
     (when card
       (card:SetTitle vm.title)
@@ -159,13 +202,11 @@
                                     :ink-faint)
                  :caption)
       (when vm.custom?
-        (build-checklist! card vm)
-        (let [del (acegui.create! :Button)]
-          (when del
-            (del:SetText "Delete chain")
-            (del:SetWidth 140)
-            (del:SetCallback :OnClick #(editor.delete-custom! vm.chain-id))
-            (card:AddChild del)))))
+        (build-checklist! card vm))
+      (build-waypoints! card vm)
+      (when vm.custom?
+        (add-button! card "Delete chain" 140
+                     #(editor.delete-custom! vm.chain-id))))
     card))
 
 ;; --- Public API ------------------------------------------------------------

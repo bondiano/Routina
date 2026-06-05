@@ -113,4 +113,26 @@
                                                                       [farm-def]))]
                                 (when (not v.custom?)
                                   (assert.is_nil v.steps)
-                                  (assert.is_nil v.chain-id)))))))))
+                                  (assert.is_nil v.chain-id)))))
+                        (it "flags coord-carrying chains as circuits with a
+                             pointable next step (Phase 9)"
+                            (fn []
+                              (let [lap (custom-chains.to-chain-def {:id :chain-3
+                                                                     :name "Coord lap"
+                                                                     :steps (custom-chains.parse-steps "A @ 1946 20 30
+B @ 1946 50 60")})
+                                    vms (tab.list-view-model nil nil
+                                                             [lap farm-def])
+                                    by-id (collect [_ v (ipairs vms)]
+                                            (when v.custom?
+                                              (values v.chain-id v)))
+                                    coord-vm (. by-id :chain-3)
+                                    plain-vm (. by-id :chain-1)]
+                                (assert.is_true coord-vm.circuit?)
+                                (assert.are.equal lap coord-vm.def)
+                                ;; the unstarted chain points at its FIRST step
+                                (assert.are.same {:map-id 1946 :x 0.2 :y 0.3}
+                                                 coord-vm.next-coord)
+                                (assert.are.equal :A coord-vm.next-label)
+                                (assert.is_false plain-vm.circuit?)
+                                (assert.is_nil plain-vm.next-coord))))))))

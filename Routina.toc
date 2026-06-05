@@ -123,7 +123,9 @@ build\core\saved-vars.lua
 build\core\prices.lua
 # tomtom: waypoint soft-dep facade over TomTom (OptionalDeps above); silent
 # no-op without it (Phase 9). The only module touching the TomTom API.
+# circuit: the waypoint-loop runner riding TomTom arrival callbacks (OQ-14).
 build\core\tomtom.lua
+build\core\circuit.lua
 build\core\events.lua
 # planner: gathers the live client (wow) + the events chain-session into
 # ctx.build's snapshot -> route input for the Plan tab. Loads after wow +

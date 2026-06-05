@@ -99,7 +99,7 @@
               (card:AddChild name-box)))
           (let [steps-box (acegui.create! :MultiLineEditBox)]
             (when steps-box
-              (steps-box:SetLabel "Steps (one per line)")
+              (steps-box:SetLabel "Steps (one per line; optional waypoint: @ zone x y)")
               (steps-box:SetText draft-steps)
               (steps-box:SetFullWidth true)
               (steps-box:SetNumLines 6)

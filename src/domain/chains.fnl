@@ -242,6 +242,24 @@
     (tset next (tostring step-id) true)
     {:completed next}))
 
+(lambda M.circuit-steps [chain]
+  "The chain's waypoint loop (Phase 9 §4): every step carrying a :coord, in
+   stage order -- the ordered points src/core/circuit.fnl walks. Empty when
+   the chain has no coordinates (imported Attune data has none yet; player
+   chains author them via the `@ map x y` editor syntax).
+   Domain:  chain : ChainDef
+   Returns: [{:id string :label string :coord {:map-id :x :y}} ...]"
+  (assert-chain chain)
+  (let [rows (icollect [_ s (ipairs chain.steps)]
+               (when s.coord
+                 {:id s.id :label s.label :coord s.coord :stage (or s.stage 0)}))]
+    (table.sort rows
+                (fn [a b]
+                  (if (not= a.stage b.stage) (< a.stage b.stage)
+                      (< (tostring a.id) (tostring b.id)))))
+    (icollect [_ r (ipairs rows)]
+      {:id r.id :label r.label :coord r.coord})))
+
 (lambda M.unmark-step [progress step-id]
   "Clear one step's completion, returning a NEW ChainProgress (no inference --
    the mirror of mark-step, for the Phase 8 checklist toggle).

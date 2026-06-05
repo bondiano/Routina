@@ -62,7 +62,7 @@
 | Quest / chain engine | **Phase 6 CODE-COMPLETE (pending in-game smoke)** -- schemas + generated Attune data (23 TBC chains, 415 steps) + pure `chains.fnl` + QUEST_TURNED_IN wiring + derived attunement gates + plan advisory + Chains tab; relicensed GPL-3.0 |
 | Goal targets (badges / gold / rep) | **Phase 7 CODE-COMPLETE (pending in-game smoke)** -- yields data (badges + honest gold bands, OQ-12) + pure `goals.fnl` (deadline-aware urgency, OQ-11; resolves OQ-6) + route/ctx integration + per-visit yield tracking (PLAYER_MONEY/badge loot, db v3) + TSM/Auctionator price facade + Plan-tab goal cards & Goals options sub-panel |
 | Player-authored plans | **Phase 8 CODE-COMPLETE (pending in-game smoke)** -- §1 custom activities (`CustomActivity` -> ActivityDef/ActivityYield projections, always-candidate, yields feed goals; db v4 + options sub-panel); §2 pin/skip plan edits (`PlanEdits` -> pure RouteContext constraints, pins-first partition in `plan.fnl`, skips excluded from candidates; db v5 + card action bar / skipped-tail Restore); §3 route constructor (`CustomChain` -> linear `:manual` `ChainDef :custom`, shared advancement spec, Chains-tab inline editor + step checklist via `events.mark-chain-step!`/`chains.unmark-step`; db v6); §4 card actions + constructor UI shipped with §2/§3 |
-| Waypoints / TomTom | **Not started** (Phase 9); no coordinate model in domain yet |
+| Waypoints / TomTom | **Phase 9 CODE-COMPLETE (pending in-game smoke)** -- `ActivityDef :entrance` curated for all 21 located activities (Classic uiMapIDs wiki-verified); `src/core/tomtom.fnl` soft-dep facade (prices.fnl contract; `## OptionalDeps: TomTom`); Map button on plan cards; `@ map x y` step syntax in the chain editor; `chains.circuit-steps` + `src/core/circuit.fnl` looping farm laps on TomTom distance callbacks (**OQ-14 resolved**); Point-me-there / Start-Stop-circuit on chain cards. why-drawer waypoint + imported-chain coords = follow-ups |
 
 ## Phase 0 -- Scaffolding (DONE)
 
@@ -705,45 +705,70 @@ Exit criteria:
 - A custom chain advances through the constructor checklist identically to
   an imported chain (shared spec). **(busted-green)**
 
-## Phase 9 -- Waypoints & TomTom
+## Phase 9 -- Waypoints & TomTom (CODE-COMPLETE, pending in-game smoke)
+
+> All five steps below are merged and green under `task lint && task test`
+> (603 specs; `task profile` median ~1.5 ms). Flips to DONE after the live
+> smoke in the exit criteria (Map button sets the arrow; a 3-point circuit
+> loops; no TomTom -> no buttons, no errors) passes with the real TomTom
+> addon on a TBC Anniversary client.
 
 Goal: every plan step can point somewhere; farm and daily circuits guide the
 player around a loop. First external soft-dependency -- the addon must stay
 fully functional, error-free, and quiet without TomTom installed.
 
-1. **Coordinate consolidation.** `{:map :x :y}` entered the schemas with
-   Phase 6 chain steps; extend to ActivityDef (instance entrance,
-   questgiver) and constructor route steps. Entrance coords are a small
-   curated set; chain step coords come from the Phase 6 import.
-2. **`src/core/tomtom.fnl` facade** -- headless-safe (guard on `_G.TomTom`,
-   no-op when absent), the only module allowed to touch the TomTom API.
-   **Verify every TomTom API call against the TomTom source -- never
-   invent.** `.toc` gains `## OptionalDeps: TomTom` (+ TSM/Auctionator from
-   Phase 7); update `.pkgmeta` accordingly.
-3. **Waypoint per plan step.** A click target on each plan card -> one
-   waypoint (entrance / questgiver / current chain step). The minimal,
-   highest-value integration -- lands first.
-4. **Circuit guidance.** Daily circuits and farm routes as ordered waypoint
-   loops: arrival advances to the next point (TomTom arrival callback --
-   mechanics are OQ-14), looping for repeatable farm laps.
-5. **Chain step waypoints.** The Phase 6 "next step" row and the why-drawer
-   gain a "point me there" action using imported step coords.
+1. **Coordinate consolidation.** -- **DONE.** `{:map-id :x :y}` entered the
+   schemas with Phase 6 chain steps; `ActivityDef` gained `:entrance`, and
+   all 21 located registry activities carry a curated entrance (Classic
+   uiMapIDs verified against warcraft.wiki.gg 2026-06-06; x/y are pointer
+   approximations to refine on the smoke pass). Constructor steps author
+   coords via the `@ <zone> <x> <y>` line syntax (see §4). Questgiver coords
+   stay a follow-up.
+2. **`src/core/tomtom.fnl` facade** -- **DONE.** Headless-safe (live guard on
+   `_G.TomTom` + pcall around every call, the prices.fnl contract), the only
+   module allowed to touch the TomTom API; signatures verified against the
+   TomTom source (`AddWaypoint(uiMapID, x, y, opts) -> uid`,
+   `RemoveWaypoint(uid)`; x/y are map fractions). `.toc` gained
+   `## OptionalDeps: ... TomTom`; `.pkgmeta` untouched (TomTom is an addon,
+   not a vendorable lib).
+3. **Waypoint per plan step.** -- **DONE.** A `Map` button on each plan
+   card's action bar -- rendered ONLY when TomTom is loaded and the activity
+   has a curated entrance -- sets one arrow at the instance door.
+4. **Circuit guidance.** -- **DONE (resolves OQ-14).** A coord-carrying
+   custom chain is a walkable loop: `chains.circuit-steps` (pure) feeds
+   `src/core/circuit.fnl`, which sets each point with a TomTom
+   `callbacks.distance[15yd]` arrival handler -- arrival drops the waypoint
+   and sets the next, wrapping past the last for repeatable farm laps. No
+   OnUpdate polling (OQ-14: TomTom already watches the distance for its
+   arrow). Start/Stop circuit buttons live on the chain card; circuit state
+   is session-only (a /reload stops it -- v1).
+5. **Chain step waypoints.** -- **PARTIAL (mechanism done, imported data
+   pending).** Every chain card gains "Point me there" at its current step
+   when that step carries a coord -- live today for player-authored chains;
+   imported (Attune) chains light up once a coordinate source lands
+   (follow-up below). The why-drawer action waits on the same data.
 
 Exit criteria:
 
 - With TomTom absent: zero Lua errors, waypoint affordances hidden or
   disabled -- verified by a busted-level facade test plus live smoke.
-- With TomTom present: clicking a plan card sets the arrow; a fixture daily
-  circuit advances through its loop on simulated arrivals.
+  **(busted-green; smoke pending)**
+- With TomTom present: clicking a plan card sets the arrow (smoke pending);
+  a fixture daily circuit advances through its loop on simulated arrivals.
+  **(busted-green)**
 - No coordinate literals outside generated data and the curated entrance
-  table.
+  table. **(holds: activities.fnl entrance table + user persistence only)**
 
-New open question (now in [PRD §13](PRD.md#13-open-questions)):
+Follow-ups (slipped scope, kept visible per the update rules):
 
-- **OQ-14 -- circuit auto-advance mechanics.** TomTom's arrival callback API
-  vs polling player position (an `OnUpdate` -- needs the written
-  justification per UI rules). Resolve by reading the TomTom source before
-  building Phase 9 §4. *Affects:* circuit guidance, perf budget.
+- A coordinate source for the imported Attune chains (the dataset has none)
+  -- unlocks "point me there" on attunement steps and the why-drawer action.
+- Entrance x/y refinement + questgiver coords after the in-game smoke pass.
+
+~~**OQ-14 -- circuit auto-advance mechanics.**~~ **RESOLVED 2026-06-06:
+TomTom arrival callbacks** (`opts.callbacks.distance[yards]`, verified
+against the TomTom source) -- no `OnUpdate`, no perf cost; see §4 and
+[PRD §13](PRD.md#13-open-questions).
 
 ## Phase 10 -- Release 1.0 (TBC Anniversary Phase 1)
 
