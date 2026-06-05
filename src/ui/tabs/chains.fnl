@@ -1,0 +1,149 @@
+;; tabs/chains.fnl -- Chains tab content: attunement chain progress as a card
+;; stack on AceGUI-3.0 (PRD §6.8; OQ-13 resolved as the fourth tab).
+;;
+;; END-TO-END SLICE: src/core/events.fnl keeps the live {chain-id ->
+;; ChainProgress} session (seeded from the quest log + SavedVariables);
+;; src/domain/chains.fnl derives the per-chain facts (progress fraction, next
+;; step, complete?); this tab renders one card per chain relevant to the
+;; player's faction, in-progress first.
+;;
+;; UI.md split: the data->render-spec is PURE (M.chain-view-model /
+;; M.list-view-model, busted-tested); building the AceGUI widgets from it is
+;; imperative. render! follows the tab contract in src/ui/root.fnl: idempotent
+;; populate of the AceGUI container (the caller ReleaseChildren's it first).
+
+(local Routina (or _G.Routina {}))
+(local acegui (or Routina.acegui (require :src.ui.acegui)))
+(local format (or Routina.format (require :src.ui.format)))
+(local chains (or Routina.chains (require :src.domain.chains)))
+(local events (or Routina.events (require :src.core.events)))
+
+(local UnitFactionGroup _G.UnitFactionGroup)
+
+(local M {})
+
+;; --- Pure view-model (UI.md: data->spec is pure, busted-tested) ------------
+
+(fn step-word [n]
+  (if (= n 1) " step" " steps"))
+
+(fn faction-match? [chain ?faction]
+  "Whether a chain applies to the player's faction. A nil faction (headless,
+   loading) shows everything rather than guessing."
+  (or (= nil ?faction) (= chain.faction :Both) (= chain.faction ?faction)))
+
+(lambda M.chain-view-model [chain progress]
+  "Pure render spec for one chain card.
+   Domain:  chain : ChainDef ; progress : ChainProgress
+   Returns: {:title string :progress-text string :status string
+             :complete? boolean :started? boolean :fraction number}"
+  (let [summary (chains.progress chain progress)
+        complete? (chains.chain-complete? chain progress)
+        started? (not= nil (next progress.completed))
+        step (and (not complete?) started? (chains.current-step chain progress))]
+    {:title (tostring chain.name)
+     :progress-text (.. summary.done "/" summary.total
+                        (step-word summary.total) " · "
+                        (format.percent summary.fraction))
+     :status (if complete?
+                 :Complete
+                 step
+                 (.. "Next: " (tostring step.label) " · ~"
+                     (chains.est-minutes-remaining chain progress) " min left")
+                 "Not started")
+     : complete?
+     : started?
+     :fraction summary.fraction}))
+
+(fn by-activity-then-name [a b]
+  "In-progress first (closest to done on top), then unstarted, then complete;
+   ties broken by title so the order is deterministic."
+  (let [rank-a (if a.complete? 3
+                   a.started? 1
+                   2)
+        rank-b (if b.complete? 3
+                   b.started? 1
+                   2)]
+    (if (not= rank-a rank-b) (< rank-a rank-b)
+        (not= a.fraction b.fraction) (> a.fraction b.fraction)
+        (< a.title b.title))))
+
+(lambda M.list-view-model [?progress-map ?faction]
+  "Every registry chain for the player's faction as ordered card view-models:
+   in-progress first (closest to done on top), then unstarted, complete last.
+   Domain:  ?progress-map : {chain-id ChainProgress} | nil -- live session map
+            ?faction : string | nil -- UnitFactionGroup token (Horde/Alliance);
+                       nil shows all factions (headless)
+   Returns: [chain-view-model ...]"
+  (let [rows (icollect [_ chain (ipairs (chains.all))]
+               (when (faction-match? chain ?faction)
+                 (M.chain-view-model chain
+                                     (or (and ?progress-map
+                                              (. ?progress-map
+                                                 (tostring chain.id)))
+                                         (chains.empty-progress)))))]
+    (table.sort rows by-activity-then-name)
+    rows))
+
+;; --- Card (AceGUI InlineGroup) ---------------------------------------------
+
+(fn add-line! [card text ?color ?size]
+  "Append one themed, full-width label line to a card."
+  (let [label (acegui.create! :Label)]
+    (when label
+      (label:SetText text)
+      (label:SetFullWidth true)
+      (acegui.themed-label! label (or ?color :ink) :body (or ?size :body))
+      (card:AddChild label))))
+
+(fn build-card! [vm]
+  "Build one chain card as an InlineGroup from a pure view-model."
+  (let [card (acegui.create! :InlineGroup)]
+    (when card
+      (card:SetTitle vm.title)
+      (card:SetFullWidth true)
+      (card:SetLayout :List)
+      (add-line! card vm.progress-text :ink :body)
+      (add-line! card vm.status (if vm.complete? :gold
+                                    vm.started? :ink
+                                    :ink-faint)
+                 :caption))
+    card))
+
+;; --- Public API ------------------------------------------------------------
+
+(fn add-empty! [container message]
+  (let [label (acegui.create! :Label)]
+    (when label
+      (label:SetText message)
+      (label:SetFullWidth true)
+      (acegui.themed-label! label :ink-faint :body :body)
+      (container:AddChild label))))
+
+(lambda M.render! [container]
+  "Repaint the Chains tab into an AceGUI container (the TabGroup). Reads the
+   live chain session and adds a ScrollFrame of progress cards. Idempotent --
+   the caller (src/ui/root.fnl) ReleaseChildren's the container first. No-op
+   headless (no AceGUI).
+   Domain:  container : an AceGUI container widget
+   Returns: nil."
+  (let [scroll (acegui.create! :ScrollFrame)]
+    (when (and scroll container)
+      (container:SetLayout :Fill)
+      (scroll:SetLayout :List)
+      (scroll:SetFullWidth true)
+      (scroll:SetFullHeight true)
+      (container:AddChild scroll)
+      (let [faction (and UnitFactionGroup (UnitFactionGroup :player))
+            vms (M.list-view-model (events.chain-progress) faction)]
+        (if (= 0 (length vms))
+            (add-empty! scroll "No chains tracked for this client phase.")
+            (each [_ vm (ipairs vms)]
+              (let [card (build-card! vm)]
+                (when card (scroll:AddChild card))))))))
+  nil)
+
+(set _G.Routina Routina)
+(set Routina.tab-chains M)
+
+M

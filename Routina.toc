@@ -109,6 +109,7 @@ build\ui\widgets\why-drawer.lua
 build\ui\widgets\chance-meter.lua
 build\ui\widgets\lockout-timer.lua
 build\ui\tabs\weekly.lua
+build\ui\tabs\chains.lua
 build\ui\tabs\lockouts.lua
 build\ui\tabs\bis.lua
 build\ui\root.lua

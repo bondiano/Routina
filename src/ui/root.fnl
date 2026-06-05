@@ -1,6 +1,6 @@
 ;; root.fnl -- Routina main panel, built on AceGUI-3.0: a tinted Frame with a
-;; three-tab TabGroup (Plan / Lockouts / BiS). Singleton (built once, hidden on
-;; close, never released so toggling is cheap).
+;; four-tab TabGroup (Plan / Chains / Lockouts / BiS). Singleton (built once,
+;; hidden on close, never released so toggling is cheap).
 ;;
 ;; The panel moved off the bespoke parchment/CreateFrame stack onto AceGUI so
 ;; layout and backdrop are the library's problem, not a pixel-tuning exercise.
@@ -15,6 +15,7 @@
 (local Routina (or _G.Routina {}))
 (local acegui (or Routina.acegui (require :src.ui.acegui)))
 (local tab-weekly (or Routina.tab-weekly (require :src.ui.tabs.weekly)))
+(local tab-chains (or Routina.tab-chains (require :src.ui.tabs.chains)))
 (local tab-lockouts (or Routina.tab-lockouts (require :src.ui.tabs.lockouts)))
 (local tab-bis (or Routina.tab-bis (require :src.ui.tabs.bis)))
 (local why-drawer (or Routina.why-drawer (require :src.ui.widgets.why-drawer)))
@@ -32,10 +33,12 @@
 (var active-tab :weekly)
 
 (local tabs-def [{:text :Plan :value :weekly}
+                 {:text :Chains :value :chains}
                  {:text :Lockouts :value :lockouts}
                  {:text :BiS :value :bis}])
 
 (local renderers {:weekly tab-weekly.render!
+                  :chains tab-chains.render!
                   :lockouts tab-lockouts.render!
                   :bis tab-bis.render!})
 
