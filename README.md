@@ -28,6 +28,16 @@ vendor/          # Pinned build-time Fennel compiler (see below)
 build/           # gitignored .lua output from Fennel compilation
 ```
 
+## Slash commands
+
+| Command | Effect |
+|---|---|
+| `/routina`, `/rt` | Toggle the main panel |
+| `/rt plan` | Print this week's recommended plan to chat |
+| `/rt reset` | Reset the recorded loot-luck history |
+| `/rt debug` | Dump diagnostic state (DB version, luck tracking, plan aggregates) |
+| `/rt options` | Open the options panel |
+
 ## Tasks
 
 ```bash
@@ -38,6 +48,7 @@ task test        # busted spec/ under luajit (Lua 5.1 API, like WoW)
 task coverage    # luacov report
 task package     # BigWigs packager dry run
 task lint        # fnlfmt --check + fennel compile-check
+task profile     # perf budget: route.plan-week <5ms median over 100 fixture players
 task install     # symlink the addon into Interface/AddOns/Routina
 task clean       # rm -rf build/
 task vendor      # re-download the pinned Fennel compiler into vendor/

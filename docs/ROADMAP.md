@@ -29,7 +29,9 @@
 | Build pipeline (`task build/test/lint/package`) | Working |
 | Fennel compiler vendored | `vendor/fennel.lua` pinned |
 | Domain module: `drop-chance` | Shipped, used as canonical example |
-| Tests: busted + Fennel searcher | Wired, 339 passing across core/domain/ui |
+| Tests: busted + Fennel searcher | Wired, 377 passing across core/domain/ui |
+| Slash commands | **Done** -- `/routina`/`/rt` toggle, `options`, `plan`, `reset`, `debug` (PRD §6.6) |
+| Performance budget | **Done** -- `task profile`: `route.plan-week` ~1.4 ms median over 100 fixture players (M5 budget 5 ms) |
 | WoW API mocks | Stub harness in `spec/mocks/wow-api.fnl` + `spec/mocks/ace3.fnl` |
 | Ace3 wiring | **Done** -- `src/core/ace.fnl` (AceAddon entry, wires root + events) |
 | Event dispatcher | **Done** -- `src/core/events.fnl` (`case` dispatch; `RAID_INSTANCE_WELCOME`/`PLAYER_LOGOUT` drive `weekly-state`) |
@@ -435,12 +437,16 @@ Parallelizable; pick up alongside Phase 3-4 as time allows.
   weekly tab.
 - **Profiles** -- DONE early: AceDBOptions sub-panel shipped with the
   Phase 3 options split (per-character + shared profile).
-- **Slash commands** -- `/routina` + `/rt` (toggle) and `... options`
-  shipped with Phase 1; still open: `/rt plan`, `/rt reset`, `/rt debug`,
-  and documenting all of them in `README.md`.
+- **Slash commands** -- DONE: `/routina` + `/rt` (toggle) and `... options`
+  shipped with Phase 1; `/rt plan` (chat print via the pure
+  `format.plan-lines`), `/rt reset` (luck history via `events.reset-history!`)
+  and `/rt debug` (diagnostics via `format.debug-lines`) shipped with this
+  phase and documented in `README.md`.
 - **`/docgen` in CI** -- `docs/api.md` stays in sync; CI fails on drift.
-- **Performance budget** -- `task profile` task: assert `route.plan-week`
-  under 5 ms median over 100 fixture players.
+- **Performance budget** -- DONE: `task profile` (`scripts/profile.lua`,
+  luajit interpreter over the compiled `build/`) asserts `route.plan-week`
+  under 5 ms median over 100 fixture players spanning all 27 class/spec
+  pairs; measured ~1.4 ms median at landing.
 
 ## Phase 6 -- Release 1.0 (TBC Anniversary Phase 1)
 
