@@ -8,6 +8,7 @@
 ;; surface at a call site; catching it here keeps schemas trustworthy.
 
 (local schemas (require :src.domain.schemas))
+(local validate (require :src.domain.validate))
 
 (fn op? [ftype]
   (and (= (type ftype) :table) (not= nil (. ftype 1))))
@@ -70,6 +71,31 @@
                                          :RepRequirement
                                          :BisItem
                                          :DropEntry
-                                         :RouteContext])]
+                                         :RouteContext
+                                         :ChainStep
+                                         :ChainDef
+                                         :ChainProgress])]
                     (assert.is_true (not= nil (. schemas name))
-                                    (.. "missing schema :" name)))))))
+                                    (.. "missing schema :" name)))))
+            (it "accepts a hand-built ChainDef fixture through validate.check"
+                (fn []
+                  (let [chain {:id :kara-key
+                               :name "The Master's Key"
+                               :kind :attunement
+                               :expac "The Burning Crusade"
+                               :faction :Both
+                               :steps [{:id :1
+                                        :type :quest
+                                        :label "Arcane Disturbances"
+                                        :quest-id 9824
+                                        :stage 1
+                                        :follows []
+                                        :follows-mode :all}
+                                       {:id :2
+                                        :type :kill
+                                        :label "Shadow Labyrinth"
+                                        :stage 2
+                                        :follows [:1]
+                                        :follows-mode :all}]}
+                        r (validate.check schemas.ChainDef chain)]
+                    (assert.is_true r.ok (table.concat (or r.errors []) "; ")))))))
