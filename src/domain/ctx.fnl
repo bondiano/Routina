@@ -21,6 +21,9 @@
 (local schemas (or Routina.schemas (require :src.domain.schemas)))
 (local validate (or Routina.validate (require :src.domain.validate)))
 (local chains (or Routina.chains (require :src.domain.chains)))
+(local goals (or Routina.goals (require :src.domain.goals)))
+(local yields (or Routina.yields (require :src.domain.yields)))
+(local history (or Routina.history (require :src.domain.history)))
 
 (local M {})
 
@@ -127,6 +130,23 @@
         "Hyjal Summit" :hyjal-summit
         "Gruul's Lair" :gruuls-lair
         "Magtheridon's Lair" :magtheridons-lair})
+
+;; Instance name -> activity id for the HEROIC-difficulty 5-mans the yield
+;; tracker attributes visits to (Phase 7). Separate from instance->activity:
+;; a 5-man only maps to a tracked activity on heroic difficulty (the normal
+;; clear is neither a lockout nor a badge source); the two level-60 dungeons
+;; below count on any difficulty.
+(local heroic-instance->activity
+       {"The Mechanar" :heroic-mech
+        "Auchenai Crypts" :heroic-slabs
+        "The Slave Pens" :the-slave-pens
+        "The Shattered Halls" :the-shattered-halls
+        "The Blood Furnace" :the-blood-furnace
+        "Shadow Labyrinth" :shadow-labyrinth
+        :Mana-Tombs :mana-tombs})
+
+(local dungeon-instance->activity
+       {"Dire Maul" :dire-maul "Blackrock Depths" :blackrock-depths})
 
 ;; --- Helpers (private) -----------------------------------------------------
 
@@ -240,6 +260,27 @@
           standing (and sid (. standing-by-id sid))]
       (when standing (values faction standing)))))
 
+(fn chain-fractions [?chain-progress]
+  "Map {chain-id-string fraction} of every chain in the live progress map --
+   the :chain goal-progress source."
+  (if (= nil ?chain-progress) {}
+      (collect [cid p (pairs ?chain-progress)]
+        (let [chain (chains.by-id cid)]
+          (when chain
+            (values (tostring cid) (. (chains.progress chain p) :fraction)))))))
+
+(fn gold-band-overrides [?yield-history]
+  "Map {activity-id-string {:min :max}} of history-blended gold bands, only for
+   activities the player has recorded visits to -- absent entries fall back to
+   the curated band downstream (goals.activity-yield)."
+  (if (= nil ?yield-history) {}
+      (collect [_ e (ipairs (yields.all))]
+        (let [tally (history.yields-for ?yield-history e.activity-id)]
+          (when (> tally.runs 0)
+            (values (tostring e.activity-id)
+                    (yields.blended-band {:min e.gold-min :max e.gold-max}
+                                         tally.gold tally.runs)))))))
+
 (fn killed-count [encounters]
   "How many of a lockout's encounters are already down."
   (accumulate [n 0 _ e (ipairs (or encounters []))]
@@ -275,6 +316,11 @@
                         :chain-progress ?{chain-id ChainProgress} -- live map
                           from src/core/events.fnl; nil keeps quest-flag-only
                           attunement resolution (pre-Phase-6 behaviour)
+                        :goals ?[GoalDef]      -- db.char.goals (invalid rows drop)
+                        :money ?int            -- GetMoney copper
+                        :badge-count ?int      -- GetItemCount Badge of Justice
+                        :reset-at ?int         -- next weekly reset timestamp
+                        :yield-history ?History -- live history (gold-band blend)
                         :options {:spec ?kw :phase ?int :weights ?{}
                                   :competitors ?{} :composition ?{role int}
                                   :default-competitors ?int
@@ -287,22 +333,34 @@
    Errors:  if the assembled player or ctx fails its schema."
   (let [opts (or snapshot.options {})
         eff (effective-attune opts)
+        owned (owned-set snapshot.owned-item-ids)
         player {:level snapshot.level
                 :attunements (attunement-set eff snapshot.quest-completed?
                                              snapshot.chain-progress)
                 :reputations (reputation-map snapshot.faction-standing)}
+        goal-list (goals.normalize snapshot.goals)
+        goal-inputs {:money snapshot.money
+                     :badge-count snapshot.badge-count
+                     :owned-items owned
+                     :standings player.reputations
+                     :chain-fractions (chain-fractions snapshot.chain-progress)}
         ctx {:class snapshot.class
              :spec (detect-spec snapshot.class snapshot.talent-points opts.spec)
              :phase (or opts.phase default-phase)
              :now snapshot.now
-             :owned-items (owned-set snapshot.owned-item-ids)
+             :owned-items owned
              :lockouts (lockout-views snapshot.raw-lockouts snapshot.owner)
              :weights opts.weights
              :competitors opts.competitors
              :composition opts.composition
              :default-competitors opts.default-competitors
              :seed opts.seed
-             :include-classic? opts.include-classic?}]
+             :include-classic? opts.include-classic?
+             :goals goal-list
+             :goal-progress (collect [_ g (ipairs goal-list)]
+                              (values g.id (goals.progress g goal-inputs)))
+             :gold-bands (gold-band-overrides snapshot.yield-history)
+             :reset-at snapshot.reset-at}]
     (validate.assert! schemas.Player player :ctx/player)
     (validate.assert! schemas.RouteContext ctx :ctx/ctx)
     {: player
@@ -310,6 +368,19 @@
      :advice (attunement-advice eff snapshot.quest-completed?
                                 snapshot.chain-progress)
      :chain-advice (chain-advice snapshot.chain-progress)}))
+
+(lambda M.activity-for-instance [?name ?heroic?]
+  "The tracked activity a live instance visit belongs to, for yield
+   attribution (Phase 7). Raids map on any difficulty; the badge 5-mans only
+   on heroic (a normal clear is neither a lockout nor a badge source); the
+   two level-60 farm dungeons on any difficulty. nil when untracked.
+   Domain:  ?name : string | nil -- GetInstanceInfo name
+            ?heroic? : boolean | nil -- heroic difficulty
+   Returns: activity id keyword | nil."
+  (when (= (type ?name) :string)
+    (or (. instance->activity ?name)
+        (and ?heroic? (. heroic-instance->activity ?name))
+        (. dungeon-instance->activity ?name))))
 
 ;; --- Register into the addon namespace -------------------------------------
 ;;

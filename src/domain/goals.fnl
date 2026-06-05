@@ -12,11 +12,14 @@
 ;; Deadline-aware arbitration (OQ-11 resolved 2026-06-05):
 ;;   deficit(g)    = max(0, target - progress)
 ;;   achievable(g) = sum over activities of yield(a, g) x runs(a) before reset
-;;   urgency(g)    = min(1, deficit / achievable)   (1 when nothing achievable)
-;;   score(a)     += sum_g urgency(g) x min(1, yield(a,g) x runs(a) / deficit(g))
-;; Runs before the reset shrink for daily activities as :reset-at approaches,
-;; so a goal that is behind schedule pulls its activities up the plan -- and a
-;; plan with no goals scores exactly as before (the scorer adds zero).
+;;   urgency(g)    = min(1, deficit / achievable)
+;;   score(a)     += sum_g urgency(g) x (yield(a,g) x runs(a) / best(g))
+;; where best(g) is the single densest source's yield x runs, so an urgent
+;; goal's best activity gains a full default-slot-weight boost and the rest
+;; their proportional share. Runs before the reset shrink for daily activities
+;; as :reset-at approaches, so a goal that is behind schedule pulls its
+;; activities up the plan -- and a plan with no goals scores exactly as before
+;; (the scorer adds zero).
 
 (local Routina (or _G.Routina {}))
 (local schemas (or Routina.schemas (require :src.domain.schemas)))
@@ -158,6 +161,17 @@
                     (. inputs.chain-fractions goal.chain-id)) 0)
     _ 0))
 
+(lambda M.runs-before-reset [adef ?now ?reset-at]
+  "Planned clears of one activity left before the weekly reset.
+   The deadline-aware replacement for a flat runs-per-reset table (OQ-11): a
+   :daily activity offers one run per remaining day (clamped 1..7) when both
+   timestamps are known, else the casual 4-nights-a-week default; :weekly and
+   :none offer a single clear. Used by route scoring and the projections so
+   both shrink together as the reset approaches.
+   Domain:  adef : schemas.ActivityDef ; ?now ?reset-at : integer | nil
+   Returns: integer >= 1."
+  (goal-runs adef ?now ?reset-at))
+
 (lambda M.deficit [goal ?progress]
   "What is still missing toward the target.
    Domain:  goal : GoalDef ; ?progress : number | nil (nil reads as 0)
@@ -190,33 +204,39 @@
 
 (lambda M.make-goal-scorer [?goals ctx]
   "Build the per-activity goal scorer route.plan-week folds into its score.
-   Precomputes each goal's deficit, achievable-by-reset (over the full
-   activity registry -- an optimistic ceiling; lockouts shave it implicitly by
-   shaving the plan) and urgency once; the returned closures are O(goals).
+   Per goal: the week's BEST source (max yield x runs over the registry) earns
+   the goal's full urgency as a score boost -- the same magnitude as one
+   default-weight BiS slot -- and every other source earns its proportional
+   share, so an urgent goal visibly reorders the plan toward its densest
+   activities. Deficit, achievable-by-reset, urgency and best-source are
+   precomputed once (over the full registry -- an optimistic ceiling; lockouts
+   shave it implicitly by shaving the plan); the closures are O(goals).
    Domain:  ?goals : [GoalDef] | nil -- RouteContext :goals
             ctx    : RouteContext (reads :goal-progress :gold-bands :now
                      :reset-at)
    Returns: {:active?   boolean -- any goal still has a deficit
              :relevant? (fn [activity-id] -> boolean) -- pays toward some goal
-             :score     (fn [activity-id] -> number >= 0)} -- the score term;
-            a no-goal scorer is inert (active? false, score 0), so plans
-            without goals are byte-identical to pre-goal plans."
+             :score     (fn [activity-id] -> number >= 0)} -- the score term,
+            <= urgency per goal; a no-goal scorer is inert (active? false,
+            score 0), so plans without goals are byte-identical to pre-goal
+            plans."
   (let [adefs (activities.all)
         live (icollect [_ g (ipairs (or ?goals []))]
                (let [progress (or (and ctx.goal-progress
                                        (. ctx.goal-progress g.id))
                                   0)
                      deficit (M.deficit g progress)
-                     achievable (accumulate [total 0 _ adef (ipairs adefs)]
-                                  (+ total
-                                     (* (M.activity-yield g adef.id
-                                                          ctx.gold-bands)
-                                        (goal-runs adef ctx.now ctx.reset-at))))]
-                 (when (> deficit 0)
+                     totals (accumulate [acc {:sum 0 :best 0} _ adef (ipairs adefs)]
+                              (let [take (* (M.activity-yield g adef.id
+                                                              ctx.gold-bands)
+                                            (goal-runs adef ctx.now
+                                                       ctx.reset-at))]
+                                {:sum (+ acc.sum take)
+                                 :best (math.max acc.best take)}))]
+                 (when (and (> deficit 0) (> totals.best 0))
                    {:goal g
-                    : deficit
-                    :urgency (if (= achievable 0) 1
-                                 (math.min 1 (/ deficit achievable)))})))]
+                    :best totals.best
+                    :urgency (math.min 1 (/ deficit totals.sum))})))]
     {:active? (> (length live) 0)
      :relevant? (fn [activity-id]
                   (accumulate [hit false _ row (ipairs live) &until hit]
@@ -227,9 +247,7 @@
                 (accumulate [total 0 _ row (ipairs live)]
                   (let [yield (M.activity-yield row.goal activity-id
                                                 ctx.gold-bands)]
-                    (+ total
-                       (* row.urgency
-                          (math.min 1 (/ (* yield runs) row.deficit))))))))}))
+                    (+ total (* row.urgency (/ (* yield runs) row.best)))))))}))
 
 (lambda M.project [goals steps ctx ?opts]
   "Per-goal P10/P50/P90 projection of where the player lands by reset, given

@@ -34,6 +34,7 @@
 (local bis-catalog (or Routina.bis-catalog (require :src.domain.bis-catalog)))
 (local drop-table (or Routina.drop-table (require :src.domain.drop-table)))
 (local competition (or Routina.competition (require :src.domain.competition)))
+(local goals (or Routina.goals (require :src.domain.goals)))
 
 (local M {})
 
@@ -59,10 +60,10 @@
 (local default-sims 1000)
 (local default-seed 1)
 
-;; Planned clears per reset cadence over one week (greedy v1; no multi-week
-;; "score per hour" warp yet -- OQ-6). A weekly raid is one clear; a daily
-;; instance is capped at a casual "nights per week" estimate; :none is one-shot.
-(local runs-by-reset {:weekly 1 :daily 4 :none 1})
+;; Planned clears per reset cadence live in goals.runs-before-reset (Phase 7):
+;; a weekly raid is one clear; a daily instance offers one run per day left
+;; before ctx.reset-at (deadline-aware, OQ-11) or the casual 4-nights default
+;; when the reset is unknown; :none is one-shot.
 
 ;; Presentation labels for the renderable Activity (schemas.Activity :type /
 ;; :detail are display strings). Plain English placeholders pending AceLocale
@@ -82,9 +83,10 @@
 
 ;; --- Helpers (private) -----------------------------------------------------
 
-(fn planned-runs [adef]
-  "Planned clears of an activity over the week, from its reset cadence."
-  (or (. runs-by-reset adef.reset) 1))
+(fn planned-runs [adef ctx]
+  "Planned clears of an activity over the week, deadline-aware when the
+   RouteContext knows the next reset (goals.runs-before-reset)."
+  (goals.runs-before-reset adef ctx.now ctx.reset-at))
 
 (fn weight-for [ctx slot]
   "The player's tuning weight for a gear slot (default 1 when unset)."
@@ -170,7 +172,7 @@
       {:label bis-entry.item.name
        : item-id
        :slot bis-entry.slot
-       :runs (planned-runs adef)
+       :runs (planned-runs adef ctx)
        :p (chance.effective-rate entry.base-drop-p
                                  (competitors-for ctx adef item-id))})))
 
@@ -188,15 +190,16 @@
                  (not (owned? ctx e.item.id)) (show-item? ctx e.item.id))
         (target-item ctx adef e)))))
 
-(fn candidate-activity [player ctx adef gearing?]
+(fn candidate-activity [player ctx adef gearing? goal-scorer]
   "A plan-ready Activity for one content def, or nil to drop it from the plan.
-   Kept only when the player can run it this week (activities.available?) AND it
-   drops at least one wanted item."
+   Kept only when the player can run it this week (activities.available?) AND
+   it either drops a wanted item or pays toward an active goal (Phase 7) --
+   a badge-dense heroic with no BiS left still belongs in a badge-goal week."
   (when (activities.available? adef player
                                (and ctx.lockouts (. ctx.lockouts adef.id))
                                ctx.now)
     (let [items (gap-items ctx adef gearing?)]
-      (when (> (length items) 0)
+      (when (or (> (length items) 0) (goal-scorer.relevant? adef.id))
         {:id adef.id
          :name adef.name
          :type (or (. type-label adef.type) (tostring adef.type))
@@ -205,14 +208,16 @@
          :attunement (?. adef :requirements :attunement)
          : items}))))
 
-(fn make-scorer [ctx]
+(fn make-scorer [ctx goal-scorer]
   "A slot-weighted composite scorer to inject into plan.plan-week.
    score(activity) = Σ_slot weight(slot) · P(any candidate for that slot drops
-   this week). Ranked alternatives sharing a slot combine via the complement
-   product (slot filled if ANY of its items drops), so a slot is worth at most
-   its single weighted contribution -- alternatives back each other up without
+   this week) + the deadline-aware goal term (goals.make-goal-scorer, Phase 7).
+   Ranked alternatives sharing a slot combine via the complement product (slot
+   filled if ANY of its items drops), so a slot is worth at most its single
+   weighted contribution -- alternatives back each other up without
    double-counting the slot. Reduces to the per-item sum when every slot is
-   unique and every weight is 1."
+   unique and every weight is 1; with no active goals the goal term is zero,
+   so goal-free plans are unchanged."
   (fn [activity]
     (let [by-slot {}]
       (each [_ item (ipairs activity.items)]
@@ -220,8 +225,9 @@
               p-week (chance.at-least-one item.p item.runs)
               prior (or (. by-slot slot) 0)]
           (tset by-slot slot (- 1 (* (- 1 prior) (- 1 p-week))))))
-      (accumulate [total 0 slot p (pairs by-slot)]
-        (+ total (* (weight-for ctx slot) p))))))
+      (+ (accumulate [total 0 slot p (pairs by-slot)]
+           (+ total (* (weight-for ctx slot) p)))
+         (goal-scorer.score activity.id)))))
 
 (fn slot-fill-probs [steps]
   "Map gear-slot -> P(at least one upgrade for that slot by reset), folding every
@@ -271,7 +277,8 @@
             ctx    : schemas.RouteContext -- {:class :spec :phase :now
                      :owned-items :lockouts :weights? :competitors?
                      :composition? :default-competitors? :seed?
-                     :include-classic?}
+                     :include-classic? :goals? :goal-progress? :gold-bands?
+                     :reset-at?}
    Returns: {:steps [plan-row ...]  -- available, item-bearing activities,
                                        score desc (ties: minutes asc, name, id);
                                        each row carries its :attunement slug (or
@@ -282,11 +289,12 @@
   (validate.assert! schemas.Player player :route/player)
   (validate.assert! schemas.RouteContext ctx :route/ctx)
   (let [gearing? (gearing-up? ctx)
+        goal-scorer (goals.make-goal-scorer ctx.goals ctx)
         catalog (icollect [_ adef (ipairs (activities.all))]
-                  (candidate-activity player ctx adef gearing?))
+                  (candidate-activity player ctx adef gearing? goal-scorer))
         attune-by-id (collect [_ a (ipairs catalog)]
                        (values a.id a.attunement))
-        steps (plan.plan-week catalog (make-scorer ctx))
+        steps (plan.plan-week catalog (make-scorer ctx goal-scorer))
         score (accumulate [s 0 _ row (ipairs steps)] (+ s row.score))
         est-minutes (accumulate [m 0 _ row (ipairs steps)] (+ m row.minutes))]
     ;; plan.plan-week rebuilds rows with its own field set, so re-attach the

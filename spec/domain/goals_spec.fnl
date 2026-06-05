@@ -134,6 +134,41 @@
                                                                        :target 1
                                                                        :chain-id :x}
                                                                       :karazhan))))))
+            (describe :runs-before-reset
+                      (fn []
+                        (local daily {:reset :daily})
+                        (local weekly {:reset :weekly})
+                        (it "gives a daily one run per day left, clamped 1..7"
+                            (fn []
+                              (assert.are.equal 7
+                                                (goals.runs-before-reset daily
+                                                                         now
+                                                                         (+ now
+                                                                            (* 7
+                                                                               day))))
+                              (assert.are.equal 1
+                                                (goals.runs-before-reset daily
+                                                                         now
+                                                                         (+ now
+                                                                            day)))
+                              (assert.are.equal 7
+                                                (goals.runs-before-reset daily
+                                                                         now
+                                                                         (+ now
+                                                                            (* 30
+                                                                               day))))))
+                        (it "defaults to 4 nights when the reset is unknown"
+                            (fn []
+                              (assert.are.equal 4
+                                                (goals.runs-before-reset daily
+                                                                         nil nil))))
+                        (it "weekly content is always a single clear"
+                            (fn []
+                              (assert.are.equal 1
+                                                (goals.runs-before-reset weekly
+                                                                         now
+                                                                         (+ now
+                                                                            day)))))))
             (describe :make-goal-scorer
                       (fn []
                         (it "is inert with no goals -- score 0 everywhere"

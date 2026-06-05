@@ -317,6 +317,112 @@
                                 ;; Karazhan contributes its length estimate
                                 (assert.are.equal kara-minutes
                                                   (. (kara-step plan) :minutes)))))))
+            (describe "goal scoring (Phase 7 exit criteria)"
+                      (fn []
+                        (local badge-goal
+                               {:id :g-badges :kind :badges :target 150})
+                        (local gold-goal ;; 5000g in copper
+                               {:id :g-gold :kind :gold :target 50000000})
+
+                        (fn step-of [plan id]
+                          (accumulate [found nil _ s (ipairs plan.steps)
+                                       &until found]
+                            (when (= s.id id) s)))
+
+                        (fn ids-of [plan]
+                          (icollect [_ s (ipairs plan.steps)] s.id))
+
+                        (it "a 150-badge goal surfaces badge-dense heroics"
+                            (fn []
+                              (let [base (route.plan-week (player) (ctx))
+                                    goal (route.plan-week (player)
+                                                          (ctx {:goals [badge-goal]
+                                                                :goal-progress {:g-badges 0}}))
+                                    sh-base (step-of base :the-shattered-halls)
+                                    sh-goal (step-of goal :the-shattered-halls)
+                                    sp-base (step-of base :the-slave-pens)
+                                    sp-goal (step-of goal :the-slave-pens)]
+                                ;; badge payers gain score; the denser source
+                                ;; (5 badges vs 3) gains strictly more
+                                (assert.is_not_nil sh-goal)
+                                (assert.is_not_nil sp-goal)
+                                (let [sh-delta (- sh-goal.score
+                                                  (if sh-base sh-base.score 0))
+                                      sp-delta (- sp-goal.score
+                                                  (if sp-base sp-base.score 0))]
+                                  (assert.is_true (> sh-delta 0))
+                                  (assert.is_true (> sh-delta sp-delta)))
+                                ;; a badge-free raid is untouched by the goal
+                                (assert.are.equal (. (step-of base :karazhan)
+                                                     :score)
+                                                  (. (step-of goal :karazhan)
+                                                     :score)))))
+                        (it "a met goal changes nothing"
+                            (fn []
+                              (let [base (route.plan-week (player) (ctx))
+                                    met (route.plan-week (player)
+                                                         (ctx {:goals [badge-goal]
+                                                               :goal-progress {:g-badges 200}}))]
+                                (assert.are.same (ids-of base) (ids-of met))
+                                (assert.are.equal base.score met.score))))
+                        (it "a gold goal pulls in and ranks the densest gold/h
+                             source; removing it restores the BiS-first order"
+                            (fn []
+                              (let [base (route.plan-week (player) (ctx))
+                                    goal (route.plan-week (player)
+                                                          (ctx {:goals [gold-goal]
+                                                                :goal-progress {:g-gold 0}}))
+                                    again (route.plan-week (player) (ctx))]
+                                ;; Ogri'la dailies pay gold but award no BiS:
+                                ;; absent from the BiS-first plan, present and
+                                ;; reordered-in under a gold goal
+                                (assert.is_nil (step-of base :ogrila-dailies))
+                                (assert.is_not_nil (step-of goal
+                                                            :ogrila-dailies))
+                                (assert.is_false (= (table.concat (ids-of base)
+                                                                  ",")
+                                                    (table.concat (ids-of goal)
+                                                                  ",")))
+                                ;; same goal-free context -> byte-identical plan
+                                (assert.are.same (ids-of base) (ids-of again))
+                                (assert.are.equal base.score again.score))))
+                        (it "is deterministic with goals active"
+                            (fn []
+                              (let [c (ctx {:goals [badge-goal gold-goal]
+                                            :goal-progress {:g-badges 40
+                                                            :g-gold 1000000}})
+                                    a (route.plan-week (player) c)
+                                    b (route.plan-week (player) c)]
+                                (assert.are.same (ids-of a) (ids-of b))
+                                (assert.are.equal a.score b.score))))
+                        (it "re-scores a daily badge source as the reset nears
+                             (deadline-aware runs)"
+                            (fn []
+                              ;; the same goal scored a week out vs on reset
+                              ;; eve: Slave Pens' planned runs shrink 7 -> 1,
+                              ;; so its take, its share of the best source,
+                              ;; and hence its goal score all move.
+                              (let [day 86400
+                                    score-of (fn [plan]
+                                               (let [s (step-of plan
+                                                                :the-slave-pens)]
+                                                 (and s s.score)))
+                                    week-out (score-of (route.plan-week (player)
+                                                                        (ctx {:goals [badge-goal]
+                                                                              :goal-progress {:g-badges 100}
+                                                                              :now 1000
+                                                                              :reset-at (+ 1000
+                                                                                           (* 7
+                                                                                              day))})))
+                                    eve (score-of (route.plan-week (player)
+                                                                   (ctx {:goals [badge-goal]
+                                                                         :goal-progress {:g-badges 100}
+                                                                         :now 1000
+                                                                         :reset-at (+ 1000
+                                                                                      day)})))]
+                                (assert.is_not_nil week-out)
+                                (assert.is_not_nil eve)
+                                (assert.is_true (not= week-out eve)))))))
             (describe "content coverage"
                       (fn []
                         ;; Regression guard for the silent-drop bug: route only
