@@ -45,6 +45,21 @@ split). Drop-rate and per-boss source data are **not** present upstream; catalog
 entries carry only an `:instance` derived from the source's
 raid/world-boss/reputation flags until the Phase 2 drop-table lands.
 
+## Chain data (attunements)
+
+Routina's attunement chain registry (`src/domain/chains/data.fnl`, read by
+`src/domain/chains.fnl`) is **generated** from the
+[Attune](https://github.com/hippuli/Attune) addon's `AttuneData.lua` by
+`scripts/import-chains.lua` (`task import-chains`); the pinned snapshot lives
+in `vendor/chain-source/` (see its `README.md`).
+
+- The Attune addon is by **Cixi@Remulos** -- gratitude for years of
+  meticulously transcribed attunement chains.
+- Attune publishes **no license**; a strict reading makes redistribution
+  all-rights-reserved. The owner explicitly accepted this risk on 2026-06-05
+  (PRD OQ-10). If the upstream author objects, the data will be removed and
+  re-curated by hand.
+
 ## Vendored libraries
 
 - **Ace3** suite (AceAddon, AceDB, AceEvent, AceConfig, AceLocale,

@@ -176,6 +176,22 @@ tasks:
       - luajit scripts/import-drops.lua
       - echo "now run 'task fmt && task build && task test' to finish"
 
+  vendor-chain-source:
+    desc: Re-download the pinned Attune chain data into vendor/chain-source/
+    vars:
+      ATTUNE_SHA: 6db364737b054be2b6bbf432a7420f62e2c84928
+      ATTUNE: 'https://raw.githubusercontent.com/hippuli/Attune/{{.ATTUNE_SHA}}'
+    cmds:
+      - mkdir -p vendor/chain-source
+      - curl -fsSL "{{.ATTUNE}}/AttuneData.lua" -o vendor/chain-source/AttuneData.lua
+      - echo "vendored Attune chain source @ {{.ATTUNE_SHA}} (run 'task import-chains' next)"
+
+  import-chains:
+    desc: Regenerate src/domain/chains/data.fnl from vendor/chain-source/AttuneData.lua
+    cmds:
+      - luajit scripts/import-chains.lua
+      - echo "now run 'task fmt && task build && task test' to finish"
+
   clean:
     desc: Remove generated Lua artifacts and coverage output
     cmds:

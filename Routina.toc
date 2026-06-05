@@ -78,6 +78,10 @@ build\domain\competition.lua
 build\domain\drops\data.lua
 build\domain\drop-table.lua
 build\domain\drop-chance.lua
+# Chains: generated chains\data.lua registers _G.Routina.chain-data (TBC
+# attunement chains from the Attune dataset); chains.lua reads + validates
+# it. See scripts/import-chains.lua.
+build\domain\chains\data.lua
 # history: cumulative observation log feeding bayesian-luck. After drop-chance
 # (uses it); accumulated by src/core/events.fnl behind a default-off flag.
 build\domain\history.lua
