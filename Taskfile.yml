@@ -95,11 +95,20 @@ tasks:
     deps: [build]
     cmds:
       - |
+        # BigWigs packager needs bash >= 4.3; macOS /bin/bash is 3.2, so prefer Homebrew's.
+        BASH_BIN=$(command -v /opt/homebrew/bin/bash || command -v /usr/local/bin/bash || command -v bash)
+        # The packager skips all untracked files (git ls-files --others), which
+        # would drop the gitignored build/ tree. Stage it for the duration of
+        # the run so the compiled Lua ships, then unstage.
+        git add -f -- build/
         if [ -f release.sh ]; then
-          sh release.sh -d
+          "$BASH_BIN" release.sh -d
         else
-          curl -s https://raw.githubusercontent.com/BigWigsMods/packager/master/release.sh | sh -s -- -d
+          curl -s https://raw.githubusercontent.com/BigWigsMods/packager/master/release.sh | "$BASH_BIN" -s -- -d
         fi
+        status=$?
+        git reset -q -- build/
+        exit $status
 
   install:
     desc: Symlink this repo into the WoW AddOns folder as "Routina"
