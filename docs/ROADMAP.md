@@ -445,8 +445,14 @@ Parallelizable; pick up alongside Phase 3-4 as time allows.
 
 - **Localization** -- `Locales/enUS.lua` first, AceLocale wiring, ruRU
   pulled from translator after string freeze.
-- **Theming** -- light/dark, font scale, colour-blind safe palette for the
-  weekly tab.
+- **Theming** -- light/dark **DONE (2026-06-06, pending in-game smoke)**:
+  `theme.palettes.dark/.light` over the same token keys, `theme.set-mode!`
+  palette swap, Options -> General -> Theme select persisted at
+  `db.char.preferences.route.theme` (free-form prefs key, no migration),
+  live switch through one `root.refresh!` (idempotent `tint-frame!`;
+  pooled meters/timers re-read the palette per paint). Font scale and a
+  dedicated colour-blind palette remain (both palettes already keep the
+  UI.md §11 saturation-driven invariants).
 - **Profiles** -- DONE early: AceDBOptions sub-panel shipped with the
   Phase 3 options split (per-character + shared profile).
 - **Slash commands** -- DONE: `/routina` + `/rt` (toggle) and `... options`

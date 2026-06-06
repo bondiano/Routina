@@ -137,6 +137,19 @@ do not hardcode hex.
 Tokens are pure data; `theme.fnl` has no `CreateFrame` calls and no WoW
 globals. It is testable in busted.
 
+**Light/dark variants (Phase 5).** The palette ships in two modes over the
+SAME token keys -- `theme.palettes.dark` (the default look above) and
+`theme.palettes.light` (light parchment paper, dark ink, accents darkened
+for contrast). `theme.set-mode!` swaps which table `theme.palette` points
+at; consumers keep reading the same token names and pick the active values
+up on their next paint. The switch lives in Options -> General -> Theme
+(persisted at `db.char.preferences.route.theme`); applying it is one
+ordinary `root.refresh!` -- `acegui.tint-frame!` re-tints idempotently, the
+why-drawer re-tints per open, and the pooled meters/timers re-read the
+palette in `set!`/`start!`. Both palettes keep §11's colour-blind
+invariants (identity reads without hue; the chance-meter gradient stays
+saturation-driven).
+
 ## 5. Frame discipline
 
 > **Historical (pre-AceGUI).** Bespoke frame pools and `acquire!`/`release!`
@@ -404,8 +417,10 @@ Reviewers reject:
   that breaks "same input -> same plan" (PRD G5).
 - Multi-panel layout (detach BiS into a second window). Single panel,
   one focus.
-- Live theme editing in Options. `theme.fnl` is canonical until a player
-  reports it doesn't read.
+- Live theme editing in Options (custom colour pickers). `theme.fnl` is
+  canonical until a player reports it doesn't read. The §4 light/dark
+  SELECT shipped with Phase 5 and is not this -- it switches between the
+  two curated palettes, it does not edit them.
 - Animations beyond fade/slide. No `bounce`, `glow`, `shake`.
 - Minimap icon customization beyond the addon's default LibDBIcon
   entry.

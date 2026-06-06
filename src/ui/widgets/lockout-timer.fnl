@@ -218,6 +218,12 @@
     (set f.label (or ?label ""))
     (set f.acc 0)
     (set f.last-band nil)
+    ;; re-tint the pooled static textures: a frame re-acquired after a theme
+    ;; switch (Phase 5) must follow the active palette
+    (when f.track
+      (f.track:SetColorTexture (theme.rgba theme.palette.ink-faint track-alpha)))
+    (when f.pulse
+      (f.pulse:SetColorTexture (theme.rgba theme.palette.gold-bright 1.0)))
     (let [spec (M.view-model reset-at (now-fn) f.label)]
       (set f.last-secs spec.secs)
       (M.set! f spec)

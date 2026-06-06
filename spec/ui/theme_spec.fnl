@@ -2,43 +2,89 @@
 
 (local theme (require :src.ui.theme))
 
+(local tokens [:parchment
+               :parchment-2
+               :panel
+               :ink
+               :ink-faint
+               :gold
+               :gold-bright
+               :warn
+               :ok
+               :shadow])
+
+(fn lum-of [palette tok]
+  (let [(r g b) (theme.rgba (. palette tok))]
+    (+ r g b)))
+
 (describe :theme
           (fn []
-            (describe ":palette"
+            (after_each (fn [] (theme.set-mode! :dark)))
+            (describe ":palettes"
                       (fn []
-                        (it "carries every token the widgets read"
+                        (it "both variants carry every token the widgets read"
                             (fn []
-                              (each [_ k (ipairs [:parchment
-                                                  :parchment-2
-                                                  :panel
-                                                  :ink
-                                                  :ink-faint
-                                                  :gold
-                                                  :gold-bright
-                                                  :warn
-                                                  :ok
-                                                  :shadow])]
-                                (assert.is_not_nil (. theme.palette k)
-                                                   (.. "missing palette token: "
-                                                       k)))))
-                        (it "stores tokens as 6-char hex strings"
+                              (each [_ variant (ipairs [:dark :light])]
+                                (each [_ k (ipairs tokens)]
+                                  (assert.is_not_nil (. theme.palettes variant
+                                                        k)
+                                                     (.. (tostring variant)
+                                                         " missing palette token: "
+                                                         k))))))
+                        (it "stores tokens as 6-char hex strings in both"
                             (fn []
-                              (each [_ hex (pairs theme.palette)]
-                                (assert.are.equal 6 (length hex)))))
-                        (it "keeps text foreground light + ranked for dark-bg contrast"
+                              (each [_ variant (ipairs [:dark :light])]
+                                (each [_ hex (pairs (. theme.palettes variant))]
+                                  (assert.are.equal 6 (length hex))))))
+                        (it "dark: light ranked ink on a dark panel"
                             (fn []
-                              ;; AceGUI renders a dark backdrop, so ink must be a
-                              ;; bright (high-luminance) cream and clearly brighter
-                              ;; than the secondary ink-faint.
-                              (let [lum (fn [tok]
-                                          (let [(r g b) (theme.color tok)]
-                                            (+ r g b)))]
-                                (assert.is_true (> (lum :ink) 2.4))
-                                (assert.is_true (> (lum :ink) (lum :ink-faint)))
-                                ;; the panel fill is the opposite end: dark, so
-                                ;; the light text reads against a solid backdrop
-                                (assert.is_true (< (lum :panel) 0.6))
-                                (assert.is_true (> (lum :ink) (lum :panel))))))))
+                              (let [p theme.palettes.dark]
+                                (assert.is_true (> (lum-of p :ink) 2.4))
+                                (assert.is_true (> (lum-of p :ink)
+                                                   (lum-of p :ink-faint)))
+                                (assert.is_true (< (lum-of p :panel) 0.6))
+                                (assert.is_true (> (lum-of p :ink)
+                                                   (lum-of p :panel))))))
+                        (it "light: dark ranked ink on a light panel (mirror)"
+                            (fn []
+                              (let [p theme.palettes.light]
+                                (assert.is_true (< (lum-of p :ink) 0.9))
+                                (assert.is_true (< (lum-of p :ink)
+                                                   (lum-of p :ink-faint)))
+                                (assert.is_true (> (lum-of p :panel) 2.0))
+                                (assert.is_true (< (lum-of p :ink)
+                                                   (lum-of p :panel))))))
+                        (it "accents keep their internal ranking in both modes"
+                            (fn []
+                              (each [_ variant (ipairs [:dark :light])]
+                                (let [p (. theme.palettes variant)]
+                                  ;; gold-bright stays the brighter gold
+                                  (assert.is_true (> (lum-of p :gold-bright)
+                                                     (lum-of p :gold)))))))))
+            (describe ":set-mode!"
+                      (fn []
+                        (it "defaults to dark and reports the active mode"
+                            (fn []
+                              (assert.are.equal :dark (theme.mode))
+                              (assert.are.equal theme.palettes.dark
+                                                theme.palette)))
+                        (it "swaps the live palette so color follows the mode"
+                            (fn []
+                              (let [dark-lum (let [(r g b) (theme.color :panel)]
+                                               (+ r g b))]
+                                (theme.set-mode! :light)
+                                (assert.are.equal :light (theme.mode))
+                                (assert.are.equal theme.palettes.light
+                                                  theme.palette)
+                                (let [(r g b) (theme.color :panel)]
+                                  (assert.is_true (> (+ r g b) dark-lum))))))
+                        (it "reads anything but :light as :dark (corrupt persist)"
+                            (fn []
+                              (theme.set-mode! :light)
+                              (assert.are.equal :dark (theme.set-mode! :junk))
+                              (assert.are.equal :dark (theme.set-mode! nil))
+                              (assert.are.equal theme.palettes.dark
+                                                theme.palette)))))
             (describe ":fonts"
                       (fn []
                         (it "has title and body paths"

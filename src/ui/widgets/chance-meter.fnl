@@ -116,10 +116,16 @@
 (lambda M.set! [f spec]
   "Paint a render-spec onto a chance-meter frame. The label/hint live in the
    surrounding row (single-concern widget); the meter only draws the bar.
+   Re-tints the pooled track + ticks too, so a frame re-acquired after a
+   theme switch (Phase 5) never shows the previous palette.
    Domain:  f    : WoW Frame from M.acquire!
             spec : M.view-model result
    Returns: nil."
   (when (and f f.fill)
+    (when f.track
+      (f.track:SetColorTexture (theme.rgba theme.palette.ink-faint track-alpha)))
+    (each [_ t (ipairs (or f.ticks []))]
+      (t:SetColorTexture (theme.rgba theme.palette.ink tick-alpha)))
     ;; SetWidth needs a positive number; clamp so a 0% bar is invisible, not
     ;; an error.
     (f.fill:SetWidth (math.max 0.1 (* meter-width spec.fill-fraction)))

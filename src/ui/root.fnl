@@ -160,9 +160,12 @@
   "Repaint the ACTIVE tab in place. No-op until the panel is built. Driven by
    src/core/events.fnl on gear / talent / lockout / quest / options changes
    and by the Phase 8 card/checklist actions, so whatever tab is open reflects
-   current state (renders are idempotent ReleaseChildren-then-rebuild).
+   current state (renders are idempotent ReleaseChildren-then-rebuild). Also
+   re-tints the root frame (idempotent), so a theme switch (Phase 5) lands in
+   one ordinary refresh.
    Returns: nil."
   (when (and ui active-tab)
+    (acegui.tint-frame! ui.frame)
     (render-tab! ui.tabs active-tab))
   nil)
 

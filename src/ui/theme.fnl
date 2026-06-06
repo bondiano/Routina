@@ -9,21 +9,46 @@
 
 (local M {})
 
-;; --- Palette (warm parchment + gold + ink) ---------------------------------
+;; --- Palette variants (warm parchment + gold + ink; Phase 5 light/dark) ----
+;;
+;; Two palettes over the SAME token keys, so every consumer keeps reading the
+;; same names regardless of mode:
+;;   :dark  -- the original: dark panel, light cream ink (high-contrast on the
+;;             dark AceGUI backdrop).
+;;   :light -- light parchment paper, dark ink; accents darkened so they keep
+;;             contrast on the bright fill.
+;; Both stay colour-blind safe (UI.md §11): the identity trio reads without
+;; hue, and the chance-meter gradient is saturation-driven, never red/green.
+;; M.set-mode! swaps which table M.palette points at -- widgets that read
+;; theme.palette.<token> directly pick the active values up on their next
+;; build/paint, no call-site changes.
 
-;; Foreground (ink / ink-faint) is LIGHT: AceGUI owns the backdrop and renders
-;; dark, so body text is a warm cream and secondary text a muted tan -- both sit
-;; high-contrast on the dark frame (the old dark ink was near-invisible on it).
-(set M.palette {:parchment :C4A370
-                :parchment-2 :A88752
-                :panel :211A10
-                :ink :F2E9D0
-                :ink-faint :C7B488
-                :gold :C9A24A
-                :gold-bright :F0CC6E
-                :warn :D85A45
-                :ok :8FBF6E
-                :shadow :000000})
+(set M.palettes {:dark {:parchment :C4A370
+                        :parchment-2 :A88752
+                        :panel :211A10
+                        :ink :F2E9D0
+                        :ink-faint :C7B488
+                        :gold :C9A24A
+                        :gold-bright :F0CC6E
+                        :warn :D85A45
+                        :ok :8FBF6E
+                        :shadow :000000}
+                 :light {:parchment :D9C89E
+                         :parchment-2 :BFA875
+                         :panel :EFE5C9
+                         :ink :2B2417
+                         :ink-faint :6B5C3E
+                         :gold :8A6D2F
+                         :gold-bright :A8842D
+                         :warn :B23A24
+                         :ok :4F7D33
+                         :shadow :000000}})
+
+;; The ACTIVE palette -- consumers read this (directly or through M.color).
+;; Defaults to :dark, the original look; set-mode! swaps it.
+(set M.palette M.palettes.dark)
+
+(var mode :dark)
 
 ;; --- Fonts (TBC client built-ins, no LibSharedMedia) -----------------------
 
@@ -45,6 +70,25 @@
 (set M.textures {:gold-border "Interface\\Tooltips\\UI-Tooltip-Border"
                  :gear-icon "Interface\\Buttons\\UI-OptionsButton"
                  :solid "Interface\\Buttons\\WHITE8X8"})
+
+;; --- Mode ------------------------------------------------------------------
+
+(lambda M.set-mode! [?mode]
+  "Switch the active palette. Anything but :light reads as :dark (the
+   original look), so a missing / corrupt persisted value can never break
+   the panel. Consumers repaint through the normal refresh path -- this only
+   swaps which table M.palette points at.
+   Domain:  ?mode : :dark | :light | anything (-> :dark)
+   Returns: the mode actually set."
+  (set mode (if (= ?mode :light) :light :dark))
+  (set M.palette (. M.palettes mode))
+  mode)
+
+(lambda M.mode []
+  "The active palette mode.
+   Domain:  (none)
+   Returns: :dark | :light."
+  mode)
 
 ;; --- Helpers ---------------------------------------------------------------
 

@@ -198,6 +198,9 @@
   (when (acegui.gui)
     (when (not frame) (build!))
     (when frame
+      ;; re-tint per open (idempotent) -- the singleton survives a theme
+      ;; switch, so its backdrop must follow the active palette (Phase 5)
+      (acegui.tint-frame! frame)
       (frame:ReleaseChildren)
       (let [vm (M.view-model step ?ctx ?compare)]
         (frame:SetTitle vm.title)

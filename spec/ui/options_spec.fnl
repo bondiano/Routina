@@ -83,6 +83,21 @@
                     (assert.is_false ((. g.track-luck :get) nil))
                     ((. g.track-luck :set) nil true)
                     (assert.is_true db.track-luck?))))
+            (it "exposes a theme select, dark by default, switching live (Phase 5)"
+                (fn []
+                  (let [theme (require :src.ui.theme)
+                        db {}
+                        hits {:n 0}
+                        g (general (build db (fn [] (set hits.n (+ hits.n 1)))))]
+                    (assert.are.equal :select (. g.theme :type))
+                    (assert.are.equal :dark ((. g.theme :get) nil))
+                    ((. g.theme :set) nil :light)
+                    (assert.are.equal :light db.theme)
+                    ;; the live palette switched and the repaint fired
+                    (assert.are.equal :light (theme.mode))
+                    (assert.are.equal 1 hits.n)
+                    ;; restore module state for later specs
+                    (theme.set-mode! :dark))))
             (it "writes phase and fires on-change via :set"
                 (fn []
                   (let [db {}

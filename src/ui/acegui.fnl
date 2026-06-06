@@ -75,7 +75,8 @@
   "Give an AceGUI Frame a solid, opaque themed fill. The default AceGUI dialog
    backdrop is largely see-through (the game world bleeds through an otherwise
    empty panel), so besides tinting the backdrop we lay a full-cover solid colour
-   texture in the BACKGROUND layer (created once, behind all content). No-op when
+   texture in the BACKGROUND layer (created once, RE-TINTED on every call --
+   idempotent, so a theme switch just calls this again; Phase 5). No-op when
    the widget or its frame is absent.
    Domain:  widget       : AceGUI Frame widget (has .frame) | nil
             ?color-token : palette key, default :panel
@@ -86,11 +87,12 @@
         alpha (or ?alpha 0.96)]
     (when (and frame frame.SetBackdropColor)
       (frame:SetBackdropColor (theme.color token alpha)))
-    (when (and frame frame.CreateTexture (not frame.routina-bg))
-      (let [bg (frame:CreateTexture nil :BACKGROUND)]
-        (bg:SetAllPoints frame)
-        (bg:SetColorTexture (theme.color token alpha))
-        (set frame.routina-bg bg))))
+    (when (and frame frame.CreateTexture)
+      (when (not frame.routina-bg)
+        (let [bg (frame:CreateTexture nil :BACKGROUND)]
+          (bg:SetAllPoints frame)
+          (set frame.routina-bg bg)))
+      (frame.routina-bg:SetColorTexture (theme.color token alpha))))
   widget)
 
 ;; --- Register --------------------------------------------------------------

@@ -21,6 +21,7 @@
 (local format (or Routina.format (require :src.ui.format)))
 (local root (or Routina.root (require :src.ui.root)))
 (local options (or Routina.options (require :src.ui.options)))
+(local theme (or Routina.theme (require :src.ui.theme)))
 
 (local log-levels {:debug 1 :info 2 :warn 3 :error 4})
 
@@ -127,6 +128,9 @@
     (set self.db.global
          (saved-vars.migrate self.db.global saved-vars.migrations))
     (set self.log (make-logger #(or self.db.global.options.log-level :info)))
+    ;; Restore the persisted theme BEFORE any frame is built, so /reload comes
+    ;; back in the chosen palette (anything but :light reads as :dark).
+    (theme.set-mode! (?. self :db :char :preferences :route :theme))
     ;; Bind the AceConfig options panel to the DB (no-op without the config libs).
     (options.register! self)
     (self.log:info "OnInitialize complete")

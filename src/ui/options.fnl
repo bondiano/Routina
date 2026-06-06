@@ -17,6 +17,8 @@
 (local options-custom
        (or Routina.options-custom (require :src.ui.options-custom)))
 
+(local theme (or Routina.theme (require :src.ui.theme)))
+
 (local LibStub _G.LibStub)
 
 (local M {})
@@ -213,7 +215,17 @@
                             :get (fn [_] (= true db.include-classic?))
                             :set (fn [_ v]
                                    (tset db :include-classic? v)
-                                   (changed))}}})
+                                   (changed))}
+          :theme {:type :select
+                  :name :Theme
+                  :desc "Dark (the default look) or light parchment. Applies immediately; the panel repaints in place."
+                  :order 7
+                  :values {:dark :Dark :light "Light (parchment)"}
+                  :get (fn [_] (or db.theme :dark))
+                  :set (fn [_ v]
+                         (tset db :theme v)
+                         (theme.set-mode! v)
+                         (changed))}}})
 
 ;; --- Public API ------------------------------------------------------------
 
