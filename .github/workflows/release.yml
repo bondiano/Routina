@@ -1,0 +1,53 @@
+name: Release
+
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: write # create the GitHub release + upload the zip
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # packager derives the version/changelog from git history
+
+      - uses: leafo/gh-actions-lua@v11
+        with:
+          luaVersion: luajit-openresty
+
+      - uses: leafo/gh-actions-luarocks@v5
+
+      - uses: arduino/setup-task@v2
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Install tooling
+        run: |
+          luarocks install fennel 1.6.1-1 || luarocks install fennel
+          luarocks install fnlfmt
+          luarocks --tree .rocks install busted
+
+      # Never ship a red build: the release gate is the same lint+test as CI.
+      - name: Lint
+        run: task lint
+
+      - name: Test
+        run: task test
+
+      - name: Compile Fennel to build/
+        run: task build
+
+      # The packager skips all untracked files (git ls-files --others), and
+      # build/ is gitignored. Stage it so the compiled addon code ships --
+      # same trick as `task package` locally.
+      - name: Stage compiled Lua for the packager
+        run: git add -f -- build/
+
+      - name: Package and publish to GitHub Releases
+        uses: BigWigsMods/packager@v2
+        env:
+          GITHUB_OAUTH: ${{ secrets.GITHUB_TOKEN }}

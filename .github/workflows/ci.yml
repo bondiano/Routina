@@ -1,0 +1,50 @@
+name: CI
+
+on:
+  push:
+    branches: [master, main]
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # WoW runs a Lua 5.1 subset; tests run under luajit like `task test` locally.
+      - uses: leafo/gh-actions-lua@v11
+        with:
+          luaVersion: luajit-openresty
+
+      - uses: leafo/gh-actions-luarocks@v5
+
+      - uses: arduino/setup-task@v2
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+
+      # fennel/fnlfmt go on PATH for the Taskfile; busted/luacov go into the
+      # project-local .rocks tree because `task test` calls ./.rocks/bin/busted.
+      - name: Install tooling
+        run: |
+          luarocks install fennel 1.6.1-1 || luarocks install fennel
+          luarocks install fnlfmt
+          luarocks --tree .rocks install busted
+          luarocks --tree .rocks install luacov
+
+      - name: Lint (fnlfmt + compile check)
+        run: task lint
+
+      - name: Test (busted)
+        run: task test
+
+      - name: Check docs/api.md is current
+        run: |
+          task docs
+          git diff --exit-code -- docs/api.md || {
+            echo "docs/api.md is stale -- run 'task docs' and commit the result"
+            exit 1
+          }
